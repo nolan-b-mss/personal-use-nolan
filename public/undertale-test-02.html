@@ -1,19 +1,24 @@
 <h1 align=center style="color:white;"> undertale-test-02.html </h1>
 <head>
-  <script>
-    let myVerti = parseInt(myPlayer01.style.top);
-    let myHoriz = parseInt(myPlayer01.style.left);
-    let up = false;
-    let down = false;
-    let right = false;
-    let left = false;
-    document.onkeydown = valueSet(event){
+ 
+</head>
+<body style="background-color:black;">
+<img src="soul-01.png" width="16" height="16" id="myPlayer01" style="position:relative;left:0px;top:0px;">
+<script>
+  let playerElement = document.getElementById('myPlayer01')
+  let myVerti = parseInt(playerElement.style.top);
+  let myHoriz = parseInt(playerElement.style.left);
+  let up = false;
+  let down = false;
+  let right = false;
+  let left = false;
+    document.onkeydown = function(event){
       if (event.key === "w"){up = true;}
       if (event.key === "s"){down = true;}
       if (event.key === "a"){left = true;}
       if (event.key === "d"){right = true;}
     }
-    document.onkeydown = valueRemove(event){
+    document.onkeyup = function(event){
       if (event.key === "w"){up = false;}
       if (event.key === "s"){down = false;}
       if (event.key === "a"){left = false;}
@@ -25,10 +30,9 @@
       if (down) { myVerti += 2}
       if (left) { myHoriz -= 2}
       if (right) { myHoriz += 2}
+      playerElement.style.top = myVerti + 'px'
+      playerElement.style.left = myHoriz + 'px'
     }
-    myPlayer01.style.left = '0px';
-    myPlayer01.style.top = '0px';
-  </script>
-</head>
-<body style="background-color:black;">
-<img src="soul-01.png" width="16" height="16" id="myPlayer01" style="position:relative;left:0px;top:0px;">
+  playerElement.style.left = '0px';
+  playerElement.style.top = '0px';
+</script>
