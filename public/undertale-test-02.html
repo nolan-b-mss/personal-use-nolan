@@ -26,10 +26,10 @@
     }
    setInterval(movement, 10)
     function movement(){
-      if (up) { myVerti -= 2}
-      if (down) { myVerti += 2}
-      if (left) { myHoriz -= 2}
-      if (right) { myHoriz += 2}
+      if (up) { myVerti -= 4}
+      if (down) { myVerti += 4}
+      if (left) { myHoriz -= 4}
+      if (right) { myHoriz += 4}
       playerElement.style.top = myVerti + 'px'
       playerElement.style.left = myHoriz + 'px'
     }
