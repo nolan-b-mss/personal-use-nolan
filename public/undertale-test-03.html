@@ -3,16 +3,19 @@
  <style>.white{color:white;}</style>
 </head>
 <input type="button" onclick="history.back()" value="Back to Index" style="background-color:black;color:white;border-color:black;">
+<div id="myHealth" class="white" style="position:relative; left:10px; top:10px; font-size:24px;" onload="updateHealth()"></div>
 <body style="background-color:black;">
 <img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position:relative;left:0px;top:0px;">
 <script>
-  let playerElement = document.getElementById('myPlayer01')
+  let playerElement = document.getElementById('myPlayer01');
+  let healthDisplay = document.getElementById('playerHealth');
   let myVerti = parseInt(playerElement.style.top);
   let myHoriz = parseInt(playerElement.style.left);
   let up = false;
   let down = false;
   let right = false;
   let left = false;
+  let playerHealth = 20;
     document.onkeydown = function(event){
       if (event.key === "w"){up = true;}
       if (event.key === "s"){down = true;}
@@ -36,4 +39,6 @@
     }
   playerElement.style.left = '945px';
   playerElement.style.top = '450px';
+ function updateHealth(){
+  healthDisplay.textContent = "HP: " + playerHealth + "/20";
 </script>
