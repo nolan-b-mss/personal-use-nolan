@@ -3,7 +3,7 @@
  <style>.white{color:white;}</style>
 </head>
 <input type="button" onclick="history.back()" value="Back to Index" style="background-color:black;color:white;border-color:black;">
-<div id="myHealth" class="white" style="position:relative; left:10px; top:10px; font-size:24px;" onload="updateHealth()"></div>
+<div id="myHealth" class="white" style="position:relative; left:10px; top:10px; font-size:24px;"></div>
 <body style="background-color:black;">
 <img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position:relative;left:0px;top:0px;">
 <script>
@@ -47,4 +47,5 @@
  //=============//
  function updateHealth(){
   healthDisplay.textContent = "HP: " + playerHealth + "/20";}
+ updateHealth()
 </script>
