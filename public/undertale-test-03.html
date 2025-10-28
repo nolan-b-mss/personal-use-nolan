@@ -9,6 +9,9 @@
 <img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position:relative;left:0px;top:0px;">
 <input type="button" class="blend" onclick="takeDamage(4)" value="-4 HP">
 <script>
+ //===========//
+ //Definitions//
+ //===========//
   let playerElement = document.getElementById('myPlayer01');
   let healthDisplay = document.getElementById('myHealth');
   let myVerti = parseInt(playerElement.style.top);
@@ -20,7 +23,7 @@
   let playerHealth = 20;
   let damageAmount = 4
  //==============//
- //Movemet System//
+ //Movement System//
  //==============//
     document.onkeydown = function(event){
       if (event.key === "w"){up = true;}
@@ -43,8 +46,8 @@
       playerElement.style.top = myVerti + 'px'
       playerElement.style.left = myHoriz + 'px'
     }
-  playerElement.style.left = '945px';
-  playerElement.style.top = '450px';
+  myHoriz = '945px';
+  myVerti = '450px';
  //=============//
  //Health System//
  //=============//
@@ -65,5 +68,7 @@
   alert('you died')
   playerHealth = 20
   updateHealth()
+  playerElement.style.left = '945px';
+  playerElement.style.top = '450px';
  }
 </script>
