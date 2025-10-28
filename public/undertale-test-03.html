@@ -16,6 +16,7 @@
   let right = false;
   let left = false;
   let playerHealth = 20;
+  let damageAmount = 4
  //==============//
  //Movemet System//
  //==============//
@@ -52,4 +53,8 @@
  //Damage System//
  //=============//
  function takeDamage(){
+  myHealth = parseInt(myHealth) - damageAmount
+  updateHealth()
+  if (myHealth == 0){alert('you died')}
+ }
 </script>
