@@ -8,12 +8,17 @@
 <body style="background-color:black;">
 <img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position:relative;left:0px;top:0px;">
 <input type="button" class="blend" onclick="takeDamage(4)" value="-4 HP">
+<img id="myEnemy01" src="diamond-attack1.png"style="position:relative;left:0px;top:0px;">
 <script>
- //===========//
- //Definitions//
- //===========//
+ //===========\\
+ //Definitions\\
+ //===========\\
   let playerElement = document.getElementById('myPlayer01');
   let healthDisplay = document.getElementById('myHealth');
+  let attackElement = document.getElementById('myEnemy01');
+  let attackVerti = 450;
+  let attackHoriz = 800;
+
   let myVerti = parseInt(playerElement.style.top);
   let myHoriz = parseInt(playerElement.style.left);
   let up = false;
@@ -22,9 +27,9 @@
   let left = false;
   let playerHealth = 20;
   let damageAmount = 4
- //==============//
- //Movement System//
- //==============//
+ //===============\\
+ //Movement System\\
+ //===============\\
     document.onkeydown = function(event){
       if (event.key === "w"){up = true;}
       if (event.key === "s"){down = true;}
@@ -45,18 +50,22 @@
       if (right) { myHoriz += 3}
       playerElement.style.top = myVerti + 'px'
       playerElement.style.left = myHoriz + 'px'
+      attackElement.style.top = attackVerti + 'px'
+      attackElement.style.left = attackHoriz + 'px'
+      attackHoriz -= 3
+     if (attackHoriz <= 0) { attackHoriz = 1920}
     }
   myHoriz = 945;
   myVerti = 450;
- //=============//
- //Health System//
- //=============//
+ //=============\\
+ //Health System\\
+ //=============\\
  function updateHealth(){
   healthDisplay.textContent = "HP: " + playerHealth + "/20";}
  updateHealth()
- //=============//
- //Damage System//
- //=============//
+ //=============\\
+ //Damage System\\
+ //=============\\
  function takeDamage(damageAmount){
   playerHealth = parseInt(playerHealth) - damageAmount
   updateHealth()
@@ -70,5 +79,12 @@
   updateHealth()
   myHoriz = 945
   myVerti = 450
+ }
+ //==============\\
+ //Attack System\\
+ //=============\\
+ setInterval(enemyAttack,1000)
+ function enemyAttack(){
+  takeDamage(10)
  }
 </script>
