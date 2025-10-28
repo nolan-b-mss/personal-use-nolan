@@ -1,0 +1,74 @@
+<h1 align=center style="color:white;"> undertale-test-04.html </h1>
+<head>
+ <style>.white{color:white;}</style>
+ <style>.blend{background-color:black;color:white;border-color:black;</style>
+</head>
+<input type="button" onclick="history.back()" value="Back to Index" class="blend">
+<div id="myHealth" class="white" style="position:relative; left:10px; top:10px; font-size:24px;"></div>
+<body style="background-color:black;">
+<img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position:relative;left:0px;top:0px;">
+<input type="button" class="blend" onclick="takeDamage(4)" value="-4 HP">
+<script>
+ //===========//
+ //Definitions//
+ //===========//
+  let playerElement = document.getElementById('myPlayer01');
+  let healthDisplay = document.getElementById('myHealth');
+  let myVerti = parseInt(playerElement.style.top);
+  let myHoriz = parseInt(playerElement.style.left);
+  let up = false;
+  let down = false;
+  let right = false;
+  let left = false;
+  let playerHealth = 20;
+  let damageAmount = 4
+ //==============//
+ //Movement System//
+ //==============//
+    document.onkeydown = function(event){
+      if (event.key === "w"){up = true;}
+      if (event.key === "s"){down = true;}
+      if (event.key === "a"){left = true;}
+      if (event.key === "d"){right = true;}
+    }
+    document.onkeyup = function(event){
+      if (event.key === "w"){up = false;}
+      if (event.key === "s"){down = false;}
+      if (event.key === "a"){left = false;}
+      if (event.key === "d"){right = false;}
+    }
+   setInterval(movement, 10)
+    function movement(){
+      if (up) { myVerti -= 3}
+      if (down) { myVerti += 3}
+      if (left) { myHoriz -= 3}
+      if (right) { myHoriz += 3}
+      playerElement.style.top = myVerti + 'px'
+      playerElement.style.left = myHoriz + 'px'
+    }
+  myHoriz = 945;
+  myVerti = 450;
+ //=============//
+ //Health System//
+ //=============//
+ function updateHealth(){
+  healthDisplay.textContent = "HP: " + playerHealth + "/20";}
+ updateHealth()
+ //=============//
+ //Damage System//
+ //=============//
+ function takeDamage(damageAmount){
+  playerHealth = parseInt(playerHealth) - damageAmount
+  updateHealth()
+  if (playerHealth <= 0){
+   playerDeath();
+  }
+ }
+ function playerDeath(){
+  alert('you died')
+  playerHealth = 20
+  updateHealth()
+  myHoriz = 945
+  myVerti = 450
+ }
+</script>
