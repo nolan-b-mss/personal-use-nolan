@@ -1,12 +1,13 @@
 <h1 align=center style="color:white;"> undertale-test-03.html </h1>
 <head>
  <style>.white{color:white;}</style>
+ <style>.blend{background-color:black;color:white;border-color:black;</style>
 </head>
-<input type="button" onclick="history.back()" value="Back to Index" style="background-color:black;color:white;border-color:black;">
+<input type="button" onclick="history.back()" value="Back to Index" class="blend">
 <div id="myHealth" class="white" style="position:relative; left:10px; top:10px; font-size:24px;"></div>
 <body style="background-color:black;">
 <img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position:relative;left:0px;top:0px;">
-<input type="button" onclick="takeDamage(4)" value="-4 HP">
+<input type="button" class="blend" onclick="takeDamage(4)" value="-4 HP">
 <script>
   let playerElement = document.getElementById('myPlayer01');
   let healthDisplay = document.getElementById('myHealth');
@@ -57,10 +58,12 @@
   playerHealth = parseInt(playerHealth) - damageAmount
   updateHealth()
   if (myHealth <= 0){
-   playerDeath;
+   playerDeath();
   }
  }
  function playerDeath(){
   alert('you died')
+  playerHealth = 20
+  updateHealth()
  }
 </script>
