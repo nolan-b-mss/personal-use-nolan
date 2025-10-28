@@ -57,7 +57,7 @@
  function takeDamage(damageAmount){
   playerHealth = parseInt(playerHealth) - damageAmount
   updateHealth()
-  if (myHealth <= 0){
+  if (playerHealth <= 0){
    playerDeath();
   }
  }
