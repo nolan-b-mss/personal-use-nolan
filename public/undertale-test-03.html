@@ -56,6 +56,9 @@
  function takeDamage(damageAmount){
   playerHealth = parseInt(playerHealth) - damageAmount
   updateHealth()
-  if (myHealth >= 0){alert('you died')}
+  if (myHealth <= 0){playerDeath}
+ }
+ function playerDeath(){
+  alert('you died')
  }
 </script>
