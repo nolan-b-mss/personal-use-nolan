@@ -52,8 +52,10 @@
       playerElement.style.left = myHoriz + 'px'
       attackElement.style.top = attackVerti + 'px'
       attackElement.style.left = attackHoriz + 'px'
-      attackHoriz -= 3
+      attackVerti -= 3
+     if (attackVerti <= 0) { attackVerti = 1080}
      if (attackHoriz <= 0) { attackHoriz = 1920}
+     if (myHoriz == myHoriz + 32 && attackHoriz == attackHoriz + 64)
     }
   myHoriz = 945;
   myVerti = 450;
@@ -83,8 +85,12 @@
  //==============\\
  //Attack System\\
  //=============\\
- setInterval(enemyAttack,1000)
+ /*setInterval(enemyAttack,1000)*/
  function enemyAttack(){
   takeDamage(10)
  }
+ //================\\
+ //Collision System\\
+ //================\\
+ 
 </script>
