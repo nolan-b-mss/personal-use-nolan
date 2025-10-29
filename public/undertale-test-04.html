@@ -55,7 +55,7 @@
       attackVerti -= 3
      if (attackVerti <= 0) { attackVerti = 1080}
      if (attackHoriz <= 0) { attackHoriz = 1920}
-     if (myHoriz == myHoriz + 32 && attackHoriz == attackHoriz + 64){}
+     if (attackVerti + 64 > myVerti && attackVerti < myVerti + 32 && attackHoriz + 64 > myHoriz && attackHoriz < myHoriz + 32){takeDamage(10)}
     }
   myHoriz = 945;
   myVerti = 450;
@@ -88,9 +88,5 @@
  /*setInterval(enemyAttack,1000)*/
  function enemyAttack(){
   takeDamage(10)
- }
- //================\\
- //Collision System\\
- //================\\
- 
+ } 
 </script>
