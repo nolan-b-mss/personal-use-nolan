@@ -8,7 +8,7 @@
 <body style="background-color:black;">
 <img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position:relative;left:0px;top:0px;">
 <input type="button" class="blend" onclick="takeDamage(4)" value="-4 HP">
-<img id="myEnemy01" src="diamond-attack1.png"style="position:relative;left:0px;top:0px;">
+<img id="myEnemy01" src="diamond-attack1.png"style="position:absolute;left:0px;top:0px;">
 <script>
  //===========\\
  //Definitions\\
@@ -82,11 +82,4 @@
   myHoriz = 945
   myVerti = 450
  }
- //==============\\
- //Attack System\\
- //=============\\
- /*setInterval(enemyAttack,1000)*/
- function enemyAttack(){
-  takeDamage(10)
- } 
 </script>
