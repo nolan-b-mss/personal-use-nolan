@@ -63,7 +63,7 @@
      attackVerti -= 3
      if (attackVerti <= 0) { attackVerti = 1080}
      if (attackHoriz <= 0) { attackHoriz = 1920}
-     if (attackVerti + 40 > myVerti && attackVerti < myVerti + 32 && attackHoriz + 40 > myHoriz && attackHoriz < myHoriz + 32){takeDamage(10)}
+     if (!isInvincible && (attackVerti + 12) + 40 > myVerti && attackVerti + 12 < myVerti + 32 && (attackHoriz + 12) + 40 > myHoriz && attackHoriz + 12 < myHoriz + 32){takeDamage(10)}
     }
   myHoriz = 945;
   myVerti = 450;
