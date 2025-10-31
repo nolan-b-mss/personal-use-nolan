@@ -73,12 +73,18 @@
  //Damage System\\
  //=============\\
  function takeDamage(damageAmount){
+  if (!isInvincible){
   playerHealth = parseInt(playerHealth) - damageAmount
   updateHealth()
   if (playerHealth <= 0){
    playerDeath();
   }
+   let isInvincible = true;
+   setTimeout(function(){
+   isInvincible = false;
+   },500)
  }
+}
  function playerDeath(){
   alert('you died')
   playerHealth = 20
