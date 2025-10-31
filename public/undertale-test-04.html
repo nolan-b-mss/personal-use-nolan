@@ -48,15 +48,19 @@
     }
    setInterval(movement, 10)
     function movement(){
-      if (up) { myVerti -= 3}
-      if (down) { myVerti += 3}
-      if (left) { myHoriz -= 3}
-      if (right) { myHoriz += 3}
-      playerElement.style.top = myVerti + 'px'
-      playerElement.style.left = myHoriz + 'px'
-      attackElement.style.top = attackVerti + 'px'
-      attackElement.style.left = attackHoriz + 'px'
-      attackVerti -= 3
+     if (up) { myVerti -= 3}
+     if (down) { myVerti += 3}
+     if (left) { myHoriz -= 3}
+     if (right) { myHoriz += 3}
+     if (myHoriz < 0){myHoriz = 0}
+     if (myHoriz > 1888){myHoriz = 1888}
+     if (myVerti < 0){myVerti = 0}
+     if (myVerti > 1048){myVerti = 1048}
+     playerElement.style.top = myVerti + 'px'
+     playerElement.style.left = myHoriz + 'px'
+     attackElement.style.top = attackVerti + 'px'
+     attackElement.style.left = attackHoriz + 'px'
+     attackVerti -= 3
      if (attackVerti <= 0) { attackVerti = 1080}
      if (attackHoriz <= 0) { attackHoriz = 1920}
      if (attackVerti + 40 > myVerti && attackVerti < myVerti + 32 && attackHoriz + 40 > myHoriz && attackHoriz < myHoriz + 32){takeDamage(10)}
@@ -82,7 +86,7 @@
    isInvincible = true;
    setTimeout(function(){
    isInvincible = false;
-   },500)
+   },1000)
  }
 }
  function playerDeath(){
