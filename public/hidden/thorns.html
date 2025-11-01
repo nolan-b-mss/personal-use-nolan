@@ -11,7 +11,6 @@
       align-items: center;
       height: 100vh;
       font-family: sans-serif;
-      cursor: pointer;
     }
   </style>
 </head>
@@ -19,12 +18,12 @@
   <script>
     const audio = new Audio("NORTHERNLIGHT.mp3");
     audio.loop = true;
-    document.body.addEventListener("click", () => {
-      audio.play();
-    her.style.visibility = "hidden"
+    function missing(){
+    audio.play();
+    her.style.visibility = "hidden";
     }
-    )
+    
   </script>
-  <img id="her" src="knight.png" style="visiblity:visible">
+  <img id="her" src="knight.png" style="visiblity:visible" onclick="missing()">
 </body>
 </html>
