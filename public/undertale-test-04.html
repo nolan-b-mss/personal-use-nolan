@@ -22,6 +22,8 @@
   let attackElement = document.getElementById('myEnemy01');
   let attackVerti = 450;
   let attackHoriz = 800;
+  let maxHoriz = window.innerWidth - 32;
+  let maxVerti = window.innerHeight - 32;
   var isInvincible = false;
   let myVerti = parseInt(playerElement.style.top);
   let myHoriz = parseInt(playerElement.style.left);
@@ -53,16 +55,15 @@
      if (left) { myHoriz -= 3}
      if (right) { myHoriz += 3}
      if (myHoriz < 0){myHoriz = 0}
-     if (myHoriz > 1888){myHoriz = 1888}
+     if (myHoriz > maxHoriz){myHoriz = maxHoriz}
      if (myVerti < 0){myVerti = 0}
-     if (myVerti > 1048){myVerti = 1048}
+     if (myVerti > maxVerti){myVerti = maxVerti}
      playerElement.style.top = myVerti + 'px'
      playerElement.style.left = myHoriz + 'px'
      attackElement.style.top = attackVerti + 'px'
      attackElement.style.left = attackHoriz + 'px'
      attackVerti -= 3
      if (attackVerti <= 0) { attackVerti = 1080}
-     if (attackHoriz <= 0) { attackHoriz = 1920}
      if (!isInvincible && (attackVerti + 12) + 40 > myVerti && attackVerti + 12 < myVerti + 32 && (attackHoriz + 12) + 40 > myHoriz && attackHoriz + 12 < myHoriz + 32){takeDamage(10)}
     }
   myHoriz = 945;
