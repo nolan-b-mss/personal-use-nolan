@@ -14,6 +14,7 @@
 <img id="myEnemy01" src="diamond-attack1.png"style="position:absolute;left:0px;top:0px;">
 </div>
 <script>
+ window.addEventListener('resize', updateBoundaries);
  //===========\\
  //Definitions\\
  //===========\\
@@ -22,8 +23,8 @@
   let attackElement = document.getElementById('myEnemy01');
   let attackVerti = 450;
   let attackHoriz = 800;
-  let maxHoriz = window.innerWidth - 32;
-  let maxVerti = window.innerHeight - 32;
+  let maxHoriz;
+  let maxVerti;
   var isInvincible = false;
   let myVerti = parseInt(playerElement.style.top);
   let myHoriz = parseInt(playerElement.style.left);
@@ -68,6 +69,10 @@
     }
   myHoriz = 945;
   myVerti = 450;
+ function updateBoundaries(){
+    maxHoriz = window.innerWidth - 32
+    maxVerti = document.body.clientHeight - 32
+}
  //=============\\
  //Health System\\
  //=============\\
