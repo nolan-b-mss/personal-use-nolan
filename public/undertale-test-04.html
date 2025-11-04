@@ -10,7 +10,7 @@
 <div id="myHealth" class="white" style="position:relative; left:10px; top:10px; font-size:24px;"></div>
 <body style="background-color:black;">
 <div id="gameBox">
-<img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position:relative;left:0px;top:0px;">
+<img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position:relative;left:0px;top:0px;opacity:1.0;">
 <img id="myEnemy01" src="diamond-attack1.png"style="position:absolute;left:0px;top:0px;">
 </div>
 <script>
@@ -90,7 +90,9 @@
    playerDeath();
   }
    isInvincible = true;
+   playerElement.style.opacity = 0.5;
    setTimeout(function(){
+   playerElement.style.opacity = 1.0;
    isInvincible = false;
    },1000)
  }
