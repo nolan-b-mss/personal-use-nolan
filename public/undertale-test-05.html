@@ -1,0 +1,109 @@
+<h1 align=center style="color:white;"> undertale-test-05.html </h1>
+<head>
+ <style>.white {color:white;}</style>
+ <style>.blend {background-color:black;color:white;border-color:black;</style>
+ <style>body {margin:0;padding:0;}</style>
+ <style>#gameBox {position:absolute;left:0;top:100px;}</style>
+ <style>body {overflow:hidden;}</style>
+</head>
+<input type="button" onclick="history.back()" value="Back to Index" class="blend">
+<div id="myHealth" class="white" style="position:relative; left:10px; top:10px; font-size:24px;"></div>
+<body style="background-color:black;">
+<div id="gameBox">
+<img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position:relative;left:0px;top:0px;opacity:1.0;">
+<img id="myEnemy01" src="diamond-attack1.png"style="position:absolute;left:0px;top:0px;">
+</div>
+<script>
+ window.addEventListener('resize', updateBoundaries);
+ //===========\\
+ //Definitions\\
+ //===========\\
+  let playerElement = document.getElementById('myPlayer01');
+  let healthDisplay = document.getElementById('myHealth');
+  let attackElement = document.getElementById('myEnemy01');
+  let attackVerti = 450;
+  let attackHoriz = 800;
+  let maxHoriz;
+  let maxVerti;
+  var isInvincible = false;
+  let myVerti = parseInt(playerElement.style.top);
+  let myHoriz = parseInt(playerElement.style.left);
+  let up = false;
+  let down = false;
+  let right = false;
+  let left = false;
+  let playerHealth = 20;
+  let damageAmount = 4
+ //===============\\
+ //Movement System\\
+ //===============\\
+    document.onkeydown = function(event){
+      if (event.key === "w"){up = true;}
+      if (event.key === "s"){down = true;}
+      if (event.key === "a"){left = true;}
+      if (event.key === "d"){right = true;}
+    }
+    document.onkeyup = function(event){
+      if (event.key === "w"){up = false;}
+      if (event.key === "s"){down = false;}
+      if (event.key === "a"){left = false;}
+      if (event.key === "d"){right = false;}
+    }
+   setInterval(movement, 10)
+    function movement(){
+     if (up) { myVerti -= 3}
+     if (down) { myVerti += 3}
+     if (left) { myHoriz -= 3}
+     if (right) { myHoriz += 3}
+     if (myHoriz < 0){myHoriz = 0}
+     if (myHoriz > maxHoriz){myHoriz = maxHoriz}
+     if (myVerti < 100){myVerti = 100}
+     if (myVerti > maxVerti){myVerti = maxVerti}
+     playerElement.style.top = myVerti + 'px'
+     playerElement.style.left = myHoriz + 'px'
+     attackElement.style.top = attackVerti + 'px'
+     attackElement.style.left = attackHoriz + 'px'
+     attackVerti -= 3
+     if (attackVerti <= 0) { attackVerti = 1080}
+     if (!isInvincible && (attackVerti + 12) + 40 > myVerti && attackVerti + 12 < myVerti + 32 && (attackHoriz + 12) + 40 > myHoriz && attackHoriz + 12 < myHoriz + 32){takeDamage(10)}
+    }
+  myHoriz = 945;
+  myVerti = 450;
+ function updateBoundaries(){
+    maxHoriz = window.innerWidth - 32
+    maxVerti = document.body.clientHeight - 32 - 100
+}
+ //=============\\
+ //Health System\\
+ //=============\\
+ function updateHealth(){
+  healthDisplay.textContent = "HP: " + playerHealth + "/20";}
+ updateHealth()
+ //=============\\
+ //Damage System\\
+ //=============\\
+ function takeDamage(damageAmount){
+  if (!isInvincible){
+  playerHealth = parseInt(playerHealth) - damageAmount
+  updateHealth()
+  if (playerHealth <= 0){
+   playerDeath();
+  }
+   isInvincible = true;
+   playerElement.style.opacity = 0.5;
+   playerElement.style.transform = 'translateZ(0)';
+   setTimeout(function(){
+   playerElement.style.opacity = 1.0;
+   isInvincible = false;
+   playerElement.style.transform = '';
+   },1000)
+ }
+}
+ function playerDeath(){
+  alert('you died')
+  playerHealth = 20
+  updateHealth()
+  myHoriz = 945
+  myVerti = 450
+ }
+</script>
