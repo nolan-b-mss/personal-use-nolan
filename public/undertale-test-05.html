@@ -63,11 +63,11 @@
      if (myVerti > maxVerti){myVerti = maxVerti}
      playerElement.style.top = myVerti + 'px'
      playerElement.style.left = myHoriz + 'px'
-     if (myHoriz + 32 > battleOneBox.offsetLeft && 
-        myHoriz < battleOneBox.offsetLeft + 100 && 
-        myVerti + 32 > battleOneBox.offsetTop && 
-        myVerti < battleOneBox.offsetTop + 50 &&
-        !battleInitiated && actionKeyPressed) {startBattleOne();}  
+if (myHoriz + 32 > battleOneBox.getBoundingClientRect().left &&
+    myHoriz < battleOneBox.getBoundingClientRect().left + 100 &&
+    myVerti + 32 > battleOneBox.getBoundingClientRect().top &&
+    myVerti < battleOneBox.getBoundingClientRect().top + 50 &&
+    !battleInitiated && actionKeyPressed){startBattleOne()}
     }
   myHoriz = 945;
   myVerti = 450;
