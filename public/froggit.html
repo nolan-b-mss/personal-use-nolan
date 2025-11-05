@@ -66,20 +66,20 @@
  let actionKeyPressed = false;
  
  //Movement System
-    document.onkeydown = function(event){
+    window.addEventListener('keydown',function(event){
       if (event.key === "w"){up = true;}
       if (event.key === "s"){down = true;}
       if (event.key === "a"){left = true;}
       if (event.key === "d"){right = true;}
       if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = true;}
-    }
-    document.onkeyup = function(event){
+    })
+    window.addEventListener('keyup',function(event){
       if (event.key === "w"){up = false;}
       if (event.key === "s"){down = false;}
       if (event.key === "a"){left = false;}
       if (event.key === "d"){right = false;}
       if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = false;}
-    }
+    })
 
     // Explicitly set the initial style before the loop starts
     playerElement.style.top = myVerti + 'px';
