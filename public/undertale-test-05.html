@@ -1,9 +1,13 @@
 <h1 align=center style="color:white;"> undertale-test-05.html </h1>
 <head>
  <style>.white {color:white;}</style>
- <style>.blend {background-color:black;color:white;border-color:black;</style>
- <style>body {margin:0;padding:0;}</style>
- <style>#gameBox {position:absolute;left:0;top:100px;}</style>
+ <style>.blend {background-color:black;color:white;border-color:black;}</style>
+  <style>#gameBox {
+    position:relative; 
+    margin: 0 auto; 
+    width: 1000px; /* Setting a fixed width for stable positioning */
+    top:100px;
+}</style>
  <style>body {overflow:hidden;}</style>
 </head>
 <input type="button" onclick="history.back()" value="Back to Index" class="blend">
@@ -11,7 +15,7 @@
 <body style="background-color:black;">
 <div id="gameBox">
  <img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position:relative;left:0px;top:0px;opacity:1.0;">
- <div id="battleOne" style="width:100px;height:50px;position:absolute;background-color:white;left:50%;transform:translateX(-50%);top:450px;">Level 1</div>
+  <div id="battleOne" style="width:100px;height:50px;position:absolute;background-color:white;left:450px;top:450px;">Level 1</div>
 </div>
 <script>
  window.addEventListener('resize', updateBoundaries);
@@ -34,8 +38,11 @@
   let damageAmount = 4;
   let battleInitiated = false;
   let actionKeyPressed = false;
+  
+ // Initial position set only once
   myHoriz = 945;
   myVerti = 450;
+
  //===============\\
  //Movement System\\
  //===============\\
@@ -53,6 +60,7 @@
       if (event.key === "d"){right = false;}
       if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = false;}
     }
+  
  updateBoundaries()
    setInterval(movement, 10)
     function movement(){
@@ -66,20 +74,19 @@
      if (myVerti > maxVerti){myVerti = maxVerti}
      playerElement.style.top = myVerti + 'px'
      playerElement.style.left = myHoriz + 'px'
-    let boxTopNormalized = battleOneBox.getBoundingClientRect().top - 100;
-    let boxLeftNormalized = battleOneBox.getBoundingClientRect().left;
-
-    if (myHoriz + 32 > boxLeftNormalized &&
-        myHoriz < boxLeftNormalized + 100 &&
-        myVerti + 32 > boxTopNormalized &&
-        myVerti < boxTopNormalized + 50 &&
+    
+    // FIX 3: Simplified Collision Logic using predictable offsetTop/Left
+    if (myHoriz + 32 > battleOneBox.offsetLeft &&
+        myHoriz < battleOneBox.offsetLeft + 100 &&
+        myVerti + 32 > battleOneBox.offsetTop &&
+        myVerti < battleOneBox.offsetTop + 50 &&
         !battleInitiated && actionKeyPressed)
     {startBattleOne();}
     }
  
  function updateBoundaries(){
-    maxHoriz = window.innerWidth - 32
-    maxVerti = document.body.clientHeight - 32 - 100
+    maxHoriz = 1000 - 32; // Changed to match the fixed 1000px gameBox width
+    maxVerti = document.body.clientHeight - 32 - 100;
 }
  //=============\\
  //Health System\\
@@ -97,4 +104,28 @@
   if (playerHealth <= 0){
    playerDeath();
   }
+   isInvincible = true;
+   playerElement.style.opacity = 0.5;
+   playerElement.style.transform = 'translateZ(0)';
+   setTimeout(function(){
+   playerElement.style.opacity = 1.0;
+   isInvincible = false;
+   playerElement.style.transform = '';
+   },1000)
+ }
+}
+ function playerDeath(){
+  alert('you died')
+  playerHealth = 20
+  updateHealth()
+  myHoriz = 484 // Adjusted to center of the new 1000px game box for easy start
+  myVerti = 450
+ }
+ //=================\\
+ //Battle Initiation\\
+ //=================\\
+ function startBattleOne(){
+    battleInitiated = true; 
+    window.location.href="froggit.html";
+}
 </script>
