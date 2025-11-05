@@ -10,8 +10,8 @@
 <div id="myHealth" class="white" style="position:relative; left:10px; top:10px; font-size:24px;"></div>
 <body style="background-color:black;">
 <div id="gameBox">
-<img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position:relative;left:0px;top:0px;opacity:1.0;">
-<img id="myEnemy01" src="diamond-attack1.png"style="position:absolute;left:0px;top:0px;">
+ <img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position:relative;left:0px;top:0px;opacity:1.0;">
+ <div id="battleOne" style="width:100px;height:50px;position:absolute;background-color:white;left:50%;transform:translateX(-50%);top:450px;">Level 1</div>
 </div>
 <script>
  window.addEventListener('resize', updateBoundaries);
@@ -20,9 +20,6 @@
  //===========\\
   let playerElement = document.getElementById('myPlayer01');
   let healthDisplay = document.getElementById('myHealth');
-  let attackElement = document.getElementById('myEnemy01');
-  let attackVerti = 450;
-  let attackHoriz = 800;
   let maxHoriz;
   let maxVerti;
   var isInvincible = false;
@@ -61,11 +58,6 @@
      if (myVerti > maxVerti){myVerti = maxVerti}
      playerElement.style.top = myVerti + 'px'
      playerElement.style.left = myHoriz + 'px'
-     attackElement.style.top = attackVerti + 'px'
-     attackElement.style.left = attackHoriz + 'px'
-     attackVerti -= 3
-     if (attackVerti <= 0) { attackVerti = 1080}
-     if (!isInvincible && (attackVerti + 12) + 40 > myVerti && attackVerti + 12 < myVerti + 32 && (attackHoriz + 12) + 40 > myHoriz && attackHoriz + 12 < myHoriz + 32){takeDamage(10)}
     }
   myHoriz = 945;
   myVerti = 450;
