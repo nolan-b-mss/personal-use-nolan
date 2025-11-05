@@ -64,12 +64,15 @@
      if (myVerti > maxVerti){myVerti = maxVerti}
      playerElement.style.top = myVerti + 'px'
      playerElement.style.left = myHoriz + 'px'
-if (myHoriz + 32 > battleOneBox.getBoundingClientRect().left &&
-    myHoriz < battleOneBox.getBoundingClientRect().left + 100 &&
-    myVerti + 32 > battleOneBox.getBoundingClientRect().top &&
-    myVerti < battleOneBox.getBoundingClientRect().top + 50 &&
-    !battleInitiated && actionKeyPressed){startBattleOne()}
-    }
+    let boxTopNormalized = battleOneBox.getBoundingClientRect().top - 100;
+    let boxLeftNormalized = battleOneBox.getBoundingClientRect().left - 0;
+
+    if (myHoriz + 32 > boxLeftNormalized &&
+        myHoriz < boxLeftNormalized + 100 &&
+        myVerti + 32 > boxTopNormalized &&
+        myVerti < boxTopNormalized + 50 &&
+        !battleInitiated && actionKeyPressed)
+    {startBattleOne();}
   myHoriz = 945;
   myVerti = 450;
  function updateBoundaries(){
