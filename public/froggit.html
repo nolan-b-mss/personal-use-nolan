@@ -79,7 +79,7 @@
       if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = false;}
     }
 
-    // FIX: Explicitly set the initial style before the loop starts
+    // FIX 1: Explicitly set the initial style before the loop starts
     playerElement.style.top = myVerti + 'px';
     playerElement.style.left = myHoriz + 'px';
 
@@ -98,7 +98,7 @@
      
      playerElement.style.top = myVerti + 'px'
      playerElement.style.left = myHoriz + 'px'
-    }
+    } // <--- FIX 2: Crucial Closing Brace for the movement function
  
  //=============\\
  //Health System\\
