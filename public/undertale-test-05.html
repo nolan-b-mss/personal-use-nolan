@@ -20,6 +20,7 @@
  //===========\\
   let playerElement = document.getElementById('myPlayer01');
   let healthDisplay = document.getElementById('myHealth');
+  let battleOneBox = document.getElementById('battleOne');
   let maxHoriz;
   let maxVerti;
   var isInvincible = false;
@@ -30,7 +31,9 @@
   let right = false;
   let left = false;
   let playerHealth = 20;
-  let damageAmount = 4
+  let damageAmount = 4;
+  let battleInitiated = false;
+  let actionKeyPress = false;
  //===============\\
  //Movement System\\
  //===============\\
@@ -39,12 +42,14 @@
       if (event.key === "s"){down = true;}
       if (event.key === "a"){left = true;}
       if (event.key === "d"){right = true;}
+      if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = true;}
     }
     document.onkeyup = function(event){
       if (event.key === "w"){up = false;}
       if (event.key === "s"){down = false;}
       if (event.key === "a"){left = false;}
       if (event.key === "d"){right = false;}
+      if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = false;}
     }
    setInterval(movement, 10)
     function movement(){
@@ -58,6 +63,11 @@
      if (myVerti > maxVerti){myVerti = maxVerti}
      playerElement.style.top = myVerti + 'px'
      playerElement.style.left = myHoriz + 'px'
+     if (myHoriz + 32 > battleOneBox.offsetLeft && 
+        myHoriz < battleOneBox.offsetLeft + 100 && 
+        myVerti + 32 > battleOneBox.offsetTop && 
+        myVerti < battleOneBox.offsetTop + 50 &&
+        !battleInitiated && actionKeyPressed) {startBattleOne();}  
     }
   myHoriz = 945;
   myVerti = 450;
@@ -98,4 +108,11 @@
   myHoriz = 945
   myVerti = 450
  }
+ //=================\\
+ //Battle Initiation\\
+ //=================\\
+ function startBattleOne(){
+    battleInitiated = true; 
+    window.location.href="froggit.html";
+}
 </script>
