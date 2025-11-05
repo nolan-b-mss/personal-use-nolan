@@ -30,12 +30,16 @@
     top: 50%; 
     transform: translate(-50%, -50%);">
 <img src="soul-01.png" width="32" height="32" id="myPlayer01" style="
-    position:absolute;     left: 134px;
+    position:absolute; 
+    left: 134px;
     top: 109px;">
 </div>
 
 
 <script>
+// CRITICAL FIX: Ensure all JS runs AFTER HTML elements are loaded
+window.onload = function() { 
+    
  // FLEXIBLE BOUNDARY DEFINITIONS (Using camelCase)
  const battleWidth = 300;
  const battleHeight = 250;
@@ -78,7 +82,7 @@
       if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = false;}
     }
 
-    // FIX 1: Explicitly set the initial style before the loop starts
+    // Explicitly set the initial style before the loop starts
     playerElement.style.top = myVerti + 'px';
     playerElement.style.left = myHoriz + 'px';
 
@@ -137,5 +141,6 @@
   myHoriz = 134; 
   myVerti = 109; 
  }
+}; // Closes window.onload function
 </script>
 </body>
