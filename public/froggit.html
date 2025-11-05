@@ -1,28 +1,123 @@
 <head>
- <style>.white {color:white;}</style>
+ <style>.white {color:white;}</style>
  <style>.blend {background-color:black;color:white;border-color:black;}</style>
- <style>body {overflow:hidden;background-color:black;}</style>
+ <style>body {overflow:hidden;background-color:black;}</style>
 </head>
-<div id="battleBox" style="
-    position:absolute;
-    width: 300px;
-    height: 250px;
-    border: 10px solid white;
-    background-color: black;
-    left: 50%;
-    top: 75%; 
-    transform: translate(-50%, -50%);">
-<img src="soul-01.png" width="32" height="32" id="myPlayer01" style="
-    position:relative;
-    left: 134px;
-    top: 109px;">
-</div>
+<body>
+<input type="button" onclick="window.location.href='undertale-test-05.html';" value="Back to Menu" class="blend">
+
+<div id="myHealth" class="white" style="position:relative; left:10px; top:10px; font-size:24px;"></div>
+
 <div id="enemyContainer" style="
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    left: 50%;
-    top: 15%; 
-    transform: translate(-50%, -50%);">
-<img src="froggit.gif" width="200" height="200" id="froggitSprite">   
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    left: 50%;
+    top: 35%; 
+    transform: translate(-50%, -50%);">
+<img src="froggit.gif" width="200" height="200" id="froggitSprite">   
 </div>
+
+<div id="battleBox" style="
+    position:absolute;
+    width: 300px;
+    height: 250px;
+    border: 10px solid white;
+    background-color: black;
+    left: 50%;
+    top: 60%; 
+    transform: translate(-50%, -50%);">
+<img src="soul-01.png" width="32" height="32" id="myPlayer01" style="
+    position:relative;
+    left: 134px;
+    top: 109px;">
+</div>
+
+
+<script>
+ //Definitions
+ const battleWidth = 300;
+ const battleHeight = 250;
+ const soulSize = 32;
+ let maxHoriz = battleWidth - soulSize; // 268
+ let maxVerti = battleHeight - soulSize; // 218
+ let playerElement = document.getElementById('myPlayer01');
+ let healthDisplay = document.getElementById('myHealth');
+ var isInvincible = false;
+ let myHoriz = 134; 
+ let myVerti = 109;
+ let up = false;
+ let down = false;
+ let right = false;
+ let left = false;
+ let playerHealth = 20;
+ let damageAmount = 4;
+ let actionKeyPressed = false; 
+ //Movement System
+    document.onkeydown = function(event){
+      if (event.key === "w"){up = true;}
+      if (event.key === "s"){down = true;}
+      if (event.key === "a"){left = true;}
+      if (event.key === "d"){right = true;}
+      if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = true;}
+    }
+    document.onkeyup = function(event){
+      if (event.key === "w"){up = false;}
+      if (event.key === "s"){down = false;}
+      if (event.key === "a"){left = false;}
+      if (event.key === "d"){right = false;}
+      if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = false;}
+    }
+   setInterval(movement, 10)
+    function movement(){
+     if (up) { myVerti -= 3}
+     if (down) { myVerti += 3}
+     if (left) { myHoriz -= 3}
+     if (right) { myHoriz += 3}
+
+     if (myHoriz < 0){myHoriz = 0}
+     if (myHoriz > maxHoriz){myHoriz = maxHoriz}
+     if (myVerti < 0){myVerti = 0}
+     if (myVerti > maxVerti){myVerti = maxVerti}
+     
+     playerElement.style.top = myVerti + 'px'
+     playerElement.style.left = myHoriz + 'px'
+    }
+ 
+ //Health System
+
+ function updateHealth(){
+     if (healthDisplay) { // Check if element exists before setting text
+        healthDisplay.textContent = "HP: " + playerHealth + "/20";
+     }
+  }
+ updateHealth()
+ 
+ //Damage System
+
+ function takeDamage(damageAmount){
+  if (!isInvincible){
+  playerHealth = parseInt(playerHealth) - damageAmount
+  updateHealth()
+  if (playerHealth <= 0){
+   playerDeath();
+  }
+   isInvincible = true;
+   playerElement.style.opacity = 0.5;
+   playerElement.style.transform = 'translateZ(0)';
+   setTimeout(function(){
+   playerElement.style.opacity = 1.0;
+   isInvincible = false;
+   playerElement.style.transform = '';
+   },1000)
+ }
+}
+ function playerDeath(){
+  alert('you died')
+  playerHealth = 20
+  updateHealth()
+  myHoriz = 134; 
+  myVerti = 109; 
+ }
+</script>
+</body>
