@@ -33,7 +33,7 @@
   let playerHealth = 20;
   let damageAmount = 4;
   let battleInitiated = false;
-  let actionKeyPress = false;
+  let actionKeyPressed = false;
  //===============\\
  //Movement System\\
  //===============\\
@@ -51,6 +51,7 @@
       if (event.key === "d"){right = false;}
       if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = false;}
     }
+ updateBoundaries()
    setInterval(movement, 10)
     function movement(){
      if (up) { myVerti -= 3}
