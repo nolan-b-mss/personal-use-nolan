@@ -5,7 +5,7 @@
   <style>#gameBox {
     position:relative; 
     margin: 0 auto; 
-    width: 1000px; /* Setting a fixed width for stable positioning */
+    width: 1000px;
     top:100px;
 }</style>
  <style>body {overflow:hidden;}</style>
@@ -39,7 +39,7 @@
   let battleInitiated = false;
   let actionKeyPressed = false;
   
- // Initial position set only once
+ // Initial position set only once \\
   myHoriz = 945;
   myVerti = 450;
 
@@ -75,7 +75,6 @@
      playerElement.style.top = myVerti + 'px'
      playerElement.style.left = myHoriz + 'px'
     
-    // FIX 3: Simplified Collision Logic using predictable offsetTop/Left
     if (myHoriz + 32 > battleOneBox.offsetLeft &&
         myHoriz < battleOneBox.offsetLeft + 267 &&
         myVerti + 32 > battleOneBox.offsetTop &&
@@ -85,7 +84,7 @@
     }
  
  function updateBoundaries(){
-    maxHoriz = 1000 - 32; // Changed to match the fixed 1000px gameBox width
+    maxHoriz = 1000 - 32;
     maxVerti = document.body.clientHeight - 32 - 100;
 }
  //=============\\
@@ -118,7 +117,7 @@
   alert('you died')
   playerHealth = 20
   updateHealth()
-  myHoriz = 484 // Adjusted to center of the new 1000px game box for easy start
+  myHoriz = 484
   myVerti = 450
  }
  //=================\\
