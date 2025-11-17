@@ -29,6 +29,7 @@
     background-color: black;
     margin: 0px auto;
     display: none;">
+     <img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position:absolute;left:0px;top:0px;opacity:1.0;">
   </div>
   <div id="textBox" style="
     border: solid white;
@@ -56,10 +57,25 @@
 </div>
 <script>
 //Definitions
+
 let enemyContainer = document.getElementById('enemyContainer');
 let textBox = document.getElementById('textBox');
 let battleBox = document.getElementById('battleBox');
 let menuBox = document.getElementById('menuBox');
+let playerElement = document.getElementById('myPlayer01'); 
+let maxHoriz = 568; 
+let maxVerti = 268; 
+let myHoriz = parseInt(playerElement.style.left); 
+let myVerti = parseInt(playerElement.style.top); 
+let up = false;
+let down = false;
+let right = false;
+let left = false;
+let actionKeyPressed = false; 
+let playerHealth = 20;
+let isInvincible = false;
+let battleInitiated = false;
+
 
 function writeText(dialogue) {
     textBox.innerHTML = ''; 
@@ -74,11 +90,42 @@ function writeText(dialogue) {
 
 function startBattle() {
     battleBox.style.display = 'block';
-    writeText("The enemy appears."); 
+    writeText("The enemy appears.");
+    setInterval(movement, 10);
 }
+
+
+document.onkeydown = function(event){
+    if (event.key === "w"){up = true;}
+    if (event.key === "s"){down = true;}
+    if (event.key === "a"){left = true;}
+    if (event.key === "d"){right = true;}
+    if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = true;}
+}
+document.onkeyup = function(event){
+    if (event.key === "w"){up = false;}
+    if (event.key === "s"){down = false;}
+    if (event.key === "a"){left = false;}
+    if (event.key === "d"){right = false;}
+    if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = false;}
+}
+
+function movement(){
+    if (up) { myVerti -= 3}
+    if (down) { myVerti += 3}
+    if (left) { myHoriz -= 3}
+    if (right) { myHoriz += 3}
+  
+    if (myHoriz < 0){myHoriz = 0}
+    if (myHoriz > maxHoriz){myHoriz = maxHoriz}
+    if (myVerti < 0){myVerti = 0} 
+    if (myVerti > maxVerti){myVerti = maxVerti}
+    
+    playerElement.style.top = myVerti + 'px'
+    playerElement.style.left = myHoriz + 'px'
+}
+
 startBattle();
-
-
 
 
 
