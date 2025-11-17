@@ -56,7 +56,7 @@ let textBox = document.getElementById('textBox');
 let battleBox = document.getElementById('battleBox');
 let menuBox = document.getElementById('menuBox');
 
-function writeText("test dialogue") {
+function writeText(dialogue) {
     textBox.innerHTML = ''; 
 
     for (let i = 0; i < dialogue.length; i++) {
@@ -65,7 +65,7 @@ function writeText("test dialogue") {
         }, i * 50);
     }
 }
-
+writeText("test dialogue abcdefghijklmnopqrstuvwxyz1234567890")
 
 
 
