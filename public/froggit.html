@@ -65,8 +65,8 @@ let menuBox = document.getElementById('menuBox');
 let playerElement = document.getElementById('myPlayer01'); 
 let maxHoriz = 568; 
 let maxVerti = 268; 
-let myHoriz = parseInt(playerElement.style.left); 
-let myVerti = parseInt(playerElement.style.top); 
+let myHoriz;
+let myVerti;
 let up = false;
 let down = false;
 let right = false;
@@ -90,6 +90,8 @@ function writeText(dialogue) {
 
 function startBattle() {
     battleBox.style.display = 'block';
+    myHoriz = parseInt(playerElement.style.left); 
+    myVerti = parseInt(playerElement.style.top);
     writeText("The enemy appears.");
     setInterval(movement, 10);
 }
