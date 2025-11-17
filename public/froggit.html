@@ -16,7 +16,6 @@
     height: 450px;
     width: 600px;
     margin: 0px auto;
-    border: solid white;
     border-width: 12px;
     background-image: url ('grid.png')
     background-position: center;
@@ -71,8 +70,13 @@ function writeText(dialogue) {
         }, i * 50);
     }
 }
-writeText("test dialogue abcdefghijklmnopqrstuvwxyz1234567890")
 
+
+function startBattle() {
+    battleBox.style.display = 'block';
+    writeText("The enemy appears."); 
+}
+startBattle();
 
 
 
