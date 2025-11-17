@@ -53,9 +53,18 @@
 //Definitions
 let enemyContainer = document.getElementById('enemyContainer');
 let textBox = document.getElementById('textBox');
+let battleBox = document.getElementById('battleBox');
+let menuBox = document.getElementById('menuBox');
 
-  function writeText() {
+function writeText("test dialogue") {
+    textBox.innerHTML = ''; 
 
+    for (let i = 0; i < dialogue.length; i++) {
+        setTimeout(function() {
+            textBox.innerHTML += dialogue[i];
+        }, i * 50);
+    }
+}
 
 
 
