@@ -84,6 +84,7 @@ let up = false;
 let down = false;
 let right = false;
 let left = false;
+let currentMenuItem = 1;
 let actionKeyPressed = false; 
 let playerHealth = 20;
 let isInvincible = false;
@@ -138,6 +139,16 @@ function movement(){
     
     playerElement.style.top = myVerti + 'px'
     playerElement.style.left = myHoriz + 'px'
+   
+    if (left) { 
+        currentMenuItem -= 1;
+        if (currentMenuItem <= 0) { currentMenuItem = 4 }
+    }
+
+    if (right) { 
+        currentMenuItem += 1; 
+        if (currentMenuItem > 4) { currentMenuItem = 1 }
+    }
 }
 
 startBattle();
