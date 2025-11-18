@@ -35,7 +35,7 @@
     width: 600px;
     background-color: black;
     margin: 0px auto;
-    display: none;
+    visibility: hidden;
     position: relative;">
      <img src="soul-01.png" width="32" height="32" id="myPlayer01" style="
        position: absolute;
@@ -102,7 +102,7 @@ function writeText(dialogue) {
 
 
 function startBattle() {
-    battleBox.style.display = 'block';
+    battleBox.style.visibility = 'visible';
     myHoriz = parseInt(playerElement.style.left); 
     myVerti = parseInt(playerElement.style.top);
     writeText("The enemy appears.");
