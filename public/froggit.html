@@ -50,10 +50,10 @@
     margin: 10px auto 50px auto;
     display: flex;
     justify-content: space-around;">
-    <img id="fightBtn" src="fight.png" height="84" width="186">
-    <img id="actBtn" src="act.png" height="84" width="186">
-    <img id="itemBtn" src="item.png" height="84" width="186">
-    <img id="mercyBtn" src="mercy.png" height="84" width="186">
+    <img id="fightBtn" src="fight.png" height="84" width="200">
+    <img id="actBtn" src="act.png" height="84" width="200">
+    <img id="itemBtn" src="item.png" height="84" width="200">
+    <img id="mercyBtn" src="mercy.png" height="84" width="200">
   </div>
 </div>
 <script>
@@ -64,8 +64,8 @@ let textBox = document.getElementById('textBox');
 let battleBox = document.getElementById('battleBox');
 let menuBox = document.getElementById('menuBox');
 let playerElement = document.getElementById('myPlayer01'); 
-let maxHoriz = 568; 
-let maxVerti = 268; 
+let maxHoriz = parseInt(battleBox.style.width) - 32;
+let maxVerti = parseInt(battleBox.style.height) - 32;
 let myHoriz;
 let myVerti;
 let up = false;
