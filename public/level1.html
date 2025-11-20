@@ -114,8 +114,8 @@ function startBattle() {
 document.onkeydown = function(event){
     if (event.key === "w"){up = true;}
     if (event.key === "s"){down = true;}
-    if (event.key === "a"){left = true;}
-    if (event.key === "d"){right = true;}
+    if (event.key === "a"){left = true; currentMenuItem -= 1; if (currentMenuItem < 1){ currentMenuItem = 4};   updateMenu()  }
+    if (event.key === "d"){right = true; currentMenuItem += 1; if (currentMenuItem > 4){ currentMenuItem = 1};   updateMenu()  }
     if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = true;}
 }
 document.onkeyup = function(event){
@@ -140,16 +140,6 @@ function movement(){
     playerElement.style.top = myVerti + 'px'
     playerElement.style.left = myHoriz + 'px'
    
-    if (left) { 
-        currentMenuItem -= 1;
-        if (currentMenuItem <= 0) { currentMenuItem = 4 }
-    }
-
-    if (right) { 
-        currentMenuItem += 1; 
-        if (currentMenuItem > 4) { currentMenuItem = 1 }
-    }
-  updateMenu()
 }
 function updateMenu(){
   if (currentMenuItem === 1) {
