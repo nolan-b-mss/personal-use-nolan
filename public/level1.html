@@ -78,6 +78,8 @@ let playerElement = document.getElementById('myPlayer01');
 let enemy = document.getElementById('enemy');
 let maxHoriz = parseInt(battleBox.style.width) - 32;
 let maxVerti = parseInt(battleBox.style.height) - 32;
+let aMenuKeyDebounced = false;
+let dMenuKeyDebounced = false;
 let myHoriz;
 let myVerti;
 let up = false;
@@ -114,15 +116,31 @@ function startBattle() {
 document.onkeydown = function(event){
     if (event.key === "w"){up = true;}
     if (event.key === "s"){down = true;}
-    if (event.key === "a"){left = true; currentMenuItem -= 1; if (currentMenuItem < 1){ currentMenuItem = 4};   updateMenu()  }
-    if (event.key === "d"){right = true; currentMenuItem += 1; if (currentMenuItem > 4){ currentMenuItem = 1};   updateMenu()  }
+    if (event.key === "a"){
+        left = true; 
+        if (!aMenuKeyDebounced){
+            currentMenuItem -= 1; 
+          if (currentMenuItem < 1){ currentMenuItem = 4}; 
+        updateMenu();
+        aMenuKeyDebounced = true; 
+    }
+}
+    if (event.key === "d"){
+    right = true; 
+        if (!dMenuKeyDebounced){
+            currentMenuItem += 1; 
+          if (currentMenuItem > 4){ currentMenuItem = 1}; 
+        updateMenu();
+        dMenuKeyDebounced = true; 
+    }
+}
     if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = true;}
 }
 document.onkeyup = function(event){
     if (event.key === "w"){up = false;}
     if (event.key === "s"){down = false;}
-    if (event.key === "a"){left = false;}
-    if (event.key === "d"){right = false;}
+    if (event.key === "a"){left = false; aMenuKeyDebounced = false;}
+    if (event.key === "d"){right = false; dMenuKeyDebounced = false;}
     if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = false;}
 }
 
