@@ -119,6 +119,7 @@ document.onkeydown = function(event){
     if (event.key === "s"){down = true;}
     if (event.key === "a"){
         left = true; 
+      if (isMenuPhase)
         if (!aMenuKeyDebounced){
             currentMenuItem -= 1; 
           if (currentMenuItem < 1){ currentMenuItem = 4}; 
@@ -127,7 +128,8 @@ document.onkeydown = function(event){
     }
 }
     if (event.key === "d"){
-    right = true; 
+        right = true; 
+      if (isMenuPhase)
         if (!dMenuKeyDebounced){
             currentMenuItem += 1; 
           if (currentMenuItem > 4){ currentMenuItem = 1}; 
