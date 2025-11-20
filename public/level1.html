@@ -119,23 +119,25 @@ document.onkeydown = function(event){
     if (event.key === "s"){down = true;}
     if (event.key === "a"){
         left = true; 
-      if (isMenuPhase)
+      if (isMenuPhase){
         if (!aMenuKeyDebounced){
             currentMenuItem -= 1; 
           if (currentMenuItem < 1){ currentMenuItem = 4}; 
         updateMenu();
         aMenuKeyDebounced = true; 
     }
+  }
 }
     if (event.key === "d"){
         right = true; 
-      if (isMenuPhase)
+      if (isMenuPhase){
         if (!dMenuKeyDebounced){
             currentMenuItem += 1; 
           if (currentMenuItem > 4){ currentMenuItem = 1}; 
         updateMenu();
         dMenuKeyDebounced = true; 
     }
+  }
 }
     if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = true;}
 }
