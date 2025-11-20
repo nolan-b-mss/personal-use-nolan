@@ -80,6 +80,7 @@ let maxHoriz = parseInt(battleBox.style.width) - 32;
 let maxVerti = parseInt(battleBox.style.height) - 32;
 let aMenuKeyDebounced = false;
 let dMenuKeyDebounced = false;
+let isMenuPhase = true;
 let myHoriz;
 let myVerti;
 let up = false;
@@ -145,6 +146,7 @@ document.onkeyup = function(event){
 }
 
 function movement(){
+  if (!isMenuPhase){
     if (up) { myVerti -= 3}
     if (down) { myVerti += 3}
     if (left) { myHoriz -= 3}
@@ -157,7 +159,7 @@ function movement(){
     
     playerElement.style.top = myVerti + 'px'
     playerElement.style.left = myHoriz + 'px'
-   
+  }
 }
 function updateMenu(){
   if (currentMenuItem === 1) {
