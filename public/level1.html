@@ -1,74 +1,26 @@
 <head>
-  <style>.white {color:white;}</style>
-  <style>.blend {background-color:black;color:white;border-color:black;}</style>
-  <style>body {height:100vh; margin: 0;}</style>
+<style>.white {color:white;}</style>
+<style>.blend {background-color:black;color:white;border-color:black;}</style>
+<style>body {height:100vh; margin: 0;}</style>
 </head>
 <body style="background-color:black; position: relative;">
-  <div id="gameContainer" style="
-    width: 1050px;
-    position: absolute;
-    bottom: 5px;
-    left: 400px;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;">
-  <div id="enemyContainer" style="
-    height: 450px;
-    width: 600px;
-    margin-bottom: 15px;
-    border-width: 12px;
-    background-image: url ('grid.png');
-    background-position: center;
-    background-repeat: no-repeat;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-    align-items: center;">
-  <img id="enemy" src="froggit.gif" style="
-    width: 116px;
-    height: 111px;">
-  </div>
-   <div id="battleBox" style="
-    border: solid white;
-    border-width: 12px;
-    height: 300px;
-    width: 600px;
-    background-color: black;
-    margin-bottom: 15px;
-    visibility: hidden;
-    position: relative;">
-     <img src="soul-01.png" width="32" height="32" id="myPlayer01" style="
-       position: absolute;
-       left: 284px;
-       top: 134px;
-       opacity: 1.0;">
-  </div>
-  <div id="textBox" style="
-    border: solid white;
-    border-width: 12px;
-    background-color: black;
-    height: 225px;
-    width: 1050px;
-    margin: 15px auto;
-    color: white;
-    font-size: 24px;
-    padding: 20px;
-    box-sizing: border-box;">
-  </div>
-  <div id="menuBox" style="
-    width: 1050px;
-    height: 75px;
-    margin: 10px auto 15px auto;
-    display: flex;
-    justify-content: space-around;">
-    <img id="fightBtn" src="fight.png" height="84" width="220">
-    <img id="actBtn" src="act.png" height="84" width="220">
-    <img id="itemBtn" src="item.png" height="84" width="220">
-    <img id="mercyBtn" src="mercy.png" height="84" width="220">
-  </div>
+<div id="gameContainer" style="width: 1050px; position: absolute; bottom: 5px; left: 400px; display: flex; flex-direction: column; box-sizing: border-box;">
+<div id="enemyContainer" style="height: 450px; width: 600px; margin-bottom: 15px; border-width: 12px; background-image: url('grid.png'); background-position: center; background-repeat: no-repeat; box-sizing: border-box; display: flex; justify-content: center; align-items: center;">
+<img id="enemy" src="froggit.gif" style="width: 116px; height: 111px;">
+</div>
+<div id="battleBox" style="border: solid white; border-width: 12px; height: 300px; width: 600px; background-color: black; margin-bottom: 15px; visibility: hidden; position: relative;">
+<img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0;">
+</div>
+<div id="textBox" style="border: solid white; border-width: 12px; background-color: black; height: 225px; width: 1050px; margin: 15px auto; color: white; font-size: 24px; padding: 20px; box-sizing: border-box;">
+</div>
+<div id="menuBox" style="width: 1050px; height: 75px; margin: 10px auto 15px auto; display: flex; justify-content: space-around;">
+<img id="fightBtn" src="fight.png" height="84" width="220">
+<img id="actBtn" src="act.png" height="84" width="220">
+<img id="itemBtn" src="item.png" height="84" width="220">
+<img id="mercyBtn" src="mercy.png" height="84" width="220">
+</div>
 </div>
 <script>
-
 let enemyContainer = document.getElementById('enemyContainer');
 let textBox = document.getElementById('textBox');
 let battleBox = document.getElementById('battleBox');
@@ -77,7 +29,7 @@ let playerElement = document.getElementById('myPlayer01');
 let enemy = document.getElementById('enemy');
 let maxHoriz = parseInt(battleBox.style.width) - 32;
 let maxVerti = parseInt(battleBox.style.height) - 32;
-let currentActItem = 1
+let currentActItem = 1;
 let aMenuKeyDebounced = false;
 let dMenuKeyDebounced = false;
 let isMenuPhase = true;
@@ -92,133 +44,122 @@ let actionKeyPressed = false;
 let playerHealth = 20;
 let isInvincible = false;
 let battleInitiated = false;
-
-
 function writeText(dialogue) {
-    textBox.innerHTML = '';
-
-    for (let i = 0; i < dialogue.length; i++) {
-        setTimeout(function() {
-            textBox.innerHTML += dialogue[i];
-        }, i * 50);
-    }
+textBox.innerHTML = '';
+for (let i = 0; i < dialogue.length; i++) {
+setTimeout(function() {
+textBox.innerHTML += dialogue[i];
+}, i * 50);
 }
-
-
+}
 function startBattle() {
-    battleBox.style.visibility = 'visible';
-    myHoriz = parseInt(playerElement.style.left);
-    myVerti = parseInt(playerElement.style.top);
-    writeText("A Froggit appears!");
-    setInterval(movement, 10);
+battleBox.style.visibility = 'visible';
+myHoriz = parseInt(playerElement.style.left);
+myVerti = parseInt(playerElement.style.top);
+writeText("A Froggit appears!");
+setInterval(movement, 10);
 }
-
-
 document.onkeydown = function(event){
-    if (event.key === "w"){up = true;}
-    if (event.key === "s"){down = true;}
-    if (event.key === "a"){
-        left = true;
-        if (isMenuPhase){
-            if (!aMenuKeyDebounced){
-                currentMenuItem -= 1;
-                if (currentMenuItem < 1){ currentMenuItem = 4};
-                updateMenu();
-                aMenuKeyDebounced = true;
-            }
-        }
-    }
-    if (event.key === "d"){
-        right = true;
-        if (isMenuPhase){
-            if (!dMenuKeyDebounced){
-                currentMenuItem += 1;
-                if (currentMenuItem > 4){ currentMenuItem = 1};
-                updateMenu();
-                dMenuKeyDebounced = true;
-            }
-        }
-    }
-    if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = true;}
+if (event.key === "w"){up = true;}
+if (event.key === "s"){down = true;}
+if (event.key === "a"){
+left = true;
+if (isMenuPhase){
+if (!aMenuKeyDebounced){
+currentMenuItem -= 1;
+if (currentMenuItem < 1){ currentMenuItem = 4};
+updateMenu();
+aMenuKeyDebounced = true;
+}
+}
+}
+if (event.key === "d"){
+right = true;
+if (isMenuPhase){
+if (!dMenuKeyDebounced){
+currentMenuItem += 1;
+if (currentMenuItem > 4){ currentMenuItem = 1};
+updateMenu();
+dMenuKeyDebounced = true;
+}
+}
+}
+if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = true;}
 }
 document.onkeyup = function(event){
-    if (event.key === "w"){up = false;}
-    if (event.key === "s"){down = false;}
-    if (event.key === "a"){left = false; aMenuKeyDebounced = false;}
-    if (event.key === "d"){right = false; dMenuKeyDebounced = false;}
-    if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = false;}
+if (event.key === "w"){up = false;}
+if (event.key === "s"){down = false;}
+if (event.key === "a"){left = false; aMenuKeyDebounced = false;}
+if (event.key === "d"){right = false; dMenuKeyDebounced = false;}
+if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = false;}
 }
 function handleAction(){
-    if (actionKeyPressed) {
-      if (currentMenuItem === 1) {
-        actionKeyPressed = false
-        startAttackBar()
-      }
-      else if (currentMenuItem === 2) {
-        actionKeyPressed = false
-        startActMenu()
-      }
-      else if (currentMenuItem === 3) {
-        actionKeyPressed = false
-        startItemMenu()
-      }
-      else if (currentMenuItem === 4) {
-        actionKeyPressed = false
-        executeMercy()
-      }
-    }
+if (actionKeyPressed) {
+if (currentMenuItem === 1) {
+actionKeyPressed = false
+startAttackBar()
 }
-
+else if (currentMenuItem === 2) {
+actionKeyPressed = false
+startActMenu()
+}
+else if (currentMenuItem === 3) {
+actionKeyPressed = false
+startItemMenu()
+}
+else if (currentMenuItem === 4) {
+actionKeyPressed = false
+executeMercy()
+}
+}
+}
 function movement(){
-  if (!isMenuPhase){
-    if (up) { myVerti -= 3}
-    if (down) { myVerti += 3}
-    if (left) { myHoriz -= 3}
-    if (right) { myHoriz += 3}
-
-    if (myHoriz < 0){myHoriz = 0}
-    if (myHoriz > maxHoriz){myHoriz = maxHoriz}
-    if (myVerti < 0){myVerti = 0}
-    if (myVerti > maxVerti){myVerti = maxVerti}
-
-    playerElement.style.top = myVerti + 'px'
-    playerElement.style.left = myHoriz + 'px'
-  } else {
-    handleAction();
-  }
+if (!isMenuPhase){
+if (up) { myVerti -= 3}
+if (down) { myVerti += 3}
+if (left) { myHoriz -= 3}
+if (right) { myHoriz += 3}
+if (myHoriz < 0){myHoriz = 0}
+if (myHoriz > maxHoriz){myHoriz = maxHoriz}
+if (myVerti < 0){myVerti = 0}
+if (myVerti > maxVerti){myVerti = maxVerti}
+playerElement.style.top = myVerti + 'px'
+playerElement.style.left = myHoriz + 'px'
+} else {
+handleAction();
+}
 }
 function updateMenu(){
-  if (currentMenuItem === 1) {
-      fightBtn.src = 'fightSelected.png'
-      actBtn.src = 'act.png'
-      itemBtn.src = 'item.png'
-      mercyBtn.src = 'mercy.png'
-  }
-  else if (currentMenuItem === 2) {
-      fightBtn.src = 'fight.png'
-      actBtn.src = 'actSelected.png'
-      itemBtn.src = 'item.png'
-      mercyBtn.src = 'mercy.png'
-  }
-  else if (currentMenuItem === 3) {
-      fightBtn.src = 'fight.png'
-      actBtn.src = 'act.png'
-      itemBtn.src = 'itemSelected.png'
-      mercyBtn.src = 'mercy.png'
-  }
-  else if (currentMenuItem === 4) {
-      fightBtn.src = 'fight.png'
-      actBtn.src = 'act.png'
-      itemBtn.src = 'item.png'
-      mercyBtn.src = 'mercySelected.png'
-  }
+if (currentMenuItem === 1) {
+fightBtn.src = 'fightSelected.png'
+actBtn.src = 'act.png'
+itemBtn.src = 'item.png'
+mercyBtn.src = 'mercy.png'
+}
+else if (currentMenuItem === 2) {
+fightBtn.src = 'fight.png'
+actBtn.src = 'actSelected.png'
+itemBtn.src = 'item.png'
+mercyBtn.src = 'mercy.png'
+}
+else if (currentMenuItem === 3) {
+fightBtn.src = 'fight.png'
+actBtn.src = 'act.png'
+itemBtn.src = 'itemSelected.png'
+mercyBtn.src = 'mercy.png'
+}
+else if (currentMenuItem === 4) {
+fightBtn.src = 'fight.png'
+actBtn.src = 'act.png'
+itemBtn.src = 'item.png'
+mercyBtn.src = 'mercySelected.png'
+}
 }
 function startAttackBar() {}
 function startActMenu() {}
 function startItemMenu() {}
 function executeMercy() {}
 function updateActMenu() {}
-
 updateMenu();
 startBattle();
 </script>
