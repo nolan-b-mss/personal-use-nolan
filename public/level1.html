@@ -126,7 +126,8 @@ document.onkeydown = function(event){
         updateMenu();
         aMenuKeyDebounced = true; 
     }
-  }
+  } else {
+        handleAction()
 }
     if (event.key === "d"){
         right = true; 
@@ -148,6 +149,16 @@ document.onkeyup = function(event){
     if (event.key === "d"){right = false; dMenuKeyDebounced = false;}
     if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = false;}
 }
+  //function handleAction(){
+    //if (actionKeyPressed) {
+      //if (currentMenuItem === 1) {
+        //actionKeyPressed = false
+      //}
+      //else if (currentMenuItem === 2) { fight code }
+      //else if (currentMenuItem === 3) { fight code }
+     // else if (currentMenuItem === 4) { fight code }
+    //}
+//}
 
 function movement(){
   if (!isMenuPhase){
