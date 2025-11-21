@@ -15,7 +15,7 @@
   <div id="enemyContainer" style="
     height: 450px;
     width: 600px;
-    margin-bottom: 15px auto;
+    margin-bottom: 15px;
     border-width: 12px;
     background-image: url ('grid.png');
     background-position: center;
@@ -24,9 +24,9 @@
     display: flex;
     justify-content: center;
     align-items: center;">
-  <img id="enemy"  src="froggit.gif" style="
-    width: 116px; 
-    height: 111px;"> 
+  <img id="enemy" src="froggit.gif" style="
+    width: 116px;
+    height: 111px;">
   </div>
    <div id="battleBox" style="
     border: solid white;
@@ -34,8 +34,8 @@
     height: 300px;
     width: 600px;
     background-color: black;
-    margin-bottom: 15px auto;
-    visibility: visible;
+    margin-bottom: 15px;
+    visibility: hidden;
     position: relative;">
      <img src="soul-01.png" width="32" height="32" id="myPlayer01" style="
        position: absolute;
@@ -73,7 +73,7 @@ let enemyContainer = document.getElementById('enemyContainer');
 let textBox = document.getElementById('textBox');
 let battleBox = document.getElementById('battleBox');
 let menuBox = document.getElementById('menuBox');
-let playerElement = document.getElementById('myPlayer01'); 
+let playerElement = document.getElementById('myPlayer01');
 let enemy = document.getElementById('enemy');
 let maxHoriz = parseInt(battleBox.style.width) - 32;
 let maxVerti = parseInt(battleBox.style.height) - 32;
@@ -88,14 +88,14 @@ let down = false;
 let right = false;
 let left = false;
 let currentMenuItem = 1;
-let actionKeyPressed = false; 
+let actionKeyPressed = false;
 let playerHealth = 20;
 let isInvincible = false;
 let battleInitiated = false;
 
 
 function writeText(dialogue) {
-    textBox.innerHTML = ''; 
+    textBox.innerHTML = '';
 
     for (let i = 0; i < dialogue.length; i++) {
         setTimeout(function() {
@@ -107,7 +107,7 @@ function writeText(dialogue) {
 
 function startBattle() {
     battleBox.style.visibility = 'visible';
-    myHoriz = parseInt(playerElement.style.left); 
+    myHoriz = parseInt(playerElement.style.left);
     myVerti = parseInt(playerElement.style.top);
     writeText("A Froggit appears!");
     setInterval(movement, 10);
@@ -118,24 +118,24 @@ document.onkeydown = function(event){
     if (event.key === "w"){up = true;}
     if (event.key === "s"){down = true;}
     if (event.key === "a"){
-        left = true; 
+        left = true;
         if (isMenuPhase){
             if (!aMenuKeyDebounced){
-                currentMenuItem -= 1; 
-                if (currentMenuItem < 1){ currentMenuItem = 4}; 
+                currentMenuItem -= 1;
+                if (currentMenuItem < 1){ currentMenuItem = 4};
                 updateMenu();
-                aMenuKeyDebounced = true; 
+                aMenuKeyDebounced = true;
             }
         }
     }
     if (event.key === "d"){
-        right = true; 
+        right = true;
         if (isMenuPhase){
             if (!dMenuKeyDebounced){
-                currentMenuItem += 1; 
-                if (currentMenuItem > 4){ currentMenuItem = 1}; 
+                currentMenuItem += 1;
+                if (currentMenuItem > 4){ currentMenuItem = 1};
                 updateMenu();
-                dMenuKeyDebounced = true; 
+                dMenuKeyDebounced = true;
             }
         }
     }
@@ -175,12 +175,12 @@ function movement(){
     if (down) { myVerti += 3}
     if (left) { myHoriz -= 3}
     if (right) { myHoriz += 3}
-  
+
     if (myHoriz < 0){myHoriz = 0}
     if (myHoriz > maxHoriz){myHoriz = maxHoriz}
-    if (myVerti < 0){myVerti = 0} 
+    if (myVerti < 0){myVerti = 0}
     if (myVerti > maxVerti){myVerti = maxVerti}
-    
+
     playerElement.style.top = myVerti + 'px'
     playerElement.style.left = myHoriz + 'px'
   } else {
