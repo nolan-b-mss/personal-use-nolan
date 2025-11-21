@@ -78,6 +78,7 @@ let playerElement = document.getElementById('myPlayer01');
 let enemy = document.getElementById('enemy');
 let maxHoriz = parseInt(battleBox.style.width) - 32;
 let maxVerti = parseInt(battleBox.style.height) - 32;
+let currentActItem = 1
 let aMenuKeyDebounced = false;
 let dMenuKeyDebounced = false;
 let isMenuPhase = true;
@@ -149,16 +150,26 @@ document.onkeyup = function(event){
     if (event.key === "d"){right = false; dMenuKeyDebounced = false;}
     if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = false;}
 }
-  //function handleAction(){
-    //if (actionKeyPressed) {
-      //if (currentMenuItem === 1) {
-        //actionKeyPressed = false
-      //}
-      //else if (currentMenuItem === 2) { fight code }
-      //else if (currentMenuItem === 3) { fight code }
-     // else if (currentMenuItem === 4) { fight code }
-    //}
-//}
+  function handleAction(){
+    if (actionKeyPressed) {
+      if (currentMenuItem === 1) {
+        actionKeyPressed = false
+        startFightBar()
+      }
+      else if (currentMenuItem === 2) {
+        actionKeyPressed = false
+        startActMenu()
+      }
+      else if (currentMenuItem === 3) {
+        actionKeyPressed = false
+        startItemMenu()
+      }
+      else if (currentMenuItem === 4) {
+        actionKeyPressed = false
+        executeMercy()
+      }
+    }
+}
 
 function movement(){
   if (!isMenuPhase){
@@ -202,6 +213,10 @@ function updateMenu(){
       mercyBtn.src = 'mercySelected.png'
   }
 }
+function startAttackBar() {}
+function startActMenu() {}
+function startItemMenu() {}
+function executeMercy() {}
 updateMenu();
 startBattle();
 </script>
