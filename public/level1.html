@@ -33,6 +33,7 @@ let currentActItem = 1;
 let aMenuKeyDebounced = false;
 let dMenuKeyDebounced = false;
 let isMenuPhase = true;
+let isActMenuPhase = false;
 let myHoriz;
 let myVerti;
 let up = false;
@@ -70,6 +71,18 @@ currentMenuItem -= 1;
 if (currentMenuItem < 1){ currentMenuItem = 4};
 updateMenu();
 aMenuKeyDebounced = true;
+}
+if (event.key === "a" && !aMenuKeyDebounced) {
+if (currentActItem === 2 || currentActItem === 4) {
+currentActItem -= 1;
+}
+else
+{
+currentActItem += 1;
+}    
+aMenuKeyDebounced = true;
+updateActMenu();
+updateActSoulPosition();
 }
 }
 }
@@ -164,10 +177,30 @@ mercyBtn.src = 'mercySelected.png'
 }
 }
 function startAttackBar() {}
-function startActMenu() {}
+function startActMenu() {
+isMenuPhase = false
+isActMenuPhase = true
+updateActMenu()
+playerElement.style.top = 830 + 'px';
+playerElement.style.left = 246 + 'px';
+}
 function startItemMenu() {}
 function executeMercy() {}
-function updateActMenu() {}
+function updateActMenu() {
+    textBox.innerHTML = `
+        <table style="width: 100%; height: 100%; table-layout: fixed; text-align: center;">
+            <tr style="height: 50%;">
+                <td class="${currentActItem === 1 ? 'white' : ''}">* Check</td>
+                <td class="${currentActItem === 2 ? 'white' : ''}">* Compliment</td>
+            </tr>
+            <tr style="height: 50%;">
+                <td class="${currentActItem === 3 ? 'white' : ''}">* Threaten</td>
+                <td class="${currentActItem === 4 ? 'white' : ''}">* (Unused)</td>
+            </tr>
+        </table>
+    `;
+}
+function updateActSoulPosition() {}
 updateMenu();
 startBattle();
 </script>
