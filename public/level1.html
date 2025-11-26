@@ -9,8 +9,8 @@
 <img id="enemy" src="froggit.gif" style="width: 116px; height: 111px;">
 </div>
 <div id="battleBox" style="border: solid white; border-width: 12px; height: 300px; width: 600px; background-color: black; margin: 0px auto 15px auto; visibility: hidden; position: relative;">
-<img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0;">
 </div>
+<img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0;">
 <div id="textBox" style="border: solid white; border-width: 12px; background-color: black; height: 225px; width: 1050px; margin: 15px auto; color: white; font-size: 24px; padding: 20px; box-sizing: border-box;">
 </div>
 <div id="menuBox" style="width: 1050px; height: 75px; margin: 10px auto 15px auto; display: flex; justify-content: space-around;">
@@ -30,7 +30,9 @@ let enemy = document.getElementById('enemy');
 let maxHoriz = parseInt(battleBox.style.width) - 32;
 let maxVerti = parseInt(battleBox.style.height) - 32;
 let currentActItem = 1;
+let wMenuKeyDebounced = false;
 let aMenuKeyDebounced = false;
+let sMenuKeyDebounced = false;
 let dMenuKeyDebounced = false;
 let isMenuPhase = true;
 let isActMenuPhase = false;
@@ -61,8 +63,30 @@ writeText("A Froggit appears!");
 setInterval(movement, 10);
 }
 document.onkeydown = function(event){
-if (event.key === "w"){up = true;}
-if (event.key === "s"){down = true;}
+if (event.key === "w"){
+up = true;
+if (isActMenuPhase){
+if (!wMenuKeyDebounced){
+if (currentActItem === 3 || currentActItem === 4){
+currentActItem -= 2
+updateActMenu();
+}
+wMenuKeyDebounced = true;
+}
+}
+}
+if (event.key === "s"){
+down = true;
+if (isActMenuPhase){
+if (!sMenuKeyDebounced){
+if (currentActItem === 1 || currentActItem === 2){
+currentActItem += 2
+updateActMenu();
+}
+sMenuKeyDebounced = true;
+}
+}
+}
 if (event.key === "a"){
 left = true;
 if (isMenuPhase){
@@ -72,17 +96,12 @@ if (currentMenuItem < 1){ currentMenuItem = 4};
 updateMenu();
 aMenuKeyDebounced = true;
 }
-if (event.key === "a" && !aMenuKeyDebounced) {
+if (event.key === "a" && !aMenuKeyDebounced && isActMenuPhase) {
 if (currentActItem === 2 || currentActItem === 4) {
 currentActItem -= 1;
 }
-else
-{
-currentActItem += 1;
-}    
 aMenuKeyDebounced = true;
 updateActMenu();
-updateActSoulPosition();
 }
 }
 }
@@ -95,13 +114,21 @@ if (currentMenuItem > 4){ currentMenuItem = 1};
 updateMenu();
 dMenuKeyDebounced = true;
 }
+if (event.key === "d" && !dMenuKeyDebounced && isActMenuPhase) {
+if (currentActItem === 1 || currentActItem === 3) {
+currentActItem += 1;
+}
+dMenuKeyDebounced = true;
+updateActMenu();
+updateActSoulPosition();
+}
 }
 }
 if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = true;}
 }
 document.onkeyup = function(event){
-if (event.key === "w"){up = false;}
-if (event.key === "s"){down = false;}
+if (event.key === "w"){up = false; wMenuKeyDebounced = false;}
+if (event.key === "s"){down = false; sMenuKeyDebounced = false;}
 if (event.key === "a"){left = false; aMenuKeyDebounced = false;}
 if (event.key === "d"){right = false; dMenuKeyDebounced = false;}
 if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = false;}
@@ -195,7 +222,7 @@ function updateActMenu() {
             </tr>
             <tr style="height: 50%;">
                 <td class="${currentActItem === 3 ? 'white' : ''}">* Threaten</td>
-                <td class="${currentActItem === 4 ? 'white' : ''}">* (Unused)</td>
+                <td class="${currentActItem === 4 ? 'white' : ''}"></td>
             </tr>
         </table>
     `;
