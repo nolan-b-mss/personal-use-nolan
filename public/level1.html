@@ -96,17 +96,19 @@ if (currentMenuItem < 1){ currentMenuItem = 4};
 updateMenu();
 aMenuKeyDebounced = true;
 }
-if (event.key === "a" && !aMenuKeyDebounced && isActMenuPhase) {
+}
+else if (isActMenuPhase){
+if (!aMenuKeyDebounced){
 if (currentActItem === 2 || currentActItem === 4) {
 currentActItem -= 1;
+updateActMenu();
 }
 aMenuKeyDebounced = true;
-updateActMenu();
 }
 }
 }
 if (event.key === "d"){
-right = true;
+left = true;
 if (isMenuPhase){
 if (!dMenuKeyDebounced){
 currentMenuItem += 1;
@@ -114,13 +116,14 @@ if (currentMenuItem > 4){ currentMenuItem = 1};
 updateMenu();
 dMenuKeyDebounced = true;
 }
-if (event.key === "d" && !dMenuKeyDebounced && isActMenuPhase) {
-if (currentActItem === 1 || currentActItem === 3) {
+}
+else if (isActMenuPhase){
+if (!dMenuKeyDebounced){
+if (currentActItem === 2 || currentActItem === 4) {
 currentActItem += 1;
+updateActMenu();
 }
 dMenuKeyDebounced = true;
-updateActMenu();
-updateActSoulPosition();
 }
 }
 }
@@ -154,7 +157,7 @@ executeMercy()
 }
 }
 function movement(){
-if (!isMenuPhase){
+if (!isMenuPhase && !isActMenuPhase){
 if (up) { myVerti -= 3}
 if (down) { myVerti += 3}
 if (left) { myHoriz -= 3}
