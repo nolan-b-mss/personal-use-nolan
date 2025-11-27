@@ -108,7 +108,7 @@ aMenuKeyDebounced = true;
 }
 }
 if (event.key === "d"){
-left = true;
+right = true;
 if (isMenuPhase){
 if (!dMenuKeyDebounced){
 currentMenuItem += 1;
@@ -119,7 +119,7 @@ dMenuKeyDebounced = true;
 }
 else if (isActMenuPhase){
 if (!dMenuKeyDebounced){
-if (currentActItem === 2 || currentActItem === 4) {
+if (currentActItem === 1 || currentActItem === 3) {
 currentActItem += 1;
 updateActMenu();
 }
