@@ -30,19 +30,20 @@ let playerElement = document.getElementById('myPlayer01');
 let enemy = document.getElementById('enemy');
 let maxHoriz = parseInt(battleBox.style.width) - 32;
 let maxVerti = parseInt(battleBox.style.height) - 32;
-let currentActItem = 1;
 let wMenuKeyDebounced = false;
 let aMenuKeyDebounced = false;
 let sMenuKeyDebounced = false;
 let dMenuKeyDebounced = false;
 let isMenuPhase = true;
 let isActMenuPhase = false;
+let isTargettingPhase = false;
 let myHoriz;
 let myVerti;
 let up = false;
 let down = false;
 let right = false;
 let left = false;
+let currentActItem = 1;
 let currentMenuItem = 1;
 let actionKeyPressed = false;
 let playerHealth = 20;
@@ -129,6 +130,7 @@ dMenuKeyDebounced = true;
 }
 }
 if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = true;}
+if (event.key === "x" || event.key === "Shift" ){handleCancel();}
 }
 document.onkeyup = function(event){
 if (event.key === "w"){up = false; wMenuKeyDebounced = false;}
