@@ -1,4 +1,5 @@
 <head>
+<style>.yellow {color:yellow;}</style>
 <style>.white {color:white;}</style>
 <style>.blend {background-color:black;color:white;border-color:black;}</style>
 <style>body {height:100vh; margin: 0;}</style>
@@ -71,8 +72,8 @@ if (currentActItem === 3 || currentActItem === 4){
 currentActItem -= 2
 updateActMenu();
 }
-wMenuKeyDebounced = true;
 }
+wMenuKeyDebounced = true;
 }
 }
 if (event.key === "s"){
@@ -83,8 +84,8 @@ if (currentActItem === 1 || currentActItem === 2){
 currentActItem += 2
 updateActMenu();
 }
-sMenuKeyDebounced = true;
 }
+sMenuKeyDebounced = true;
 }
 }
 if (event.key === "a"){
@@ -211,8 +212,6 @@ function startActMenu() {
 isMenuPhase = false
 isActMenuPhase = true
 updateActMenu()
-playerElement.style.top = 875 + 'px';
-playerElement.style.left = 220 + 'px';
 }
 function startItemMenu() {}
 function executeMercy() {}
@@ -220,12 +219,12 @@ function updateActMenu() {
 textBox.innerHTML = `
 <table style="width: 100%; height: 100%; table-layout: fixed; text-align: center;">
 <tr style="height: 50%;">
-<td class="${currentActItem === 1 ? 'white' : ''}">* Check</td>
-<td class="${currentActItem === 2 ? 'white' : ''}">* Compliment</td>
+<td class="${currentActItem === 1 ? 'yellow' : 'white'}">* Check</td>
+<td class="${currentActItem === 2 ? 'yellow' : 'white'}">* Compliment</td>
 </tr>
 <tr style="height: 50%;">
-<td class="${currentActItem === 3 ? 'white' : ''}">* Threaten</td>
-<td class="${currentActItem === 4 ? 'white' : ''}">* Do nothing</td>
+<td class="${currentActItem === 3 ? 'yellow' : 'white'}">* Threaten</td>
+<td class="${currentActItem === 4 ? 'yellow' : 'white'}">* Do nothing</td>
 </tr>
 </table>
 `;
