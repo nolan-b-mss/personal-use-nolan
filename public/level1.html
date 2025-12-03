@@ -210,7 +210,7 @@ mercyBtn.src = 'mercySelected.png'
 }
 }
 function handleCancel() {
-  if (isTargettingPhase) {isMenuPhase = true; isTargettingPhase = false; isActMenuPhase = false;}
+  if (isTargettingPhase) {isMenuPhase = true; isTargettingPhase = false; isActMenuPhase = false; updateMenu(); writeText("A Froggit appears!");}
   else if (isActMenuPhase) {isTargettingPhase = true; isMenuPhase = false; isActMenuPhase = false;}
 }
 function startAttackBar() {}
