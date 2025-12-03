@@ -1,20 +1,29 @@
+<!DOCTYPE html>
+<html>
 <head>
-<style>.yellow {color:yellow;}</style>
-<style>.white {color:white;}</style>
-<style>.blend {background-color:black;color:white;border-color:black;}</style>
-<style>body {height:100vh; margin: 0;}</style>
+<style>
+.yellow {color:yellow;}
+.white {color:white;}
+.blend {background-color:black;color:white;border-color:black;}
+body {height:100vh; margin: 0; background-color:black; position: relative;}
+#gameContainer {width: 1050px; position: absolute; bottom: 5px; left: 400px; display: flex; flex-direction: column; box-sizing: border-box;}
+#textBox {border: solid white; border-width: 12px; background-color: black; height: 225px; width: 1050px; margin: 15px auto; color: white; font-size: 24px; padding: 20px; box-sizing: border-box;}
+#enemyContainer {height: 450px; width: 600px; margin: 0px auto 15px auto; border-width: 12px; background-image: url('grid.png'); background-position: center; background-repeat: no-repeat; box-sizing: border-box; display: flex; justify-content: center; align-items: center;}
+#battleBox {border: solid white; border-width: 12px; height: 300px; width: 600px; background-color: black; margin: 0px auto 15px auto; visibility: hidden; position: relative;}
+#menuBox {width: 1050px; height: 75px; margin: 10px auto 15px auto; display: flex; justify-content: space-around;}
+</style>
 </head>
 <body style="background-color:black; position: relative;">
-<div id="gameContainer" style="width: 1050px; position: absolute; bottom: 5px; left: 400px; display: flex; flex-direction: column; box-sizing: border-box;">
-<div id="enemyContainer" style="height: 450px; width: 600px; margin: 0px auto 15px auto; border-width: 12px; background-image: url('grid.png'); background-position: center; background-repeat: no-repeat; box-sizing: border-box; display: flex; justify-content: center; align-items: center;">
+<div id="gameContainer">
+<div id="enemyContainer">
 <img id="enemy" src="froggit.gif" style="width: 116px; height: 111px;">
 </div>
-<div id="battleBox" style="border: solid white; border-width: 12px; height: 300px; width: 600px; background-color: black; margin: 0px auto 15px auto; visibility: hidden; position: relative;">
+<div id="battleBox" style="visibility: hidden;">
 </div>
 <img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0;">
-<div id="textBox" style="border: solid white; border-width: 12px; background-color: black; height: 225px; width: 1050px; margin: 15px auto; color: white; font-size: 24px; padding: 20px; box-sizing: border-box;">
+<div id="textBox">
 </div>
-<div id="menuBox" style="width: 1050px; height: 75px; margin: 10px auto 15px auto; display: flex; justify-content: space-around;">
+<div id="menuBox">
 <img id="fightBtn" src="fight.png" height="84" width="220">
 <img id="actBtn" src="act.png" height="84" width="220">
 <img id="itemBtn" src="item.png" height="84" width="220">
@@ -36,7 +45,7 @@ let sMenuKeyDebounced = false;
 let dMenuKeyDebounced = false;
 let isMenuPhase = true;
 let isActMenuPhase = false;
-let isTargettingPhase = false;
+let isTargettingAct = false;
 let myHoriz;
 let myVerti;
 let up = false;
@@ -141,13 +150,16 @@ if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = false;}
 }
 function handleAction(){
 if (actionKeyPressed) {
+if (isMenuPhase) {
 if (currentMenuItem === 1) {
 actionKeyPressed = false
 startAttackBar()
 }
 else if (currentMenuItem === 2) {
 actionKeyPressed = false
-startActMenu()
+startTargettingAct()
+isTargettingAct = true;
+isMenuPhase = false;
 }
 else if (currentMenuItem === 3) {
 actionKeyPressed = false
@@ -156,6 +168,18 @@ startItemMenu()
 else if (currentMenuItem === 4) {
 actionKeyPressed = false
 executeMercy()
+}
+}
+else if (isTargettingAct) {
+actionKeyPressed = false;
+startActMenu();
+isActMenuPhase = true;
+isTargettingAct = false;
+}
+else if (isActMenuPhase) {
+actionKeyPressed = false;
+isActMenuPhase = false;
+executeAct();
 }
 }
 }
@@ -209,14 +233,26 @@ itemBtn.src = 'item.png'
 mercyBtn.src = 'mercySelected.png'
 }
 }
+function startTargettingAct() {
+playerElement.style.top = 875 + 'px'
+playerElement.style.left = 220 + 'px'
+writeText("Select your target.");
+}
 function handleCancel() {
-  if (isTargettingPhase) {isMenuPhase = true; isTargettingPhase = false; isActMenuPhase = false; updateMenu(); writeText("A Froggit appears!");}
-  else if (isActMenuPhase) {isTargettingPhase = true; isMenuPhase = false; isActMenuPhase = false;}
+if (isActMenuPhase) {
+isActMenuPhase = false;
+isTargettingAct = true;
+startTargettingAct();
+}
+else if (isTargettingAct) {
+isTargettingAct = false;
+isMenuPhase = true;
+updateMenu();
+writeText("A Froggit appears!");
+}
 }
 function startAttackBar() {}
 function startActMenu() {
-isMenuPhase = false
-isActMenuPhase = true
 updateActMenu()
 }
 function startItemMenu() {}
@@ -254,3 +290,5 @@ playerElement.style.left = 700 + 'px'
 updateMenu();
 startBattle();
 </script>
+</body>
+</html>
