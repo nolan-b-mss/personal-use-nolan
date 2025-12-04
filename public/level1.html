@@ -54,7 +54,7 @@ let right = false;
 let left = false;
 let currentActItem = 1;
 let currentMenuItem = 1;
-let currentTarget = 1;
+let currentTargetItemItem = 1;
 let actionKeyPressed = false;
 let playerHealth = 20;
 let isInvincible = false;
@@ -86,6 +86,15 @@ updateActMenu();
 }
 wMenuKeyDebounced = true;
 }
+else if (isTargettingAct) {
+if (!wMenuKeyDebounced) {
+if (currentTargetItem === 3 || currentTargetItem === 4) {
+currentTargetItem -= 2
+updateActTarget();
+}
+}
+wMenuKeyDebounced = true;
+}
 }
 if (event.key === "s"){
 down = true;
@@ -98,6 +107,15 @@ updateActMenu();
 }
 sMenuKeyDebounced = true;
 }
+else if (isTargettingAct){
+if (!sMenuKeyDebounced){
+if (currentTargetItem === 1 || currentTargetItem === 2){
+currentTargetItem += 2
+updateActTarget();
+}
+}
+sMenuKeyDebounced = true;
+}
 }
 if (event.key === "a"){
 left = true;
@@ -106,8 +124,8 @@ if (!aMenuKeyDebounced){
 currentMenuItem -= 1;
 if (currentMenuItem < 1){ currentMenuItem = 4};
 updateMenu();
-aMenuKeyDebounced = true;
 }
+aMenuKeyDebounced = true;
 }
 else if (isActMenuPhase){
 if (!aMenuKeyDebounced){
@@ -115,8 +133,17 @@ if (currentActItem === 2 || currentActItem === 4) {
 currentActItem -= 1;
 updateActMenu();
 }
+}
 aMenuKeyDebounced = true;
 }
+else if (isTargettingAct){
+if (!aMenuKeyDebounced){
+if (currentTargetItem === 2 || currentTargetItem === 4) {
+currentTargetItem -= 1;
+updateActTarget();
+}
+}
+aMenuKeyDebounced = true;
 }
 }
 if (event.key === "d"){
@@ -126,8 +153,8 @@ if (!dMenuKeyDebounced){
 currentMenuItem += 1;
 if (currentMenuItem > 4){ currentMenuItem = 1};
 updateMenu();
-dMenuKeyDebounced = true;
 }
+dMenuKeyDebounced = true;
 }
 else if (isActMenuPhase){
 if (!dMenuKeyDebounced){
@@ -135,8 +162,17 @@ if (currentActItem === 1 || currentActItem === 3) {
 currentActItem += 1;
 updateActMenu();
 }
+}
 dMenuKeyDebounced = true;
 }
+else if (isTargettingAct){
+if (!dMenuKeyDebounced) {
+if (currentTargetItem === 1 || currentTargetItem === 3) {
+currentTargetItem += 1;
+updateActTarget();
+}
+}
+dMenuKeyDebounced = true;
 }
 }
 if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = true;}
@@ -234,13 +270,10 @@ itemBtn.src = 'item.png'
 mercyBtn.src = 'mercySelected.png'
 }
 }
-function startTargettingAct() {
-playerElement.style.top = 875 + 'px'
-playerElement.style.left = 220 + 'px'
-writeText("Select your target.");
-}
+
 function handleCancel() {
 if (isActMenuPhase) {
+isMenuPhase = false;
 isActMenuPhase = false;
 isTargettingAct = true;
 startTargettingAct();
@@ -258,32 +291,36 @@ updateActMenu()
 }
 function startItemMenu() {}
 function executeMercy() {}
+function startTargettingAct() {
+currentTargetItem = 1;
+updateActTarget();
+}
 function updateActTarget() {
 textBox.innerHTML = `
 <table style="width: 100%; height: 100%; table-layout: fixed; text-align: center;">
 <tr style="height: 50%;">
-<td class="${currentTarget === 1 ? 'yellow' : 'white'}">* Froggit</td>
-<td class="${currentTarget === 2 ? 'yellow' : 'white'}"></td>
+<td class="${currentTargetItem === 1 ? 'yellow' : 'white'}">* Froggit</td>
+<td class="${currentTargetItem === 2 ? 'yellow' : 'white'}"></td>
 </tr>
 <tr style="height: 50%;">
-<td class="${currentTarget === 3 ? 'yellow' : 'white'}"></td>
-<td class="${currentTarget === 4 ? 'yellow' : 'white'}"></td>
+<td class="${currentTargetItem === 3 ? 'yellow' : 'white'}"></td>
+<td class="${currentTargetItem === 4 ? 'yellow' : 'white'}"></td>
 </tr>
 </table>
 `;
-if (currentTarget === 1){
+if (currentTargetItem === 1){
 playerElement.style.top = 875 + 'px'
 playerElement.style.left = 220 + 'px'
 }
-if (currentTarget === 2){
+if (currentTargetItem === 2){
 playerElement.style.top = 875 + 'px'
 playerElement.style.left = 700 + 'px'
 }
-if (currentTarget === 3){
+if (currentTargetItem === 3){
 playerElement.style.top = 955 + 'px'
 playerElement.style.left = 220 + 'px'
 }
-if (currentTarget === 4){
+if (currentTargetItem === 4){
 playerElement.style.top = 955 + 'px'
 playerElement.style.left = 700 + 'px'
 }
