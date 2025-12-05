@@ -293,6 +293,14 @@ updateActMenu()
 }
 function startItemMenu() {}
 function executeMercy() {}
+function executeAct() {
+if (currentActItem === 1) {
+writeText ("*FROGGIT - 10 ATK 10 DEF <br> It looks like a frog.");
+isActMenuPhase = false;
+isTargettingAct = false;
+isMenuPhase = false;
+}
+}
 function startTargettingAct() {
 currentTargetItem = 1;
 updateActTarget();
