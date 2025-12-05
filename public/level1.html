@@ -137,6 +137,7 @@ updateActMenu();
 aMenuKeyDebounced = true;
 }
 else if (isTargettingAct){
+if (!isMenuPhase) {
 if (!aMenuKeyDebounced){
 if (currentTargetItem === 2 || currentTargetItem === 4) {
 currentTargetItem -= 1;
@@ -144,6 +145,7 @@ updateActTarget();
 }
 }
 aMenuKeyDebounced = true;
+}
 }
 }
 if (event.key === "d"){
@@ -221,7 +223,7 @@ executeAct();
 }
 }
 function movement(){
-if (!isMenuPhase && !isActMenuPhase){
+if (!isMenuPhase && !isActMenuPhase && !isTargettingAct){
 if (up) { myVerti -= 3}
 if (down) { myVerti += 3}
 if (left) { myHoriz -= 3}
