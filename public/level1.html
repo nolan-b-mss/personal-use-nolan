@@ -295,11 +295,15 @@ function startItemMenu() {}
 function executeMercy() {}
 function executeAct() {
 if (currentActItem === 1) {
-writeText ("*FROGGIT - 10 ATK 10 DEF <br> It looks like a frog.");
+writeText ("*FROGGIT - 10 ATK 10 DEF --- It looks like a frog.");
 isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
+setTimeout(() => {enemyAttack();}, 7000)
 }
+}
+function enemyAttack() {
+writeText ("*Froggit prepares an attack. (this is a placeholder)")
 }
 function startTargettingAct() {
 currentTargetItem = 1;
