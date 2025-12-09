@@ -60,6 +60,7 @@ let playerHealth = 20;
 let isInvincible = false;
 let battleInitiated = false;
 function writeText(dialogue, index = 0) {
+textBox.innerHTML ='';
 if (index >= dialogue.length) {
 return; 
 }
@@ -311,7 +312,11 @@ isMenuPhase = false;
 setTimeout(() => {enemyAttack();}, 7000)
 }
 else if (currentActItem === 2) {
-writeText ("*You complimented Froggit.<br>It didn't understand a word you said but was flattered anyway.")
+writeText ("*You complimented Froggit.<br>It didn't understand a word you said, but was flattered anyway.");
+isActMenuPhase = false;
+isTargettingAct = false;
+isMenuPhase = false;
+setTimeout(() => {enemyAttack();}, 7000)
 }
 }
 function enemyAttack() {
