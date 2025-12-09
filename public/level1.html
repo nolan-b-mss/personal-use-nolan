@@ -63,7 +63,12 @@ function writeText(dialogue) {
 textBox.innerHTML = '';
 for (let i = 0; i < dialogue.length; i++) {
 setTimeout(function() {
+if (dialogue.substring(i, i + 4) === '<br>') {
+textBox.innerHTML += '<br>';
+i += 3;
+} else {
 textBox.innerHTML += dialogue[i];
+}
 }, i * 50);
 }
 }
@@ -301,6 +306,8 @@ isTargettingAct = false;
 isMenuPhase = false;
 setTimeout(() => {enemyAttack();}, 7000)
 }
+else if (currentActItem === 2) {
+writeText ("*You complimented Froggit.<br>It didn't understand a word you said but was flattered anyway.")
 }
 function enemyAttack() {
 writeText ("*Froggit prepares an attack. (this is a placeholder)")
