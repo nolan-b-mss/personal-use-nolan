@@ -59,18 +59,22 @@ let actionKeyPressed = false;
 let playerHealth = 20;
 let isInvincible = false;
 let battleInitiated = false;
-function writeText(dialogue) {
-textBox.innerHTML = '';
-for (let i = 0; i < dialogue.length; i++) {
-setTimeout(function() {
-if (dialogue.substring(i, i + 4) === '<br>') {
+function writeText(dialogue, index = 0) {
+if (index >= dialogue.length) {
+return; 
+}
+let delay = 50;
+if (dialogue.substring(index, index + 4) === '<br>') {
 textBox.innerHTML += '<br>';
-i += 3;
+index += 4;
+delay = 0;
 } else {
-textBox.innerHTML += dialogue[i];
+textBox.innerHTML += dialogue[index];
+index += 1;
 }
-}, i * 50);
-}
+setTimeout(function() {
+writeText(dialogue, index);
+}, delay);
 }
 function startBattle() {
 battleBox.style.visibility = 'visible';
