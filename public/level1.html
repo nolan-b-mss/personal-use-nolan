@@ -60,6 +60,7 @@ let playerHealth = 20;
 let isInvincible = false;
 let battleInitiated = false;
 function writeText(dialogue, index = 0) {
+if (index === 0) {textBox.innerHTML = '';}
 if (index >= dialogue.length) {
 return; 
 }
