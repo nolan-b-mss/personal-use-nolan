@@ -57,6 +57,8 @@ let currentMenuItem = 1;
 let currentTargetItemItem = 1;
 let actionKeyPressed = false;
 let playerHealth = 20;
+let enemyATK = 10;
+let enemyDEF = 10;
 let isInvincible = false;
 let battleInitiated = false;
 function writeText(dialogue, index = 0) {
@@ -81,7 +83,7 @@ function startBattle() {
 battleBox.style.visibility = 'visible';
 myVerti = 608;
 myHoriz = 513;
-writeText("A Froggit appears!");
+writeText("*A Froggit appears!");
 setInterval(movement, 10);
 }
 document.onkeydown = function(event){
@@ -294,8 +296,12 @@ else if (isTargettingAct) {
 isTargettingAct = false;
 isMenuPhase = true;
 updateMenu();
-writeText("A Froggit appears!");
+writeText("*A Froggit appears!");
 }
+else if (!isMenuPhase && !isActMenuPhase && !isTargettingAct) {
+isMenuPhase = true;
+updateMenu();
+writeText("*Froggit is just standing there.")
 }
 function startAttackBar() {}
 function startActMenu() {
@@ -305,20 +311,29 @@ function startItemMenu() {}
 function executeMercy() {}
 function executeAct() {
 if (currentActItem === 1) {
-writeText ("*FROGGIT - 10 ATK 10 DEF --- It looks like a frog.");
+writeText (`*FROGGIT - ${enemyATK} ATK ${enemyDEF} DEF <br>*It looks like it can learn a lot from this world.`);
 isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
 setTimeout(() => {enemyAttack();}, 7000)
 }
 else if (currentActItem === 2) {
-writeText ("*You complimented Froggit.<br>It didn't understand a word you said, but was flattered anyway.");
+writeText ("*You complimented Froggit.<br>*It didn't understand a word you said, but was flattered anyway.");
 isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
 setTimeout(() => {enemyAttack();}, 7000)
 }
+else if (currentActItem === 3) {
+writeText ("*You threatened Froggit.<br>*It doesn't have the faintest clue of what you just said, but your tone was intimidating.<br>*Froggits DEFENSE decreased!");
+isActMenuPhase = false;
+isTargettingAct = false;
+isMenuPhase = false;
+enemyDEF -= 3
+setTimeout(() => {enemyAttack();}, 7000)
 }
+else if (currentActItem === 4) {
+writeText ("*You did nothing.<br>*Froggit was confused, but decided to attack anyway.")
 function enemyAttack() {
 writeText ("*Froggit prepares an attack. (this is a placeholder)")
 setTimeout(() => {handleCancel();}, 5000)
