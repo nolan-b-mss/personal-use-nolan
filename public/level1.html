@@ -330,11 +330,15 @@ writeText ("*You threatened Froggit.<br>*It doesn't have the faintest clue of wh
 isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
-enemyDEF -= 3
+enemyDEF -= 3;
 setTimeout(() => {enemyAttack();}, 7000)
 }
 else if (currentActItem === 4) {
 writeText ("*You did nothing.<br>*Froggit was confused, but decided to attack anyway.")
+isActMenuPhase = false;
+isTargettingAct = false;
+isMenuPhase = false;
+setTimeout(() => {enemyAttack();}, 7000)
 }
 }
 function enemyAttack() {
