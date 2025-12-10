@@ -336,6 +336,7 @@ setTimeout(() => {enemyAttack();}, 7000)
 else if (currentActItem === 4) {
 writeText ("*You did nothing.<br>*Froggit was confused, but decided to attack anyway.")
 }
+}
 function enemyAttack() {
 writeText ("*Froggit prepares an attack. (this is a placeholder)")
 setTimeout(() => {handleCancel();}, 5000)
@@ -343,7 +344,6 @@ setTimeout(() => {handleCancel();}, 5000)
 function startTargettingAct() {
 currentTargetItem = 1;
 updateActTarget();
-}
 }
 function updateActTarget() {
 textBox.innerHTML = `
