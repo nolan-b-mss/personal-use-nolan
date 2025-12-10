@@ -60,6 +60,7 @@ let actionKeyPressed = false;
 let playerHealth = 20;
 let enemyATK = 10;
 let enemyDEF = 10;
+let enemyMercy = 0;
 let isInvincible = false;
 let battleInitiated = false;
 function writeText(dialogue, index = 0) {
@@ -303,7 +304,13 @@ writeText("*A Froggit appears!");
 else if (!isMenuPhase && !isActMenuPhase && !isTargettingAct) {
 isMenuPhase = true;
 updateMenu();
-writeText("*Froggit is just standing there.")
+if (enemyMercy === 100) {
+writeText("*Froggit seems very reluctant to fight.")
+}
+else
+{
+writeText("*Froggit awaits your next move!")
+}
 }
 }
 }
@@ -328,6 +335,7 @@ isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
 isActionActive = true;
+enemyMercy = 100;
 setTimeout(() => {enemyAttack();}, 7000)
 }
 else if (currentActItem === 3) {
