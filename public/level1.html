@@ -374,7 +374,17 @@ if (currentMercyChoice === 2){
 playerElement.style.top = 875 + 'px'
 playerElement.style.left = 700 + 'px'
 }
-function executeMercy() {}
+function executeMercy() {
+if (currentMercyChoice === 1){
+if (enemyMercy === 100) {
+writeText ("*You spared the enemy!<br>*You won!")
+setTimeout(() => {location = 'undertale-test-05.html';}, 7000)
+}
+else {
+writeText ("*You spared the enemy!<br>*But it's name wasn't YELLOW...")
+setTimeout(() => {handleCancel();}, 7000)
+}
+}
 function executeAct() {
 if (currentActItem === 1) {
 writeText (`*FROGGIT - ${enemyATK} ATK ${enemyDEF} DEF <br>*It looks like it can learn a lot from this world.`);
