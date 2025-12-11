@@ -385,6 +385,11 @@ writeText ("*You spared the enemy!<br>*But it's name wasn't YELLOW...")
 setTimeout(() => {handleCancel();}, 7000)
 }
 }
+else if (currentMercyChoice === 2){
+writeText ("*Escaping...");
+setTimeout(() => {location = 'undertale-test-05.html';}, 4)
+}
+}
 function executeAct() {
 if (currentActItem === 1) {
 writeText (`*FROGGIT - ${enemyATK} ATK ${enemyDEF} DEF <br>*It looks like it can learn a lot from this world.`);
