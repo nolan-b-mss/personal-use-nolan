@@ -177,6 +177,7 @@ updateMercySubmenu();
 }
 }
 }
+}
 if (event.key === "d"){
 right = true;
 if (isMenuPhase){
@@ -271,6 +272,7 @@ isMercyChoice = false;
 executeMercy();
 }
 }
+}
 function movement(){
 if (!isMenuPhase && !isActMenuPhase && !isTargettingAct){
 if (up) { myVerti -= 3}
@@ -354,8 +356,8 @@ function startActMenu() {
 updateActMenu()
 }
 function startItemMenu() {}
-function startMercySubmenu() {
-updateMercySubmenu();
+function startMercyChoice() {
+startMercySubmenu();
 }
 function updateMercySubmenu() {
 textBox.innerHTML = `
