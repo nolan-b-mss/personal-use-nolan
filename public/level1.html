@@ -46,6 +46,7 @@ let dMenuKeyDebounced = false;
 let isMenuPhase = true;
 let isActMenuPhase = false;
 let isTargettingAct = false;
+let isMercyChoice = false;
 let isActionActive = false;
 let myHoriz;
 let myVerti;
@@ -55,7 +56,7 @@ let right = false;
 let left = false;
 let currentActItem = 1;
 let currentMenuItem = 1;
-let currentTargetItemItem = 1;
+let currentMercyItem = 1;
 let actionKeyPressed = false;
 let playerHealth = 20;
 let enemyATK = 10;
@@ -161,6 +162,20 @@ updateActTarget();
 aMenuKeyDebounced = true;
 }
 }
+else if (isMercyChoice){
+if (!isMenuPhase) {
+if (!aMenuKeyDebounced){
+if (currentMercyItem === 1){
+currentMercyItem = 2;
+updateMercySubmenu();
+else if (currentMercyItem === 2){
+currentMercyItem = 1;
+updateMercySubmenu();
+}
+}
+}
+}
+}
 }
 if (event.key === "d"){
 right = true;
@@ -189,6 +204,20 @@ updateActTarget();
 }
 }
 dMenuKeyDebounced = true;
+}
+else if (isMercyChoice) {
+if (!isMenuPhase){
+if (!dMenuKeyDebounced){
+if (currentMercyItem === 1) {
+currentMercyItem = 2;
+updateMercySubmenu();
+}
+else if (currentMercyItem === 2) {
+currentMercyItem = 1;
+updateMercySubmenu();
+}
+}
+}
 }
 }
 if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = true;}
@@ -220,7 +249,9 @@ startItemMenu()
 }
 else if (currentMenuItem === 4) {
 actionKeyPressed = false
-executeMercy()
+startMercyChoice()
+isMenuPhase = false;
+isMercyChoice = true;
 }
 }
 else if (isTargettingAct) {
@@ -234,6 +265,10 @@ actionKeyPressed = false;
 isActMenuPhase = false;
 executeAct();
 }
+else if (isMercyChoice) {
+actionKeyPressed = false;
+isMercyChoice = false;
+executeMercy();
 }
 }
 function movement(){
@@ -319,6 +354,26 @@ function startActMenu() {
 updateActMenu()
 }
 function startItemMenu() {}
+function startMercySubmenu() {
+updateMercySubmenu();
+}
+function updateMercySubmenu
+textBox.innerHTML = `
+<table style="width: 100%; height: 100%; table-layout: fixed; text-align: center;">
+<tr style="height: 50%;">
+<td class="${currentMercyChoice === 1 ? 'yellow' : 'white'}">* Spare</td>
+<td class="${currentMercyChoice === 2 ? 'yellow' : 'white'}">* Flee</td>
+</tr>
+</table>
+`;
+if (currentMercyChoice === 1){
+playerElement.style.top = 875 + 'px'
+playerElement.style.left = 220 + 'px'
+}
+if (currentMercyChoice === 2){
+playerElement.style.top = 875 + 'px'
+playerElement.style.left = 700 + 'px'
+}
 function executeMercy() {}
 function executeAct() {
 if (currentActItem === 1) {
