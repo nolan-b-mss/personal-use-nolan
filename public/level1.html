@@ -177,7 +177,6 @@ updateMercySubmenu();
 }
 }
 }
-}
 if (event.key === "d"){
 right = true;
 if (isMenuPhase){
@@ -223,6 +222,7 @@ updateMercySubmenu();
 }
 if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = true;}
 if (event.key === "x" || event.key === "Shift" ){handleCancel();}
+}
 document.onkeyup = function(event){
 if (event.key === "w"){up = false; wMenuKeyDebounced = false;}
 if (event.key === "s"){down = false; sMenuKeyDebounced = false;}
