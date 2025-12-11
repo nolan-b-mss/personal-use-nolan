@@ -357,26 +357,26 @@ function startItemMenu() {}
 function startMercySubmenu() {
 updateMercySubmenu();
 }
-function updateMercySubmenu {
+function updateMercySubmenu() {
 textBox.innerHTML = `
 <table style="width: 100%; height: 100%; table-layout: fixed; text-align: center;">
 <tr style="height: 50%;">
-<td class="${currentMercyChoice === 1 ? 'yellow' : 'white'}">* Spare</td>
-<td class="${currentMercyChoice === 2 ? 'yellow' : 'white'}">* Flee</td>
+<td class="${currentMercyItem === 1 ? 'yellow' : 'white'}">* Spare</td>
+<td class="${currentMercyItem === 2 ? 'yellow' : 'white'}">* Flee</td>
 </tr>
 </table>
 `;
-if (currentMercyChoice === 1){
+if (currentMercyItem === 1){
 playerElement.style.top = 875 + 'px'
 playerElement.style.left = 220 + 'px'
 }
-if (currentMercyChoice === 2){
+if (currentMercyItem === 2){
 playerElement.style.top = 875 + 'px'
 playerElement.style.left = 700 + 'px'
 }
 }
 function executeMercy() {
-if (currentMercyChoice === 1){
+if (currentMercyItem === 1){
 if (enemyMercy === 100) {
 writeText ("*You spared the enemy!<br>*You won!")
 setTimeout(() => {location = 'undertale-test-05.html';}, 7000)
@@ -386,7 +386,7 @@ writeText ("*You spared the enemy!<br>*But it's name wasn't YELLOW...")
 setTimeout(() => {handleCancel();}, 7000)
 }
 }
-else if (currentMercyChoice === 2){
+else if (currentMercyItem === 2){
 writeText ("*Escaping...");
 setTimeout(() => {location = 'undertale-test-05.html';}, 4)
 }
