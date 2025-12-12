@@ -116,10 +116,10 @@ wMenuKeyDebounced = true;
 }
 else if (isItemMenuPhase) {
 if (!wMenuKeyDebounced) {
-if (currentItem > 1){
-currentItem -= 1
-}
+if (currentItem > 3) {
+currentItem -= 3;
 updateItemMenu();
+}
 }
 wMenuKeyDebounced = true;
 }
@@ -146,13 +146,12 @@ sMenuKeyDebounced = true;
 }
 else if (isItemMenuPhase) {
 if (!sMenuKeyDebounced) {
-if (currentItem < inventory.length) {
-currentItem += 1;
+if (currentItem < 4){
+currentItem += 3;
 updateItemMenu();
 }
 }
 sMenuKeyDebounced = true;
-}
 }
 if (event.key === "a"){
 left = true;
@@ -241,6 +240,14 @@ updateMercySubmenu();
 }
 }
 }
+else if (isItemMenuPhase){
+if (!dMenuKeyDebounced){
+if (currentItem < inventory.length){
+currentItem += 1;
+updateItemMenu();
+}
+}
+dMenuKeyDebounced = true;
 }
 if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = true;}
 if (event.key === "x" || event.key === "Shift" ){handleCancel();}
@@ -264,18 +271,24 @@ actionKeyPressed = false
 startTargettingAct()
 isTargettingAct = true;
 isMenuPhase = false;
+isMercyChoice = false;
+isItemMenuPhase = false;
 }
 else if (currentMenuItem === 3) {
 actionKeyPressed = false
 startItemMenu()
 isItemMenuPhase = true;
 isMenuPhase = false;
+isMercyChoice = false;
+isTargettingAct = false;
 }
 else if (currentMenuItem === 4) {
 actionKeyPressed = false
 startMercyChoice()
 isMenuPhase = false;
 isMercyChoice = true;
+isItemMenuPhase = false;
+isTargettingAct = false;
 }
 }
 else if (isTargettingAct) {
