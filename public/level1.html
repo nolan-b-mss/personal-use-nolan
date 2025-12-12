@@ -46,6 +46,7 @@ let dMenuKeyDebounced = false;
 let isMenuPhase = true;
 let isActMenuPhase = false;
 let isTargettingAct = false;
+let isItemMenuPhase = false;
 let isMercyChoice = false;
 let isActionActive = false;
 let isEnemyTurn = false;
@@ -55,11 +56,13 @@ let up = false;
 let down = false;
 let right = false;
 let left = false;
-let currentActItem = 1;
 let currentMenuItem = 1;
+let currentActItem = 1;
+let currentItem = 1;
 let currentMercyItem = 1;
 let actionKeyPressed = false;
 let playerHealth = 20;
+let inventory = ['Bandage','Monster Candy','Monster Candy','Monster Candy','Monster Candy','Monster Candy']
 let enemyATK = 10;
 let enemyDEF = 10;
 let enemyMercy = 0;
@@ -111,6 +114,15 @@ updateActTarget();
 }
 wMenuKeyDebounced = true;
 }
+else if (isItemMenuPhase) {
+if (!wMenuKeyDebounced) {
+if (currentItem > 1){
+currentItem -= 1
+}
+updateItemMenu();
+}
+wMenuKeyDebounced = true;
+}
 }
 if (event.key === "s"){
 down = true;
@@ -128,6 +140,15 @@ if (!sMenuKeyDebounced){
 if (currentTargetItem === 1 || currentTargetItem === 2){
 currentTargetItem += 2
 updateActTarget();
+}
+}
+sMenuKeyDebounced = true;
+}
+else if (isItemMenuPhase) {
+if (!sMenuKeyDebounced) {
+if (currentItem < inventory.length) {
+currentItem += 1;
+updateItemMenu();
 }
 }
 sMenuKeyDebounced = true;
@@ -247,6 +268,8 @@ isMenuPhase = false;
 else if (currentMenuItem === 3) {
 actionKeyPressed = false
 startItemMenu()
+isItemMenuPhase = true;
+isMenuPhase = false;
 }
 else if (currentMenuItem === 4) {
 actionKeyPressed = false
@@ -355,13 +378,38 @@ writeText("*Froggit awaits your next move!")
 }
 function startAttackBar() {}
 function startActMenu() {
-updateActMenu()
+updateActMenu();
 }
-function startItemMenu() {}
+function startItemMenu() {
+updateItemMenu();
+}
 function startMercyChoice() {
 updateMercySubmenu();
 }
+function updateItemMenu() {
+let itemRows = '';
+for (let i = 0; i < inventory.length; i++) {
+let itemName = inventory[i];
+let isSelected = i === currentItem - 1 ? 'yellow' : 'white';
+itemRows += `
+<tr style="height: 25%;">
+<td class="${isSelected}" style="text-align: left; padding-left: 100px;">* ${itemName}</td>
+<td></td>
+</tr>
+`;
+}
+textBox.innerHTML = `
+<table style="width: 100%; height: 100%; table-layout: fixed; text-align: center;">
+${itemRows}
+</table>
+`;
+if (currentItem === 1) {
+playerElement.style.top = 875 + 'px'
+playerElement.style.left = 220 + 'px'
+}
+}
 function updateMercySubmenu() {
+textBox.innerHTML = ``
 textBox.innerHTML = `
 <table style="width: 100%; height: 100%; table-layout: fixed; text-align: center;">
 <tr style="height: 50%;">
