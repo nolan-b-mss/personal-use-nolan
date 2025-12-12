@@ -313,6 +313,11 @@ actionKeyPressed = false;
 isActMenuPhase = false;
 executeAct();
 }
+else if (isItemMenuPhase) {
+actionKeyPressed = false;
+isItemMenuPhase = false;
+useItem();
+}
 else if (isMercyChoice) {
 actionKeyPressed = false;
 isMercyChoice = false;
@@ -476,6 +481,30 @@ else if (currentMercyItem === 2){
 writeText ("*Escaping...");
 setTimeout(() => {location = 'undertale-test-05.html';}, 3000)
 }
+}
+function useItem() {
+let itemIndex = currentItem - 1; 
+let usedItem = inventory[itemIndex];
+inventory.splice(itemIndex, 1); 
+let healAmount = 0;   
+if (usedItem === 'Bandage'){
+healAmount = 5;
+}
+else if (usedItem === 'Monster Candy'){
+healAmount = 10;
+}     
+playerHealth += healAmount;
+if (playerHealth > 20){
+playerHealth = 20;
+}
+isItemMenuPhase = false; 
+isActionActive = true;     
+writeText(`* You used the ${usedItem}.\n* Your HP was restored by ${healAmount}.`);
+setTimeout(() => {enemyAttack();}, 5000)
+}
+let itemIndex = currentItem - 1; 
+let usedItem = inventory[itemIndex];
+inventory.splice(itemIndex, 1); 
 }
 function executeAct() {
 if (currentActItem === 1) {
