@@ -377,6 +377,7 @@ playerElement.style.left = 700 + 'px'
 }
 }
 function executeMercy() {
+isActionActive = true;
 if (currentMercyItem === 1){
 if (enemyMercy === 100) {
 writeText ("*You spared the enemy!<br>*You won!")
@@ -384,12 +385,12 @@ setTimeout(() => {location = 'undertale-test-05.html';}, 7000)
 }
 else {
 writeText ("*You spared the enemy!<br>*But it's name wasn't YELLOW...")
-setTimeout(() => {handleCancel();}, 7000)
+setTimeout(() => {handleCancel(); isActionActive = false;}, 7000)
 }
 }
 else if (currentMercyItem === 2){
 writeText ("*Escaping...");
-setTimeout(() => {location = 'undertale-test-05.html';}, 4)
+setTimeout(() => {location = 'undertale-test-05.html';}, 4000)
 }
 }
 function executeAct() {
