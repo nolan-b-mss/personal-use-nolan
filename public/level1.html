@@ -388,13 +388,20 @@ updateMercySubmenu();
 }
 function updateItemMenu() {
 let itemRows = '';
-for (let i = 0; i < inventory.length; i++) {
-let itemName = inventory[i];
-let isSelected = i === currentItem - 1 ? 'yellow' : 'white';
+for (let i = 0; i < inventory.length; i += 3) {
+let item1 = inventory[i];
+let item2 = inventory[i + 1]; 
+let item3 = inventory[i + 2]; 
+let isSelected1 = i === currentItem - 1 ? 'yellow' : 'white';
+let isSelected2 = (i + 1) === currentItem - 1 ? 'yellow' : 'white';
+let isSelected3 = (i + 2) === currentItem - 1 ? 'yellow' : 'white';
+let cell2Content = item2 ? `* ${item2}` : '';
+let cell3Content = item3 ? `* ${item3}` : '';
 itemRows += `
-<tr style="height: 25%;">
-<td class="${isSelected}" style="text-align: left; padding-left: 100px;">* ${itemName}</td>
-<td></td>
+<tr style="height: 50%;">
+<td class="${isSelected1}">* ${item1}</td>
+<td class="${isSelected2}">${cell2Content}</td>
+<td class="${isSelected3}">${cell3Content}</td>
 </tr>
 `;
 }
@@ -403,10 +410,6 @@ textBox.innerHTML = `
 ${itemRows}
 </table>
 `;
-if (currentItem === 1) {
-playerElement.style.top = 875 + 'px'
-playerElement.style.left = 220 + 'px'
-}
 }
 function updateMercySubmenu() {
 textBox.innerHTML = ``
