@@ -198,6 +198,15 @@ updateMercySubmenu();
 }
 }
 }
+else if (isItemMenuPhase){
+if (!aMenuKeyDebounced){
+if (currentItem > 1){
+currentItem -= 1;
+updateItemMenu();
+}
+aMenuKeyDebounced = true;
+}
+}
 }
 if (event.key === "d"){
 right = true;
@@ -376,6 +385,12 @@ isMenuPhase = true;
 updateMenu();
 writeText("*A Froggit appears!");
 }
+else if (isItemMenuPhase){
+isMenuPhase = true;
+isItemMenuPhase = false;
+updateMenu();
+writeText("*Froggit awaits your next move!")
+}
 else if (!isMenuPhase && !isActMenuPhase && !isTargettingAct) {
 isMenuPhase = true;
 updateMenu();
@@ -449,7 +464,7 @@ isActionActive = true;
 if (currentMercyItem === 1){
 if (enemyMercy === 100) {
 writeText ("*You spared the enemy!<br>*You won!")
-setTimeout(() => {location = 'undertale-test-05.html';}, 7000)
+setTimeout(() => {location = 'undertale-test-05.html';}, 5000)
 }
 else {
 writeText ("*You spared the enemy!<br>*But it's name wasn't YELLOW...")
@@ -458,7 +473,7 @@ setTimeout(() => {enemyAttack();}, 7000)
 }
 else if (currentMercyItem === 2){
 writeText ("*Escaping...");
-setTimeout(() => {location = 'undertale-test-05.html';}, 4000)
+setTimeout(() => {location = 'undertale-test-05.html';}, 3000)
 }
 }
 function executeAct() {
