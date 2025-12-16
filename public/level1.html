@@ -412,7 +412,7 @@ writeText("*Froggit seems very reluctant to fight.")
 if (turnNum === 1){
 writeText("*Froggit awaits your next move!")
 }
-else {
+else if (turnNum === 0){
 writeText("*A Froggit appears!");
 }
 }
@@ -430,19 +430,20 @@ function startMercyChoice() {
 updateMercySubmenu();
 }
 function updateItemMenu() {
-let itemRows = '';
-for (let i = 0; i < inventory.length; i += 3) {
+let itemRows = '';    
+for (let i = 0; i < 6; i += 3) {
 let item1 = inventory[i];
 let item2 = inventory[i + 1]; 
 let item3 = inventory[i + 2]; 
 let isSelected1 = i === currentItem - 1 ? 'yellow' : 'white';
 let isSelected2 = (i + 1) === currentItem - 1 ? 'yellow' : 'white';
 let isSelected3 = (i + 2) === currentItem - 1 ? 'yellow' : 'white';
+let cell1Content = item1 ? `* ${item1}` : '';
 let cell2Content = item2 ? `* ${item2}` : '';
-let cell3Content = item3 ? `* ${item3}` : '';
+let cell3Content = item3 ? `* ${item3}` : '';        
 itemRows += `
 <tr style="height: 50%;">
-<td class="${isSelected1}">* ${item1}</td>
+<td class="${isSelected1}">${cell1Content}</td>
 <td class="${isSelected2}">${cell2Content}</td>
 <td class="${isSelected3}">${cell3Content}</td>
 </tr>
@@ -453,6 +454,10 @@ textBox.innerHTML = `
 ${itemRows}
 </table>
 `;
+let row = currentItem <= 3 ? 1 : 2;
+let col = ((currentItem - 1) % 3) + 1;
+playerElement.style.top = (875 + (row - 1) * 80) + 'px'; 
+playerElement.style.left = (150 + (col - 1) * 350) + 'px';
 }
 function updateMercySubmenu() {
 textBox.innerHTML = ``
@@ -550,9 +555,10 @@ setTimeout(() => {enemyAttack();}, 7000)
 }
 }
 function enemyAttack() {
-writeText ("*Froggit prepares an attack. (this is a placeholder)")
+writeText ("*Froggit prepares an attack. (this is a placeholder)");
 isActionActive = false;
 isEnemyTurn = true;
+turnNum = 1;
 setTimeout(() => {endEnemyTurn();}, 5000)
 }
 function endEnemyTurn() {
