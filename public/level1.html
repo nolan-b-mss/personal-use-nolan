@@ -454,10 +454,27 @@ textBox.innerHTML = `
 ${itemRows}
 </table>
 `;
-let row = currentItem <= 3 ? 1 : 2;
-let col = ((currentItem - 1) % 3) + 1;
-playerElement.style.top = (875 + (row - 1) * 80) + 'px'; 
-playerElement.style.left = (100 + (col - 1) * 317.5) + 'px';
+if (currentItem === 1) {
+    myHoriz = 100;
+    myVerti = 875;
+} else if (currentItem === 2) {
+    myHoriz = 450; 
+    myVerti = 875;
+} else if (currentItem === 3) {
+    myHoriz = 800;
+    myVerti = 875;
+} else if (currentItem === 4) {
+    myHoriz = 100;
+    myVerti = 955;
+} else if (currentItem === 5) {
+    myHoriz = 450;
+    myVerti = 955;
+} else if (currentItem === 6) {
+    myHoriz = 800;
+    myVerti = 955;
+}
+playerElement.style.left = myHoriz + 'px';
+playerElement.style.top = myVerti + 'px';
 }
 function updateMercySubmenu() {
 textBox.innerHTML = ``
