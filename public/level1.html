@@ -258,12 +258,15 @@ isMercyChoice = false;
 isItemMenuPhase = false;
 }
 else if (currentMenuItem === 3) {
+if (inventory.length > 0){
 actionKeyPressed = false
 startItemMenu()
 isItemMenuPhase = true;
 isMenuPhase = false;
 isMercyChoice = false;
 isTargettingAct = false;
+}
+else {writeText("* You are out of ITEMs...")}
 }
 else if (currentMenuItem === 4) {
 actionKeyPressed = false
