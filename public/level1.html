@@ -615,20 +615,14 @@ textBox.innerHTML = `
 </table>
 `;
 if (currentTargetItem === 1){
-playerElement.style.top = 875 + 'px'
-playerElement.style.left = 220 + 'px'
+playerElement.style.top = 875 + 'px';
+playerElement.style.left = 220 + 'px';
 }
-if (currentTargetItem === 2){
-playerElement.style.top = 875 + 'px'
-playerElement.style.left = 700 + 'px'
+if (currentTargetItem > 1){
+currentTargetItem = 1;
 }
-if (currentTargetItem === 3){
-playerElement.style.top = 955 + 'px'
-playerElement.style.left = 220 + 'px'
-}
-if (currentTargetItem === 4){
-playerElement.style.top = 955 + 'px'
-playerElement.style.left = 700 + 'px'
+if (currentTargetItem < 1){
+currentTargetItem = 1;
 }
 }
 function updateActMenu() {
