@@ -63,7 +63,7 @@ let currentItem = 1;
 let currentMercyItem = 1;
 let actionKeyPressed = false;
 let playerHealth = 20;
-let inventory = ['jerry','Monster Candy','Monster Candy','Monster Candy','Monster Candy','Bandage']
+let inventory = [,'Monster Candy','Monster Candy','Monster Candy','Monster Candy','Bandage']
 let enemyATK = 10;
 let enemyDEF = 10;
 let enemyMercy = 0;
@@ -486,6 +486,7 @@ function useItem() {
 let itemIndex = currentItem - 1; 
 let usedItem = inventory[itemIndex];
 inventory.splice(itemIndex, 1); 
+currentItem = 1;
 let healAmount = 0;  
 if (usedItem === 'jerry'){
 healAmount = 999;
