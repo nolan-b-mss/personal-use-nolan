@@ -266,7 +266,11 @@ isMenuPhase = false;
 isMercyChoice = false;
 isTargettingAct = false;
 }
-else {writeText("* You are out of ITEMs...")}
+else {
+writeText("* You are out of ITEMs...")
+actionKeyPressed = false;
+return;
+}
 }
 else if (currentMenuItem === 4) {
 actionKeyPressed = false
@@ -288,7 +292,7 @@ actionKeyPressed = false;
 isActMenuPhase = false;
 executeAct();
 }
-else if (isItemMenuPhase) {
+else if (isItemMenuPhase && !isTyping) {
 actionKeyPressed = false;
 isItemMenuPhase = false;
 useItem();
