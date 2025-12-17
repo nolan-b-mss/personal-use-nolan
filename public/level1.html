@@ -43,6 +43,7 @@ let wMenuKeyDebounced = false;
 let aMenuKeyDebounced = false;
 let sMenuKeyDebounced = false;
 let dMenuKeyDebounced = false;
+let isTyping = false;
 let isMenuPhase = true;
 let isActMenuPhase = false;
 let isTargettingAct = false;
@@ -70,8 +71,14 @@ let turnNum = 0;
 let isInvincible = false;
 let battleInitiated = false;
 function writeText(dialogue, index = 0) {
-if (index === 0) {textBox.innerHTML = '';}
+if (index === 0){
+if (isTyping) {
+return;
+}
+isTyping = true;
+textBox.innerHTML = '';}
 if (index >= dialogue.length) {
+isTyping = false;
 return; 
 }
 let delay = 50;
@@ -340,7 +347,6 @@ itemBtn.src = 'item.png'
 mercyBtn.src = 'mercySelected.png'
 }
 }
-
 function handleCancel() {
 if (!isEnemyTurn) {
 if (!isActionActive) {
@@ -504,9 +510,6 @@ writeText(`* You used.... "jerry"? What even is that? <br> * Whatever it was, yo
 }
 setTimeout(() => {enemyAttack();}, 5000)
 }
-let itemIndex = currentItem - 1; 
-let usedItem = inventory[itemIndex];
-inventory.splice(itemIndex, 1); 
 function executeAct() {
 if (currentActItem === 1) {
 writeText (`*FROGGIT - ${enemyATK} ATK ${enemyDEF} DEF <br>*It looks like it can learn a lot from this world.`);
