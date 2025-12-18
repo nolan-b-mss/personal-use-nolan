@@ -342,7 +342,7 @@ let hpText = document.getElementById("hp-text");
 hpText.innerText = playerHealth + " / " + maxHealth;
 }
 function takeDamage(damageAmount) {
-if (!isInvincible) {
+if (!isInvincible && playerHealth > 0) {
 playerHealth -= damageAmount;
 updateUI();
 if (playerHealth <= 0) {
