@@ -11,6 +11,8 @@ body {height:100vh; margin: 0; background-color:black; position: relative;}
 #enemyContainer {height: 450px; width: 600px; margin: 0px auto 15px auto; border-width: 12px; background-image: url('grid.png'); background-position: center; background-repeat: no-repeat; box-sizing: border-box; display: flex; justify-content: center; align-items: center;}
 #battleBox {border: solid white; border-width: 12px; height: 300px; width: 600px; background-color: black; margin: 0px auto 15px auto; visibility: hidden; position: relative;}
 #menuBox {width: 1050px; height: 75px; margin: 10px auto 15px auto; display: flex; justify-content: space-around;}
+#hp-container {width: 100px; height: 20px; background-color: #c00; vertical-align: middle; margin: 0 10px;}
+#hp-bar {width: 100%; height: 100%; background-color: #ffff00;}
 </style>
 </head>
 <body style="background-color:black; position: relative;">
@@ -22,6 +24,14 @@ body {height:100vh; margin: 0; background-color:black; position: relative;}
 </div>
 <img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0;">
 <div id="textBox">
+</div>
+<div class="hp-section">
+<span id="player-name">CHARA</span> <span id="level-text">LV 1</span>
+<div id="hp-container">
+<div id="hp-bar">
+</div>
+</div>
+<span id="hp-text">20 / 20</span>
 </div>
 <div id="menuBox">
 <img id="fightBtn" src="fight.png" height="84" width="220">
@@ -62,6 +72,7 @@ let currentActItem = 1;
 let currentItem = 1;
 let currentMercyItem = 1;
 let actionKeyPressed = false;
+let maxHealth = 20;
 let playerHealth = 20;
 let inventory = ['Monster Candy','Monster Candy','Monster Candy','Monster Candy','Bandage']
 let enemyATK = 10;
@@ -320,6 +331,25 @@ playerElement.style.left = myHoriz + 'px'
 handleAction();
 }
 }
+function updateUI() {}
+function takeDamage(damageAmount) {
+if (!isInvincible) {
+playerHealth -= damageAmount;
+updateUI();
+if (playerHealth <= 0) {
+playerHealth = 0;
+updateUI();
+playerDeath();
+return;
+}
+isInvincible = true;
+playerElement.style.opacity = 0.5;
+setTimeout(function() {
+isInvincible = false;
+playerElement.style.opacity = 1.0;
+}, 1000);
+}
+}
 function updateMenu(){
 if (currentMenuItem === 1) {
 playerElement.style.top = 1100 + 'px'
@@ -514,9 +544,11 @@ isItemMenuPhase = false;
 isActionActive = true;
 if (usedItem === 'Bandage' || usedItem === 'Monster Candy'){
 writeText(`* You used the ${usedItem}.\ <br>* You restored ${actualHeal} HP!`);
+updateUI();
 }
 else if (usedItem === 'jerry'){
 writeText(`* You used.... "jerry"? What even is that? <br> * Whatever it was, you restored ${healAmount} HP. <br> * Like you even have that many HP anyway.`);
+updateUI();
 }
 setTimeout(() => { enemyAttack(); }, 5000);
 }
@@ -563,6 +595,7 @@ isEnemyTurn = true;
 turnNum = 1;
 setTimeout(() => {endEnemyTurn();}, 5000)
 }
+function playerDeath() {}
 function endEnemyTurn() {
 if (isEnemyTurn){
 isMenuPhase = true;
