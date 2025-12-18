@@ -31,7 +31,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative;}
 <div id="hp-bar">
 </div>
 </div>
-<span id="hp-text">20 / 20</span>
+<span id="hp-text" class="white">20 / 20</span>
 </div>
 <div id="menuBox">
 <img id="fightBtn" src="fight.png" height="84" width="220">
@@ -331,7 +331,16 @@ playerElement.style.left = myHoriz + 'px'
 handleAction();
 }
 }
-function updateUI() {}
+function updateUI() {
+let healthPercent = (playerHealth / maxHealth) * 100;
+if (healthPercent < 0) {
+healthPercent = 0;
+}
+let hpBar = document.getElementById("hp-bar");
+hpBar.style.width = healthPercent + "%";
+let hpText = document.getElementById("hp-text");
+hpText.innerText = playerHealth + " / " + maxHealth;
+}
 function takeDamage(damageAmount) {
 if (!isInvincible) {
 playerHealth -= damageAmount;
