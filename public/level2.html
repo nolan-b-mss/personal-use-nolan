@@ -490,6 +490,7 @@ setTimeout(() => {location = 'undertale-test-05.html';}, 3000)
 }
 }
 function useItem() {
+let oldHealth = playerHealth; 
 let itemIndex = currentItem - 1; 
 let usedItem = inventory[itemIndex];
 inventory.splice(itemIndex, 1); 
@@ -508,15 +509,16 @@ playerHealth += healAmount;
 if (playerHealth > 20){
 playerHealth = 20;
 }
+let actualHeal = playerHealth - oldHealth;
 isItemMenuPhase = false; 
 isActionActive = true;
 if (usedItem === 'Bandage' || usedItem === 'Monster Candy'){
-writeText(`* You used the ${usedItem}.\ <br>* Your HP was restored by ${healAmount}.`);
+writeText(`* You used the ${usedItem}.\ <br>* You restored ${actualHeal} HP!`);
 }
 else if (usedItem === 'jerry'){
-writeText(`* You used.... "jerry"? What even is that? <br> * Whatever it was, your HP was restored by ${healAmount}.`);
+writeText(`* You used.... "jerry"? What even is that? <br> * Whatever it was, you restored ${healAmount} HP. <br> * Like you even have that many HP anyway.`);
 }
-setTimeout(() => {enemyAttack();}, 5000)
+setTimeout(() => { enemyAttack(); }, 5000);
 }
 function executeAct() {
 if (currentActItem === 1) {
