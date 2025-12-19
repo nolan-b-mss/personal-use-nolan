@@ -11,8 +11,10 @@ body {height:100vh; margin: 0; background-color:black; position: relative;}
 #enemyContainer {height: 450px; width: 600px; margin: 0px auto 15px auto; border-width: 12px; background-image: url('grid.png'); background-position: center; background-repeat: no-repeat; box-sizing: border-box; display: flex; justify-content: center; align-items: center;}
 #battleBox {border: solid white; border-width: 12px; height: 300px; width: 600px; background-color: black; margin: 0px auto 15px auto; visibility: hidden; position: relative;}
 #menuBox {width: 1050px; height: 75px; margin: 10px auto 15px auto; display: flex; justify-content: space-around;}
-#hp-container {width: 75px; height: 30px; background-color: #c00; vertical-align: middle; margin: 0 10px;}
-#hp-bar {width: 100%; height: 100%; background-color: #ffff00;}
+#hp-section { display: flex; align-items: center; color: white; font-family: 'Determination Mono', monospace; margin-top: 10px;}
+#hp-display-group { display: flex; align-items: center; margin-left: 30px;}
+#hp-container { width: 100px; height: 20px; background-color: #c00; margin: 0 10px;}
+#hp-bar { width: 100%; height: 100%; background-color: #ffff00;}
 </style>
 </head>
 <body style="background-color:black; position: relative;">
@@ -25,13 +27,15 @@ body {height:100vh; margin: 0; background-color:black; position: relative;}
 <img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0;">
 <div id="textBox">
 </div>
-<div class="hp-section">
-<span id="player-name" class="white">CHARA</span> <span id="level-text" class="white">LV 1</span>
+<div id="hp-section">
+<div id="lv-group">CHARA  LV 1</div>  
+<div id="hp-display-group">
+<span>HP</span>
 <div id="hp-container">
-<div id="hp-bar">
+<div id="hp-bar"></div>
 </div>
+<span id="hp-text">20 / 20</span>
 </div>
-<span id="hp-text" class="white">20 / 20</span>
 </div>
 <div id="menuBox">
 <img id="fightBtn" src="fight.png" height="84" width="220">
