@@ -5,6 +5,7 @@
 .yellow {color:yellow;}
 .white {color:white;}
 .blend {background-color:black;color:white;border-color:black;}
+.fly-sprite { width: 20px; height: 20px;}
 body {height:100vh; margin: 0; background-color:black; position: relative;}
 #gameContainer {width: 1050px; position: absolute; bottom: 5px; left: 400px; display: flex; flex-direction: column; box-sizing: border-box;}
 #textBox {border: solid white; border-width: 12px; background-color: black; height: 225px; width: 1050px; margin: 15px auto; color: white; font-size: 24px; padding: 20px; box-sizing: border-box;}
@@ -85,6 +86,12 @@ let enemyMercy = 0;
 let turnNum = 0;
 let isInvincible = false;
 let battleInitiated = false;
+let boxRect = textBox.getBoundingClientRect();
+let containerRect = gameContainer.getBoundingClientRect();
+let bullets = [];
+let flySpawner;
+let boxLeft;
+let boxTop;
 function writeText(dialogue, index = 0) {
 if (index === 0){
 if (isTyping) {
@@ -319,20 +326,28 @@ executeMercy();
 }
 }
 }
-function movement(){
-if (!isMenuPhase && !isActMenuPhase && !isTargettingAct && !isItemMenuPhase && !isMercyChoice){
-if (up) { myVerti -= 3}
-if (down) { myVerti += 3}
-if (left) { myHoriz -= 3}
-if (right) { myHoriz += 3}
-if (myHoriz < 0){myHoriz = 0}
-if (myHoriz > maxHoriz){myHoriz = maxHoriz}
-if (myVerti < 0){myVerti = 0}
-if (myVerti > maxVerti){myVerti = maxVerti}
-playerElement.style.top = myVerti + 'px'
-playerElement.style.left = myHoriz + 'px'
-} else {
-handleAction();
+function movement() {
+if (isMenuPhase || isActMenuPhase || isTargettingAct || isItemMenuPhase || isMercyChoice) {handleAction();} 
+else {
+if (up) { myVerti -= 3; }
+if (down) { myVerti += 3; }
+if (left) { myHoriz -= 3; }
+if (right) { myHoriz += 3; }
+if (myHoriz < 0) { myHoriz = 0; }
+if (myHoriz > maxHoriz) { myHoriz = maxHoriz; }
+if (myVerti < 0) { myVerti = 0; }
+if (myVerti > maxVerti) { myVerti = maxVerti; }
+playerElement.style.top = myVerti + 'px';
+playerElement.style.left = myHoriz + 'px';
+}
+if (isEnemyTurn) {
+if (myHoriz < boxLeft) { myHoriz = boxLeft; }
+if (myHoriz > boxLeft + 168) { myHoriz = boxLeft + 168; }
+if (myVerti < boxTop) { myVerti = boxTop; }
+if (myVerti > boxTop + 168) { myVerti = boxTop + 168; }
+playerElement.style.top = myVerti + 'px';
+playerElement.style.left = myHoriz + 'px';        
+moveBullets(); 
 }
 }
 function updateUI() {
@@ -524,7 +539,7 @@ setTimeout(() => {location = 'undertale-test-05.html';}, 5000)
 }
 else {
 writeText ("*You spared the enemy!<br>*But it's name wasn't YELLOW...")
-setTimeout(() => {enemyAttack();}, 7000)
+setTimeout(() => {startEnemyTurn();}, 7000)
 }
 }
 else if (currentMercyItem === 2){
@@ -563,7 +578,7 @@ else if (usedItem === 'jerry'){
 writeText(`* You used.... "jerry"? What even is that? <br> * Whatever it was, you restored ${healAmount} HP. <br> * Like you even have that many HP anyway.`);
 updateUI();
 }
-setTimeout(() => { enemyAttack(); }, 5000);
+setTimeout(() => { startEnemyTurn(); }, 5000);
 }
 function executeAct() {
 if (currentActItem === 1) {
@@ -572,7 +587,7 @@ isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
 isActionActive = true;
-setTimeout(() => {enemyAttack();}, 7000)
+setTimeout(() => {startEnemyTurn();}, 7000)
 }
 else if (currentActItem === 2) {
 writeText ("*You complimented Froggit.<br>*It didn't understand a word you said, but was flattered anyway.");
@@ -581,7 +596,7 @@ isTargettingAct = false;
 isMenuPhase = false;
 isActionActive = true;
 enemyMercy = 100;
-setTimeout(() => {enemyAttack();}, 7000)
+setTimeout(() => {startEnemyTurn();}, 7000)
 }
 else if (currentActItem === 3) {
 writeText ("*You threatened Froggit.<br>*It doesn't have the faintest clue of what you just said, but your tone was intimidating.<br>*Froggits DEFENSE decreased!");
@@ -590,7 +605,7 @@ isTargettingAct = false;
 isMenuPhase = false;
 isActionActive = true;
 enemyDEF -= 3;
-setTimeout(() => {enemyAttack();}, 12000)
+setTimeout(() => {startEnemyTurn();}, 12000)
 }
 else if (currentActItem === 4) {
 writeText ("*You did nothing.<br>*Froggit was confused, but decided to attack anyway.")
@@ -598,26 +613,79 @@ isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
 isActionActive = true;
-setTimeout(() => {enemyAttack();}, 7000)
+setTimeout(() => {startEnemyTurn();}, 7000)
 }
 }
-function enemyAttack() {
-writeText ("*Froggit prepares an attack. (this is a placeholder)");
+function startEnemyTurn() {
 isActionActive = false;
 isEnemyTurn = true;
 turnNum = 1;
-setTimeout(() => {endEnemyTurn();}, 5000)
+bullets = [];
+textBox.innerHTML = '';
+textBox.style.width = "200px";
+textBox.style.height = "200px";
+textBox.style.margin = "0 auto";
+let boxRect = textBox.getBoundingClientRect();
+let containerRect = gameContainer.getBoundingClientRect();
+boxLeft = boxRect.left - containerRect.left;
+boxTop = boxRect.top - containerRect.top;
+myHoriz = boxLeft + 84;
+myVerti = boxTop + 84;
+playerElement.style.left = myHoriz + 'px';
+playerElement.style.top = myVerti + 'px';
+flySpawner = setInterval(spawnFly, 350);
+setTimeout(endEnemyTurn, 8000);
+}
+function spawnFly() {
+let fly = document.createElement('img');
+fly.src = 'froggit-attack-fly.gif';
+fly.className = 'fly-sprite'; 
+fly.style.position = 'absolute';
+let randomX = Math.random() * 180;
+fly.style.left = randomX + 'px';
+fly.style.top = '0px';
+textBox.appendChild(fly);
+bullets.push({
+element: fly,
+x: randomX,
+y: 0
+});
+}
+function moveBullets() {
+bullets.forEach(fly => {
+fly.y += 3;
+if (fly.y > 200) {
+fly.y = -20; 
+fly.x = Math.random() * 180;
+fly.element.style.left = fly.x + 'px';
+}
+fly.element.style.top = fly.y + 'px';
+if (!isInvincible) {
+if 
+(fly.x + 10 > (myHoriz - boxLeft) + 2 && 
+fly.x + 10 < (myHoriz - boxLeft) + 30 &&
+fly.y + 10 > (myVerti - boxTop) + 2 && 
+fly.y + 10 < (myVerti - boxTop) + 30) {        
+takeDamage(2); 
+}
+}
+});
 }
 function playerDeath() {}
 function endEnemyTurn() {
-if (isEnemyTurn){
-isMenuPhase = true;
-isTargettingAct = false;
-isActMenuPhase = false;
-isMercyChoice = false;
+if (isEnemyTurn) {
 isEnemyTurn = false;
-updateMenu();
-writeText("*Froggit awaits your next move!")
+isMenuPhase = true;
+clearInterval(flySpawner);
+bullets.forEach(fly => {
+fly.element.remove();
+});
+bullets = [];
+textBox.style.width = "1050px";
+textBox.style.height = "225px";
+textBox.style.margin = "15px auto"; 
+updateMenu(); 
+writeText("* Froggit awaits your next move!");
 }
 }
 function startTargettingAct() {
