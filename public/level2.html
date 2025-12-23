@@ -327,7 +327,9 @@ executeMercy();
 }
 }
 function movement() {
-if (isMenuPhase || isActMenuPhase || isTargettingAct || isItemMenuPhase || isMercyChoice) {handleAction();} 
+if (isMenuPhase || isActMenuPhase || isTargettingAct || isItemMenuPhase || isMercyChoice) {
+handleAction();
+} 
 else {
 if (up) { myVerti -= 3; }
 if (down) { myVerti += 3; }
@@ -346,7 +348,7 @@ if (myHoriz > boxLeft + 168) { myHoriz = boxLeft + 168; }
 if (myVerti < boxTop) { myVerti = boxTop; }
 if (myVerti > boxTop + 168) { myVerti = boxTop + 168; }
 playerElement.style.top = myVerti + 'px';
-playerElement.style.left = myHoriz + 'px';        
+playerElement.style.left = myHoriz + 'px';
 moveBullets(); 
 }
 }
