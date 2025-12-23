@@ -343,10 +343,10 @@ playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
 }
 if (isEnemyTurn) {
-if (myHoriz < boxLeft) { myHoriz = boxLeft; }
-if (myHoriz > boxLeft + 168) { myHoriz = boxLeft + 168; }
-if (myVerti < boxTop) { myVerti = boxTop; }
-if (myVerti > boxTop + 168) { myVerti = boxTop + 168; }
+if (myHoriz < 0) { myHoriz = 0; }
+if (myHoriz > 168) { myHoriz = 168; }
+if (myVerti < 0) { myVerti = 0; }
+if (myVerti > 168) { myVerti = 168; }
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
 moveBullets(); 
@@ -621,23 +621,19 @@ setTimeout(() => {startEnemyTurn();}, 7000)
 function startEnemyTurn() {
 isActionActive = false;
 isEnemyTurn = true;
-clearInterval(flySpawner)
+clearInterval(flySpawner);
 turnNum = 1;
 bullets = [];
 textBox.innerHTML = '';
 textBox.style.width = "200px";
 textBox.style.height = "200px";
 textBox.style.margin = "0 auto";
-textBox.style.backgroundColor = "blue"
-let boxRect = textBox.getBoundingClientRect();
-let containerRect = gameContainer.getBoundingClientRect();
-boxLeft = boxRect.left - containerRect.left;
-boxTop = boxRect.top - containerRect.top;
-myHoriz = boxLeft + 84;
-myVerti = boxTop + 84;
+textBox.style.backgroundColor = "black";
+textBox.appendChild(playerElement);
+myHoriz = 84; 
+myVerti = 84;
 playerElement.style.left = myHoriz + 'px';
 playerElement.style.top = myVerti + 'px';
-console.log("Soul X:", myHoriz, "Boundary Left:", boxLeft);
 flySpawner = setInterval(spawnFly, 350);
 setTimeout(endEnemyTurn, 8000);
 }
@@ -666,11 +662,10 @@ fly.element.style.left = fly.x + 'px';
 }
 fly.element.style.top = fly.y + 'px';
 if (!isInvincible) {
-if 
-(fly.x + 10 > (myHoriz - boxLeft) + 2 && 
-fly.x + 10 < (myHoriz - boxLeft) + 30 &&
-fly.y + 10 > (myVerti - boxTop) + 2 && 
-fly.y + 10 < (myVerti - boxTop) + 30) {        
+if (fly.x + 10 > myHoriz + 2 && 
+fly.x + 10 < myHoriz + 30 &&
+fly.y + 10 > myVerti + 2 && 
+fly.y + 10 < myVerti + 30) {        
 takeDamage(2); 
 }
 }
