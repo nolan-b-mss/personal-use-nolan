@@ -619,6 +619,7 @@ setTimeout(() => {startEnemyTurn();}, 7000)
 function startEnemyTurn() {
 isActionActive = false;
 isEnemyTurn = true;
+clearInterval(flySpawner)
 turnNum = 1;
 bullets = [];
 textBox.innerHTML = '';
