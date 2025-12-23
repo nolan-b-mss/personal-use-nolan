@@ -637,6 +637,7 @@ myHoriz = boxLeft + 84;
 myVerti = boxTop + 84;
 playerElement.style.left = myHoriz + 'px';
 playerElement.style.top = myVerti + 'px';
+console.log("Soul X:", myHoriz, "Boundary Left:", boxLeft);
 flySpawner = setInterval(spawnFly, 350);
 setTimeout(endEnemyTurn, 8000);
 }
