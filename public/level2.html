@@ -265,6 +265,7 @@ if (event.key === "d"){right = false; dMenuKeyDebounced = false;}
 if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = false;}
 }
 function handleAction(){
+if (isActionActive) {return;
 if (actionKeyPressed) {
 if (isMenuPhase) {
 if (currentMenuItem === 1) {
@@ -292,6 +293,9 @@ else {
 writeText("* You are out of ITEMs...")
 actionKeyPressed = false;
 return;
+}
+}
+}
 }
 }
 else if (currentMenuItem === 4) {
@@ -584,12 +588,12 @@ updateUI();
 setTimeout(() => { startEnemyTurn(); }, 5000);
 }
 function executeAct() {
+isActionActive = true;
 if (currentActItem === 1) {
 writeText (`*FROGGIT - ${enemyATK} ATK ${enemyDEF} DEF <br>*It looks like it can learn a lot from this world.`);
 isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
-isActionActive = true;
 setTimeout(() => {startEnemyTurn();}, 7000)
 }
 else if (currentActItem === 2) {
@@ -597,7 +601,6 @@ writeText ("*You complimented Froggit.<br>*It didn't understand a word you said,
 isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
-isActionActive = true;
 enemyMercy = 100;
 setTimeout(() => {startEnemyTurn();}, 7000)
 }
@@ -606,7 +609,6 @@ writeText ("*You threatened Froggit.<br>*It doesn't have the faintest clue of wh
 isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
-isActionActive = true;
 enemyDEF -= 3;
 setTimeout(() => {startEnemyTurn();}, 12000)
 }
@@ -615,7 +617,6 @@ writeText ("*You did nothing.<br>*Froggit was confused, but decided to attack an
 isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
-isActionActive = true;
 setTimeout(() => {startEnemyTurn();}, 7000)
 }
 }
