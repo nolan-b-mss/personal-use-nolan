@@ -460,6 +460,7 @@ writeText("*A Froggit appears!");
 }
 else if (!isMenuPhase && !isActMenuPhase && !isTargettingAct) {
 isMenuPhase = true;
+isMercyChoice = false;
 updateMenu();
 if (enemyMercy === 100) {
 writeText("*Froggit seems very reluctant to fight.")
