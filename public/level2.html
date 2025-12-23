@@ -266,69 +266,51 @@ if (event.key === "a"){left = false; aMenuKeyDebounced = false;}
 if (event.key === "d"){right = false; dMenuKeyDebounced = false;}
 if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = false;}
 }
-function handleAction(){
-if (isActionActive) {return;
+function handleAction() {
+if (isActionActive) return;
 if (actionKeyPressed) {
+actionKeyPressed = false;
 if (isMenuPhase) {
 if (currentMenuItem === 1) {
-actionKeyPressed = false
-startAttackBar()
-}
+startAttackBar();
+} 
 else if (currentMenuItem === 2) {
-actionKeyPressed = false
-startTargettingAct()
+startTargettingAct();
 isTargettingAct = true;
 isMenuPhase = false;
-isMercyChoice = false;
-isItemMenuPhase = false;
-}
+} 
 else if (currentMenuItem === 3) {
-if (inventory.length > 0){
-actionKeyPressed = false
-startItemMenu()
+if (inventory.length > 0) {
+startItemMenu();
 isItemMenuPhase = true;
 isMenuPhase = false;
-isMercyChoice = false;
-isTargettingAct = false;
+} else {
+writeText("* You are out of ITEMs...");
 }
-else {
-writeText("* You are out of ITEMs...")
-actionKeyPressed = false;
-return;
-}
-}
-}
-}
-}
+} 
 else if (currentMenuItem === 4) {
-actionKeyPressed = false
-startMercyChoice()
-isMenuPhase = false;
+startMercyChoice();
 isMercyChoice = true;
-isItemMenuPhase = false;
-isTargettingAct = false;
+isMenuPhase = false;
 }
-
+} 
 else if (isTargettingAct) {
-actionKeyPressed = false;
 startActMenu();
 isActMenuPhase = true;
 isTargettingAct = false;
-}
+} 
 else if (isActMenuPhase) {
-actionKeyPressed = false;
 isActMenuPhase = false;
 executeAct();
-}
+} 
 else if (isItemMenuPhase && !isTyping) {
-actionKeyPressed = false;
 isItemMenuPhase = false;
 useItem();
-}
+} 
 else if (isMercyChoice) {
-actionKeyPressed = false;
 isMercyChoice = false;
 executeMercy();
+}
 }
 }
 function movement() {
@@ -409,7 +391,6 @@ playerElement.style.opacity = 1.0;
 }
 }
 function updateMenu(){
-console.log("Current Menu Item:", currentMenuItem);
 if (currentMenuItem === 1) {
 playerElement.style.top = 1111 + 'px'
 playerElement.style.left = 36 + 'px'
