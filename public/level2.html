@@ -345,15 +345,22 @@ function updateDebug() {
 const debugElement = document.getElementById('debugMenu');
 if (!debugElement) return;
 debugElement.innerHTML = `
+Menu Variables
+IsTyping: ${isTyping}<br>
+ActionKeyPressed: ${actionKeyPressed}<br>
+MenuItem: ${currentMenuItem}<br>
 MenuPhase: ${isMenuPhase}<br>
 ActMenu: ${isActMenuPhase}<br>
+ActItem: ${currentActItem}<br>
 TargetAct: ${isTargettingAct}<br>
 ItemMenu: ${isItemMenuPhase}<br>
+Item: ${currentItem}<br>
 MercyChoice: ${isMercyChoice}<br>
+MercyItem: ${currentMercyItem}<br>
 ActionActive: ${isActionActive}<br>
 EnemyTurn: ${isEnemyTurn}<br>
-MenuItem: ${currentMenuItem}<br>
-ActionKeyPressed: ${actionKeyPressed}<br>
+--------
+Movement Variables
 Up: ${up}<br>
 Left: ${left}<br>
 Down: ${down}<br>
