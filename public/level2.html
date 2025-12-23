@@ -19,6 +19,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative;}
 </style>
 </head>
 <body style="background-color:black; position: relative;">
+<div id="debugMenu" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: lime; font-family: monospace; padding: 10px; border: 1px solid lime; z-index: 1000; font-size: 14px; pointer-events: none;">
 <div id="gameContainer">
 <div id="enemyContainer">
 <img id="enemy" src="froggit.gif" style="width: 116px; height: 111px;">
@@ -330,6 +331,7 @@ executeMercy();
 }
 }
 function movement() {
+updateDebug();
 if (isMenuPhase || isActMenuPhase || isTargettingAct || isItemMenuPhase || isMercyChoice) {
 handleAction();
 } 
@@ -355,6 +357,22 @@ playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
 moveBullets(); 
 }
+}
+function updateDebug() {
+const debugElement = document.getElementById('debugMenu');
+if (!debugElement) return;
+debugElement.innerHTML = `
+MenuPhase: ${isMenuPhase}<br>
+ActMenu: ${isActMenuPhase}<br>
+TargetAct: ${isTargettingAct}<br>
+ItemMenu: ${isItemMenuPhase}<br>
+MercyChoice: ${isMercyChoice}<br>
+ActionActive: ${isActionActive}<br>
+EnemyTurn: ${isEnemyTurn}<br>
+MenuItem: ${currentMenuItem}<br>
+X: ${myHoriz}<br>
+Y: ${myVerti}
+`;
 }
 function updateUI() {
 let healthPercent = (playerHealth / maxHealth) * 100;
@@ -385,6 +403,7 @@ playerElement.style.opacity = 1.0;
 }
 }
 function updateMenu(){
+console.log("Current Menu Item:", currentMenuItem);
 if (currentMenuItem === 1) {
 playerElement.style.top = 1111 + 'px'
 playerElement.style.left = 36 + 'px'
