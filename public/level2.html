@@ -347,6 +347,7 @@ if (myHoriz < 0) { myHoriz = 0; }
 if (myHoriz > 168) { myHoriz = 168; }
 if (myVerti < 0) { myVerti = 0; }
 if (myVerti > 168) { myVerti = 168; }
+console.log("Current Y:", myVerti);
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
 moveBullets(); 
@@ -634,7 +635,7 @@ myHoriz = 84;
 myVerti = 84;
 playerElement.style.left = myHoriz + 'px';
 playerElement.style.top = myVerti + 'px';
-flySpawner = setInterval(spawnFly, 350);
+flySpawner = setInterval(spawnFly, 750);
 setTimeout(endEnemyTurn, 8000);
 }
 function spawnFly() {
