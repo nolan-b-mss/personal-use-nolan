@@ -552,6 +552,7 @@ playerElement.style.left = 700 + 'px'
 }
 }
 function executeMercy() {
+updateMenu();
 isActionActive = true;
 if (currentMercyItem === 1){
 if (enemyMercy === 100) {
@@ -569,6 +570,7 @@ setTimeout(() => {location = 'undertale-test-05.html';}, 3000)
 }
 }
 function useItem() {
+updateMenu();
 let oldHealth = playerHealth; 
 let itemIndex = currentItem - 1; 
 let usedItem = inventory[itemIndex];
@@ -602,6 +604,7 @@ updateUI();
 setTimeout(() => { startEnemyTurn(); }, 5000);
 }
 function executeAct() {
+updateMenu();
 isActionActive = true;
 if (currentActItem === 1) {
 writeText (`*FROGGIT - ${enemyATK} ATK ${enemyDEF} DEF <br>*It looks like it can learn a lot from this world.`);
