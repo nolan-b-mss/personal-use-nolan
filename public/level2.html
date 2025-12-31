@@ -85,6 +85,7 @@ let inventory = ['Monster Candy','Monster Candy','Monster Candy','Monster Candy'
 let enemyATK = 10;
 let enemyDEF = 10;
 let enemyMercy = 0;
+let enemyDialogue = false;
 let turnNum = 0;
 let isInvincible = false;
 let battleInitiated = false;
@@ -321,7 +322,7 @@ handleAction();
 } 
 }
 else {
-if (!isTyping) {
+if (!isTyping || !enemyDialogue) {
 if (up) { myVerti -= 3; }
 if (down) { myVerti += 3; }
 if (left) { myHoriz -= 3; }
@@ -558,6 +559,7 @@ playerElement.style.left = 700 + 'px'
 }
 function executeMercy() {
 updateMenu();
+enemyDialogue = true;
 isActionActive = true;
 if (currentMercyItem === 1){
 if (enemyMercy === 100) {
@@ -609,6 +611,7 @@ updateUI();
 setTimeout(() => { startEnemyTurn(); }, 5000);
 }
 function executeAct() {
+enemyDialogue = true;
 updateMenu();
 isActionActive = true;
 if (currentActItem === 1) {
@@ -644,6 +647,7 @@ setTimeout(() => {startEnemyTurn();}, 7000)
 }
 function startEnemyTurn() {
 clearInterval(flySpawner);
+enemyDialogue = false;
 isActionActive = false;
 isEnemyTurn = true;
 turnNum = 1;
