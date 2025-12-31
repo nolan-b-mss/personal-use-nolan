@@ -701,6 +701,7 @@ if (isEnemyTurn) {
 isEnemyTurn = false;
 isMenuPhase = true;
 clearInterval(flySpawner);
+gameContainer.appendChild(playerElement);
 bullets.forEach(fly => {
 fly.element.remove();
 });
