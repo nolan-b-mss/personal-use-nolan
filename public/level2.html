@@ -316,9 +316,12 @@ executeMercy();
 function movement() {
 updateDebug();
 if (isMenuPhase || isActMenuPhase || isTargettingAct || isItemMenuPhase || isMercyChoice) {
+if (!isTyping) {
 handleAction();
 } 
+}
 else {
+if (!isTyping) {
 if (up) { myVerti -= 3; }
 if (down) { myVerti += 3; }
 if (left) { myHoriz -= 3; }
@@ -329,6 +332,8 @@ if (myVerti < 0) { myVerti = 0; }
 if (myVerti > maxVerti) { myVerti = maxVerti; }
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
+}
+else {return}
 }
 if (isEnemyTurn) {
 if (myHoriz < 0) { myHoriz = 0; }
@@ -638,9 +643,9 @@ setTimeout(() => {startEnemyTurn();}, 7000)
 }
 }
 function startEnemyTurn() {
+clearInterval(flySpawner);
 isActionActive = false;
 isEnemyTurn = true;
-clearInterval(flySpawner);
 turnNum = 1;
 bullets = [];
 textBox.innerHTML = '';
