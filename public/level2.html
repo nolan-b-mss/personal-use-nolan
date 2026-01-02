@@ -28,7 +28,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative;}
 <div id="textBox">
 </div>
 <div id="hp-section">
-<div id="lv-group">CHARA  LV 1</div>  
+<div id="lv-group">FRED   LV 1</div>  
 <div id="hp-display-group">
 <span>HP</span>
 <div id="hp-container">
@@ -334,12 +334,12 @@ else {return}
 if (isEnemyTurn) {
 // Left wall
 if (myHoriz < 0) { myHoriz = 0; }
-// Right wall (200 - 32)
-if (myHoriz > 148) { myHoriz = 148; }
+// Right wall
+if (myHoriz > 147) { myHoriz = 147; }
 // Top wall
 if (myVerti < 0) { myVerti = 0; }
 // Bottom wall
-if (myVerti > 148) { myVerti = 148; }
+if (myVerti > 147) { myVerti = 147; }
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
 moveBullets(); 
