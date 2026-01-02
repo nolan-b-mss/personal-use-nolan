@@ -9,7 +9,7 @@
 body {height:100vh; margin: 0; background-color:black; position: relative;}
 #gameContainer {width: 1050px; position: absolute; bottom: 5px; left: 400px; display: flex; flex-direction: column; box-sizing: border-box;}
 #textBox {border: solid white; border-width: 12px; background-color: black; position: relative; height: 225px; width: 1050px; margin: 15px auto; color: white; font-size: 24px; padding: 20px; box-sizing: border-box;}
-#enemyContainer {height: 450px; width: 600px; margin: 0px auto 15px auto; border-width: 12px; background-image: url('grid.png'); background-position: center; background-repeat: no-repeat; box-sizing: border-box; display: flex; justify-content: center; align-items: center;}
+#enemyContainer {height: 450px; width: 600px; margin: 0px auto 15px auto; border-width: 12px; background-image: url('sprites/grid.png'); background-position: center; background-repeat: no-repeat; box-sizing: border-box; display: flex; justify-content: center; align-items: center;}
 #menuBox {width: 1050px; height: 75px; margin: 10px auto 15px auto; display: flex; justify-content: space-around;}
 #hp-section { display: flex; align-items: center; color: white; font-family: 'Determination Mono', monospace; margin-top: 0px;}
 #hp-display-group { display: flex; align-items: center; margin-left: 30px;}
@@ -22,9 +22,9 @@ body {height:100vh; margin: 0; background-color:black; position: relative;}
 </div>
 <div id="gameContainer">
 <div id="enemyContainer">
-<img id="enemy" src="froggit.gif" style="width: 116px; height: 111px;">
+<img id="enemy" src="sprites/froggit.gif" style="width: 116px; height: 111px;">
 </div>
-<img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0; z-index: 100;">
+<img src="sprites/soul-01.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0; z-index: 100;">
 <div id="textBox">
 </div>
 <div id="hp-section">
@@ -38,10 +38,10 @@ body {height:100vh; margin: 0; background-color:black; position: relative;}
 </div>
 </div>
 <div id="menuBox">
-<img id="fightBtn" src="fight.png" height="84" width="220">
-<img id="actBtn" src="act.png" height="84" width="220">
-<img id="itemBtn" src="item.png" height="84" width="220">
-<img id="mercyBtn" src="mercy.png" height="84" width="220">
+<img id="fightBtn" src="sprites/fight.png" height="84" width="220">
+<img id="actBtn" src="sprites/act.png" height="84" width="220">
+<img id="itemBtn" src="sprites/item.png" height="84" width="220">
+<img id="mercyBtn" src="sprites/mercy.png" height="84" width="220">
 </div>
 </div>
 <script>
@@ -407,34 +407,34 @@ function updateMenu(){
 if (currentMenuItem === 1) {
 playerElement.style.top = 775 + 'px'
 playerElement.style.left = 36 + 'px'
-fightBtn.src = 'fightSelected.png'
-actBtn.src = 'act.png'
-itemBtn.src = 'item.png'
-mercyBtn.src = 'mercy.png'
+fightBtn.src = 'sprites/fightSelected.png'
+actBtn.src = 'sprites/act.png'
+itemBtn.src = 'sprites/item.png'
+mercyBtn.src = 'sprites/mercy.png'
 }
 else if (currentMenuItem === 2) {
 playerElement.style.top = 775 + 'px'
 playerElement.style.left = 300 + 'px'
-fightBtn.src = 'fight.png'
-actBtn.src = 'actSelected.png'
-itemBtn.src = 'item.png'
-mercyBtn.src = 'mercy.png'
+fightBtn.src = 'sprites/fight.png'
+actBtn.src = 'sprites/actSelected.png'
+itemBtn.src = 'sprites/item.png'
+mercyBtn.src = 'sprites/mercy.png'
 }
 else if (currentMenuItem === 3) {
 playerElement.style.top = 775 + 'px'
 playerElement.style.left = 561 + 'px'
-fightBtn.src = 'fight.png'
-actBtn.src = 'act.png'
-itemBtn.src = 'itemSelected.png'
-mercyBtn.src = 'mercy.png'
+fightBtn.src = 'sprites/fight.png'
+actBtn.src = 'sprites/act.png'
+itemBtn.src = 'sprites/itemSelected.png'
+mercyBtn.src = 'sprites/mercy.png'
 }
 else if (currentMenuItem === 4) {
 playerElement.style.top = 775 + 'px'
 playerElement.style.left = 825 + 'px'
-fightBtn.src = 'fight.png'
-actBtn.src = 'act.png'
-itemBtn.src = 'item.png'
-mercyBtn.src = 'mercySelected.png'
+fightBtn.src = 'sprites/fight.png'
+actBtn.src = 'sprites/act.png'
+itemBtn.src = 'sprites/item.png'
+mercyBtn.src = 'sprites/mercySelected.png'
 }
 }
 function handleCancel() {
@@ -666,7 +666,7 @@ setTimeout(endEnemyTurn, 8000);
 }
 function spawnFly() {
 let fly = document.createElement('img');
-fly.src = 'froggit-attack-fly.gif';
+fly.src = 'sprites/froggit-attack-fly.gif';
 fly.className = 'fly-sprite'; 
 fly.style.position = 'absolute';
 let randomX = Math.random() * 180;
