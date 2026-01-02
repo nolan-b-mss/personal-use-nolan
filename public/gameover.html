@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Fallen</title>
+    <title>Fallen Down...</title>
     <style>
         body {
             background-color: black;
@@ -54,7 +54,6 @@
         const SHARD_COUNT = 6;
         const VARIANT_COUNT = 4;
         const GRAVITY = 0.25;
-        const RESTART_URL = 'froggit_battle.html';
 
         function startGameOver() {
             setTimeout(() => {
@@ -134,7 +133,7 @@
 
         function handleInput(event) {
             if (event.key.toLowerCase() === 'z') {
-                window.location.href = RESTART_URL;
+                window.location.href = 'level2.html';
             }
         }
 
