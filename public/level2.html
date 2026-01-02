@@ -312,7 +312,7 @@ executeMercy();
 function movement() {
 updateDebug();
 if (isMenuPhase || isActMenuPhase || isTargettingAct || isItemMenuPhase || isMercyChoice) {
-if (!isTyping) {
+if (!isTyping || !enemyDialogue) {
 handleAction();
 } 
 }
