@@ -37,6 +37,23 @@
         .reveal-text {
             opacity: 1 !important;
         }
+        #restart-prompt {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-family: monospace;
+            font-size: 20px;
+        }
+
+        .flashing {
+            animation: blink 1s step-start infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
         .shard-piece {
             position: absolute;
         }
@@ -121,21 +138,24 @@
             }
         }
 
-        function showGameOverText() {
-            const textSprite = document.getElementById('game-over-sprite');
-            textSprite.classList.remove('hidden');
+function showGameOverText() {
+    const textSprite = document.getElementById('game-over-sprite');
+    const restartPrompt = document.getElementById('restart-prompt');
+    
+    textSprite.classList.remove('hidden');
+    
+    setTimeout(() => {
+        textSprite.classList.add('reveal-text');
+        
+        setTimeout(() => {
+            restartPrompt.classList.remove('hidden');
+            restartPrompt.classList.add('flashing');
             
-            setTimeout(() => {
-                textSprite.classList.add('reveal-text');
-                window.addEventListener('keydown', handleInput);
-            }, 100);
-        }
-
-        function handleInput(event) {
-            if (event.key.toLowerCase() === 'z') {
-                window.location.href = 'level2.html';
-            }
-        }
+            window.addEventListener('keydown', handleInput);
+        }, 2000); 
+        
+    }, 100);
+}
 
         startGameOver();
     </script>
