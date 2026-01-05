@@ -58,13 +58,14 @@ let wMenuKeyDebounced = false;
 let aMenuKeyDebounced = false;
 let sMenuKeyDebounced = false;
 let dMenuKeyDebounced = false;
+let actionKeyDebounced= = false;
 let isTyping = false;
 let isMenuPhase = true;
 let isActMenuPhase = false;
 let isTargettingAct = false;
 let isItemMenuPhase = false;
-let isMercyChoice = false;
 let isActionActive = false;
+let isMercyChoice = false;
 let isEnemyTurn = false;
 let myHoriz;
 let myVerti;
@@ -254,7 +255,7 @@ dMenuKeyDebounced = true;
 }
 }
 }
-if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = true;}
+if (event.key === "z" && !actionKeyDebounced || event.key === "Enter" && !actionKeyDebounced){actionKeyPressed = true; actionKeyDebounced = true;}
 if (event.key === "x" || event.key === "Shift" ){handleCancel();}
 }
 document.onkeyup = function(event){
@@ -262,7 +263,7 @@ if (event.key === "w"){up = false; wMenuKeyDebounced = false;}
 if (event.key === "s"){down = false; sMenuKeyDebounced = false;}
 if (event.key === "a"){left = false; aMenuKeyDebounced = false;}
 if (event.key === "d"){right = false; dMenuKeyDebounced = false;}
-if (event.key === "z" || event.key === "Enter" ){actionKeyPressed = false;}
+if (event.key === "z" || event.key === "Enter" ){actionKeyDebounced = false; actionKeyPressed = false;}
 }
 function handleAction() {
 if (isActionActive) return;
@@ -564,10 +565,11 @@ function executeMercy() {
 updateMenu();
 enemyDialogue = true;
 isActionActive = true;
+actionKeyPressed = false;
 if (currentMercyItem === 1){
 if (enemyMercy === 100) {
 writeText ("* You spared the enemy!<br>* You won!")
-setTimeout(() => {location = 'undertale-test-05.html';}, 5000)
+setTimeout(() => {writeText ("* If/when there is a level 3, this is when you are sent to it.");}, 5000)
 }
 else {
 writeText ("* You spared the enemy!<br>* But it's name wasn't YELLOW...")
@@ -580,6 +582,7 @@ setTimeout(() => {location = 'undertale-test-05.html';}, 3000)
 }
 }
 function useItem() {
+actionKeyPressed = false;
 updateMenu();
 let oldHealth = playerHealth; 
 let itemIndex = currentItem - 1; 
@@ -617,6 +620,7 @@ function executeAct() {
 enemyDialogue = true;
 updateMenu();
 isActionActive = true;
+actionKeyPressed = false;
 if (currentActItem === 1) {
 writeText (`*FROGGIT - ${enemyATK} ATK ${enemyDEF} DEF <br>* It looks like it can learn a lot from this world.`);
 isActMenuPhase = false;
@@ -649,9 +653,10 @@ setTimeout(() => {startEnemyTurn();}, 7000)
 }
 }
 function startEnemyTurn() {
+if (isEnemyTurn){return;}
+else {
 clearInterval(flySpawner);
 enemyDialogue = false;
-isActionActive = false;
 isEnemyTurn = true;
 turnNum = 1;
 bullets = [];
@@ -667,6 +672,8 @@ playerElement.style.left = myHoriz + 'px';
 playerElement.style.top = myVerti + 'px';
 flySpawner = setInterval(spawnFly, 750);
 setTimeout(endEnemyTurn, 8000);
+isActionActive = false
+}
 }
 function spawnFly() {
 let fly = document.createElement('img');
