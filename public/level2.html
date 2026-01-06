@@ -263,7 +263,7 @@ if (event.key === "w"){up = false; wMenuKeyDebounced = false;}
 if (event.key === "s"){down = false; sMenuKeyDebounced = false;}
 if (event.key === "a"){left = false; aMenuKeyDebounced = false;}
 if (event.key === "d"){right = false; dMenuKeyDebounced = false;}
-if (event.key === "z" || event.key === "Enter" ){actionKeyDebounced = false; actionKeyPressed = false;}
+if (event.key === "z" && actionKeyDebounced || event.key === "Enter" && actionKeyDebounced){actionKeyPressed = false; actionKeyDebounced = false;}
 }
 function handleAction() {
 if (isActionActive) return;
@@ -727,6 +727,7 @@ textBox.style.height = "225px";
 textBox.style.margin = "15px auto"; 
 updateMenu(); 
 writeText("* Froggit awaits your next move!");
+isActionActive = false;
 }
 }
 function startTargettingAct() {
