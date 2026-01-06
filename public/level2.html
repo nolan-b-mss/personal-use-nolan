@@ -94,16 +94,18 @@ let bullets = [];
 let flySpawner;
 let boxLeft;
 let boxTop;
-function writeText(dialogue, index = 0) {
-if (index === 0){
-if (isTyping) {
-return;
-}
+function writeText(dialogue, callback, index = 0) {
+if (index === 0) {
+if (isTyping) return;
 isTyping = true;
-textBox.innerHTML = '';}
+textBox.innerHTML = '';
+}
 if (index >= dialogue.length) {
 isTyping = false;
-return; 
+if (callback) {
+callback();
+}
+return;
 }
 let delay = 50;
 if (dialogue.substring(index, index + 4) === '<br>') {
@@ -115,7 +117,7 @@ textBox.innerHTML += dialogue[index];
 index += 1;
 }
 setTimeout(function() {
-writeText(dialogue, index);
+writeText(dialogue, callback, index);
 }, delay);
 }
 function startBattle() {
@@ -315,7 +317,7 @@ executeMercy();
 function movement() {
 updateDebug();
 if (isMenuPhase || isActMenuPhase || isTargettingAct || isItemMenuPhase || isMercyChoice) {
-if (!isTyping || !enemyDialogue) {
+if (!isTyping) {
 handleAction();
 } 
 }
@@ -653,18 +655,16 @@ setTimeout(() => {startEnemyTurn();}, 7000)
 }
 }
 function startEnemyTurn() {
-if (isEnemyTurn){return;}
-else {
+if (isEnemyTurn) return;
 clearInterval(flySpawner);
 enemyDialogue = false;
-isEnemyTurn = true;
+isActionActive = true;
 turnNum = 1;
 bullets = [];
 textBox.innerHTML = '';
 textBox.style.width = "200px";
 textBox.style.height = "200px";
 textBox.style.margin = "0 auto";
-textBox.style.backgroundColor = "black";
 textBox.appendChild(playerElement);
 myHoriz = 84; 
 myVerti = 84;
@@ -672,8 +672,7 @@ playerElement.style.left = myHoriz + 'px';
 playerElement.style.top = myVerti + 'px';
 flySpawner = setInterval(spawnFly, 750);
 setTimeout(endEnemyTurn, 8000);
-isActionActive = false
-}
+isEnemyTurn = true;
 }
 function spawnFly() {
 let fly = document.createElement('img');
@@ -726,8 +725,7 @@ textBox.style.width = "1050px";
 textBox.style.height = "225px";
 textBox.style.margin = "15px auto"; 
 updateMenu(); 
-writeText("* Froggit awaits your next move!");
-isActionActive = false;
+writeText("* Froggit awaits your next move!", function() {isActionActive = false;});
 }
 }
 function startTargettingAct() {
