@@ -322,6 +322,7 @@ handleAction();
 else {
 if (!enemyDialogue) {
 if (!isTyping || !enemyDialogue) {
+if (!isActionActive) {
 if (up) { myVerti -= 3; }
 if (down) { myVerti += 3; }
 if (left) { myHoriz -= 3; }
@@ -332,6 +333,8 @@ if (myVerti < 0) { myVerti = 0; }
 if (myVerti > maxVerti) { myVerti = maxVerti; }
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
+}
+else {return}
 }
 else {return}
 }
