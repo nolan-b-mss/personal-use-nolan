@@ -102,9 +102,7 @@ textBox.innerHTML = '';
 }
 if (index >= dialogue.length) {
 isTyping = false;
-if (callback) {
-callback();
-}
+if (callback) callback(); 
 return;
 }
 let delay = 50;
@@ -575,7 +573,7 @@ setTimeout(() => {writeText ("* If/when there is a level 3, this is when you are
 }
 else {
 writeText ("* You spared the enemy!<br>* But it's name wasn't YELLOW...")
-setTimeout(() => {startEnemyTurn();}, 7000)
+setTimeout(() => {nemyTurn();}, 7000)
 }
 }
 else if (currentMercyItem === 2){
@@ -616,7 +614,7 @@ else if (usedItem === 'jerry'){
 writeText(`* You used.... "jerry"? What even is that? <br> * Whatever it was, you restored ${healAmount} HP. <br> * Like you even have that many HP anyway.`);
 updateUI();
 }
-setTimeout(() => { startEnemyTurn(); }, 5000);
+setTimeout(() => { nemyTurn(); }, 5000);
 }
 function executeAct() {
 enemyDialogue = true;
@@ -628,7 +626,7 @@ writeText (`*FROGGIT - ${enemyATK} ATK ${enemyDEF} DEF <br>* It looks like it ca
 isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
-setTimeout(() => {startEnemyTurn();}, 7000)
+setTimeout(() => {nemyTurn();}, 7000)
 }
 else if (currentActItem === 2) {
 writeText ("* You complimented Froggit.<br>* It didn't understand a word you said, but was flattered anyway.");
@@ -636,7 +634,7 @@ isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
 enemyMercy = 100;
-setTimeout(() => {startEnemyTurn();}, 7000)
+setTimeout(() => {nemyTurn();}, 7000)
 }
 else if (currentActItem === 3) {
 writeText ("* You threatened Froggit.<br>* It doesn't have the faintest clue of what you just said, but your tone was intimidating.<br>* Froggits DEFENSE decreased!");
@@ -644,14 +642,14 @@ isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
 enemyDEF -= 3;
-setTimeout(() => {startEnemyTurn();}, 12000)
+setTimeout(() => {nemyTurn();}, 12000)
 }
 else if (currentActItem === 4) {
 writeText ("* You did nothing.<br>* Froggit was confused, but decided to attack anyway.")
 isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
-setTimeout(() => {startEnemyTurn();}, 7000)
+setTimeout(() => {nemyTurn();}, 7000)
 }
 }
 function startEnemyTurn() {
@@ -725,7 +723,9 @@ textBox.style.width = "1050px";
 textBox.style.height = "225px";
 textBox.style.margin = "15px auto"; 
 updateMenu(); 
-writeText("* Froggit awaits your next move!", function() {isActionActive = false;});
+writeText("* Froggit awaits your next move!", function() {
+isActionActive = false; 
+});
 }
 }
 function startTargettingAct() {
