@@ -322,7 +322,7 @@ handleAction();
 else {
 if (!enemyDialogue) {
 if (!isTyping || !enemyDialogue) {
-if (!isActionActive) {
+if (!isActionActive || isEnemyTurn) {
 if (up) { myVerti -= 3; }
 if (down) { myVerti += 3; }
 if (left) { myHoriz -= 3; }
@@ -339,19 +339,17 @@ else {return}
 else {return}
 }
 }
-if (isEnemyTurn && !enemyDialogue) {
 // Left wall
 if (myHoriz < 0) { myHoriz = 0; }
 // Right wall
-if (myHoriz > 143) { myHoriz = 143; }
+if (myHoriz > maxHoriz) { myHoriz = maxHoriz; }
 // Top wall
 if (myVerti < 0) { myVerti = 0; }
 // Bottom wall
-if (myVerti > 143) { myVerti = 143; }
+if (myVerti > maxVerti) { myVerti = maxVerti; }
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
 moveBullets(); 
-}
 }
 function updateDebug() {
 const debugElement = document.getElementById('debugMenu');
@@ -667,6 +665,8 @@ textBox.style.width = "200px";
 textBox.style.height = "200px";
 textBox.style.margin = "0 auto";
 textBox.appendChild(playerElement);
+maxHoriz = 143;
+maxVerti = 143;
 myHoriz = 84; 
 myVerti = 84;
 playerElement.style.left = myHoriz + 'px';
@@ -724,7 +724,9 @@ fly.element.remove();
 bullets = [];
 textBox.style.width = "1050px";
 textBox.style.height = "225px";
-textBox.style.margin = "15px auto"; 
+textBox.style.margin = "15px auto";
+maxHoriz = 568;
+maxVerti = 268;
 updateMenu(); 
 writeText("* Froggit awaits your next move!", function() {
 isActionActive = false; 
