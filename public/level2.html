@@ -119,10 +119,10 @@ writeText(dialogue, callback, index);
 }, delay);
 }
 function startBattle() {
-myVerti = 608;
-myHoriz = 513;
 writeText("* A Froggit appears!");
 setInterval(movement, 10);
+myVerti = 925;
+myHoriz = 36;
 }
 document.onkeydown = function(event){
 if (event.key === "w"){
@@ -664,6 +664,7 @@ textBox.innerHTML = '';
 textBox.style.width = "200px";
 textBox.style.height = "200px";
 textBox.style.margin = "0 auto";
+textBox.style.overflow = 'hidden';
 textBox.appendChild(playerElement);
 maxHoriz = 143;
 maxVerti = 143;
