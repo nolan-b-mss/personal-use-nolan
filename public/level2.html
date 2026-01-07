@@ -339,6 +339,7 @@ else {return}
 else {return}
 }
 }
+if (isEnemyTurn) {
 // Left wall
 if (myHoriz < 0) { myHoriz = 0; }
 // Right wall
@@ -350,6 +351,7 @@ if (myVerti > maxVerti) { myVerti = maxVerti; }
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
 moveBullets(); 
+}
 }
 function updateDebug() {
 const debugElement = document.getElementById('debugMenu');
@@ -411,32 +413,32 @@ playerElement.style.opacity = 1.0;
 }
 function updateMenu(){
 if (currentMenuItem === 1) {
-playerElement.style.top = 925 + 'px'
-playerElement.style.left = 36 + 'px'
+myVerti = 925
+myHoriz = 36
 fightBtn.src = 'sprites/fightSelected.png'
 actBtn.src = 'sprites/act.png'
 itemBtn.src = 'sprites/item.png'
 mercyBtn.src = 'sprites/mercy.png'
 }
 else if (currentMenuItem === 2) {
-playerElement.style.top = 925 + 'px'
-playerElement.style.left = 300 + 'px'
+myVerti = 925
+myHoriz = 300
 fightBtn.src = 'sprites/fight.png'
 actBtn.src = 'sprites/actSelected.png'
 itemBtn.src = 'sprites/item.png'
 mercyBtn.src = 'sprites/mercy.png'
 }
 else if (currentMenuItem === 3) {
-playerElement.style.top = 925 + 'px'
-playerElement.style.left = 561 + 'px'
+myVerti = 925
+myHoriz = 561
 fightBtn.src = 'sprites/fight.png'
 actBtn.src = 'sprites/act.png'
 itemBtn.src = 'sprites/itemSelected.png'
 mercyBtn.src = 'sprites/mercy.png'
 }
 else if (currentMenuItem === 4) {
-playerElement.style.top = 925 + 'px'
-playerElement.style.left = 825 + 'px'
+myVerti = 925
+myHoriz = 825
 fightBtn.src = 'sprites/fight.png'
 actBtn.src = 'sprites/act.png'
 itemBtn.src = 'sprites/item.png'
