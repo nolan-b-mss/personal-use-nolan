@@ -672,7 +672,7 @@ myHoriz = 84;
 myVerti = 84;
 playerElement.style.left = myHoriz + 'px';
 playerElement.style.top = myVerti + 'px';
-console.log ('Starting a new spawner!')
+console.log ('Starting enemy turn...')
 flySpawner = setInterval(spawnFly, 750);
 setTimeout(endEnemyTurn, 8000);
 isEnemyTurn = true;
@@ -682,15 +682,16 @@ let fly = document.createElement('img');
 fly.src = 'sprites/froggit-attack-fly.gif';
 fly.className = 'fly-sprite'; 
 fly.style.position = 'absolute';
-let randomX = Math.random() * 180;
+let randomX = Math.random() * 160;     
 fly.style.left = randomX + 'px';
-fly.style.top = '0px';
+fly.style.top = '-20px';
 textBox.appendChild(fly);
 bullets.push({
 element: fly,
 x: randomX,
-y: 0
+y: -20
 });
+console.log('Spawned fly')
 }
 function moveBullets() {
 bullets.forEach(fly => {
@@ -729,6 +730,7 @@ textBox.style.margin = "15px auto";
 maxHoriz = 568;
 maxVerti = 268;
 updateMenu(); 
+console.log ('Ending enemy turn...')
 writeText("* Froggit awaits your next move!", function() {
 isActionActive = false; 
 });
