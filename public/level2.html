@@ -695,12 +695,10 @@ y: 0
 function moveBullets() {
 bullets.forEach(fly => {
 fly.y += 3;
-if (fly.y > 200) {
-fly.y = -20; 
-fly.x = Math.random() * 180;
-fly.element.style.left = fly.x + 'px';
-}
 fly.element.style.top = fly.y + 'px';
+if (fly.y > 200) {
+fly.element.remove();
+}
 if (!isInvincible) {
 if (fly.x + 10 > myHoriz + 2 && 
 fly.x + 10 < myHoriz + 30 &&
@@ -710,6 +708,7 @@ takeDamage(2);
 }
 }
 });
+bullets = bullets.filter(fly => fly.y <= 200);
 }
 function playerDeath() {
 location.href = 'https://nolan-b-mss.github.io/personal-use-nolan/public/gameover.html';
