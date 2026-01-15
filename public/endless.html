@@ -1,1 +1,358 @@
-
+<!DOCTYPE html>
+<html>
+<head>
+<title>Endless Mode</title>
+<style>
+.yellow {color:yellow;}
+.white {color:white;}
+.blend {background-color:black;color:white;border-color:black;}
+.fly-sprite { width: 20px; height: 20px; }
+.green-fly { filter: sepia(100%) saturate(300%) hue-rotate(70deg); }
+@font-face { font-family: 'DeterminationMono'; src: url('font/DeterminationMonoWebRegular-Z5oq.ttf') format('truetype'); }
+body {height:100vh; margin: 0; background-color:black; position: relative; font-family: 'DeterminationMono', monospace; }
+#gameContainer {width: 1050px; position: absolute; bottom: 5px; left: 400px; display: flex; flex-direction: column; box-sizing: border-box;}
+#textBox {border: solid white; border-width: 12px; background-color: black; position: relative; height: 225px; width: 1050px; margin: 15px auto; color: white; font-size: 32px; padding: 20px; box-sizing: border-box; word-wrap: break-word; overflow-y: hidden; line-height: 1.4; }
+#enemyContainer { position: relative; height: 600px; width: 800px; margin: 0px auto 15px auto; border-width: 12px; background-image: url('sprites/grid.png'); background-position: center; background-repeat: no-repeat; background-size: contain; box-sizing: border-box;}
+#menuBox {width: 1050px; height: 75px; margin: 10px auto 15px auto; display: flex; justify-content: space-around; }
+#hp-section { display: flex; align-items: center; color: white; font-family: 'Determination Mono', monospace; margin-top: 0px;}
+#hp-display-group { display: flex; align-items: center; margin-left: 30px;}
+#hp-container { width: 100px; height: 20px; background-color: #c00; margin: 0 10px;}
+#hp-bar { width: 100%; height: 100%; background-color: #ffff00;}
+#enemy { width: 116px; height: 111px; position: absolute; top: 325px; left: 150px;}
+</style>
+</head>
+<body style="background-color:black; position: relative;">
+<div id="debugMenu" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: lime; font-family: monospace; padding: 10px; border: 1px solid lime; z-index: 1000; font-size: 14px; pointer-events: none;">
+</div>
+<div id="gameContainer">
+<div id="enemyContainer">
+<img id="enemy" src="sprites/froggit.gif">
+</div>
+<img src="sprites/soul-01.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0; z-index: 100;">
+<div id="textBox">
+</div>
+<img id="attackBar" src="sprites/attackbar.gif" style="position: absolute; display: none; width: 14px; height: 200px; z-index: 10;">
+<img id="attackZone" src= "sprites/attackzone.png" style="position: absolute; display: none; z-index: 5;">
+<div id="hp-section">
+<div id="lv-group">FRED  LV 1</div>  
+<div id="hp-display-group">
+<span>HP</span>
+<div id="hp-container">
+<div id="hp-bar"></div>
+</div>
+<span id="hp-text">20 / 20</span>
+</div>
+</div>
+<div id="menuBox">
+<img id="fightBtn" src="sprites/fight.png" height="84" width="220">
+<img id="actBtn" src="sprites/act.png" height="84" width="220">
+<img id="itemBtn" src="sprites/item.png" height="84" width="220">
+<img id="mercyBtn" src="sprites/mercy.png" height="84" width="220">
+</div>
+</div>
+<script>
+let enemyContainer = document.getElementById('enemyContainer');
+let textBox = document.getElementById('textBox');
+let menuBox = document.getElementById('menuBox');
+let gameContainer = document.getElementById('gameContainer');
+let playerElement = document.getElementById('myPlayer01');
+let enemy = document.getElementById('enemy');
+let attackBar = document.getElementById('attackBar');
+let attackZone = document.getElementById('attackZone');
+let maxHoriz = 568;
+let maxVerti = 268;
+let showDebug = false;
+let wMenuKeyDebounced = false;
+let aMenuKeyDebounced = false;
+let sMenuKeyDebounced = false;
+let dMenuKeyDebounced = false;
+let actionKeyDebounced = false;
+let isTyping = false;
+let isMenuPhase = true;
+let isAttacking = false;
+let isActMenuPhase = false;
+let isTargettingAct = false;
+let isItemMenuPhase = false;
+let isActionActive = false;
+let isMercyChoice = false;
+let isEnemyTurn = false;
+let isWaitingToStart = false;
+let victory = false;
+let hasAttacked = false;
+let myHoriz;
+let myVerti;
+let up = false;
+let down = false;
+let right = false;
+let left = false;
+let currentMenuItem = 1;
+let currentActItem = 1;
+let currentItem = 1;
+let currentMercyItem = 1;
+let actionKeyPressed = false;
+let maxHealth = 20;
+let playerHealth = 20;
+let inventory = ['Monster Candy','Monster Candy','Monster Candy','Monster Candy','Bandage']
+let enemyHealth = 20;
+let enemyATK = 10;
+let enemyDEF = 10;
+let enemyMercy = 0;
+let enemyDialogue = false;
+let turnNum = 0;
+let isInvincible = false;
+let battleInitiated = false;
+let boxRect = textBox.getBoundingClientRect();
+let containerRect = gameContainer.getBoundingClientRect();
+let bullets = [];
+let flySpawner;
+let boxLeft;
+let boxTop;
+let barPosition = 0;
+let moveBarID;
+let targetCenter = 480;
+function writeText(dialogue, callback, index = 0) {
+if (index === 0) {
+if (isTyping) return;
+isTyping = true;
+textBox.innerHTML = '';
+}
+if (index >= dialogue.length) {
+isTyping = false;
+if (callback) callback(); 
+return;
+}
+let delay = 50;
+if (dialogue.substring(index, index + 4) === '<br>') {
+textBox.innerHTML += '<br>';
+index += 4;
+delay = 0;
+} else {
+textBox.innerHTML += dialogue[index];
+index += 1;
+}
+setTimeout(function() {
+writeText(dialogue, callback, index);
+}, delay);
+}
+function startBattle() {
+writeText("* Press Z or Enter to start Endless Mode...");
+menuBox.style.display = 'none'; 
+if (!battleInitiated) {
+setInterval(movement, 10);
+battleInitiated = true;
+}
+isWaitingToStart = true; 
+}
+document.onkeydown = function(event){
+if (event.key === "z" || event.key === "Enter"){
+if (isWaitingToStart) {
+startEnemyTurn();
+isWaitingToStart = false;
+}
+else {return;}
+}
+if (event.key === "w"){
+up = true;
+}
+if (event.key === "s"){
+down = true;
+}
+if (event.key === "a"){
+left = true;
+}
+if (event.key === "d"){
+right = true;
+}
+if (event.ctrlKey && event.key === "q"){
+showDebug = !showDebug;
+const debugElement = document.getElementById('debugMenu');
+if (showDebug) {
+debugElement.style.display = 'block';
+} else {debugElement.style.display = 'none';}
+}    
+}
+document.onkeyup = function(event){
+if (event.key === "w"){up = false; wMenuKeyDebounced = false;}
+if (event.key === "s"){down = false; sMenuKeyDebounced = false;}
+if (event.key === "a"){left = false; aMenuKeyDebounced = false;}
+if (event.key === "d"){right = false; dMenuKeyDebounced = false;}
+}
+function movement() {
+updateDebug();
+playerElement.style.top = myVerti + 'px';
+playerElement.style.left = myHoriz + 'px'; 
+if (isEnemyTurn) {
+if (up) { myVerti -= 3; }
+if (down) { myVerti += 3; }
+if (left) { myHoriz -= 3; }
+if (right) { myHoriz += 3; }
+if (myHoriz < 0) { myHoriz = 0; }
+if (myHoriz > maxHoriz) { myHoriz = maxHoriz; }
+if (myVerti < 0) { myVerti = 0; }
+if (myVerti > maxVerti) { myVerti = maxVerti; }
+moveBullets();
+playerElement.style.top = myVerti + 'px';
+playerElement.style.left = myHoriz + 'px';
+}
+}
+function updateDebug() {
+const debugElement = document.getElementById('debugMenu');
+if (!showDebug){debugMenu.style.display = 'none'}
+else if (showDebug){debugMenu.style.display = 'block'}
+if (!debugElement) return;
+debugElement.innerHTML = `
+---------------- <br>
+Menu Variables<br>
+IsTyping: ${isTyping}<br>
+ActionKeyPressed: ${actionKeyPressed}<br>
+MenuItem: ${currentMenuItem}<br>
+MenuPhase: ${isMenuPhase}<br>
+ActMenu: ${isActMenuPhase}<br>
+ActItem: ${currentActItem}<br>
+TargetAct: ${isTargettingAct}<br>
+ItemMenu: ${isItemMenuPhase}<br>
+Item: ${currentItem}<br>
+MercyChoice: ${isMercyChoice}<br>
+MercyItem: ${currentMercyItem}<br>
+ActionActive: ${isActionActive}<br>
+---------------- <br>
+Player Variables<br>
+Up: ${up}<br>
+Left: ${left}<br>
+Down: ${down}<br>
+Right: ${right}<br>
+X: ${myHoriz}<br>
+Y: ${myVerti}<br>
+Health: ${playerHealth}<br>
+Maximum HP: ${maxHealth}<br>
+---------------- <br>
+Enemy Variables<br>
+Attack: ${enemyATK}<br>
+Defense: ${enemyDEF}<br>
+Mercy: ${enemyMercy}<br>
+Health: ${enemyHealth}<br>
+EnemyDialogue: ${enemyDialogue}<br>
+EnemyTurn: ${isEnemyTurn}<br>
+`;
+}
+function updateUI() {
+let healthPercent = (playerHealth / maxHealth) * 100;
+if (healthPercent < 0) {
+healthPercent = 0;
+}
+let hpBar = document.getElementById("hp-bar");
+hpBar.style.width = healthPercent + "%";
+let hpText = document.getElementById("hp-text");
+hpText.innerText = playerHealth + " / " + maxHealth;
+}
+function takeDamage(damageAmount) {
+if (!isInvincible && playerHealth > 0) {
+playerHealth -= damageAmount;
+updateUI();
+if (playerHealth <= 0) {
+playerHealth = 0;
+updateUI();
+playerDeath();
+return;
+}
+isInvincible = true;
+playerElement.style.opacity = 0.5;
+setTimeout(function() {
+isInvincible = false;
+playerElement.style.opacity = 1.0;
+}, 1000);
+}
+}
+function startEnemyTurn() {
+if (isEnemyTurn) return;
+clearInterval(flySpawner);
+enemyDialogue = false;
+isActionActive = true;
+isAttacking = false;
+hasAttacked = false;
+turnNum = 1;
+bullets = [];
+textBox.innerHTML = '';
+textBox.style.width = "200px";
+textBox.style.height = "200px";
+textBox.style.margin = "0 auto";
+textBox.style.overflow = 'hidden';
+textBox.appendChild(playerElement);
+maxHoriz = 143;
+maxVerti = 143;
+myHoriz = 84; 
+myVerti = 84;
+playerElement.style.left = myHoriz + 'px';
+playerElement.style.top = myVerti + 'px';
+flySpawner = setInterval(spawnFly, 375);
+isEnemyTurn = true;
+}
+function spawnFly() {
+let fly = document.createElement('img');
+fly.src = 'sprites/froggit-attack-fly.gif';
+fly.className = 'fly-sprite'; 
+fly.style.position = 'absolute';
+let randomX = Math.random() * 160;      
+fly.style.left = randomX + 'px';
+fly.style.top = '-20px';
+textBox.appendChild(fly);
+bullets.push({
+element: fly,
+x: randomX,
+y: -20
+});
+let isGreen = Math.random() < 0.05;
+if (isGreen) {
+    fly.classList.add('green-fly');
+}
+}
+function moveBullets() {
+bullets.forEach(fly => {
+fly.y += 3;
+fly.element.style.top = fly.y + 'px';
+if (fly.y > 200) {
+fly.element.remove();
+}
+if (!isInvincible) {
+if (fly.x + 10 > myHoriz + 2 && 
+fly.x + 10 < myHoriz + 30 &&
+fly.y + 10 > myVerti + 2 && 
+fly.y + 10 < myVerti + 30) {
+if (fly.element.classList.contains('green-fly')){
+playerHealth+=3;
+if (playerHealth > 20) {playerHealth = 20;}
+} else {
+takeDamage(3); 
+}
+}
+}
+});
+bullets = bullets.filter(fly => fly.y <= 200);
+}
+function playerDeath() {
+location.href = 'gameover.html';
+}
+function endEnemyTurn() {
+if (isEnemyTurn) {
+isEnemyTurn = false;
+isMenuPhase = true;
+clearInterval(flySpawner);
+gameContainer.appendChild(playerElement);
+bullets.forEach(fly => {
+fly.element.remove();
+});
+bullets = [];
+textBox.style.width = "1050px";
+textBox.style.height = "225px";
+textBox.style.margin = "15px auto";
+maxHoriz = 568;
+maxVerti = 268; 
+writeText("* Froggit awaits your next move!", function() {
+isActionActive = false; 
+});
+}
+}
+startBattle();
+</script>
+</body>
+</html>
