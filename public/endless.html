@@ -339,6 +339,8 @@ bullets = bullets.filter(fly => fly.y <= 200 && !fly.removed);
 function increaseDifficulty() {
 if (flyTimer > 100){
 flyTimer -= 25
+clearInterval(flySpawner)
+flySpawner = setInterval(spawnFly, flyTimer)
 }
 else {return;}
 }
