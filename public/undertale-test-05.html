@@ -1,7 +1,7 @@
 <h1 align=center style="color:white;"> Interaction </h1>
 <p align=center class="white">You can press Z or ENTER to interact.</p>
 <head>
- <title>Lobby.html</title>
+ <title>Lobby</title>
  <style>.white {color:white;}</style>
  <style>.blend {background-color:black;color:white;border-color:black;}</style>
   <style>#gameBox {
@@ -14,8 +14,8 @@
 </head>
 <body style="background-color:black;">
 <div id="gameBox">
- <img src="soul-01.png" width="32" height="32" id="myPlayer01" style="position:relative;left:0px;top:0px;opacity:1.0;z-index:100;">
-  <div id="battleOne" style="width:267px;height:95px;position:absolute;background-image:url('l2.png');background-repeat:no-repeat;background-size:100% 100%;left:450px;top:450px;z-index:10;"></div>
+ <img src="sprites/soul-01.png" width="32" height="32" id="myPlayer01" style="position:relative;left:0px;top:0px;opacity:1.0;z-index:100;">
+  <div id="battleOne" style="width:267px;height:95px;position:absolute;background-image:url('sprites/l1.png');background-repeat:no-repeat;background-size:100% 100%;left:450px;top:450px;z-index:10;"></div>
 </div>
 <script>
  window.addEventListener('resize', updateBoundaries);
@@ -125,6 +125,6 @@
  //=================\\
  function startBattleOne(){
     battleInitiated = true; 
-    window.location.href="level2.html";
+    window.location.href="level1.html";
 }
 </script>
