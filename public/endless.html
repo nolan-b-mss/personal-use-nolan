@@ -105,6 +105,7 @@ let boxRect = textBox.getBoundingClientRect();
 let containerRect = gameContainer.getBoundingClientRect();
 let bullets = [];
 let flySpawner;
+let flyTimer = 375;
 let boxLeft;
 let boxTop;
 let barPosition = 0;
@@ -282,7 +283,8 @@ myHoriz = 84;
 myVerti = 84;
 playerElement.style.left = myHoriz + 'px';
 playerElement.style.top = myVerti + 'px';
-flySpawner = setInterval(spawnFly, 375);
+flySpawner = setInterval(spawnFly, flyTimer);
+setInterval(increaseDifficulty, 7500);
 isEnemyTurn = true;
 }
 function spawnFly() {
@@ -334,8 +336,13 @@ fly.removed = true;
 });
 bullets = bullets.filter(fly => fly.y <= 200 && !fly.removed);
 }
+function increaseDifficulty() {
+if (flyTimer > 100){
+flyTimer -= 25
+}
+else {return;}
 function playerDeath() {
-location.href = 'gameover.html';
+location.href = 'gameover-endless.html';
 }
 function endEnemyTurn() {
 if (isEnemyTurn) {
