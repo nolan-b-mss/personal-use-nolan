@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fallen Down...</title>
+    <style>
+        body {
+            background-color: black;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #soul-container {
+            position: relative;
+            width: 32px;
+            height: 32px;
+        }
+        #soul {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .hidden {
+            display: none;
+        }
+        #game-over-sprite {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 2s;
+        }
+        .reveal-text {
+            opacity: 1 !important;
+        }
+        #restart-prompt {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-family: monospace;
+            font-size: 20px;
+        }
+
+        .flashing {
+            animation: blink 1s step-start infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        .shard-piece {
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-over-screen">
+        <div id="soul-container">
+            <img id="soul" src="sprites/soul-01.png">
+        </div>
+        <img id="game-over-sprite" src="sprites/game_over.png" class="hidden">
+        <div id="restart-prompt" class="hidden">Press [Z] to Restart</div>
+    </div>
+
+    <script>
+        const SHARD_COUNT = 6;
+        const VARIANT_COUNT = 4;
+        const GRAVITY = 0.25;
+
+        function startGameOver() {
+            setTimeout(() => {
+                const soul = document.getElementById('soul');
+                soul.src = 'sprites/brokenheart.png';
+
+                setTimeout(shatter, 500);
+            }, 1000);
+        }
+
+        function shatter() {
+            const soulContainer = document.getElementById('soul-container');
+            const soul = document.getElementById('soul');
+            
+            soul.style.display = 'none';
+
+            for (let i = 0; i < SHARD_COUNT; i++) {
+                const shard = document.createElement('img');
+                const variant = i % VARIANT_COUNT;
+                
+                shard.src = `sprites/shard${variant}.png`;
+                shard.classList.add('shard-piece');
+
+                shard.dataset.currentX = 0;
+                shard.dataset.currentY = 0;
+                
+                shard.dataset.horizontalVelocity = (Math.random() * 8) - 4;
+                shard.dataset.verticalVelocity = (Math.random() * -5) - 5;
+
+                soulContainer.appendChild(shard);
+            }
+            
+            requestAnimationFrame(updatePhysics);
+        }
+
+        function updatePhysics() {
+            const shards = document.querySelectorAll('.shard-piece');
+            const screenBottom = window.innerHeight;
+
+            shards.forEach(shard => {
+                let posX = parseFloat(shard.dataset.currentX);
+                let posY = parseFloat(shard.dataset.currentY);
+                let vX = parseFloat(shard.dataset.horizontalVelocity);
+                let vY = parseFloat(shard.dataset.verticalVelocity);
+
+                vY += GRAVITY;
+                posX += vX;
+                posY += vY;
+
+                shard.style.transform = `translate(${posX}px, ${posY}px)`;
+
+                shard.dataset.currentX = posX;
+                shard.dataset.currentY = posY;
+                shard.dataset.verticalVelocity = vY;
+
+                if (shard.getBoundingClientRect().top > screenBottom) {
+                    shard.remove();
+                }
+            });
+
+            if (document.querySelectorAll('.shard-piece').length > 0) {
+                requestAnimationFrame(updatePhysics);
+            } else {
+                showGameOverText();
+            }
+        }
+
+function showGameOverText() {
+    const textSprite = document.getElementById('game-over-sprite');
+    const restartPrompt = document.getElementById('restart-prompt');
+    
+    textSprite.classList.remove('hidden');
+    
+    setTimeout(() => {
+        textSprite.classList.add('reveal-text');
+        
+        setTimeout(() => {
+            restartPrompt.classList.remove('hidden');
+            restartPrompt.classList.add('flashing');
+            
+            window.addEventListener('keydown', handleInput);
+        }, 2000); 
+        
+    }, 100);
+}
+
+        startGameOver();
+
+function handleInput(event) {
+    if (event.key.toLowerCase() === 'z') {
+        window.location.href = 'level2.html';
+    }
+}
+    </script>
+</body>
+</html>
