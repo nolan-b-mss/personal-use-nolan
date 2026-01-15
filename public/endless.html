@@ -179,8 +179,6 @@ if (event.key === "d"){right = false; dMenuKeyDebounced = false;}
 }
 function movement() {
 updateDebug();
-playerElement.style.top = myVerti + 'px';
-playerElement.style.left = myHoriz + 'px'; 
 if (isEnemyTurn) {
 if (up) { myVerti -= 3; }
 if (down) { myVerti += 3; }
@@ -301,7 +299,7 @@ element: fly,
 x: randomX,
 y: -20
 });
-let isGreen = Math.random() < 0.05;
+let isGreen = Math.random() < 0.15;
 if (isGreen) {
     fly.classList.add('green-fly');
 }
@@ -323,13 +321,16 @@ playerHealth += 3;
 if (playerHealth > 20) { playerHealth = 20; }
 updateUI();
 fly.element.remove();
+fly.removed = true;
 } else {
-takeDamage(3); 
+takeDamage(3);
+fly.element.remove();
+fly.removed = true;
 }
 }
 }
 });
-bullets = bullets.filter(fly => fly.y <= 200);
+bullets = bullets.filter(fly => fly.y <= 200 && !fly.removed);
 }
 function playerDeath() {
 location.href = 'gameover.html';
