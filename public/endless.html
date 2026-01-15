@@ -7,7 +7,7 @@
 .white {color:white;}
 .blend {background-color:black;color:white;border-color:black;}
 .fly-sprite { width: 20px; height: 20px; }
-.green-fly { filter: sepia(100%) saturate(300%) hue-rotate(70deg); }
+.green-fly {}
 @font-face { font-family: 'DeterminationMono'; src: url('font/DeterminationMonoWebRegular-Z5oq.ttf') format('truetype'); }
 body {height:100vh; margin: 0; background-color:black; position: relative; font-family: 'DeterminationMono', monospace; }
 #gameContainer {width: 1050px; position: absolute; bottom: 5px; left: 400px; display: flex; flex-direction: column; box-sizing: border-box;}
@@ -287,8 +287,6 @@ isEnemyTurn = true;
 }
 function spawnFly() {
 let fly = document.createElement('img');
-fly.src = 'sprites/froggit-attack-fly.gif';
-fly.className = 'fly-sprite'; 
 fly.style.position = 'absolute';
 let randomX = Math.random() * 160;      
 fly.style.left = randomX + 'px';
@@ -301,7 +299,11 @@ y: -20
 });
 let isGreen = Math.random() < 0.15;
 if (isGreen) {
-    fly.classList.add('green-fly');
+fly.src = 'sprites/froggit-heal-fly.gif';
+fly.classList.add('green-fly');
+} else {
+fly.src = 'sprites/froggit-attack-fly.gif';
+fly.classList.add('fly-sprite');
 }
 }
 function moveBullets() {
