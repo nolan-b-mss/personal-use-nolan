@@ -318,9 +318,11 @@ if (fly.x + 10 > myHoriz + 2 &&
 fly.x + 10 < myHoriz + 30 &&
 fly.y + 10 > myVerti + 2 && 
 fly.y + 10 < myVerti + 30) {
-if (fly.element.classList.contains('green-fly')){
-playerHealth+=3;
-if (playerHealth > 20) {playerHealth = 20;}
+if (fly.element.classList.contains('green-fly')) {
+playerHealth += 3;
+if (playerHealth > 20) { playerHealth = 20; }
+updateUI();
+fly.element.remove();
 } else {
 takeDamage(3); 
 }
