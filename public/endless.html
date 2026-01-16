@@ -37,7 +37,8 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 <div id="hp-section"> 
 <div id="hp-display-group">
 <div id="hp-text-wrapper">
-<span style="font-size:48px;">HP</span>
+<span id ="scoreDisplay" style="font-size:48px;">Score: 0</span>
+<span style="font-size:48px;">HP:</span>
 <span id="hp-text">20 / 20</span>
 </div>
 <div id="hp-container">
@@ -93,6 +94,7 @@ let currentMercyItem = 1;
 let actionKeyPressed = false;
 let maxHealth = 20;
 let playerHealth = 20;
+let score = 0;
 let inventory = ['Monster Candy','Monster Candy','Monster Candy','Monster Candy','Bandage']
 let enemyHealth = 20;
 let enemyATK = 10;
@@ -268,6 +270,7 @@ playerElement.style.left = myHoriz + 'px';
 playerElement.style.top = myVerti + 'px';
 flySpawner = setInterval(spawnFly, flyTimer);
 setInterval(increaseDifficulty, 7500);
+setInterval(increaseScore, 1000);
 isEnemyTurn = true;
 }
 function spawnFly() {
@@ -326,6 +329,10 @@ clearInterval(flySpawner)
 flySpawner = setInterval(spawnFly, flyTimer)
 }
 else {return;}
+}
+function increaseScore() {
+score += 1
+document.getElementById('scoreDisplay').innerHTML = 'Score:' + score;
 }
 function playerDeath() {
 location.href = 'gameover-endless.html';
