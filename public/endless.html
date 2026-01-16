@@ -85,6 +85,7 @@ let isEnemyTurn = false;
 let isWaitingToStart = false;
 let isCheating = false;
 let victory = false;
+let dead = false;
 let hasAttacked = false;
 let myHoriz;
 let myVerti;
@@ -343,7 +344,7 @@ flySpawner = setInterval(spawnFly, flyTimer)
 else {return;}
 }
 function increaseScore() {
-if (isCheating){return;}
+if (isCheating || dead){return;}
 else {
 score += 1
 document.getElementById('scoreDisplay').innerHTML = 'Score:' + score;
@@ -357,6 +358,7 @@ localStorage.setItem('endlessHighScore', highScore);
 function playerDeath() {
 if (score > highScore) {localStorage.setItem('endlessHighScore', score);}
 location.href = 'gameover-endless.html';
+dead = true;
 }
 startBattle();
 </script>
