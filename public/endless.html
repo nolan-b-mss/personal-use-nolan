@@ -270,7 +270,6 @@ playerElement.style.left = myHoriz + 'px';
 playerElement.style.top = myVerti + 'px';
 flySpawner = setInterval(spawnFly, flyTimer);
 setInterval(increaseDifficulty, 7500);
-setInterval(increaseScore, 1000);
 isEnemyTurn = true;
 }
 function spawnFly() {
@@ -300,6 +299,7 @@ fly.y += 3;
 fly.element.style.top = fly.y + 'px';
 if (fly.y > 200) {
 fly.element.remove();
+increaseScore();
 }
 if (!isInvincible) {
 if (fly.x + 10 > myHoriz + 2 && 
