@@ -94,41 +94,8 @@
  
  function updateBoundaries(){
     maxHoriz = 1000 - 32;
-    maxVerti = document.body.clientHeight - 32 - 100;
+    maxVerti = document.gameBox.clientHeight - 32 - 100;
 }
- //=============\\
- //Health System\\
- //=============\\
- function updateHealth(){
-  healthDisplay.textContent = "HP: " + playerHealth + "/20";}
- updateHealth()
- //=============\\
- //Damage System\\
- //=============\\
- function takeDamage(damageAmount){
-  if (!isInvincible){
-  playerHealth = parseInt(playerHealth) - damageAmount
-  updateHealth()
-  if (playerHealth <= 0){
-   playerDeath();
-  }
-   isInvincible = true;
-   playerElement.style.opacity = 0.5;
-   playerElement.style.transform = 'translateZ(0)';
-   setTimeout(function(){
-   playerElement.style.opacity = 1.0;
-   isInvincible = false;
-   playerElement.style.transform = '';
-   },1000)
- }
-}
- function playerDeath(){
-  alert('you died')
-  playerHealth = 20
-  updateHealth()
-  myHoriz = 484
-  myVerti = 450
- }
  //=================\\
  //Battle Initiation\\
  //=================\\
