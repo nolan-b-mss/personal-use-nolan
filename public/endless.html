@@ -83,6 +83,7 @@ let isActionActive = false;
 let isMercyChoice = false;
 let isEnemyTurn = false;
 let isWaitingToStart = false;
+let isCheating = false;
 let victory = false;
 let hasAttacked = false;
 let myHoriz;
@@ -257,6 +258,7 @@ playerElement.style.opacity = 1.0;
 }
 function startEnemyTurn() {
 if (isEnemyTurn) return;
+if (flyTimer > 375 || flyTimer < 100){ isCheating = true; }
 clearInterval(flySpawner);
 enemyDialogue = false;
 isActionActive = true;
@@ -279,6 +281,7 @@ playerElement.style.top = myVerti + 'px';
 flySpawner = setInterval(spawnFly, flyTimer);
 setInterval(increaseDifficulty, 7500);
 isEnemyTurn = true;
+}
 }
 function spawnFly() {
 let fly = document.createElement('img');
@@ -339,12 +342,15 @@ flySpawner = setInterval(spawnFly, flyTimer)
 else {return;}
 }
 function increaseScore() {
+if (isCheating){return;}
+else {
 score += 1
 document.getElementById('scoreDisplay').innerHTML = 'Score:' + score;
 if (score > highScore) {
 highScore = score; 
 document.getElementById('highScoreDisplay').innerHTML = 'Best:' + highScore; 
 localStorage.setItem('endlessHighScore', highScore);
+}
 }
 }
 function playerDeath() {
