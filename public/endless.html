@@ -320,6 +320,7 @@ bullets = bullets.filter(fly => fly.y <= 200 && !fly.removed);
 function increaseDifficulty() {
 if (isCheating){return;}
 if (flyTimer > 100){
+console.log('Increased difficulty!')
 flyTimer -= 25
 clearInterval(flySpawner)
 flySpawner = setInterval(spawnFly, flyTimer)
