@@ -20,6 +20,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 #hp-bar { width: 100%; height: 100%; background-color: #ffff00;}
 #hp-text { font-size: 48px; }
 #enemy { width: 116px; height: 111px; position: absolute; top: 500px; left: 335px;}
+#score-group { display: flex; flex-direction: column; align-items: center; margin-top: 10px;}
 </style>
 </head>
 <body style="background-color:black; position: relative;">
@@ -37,12 +38,15 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 <div id="hp-section"> 
 <div id="hp-display-group">
 <div id="hp-text-wrapper">
-<span id ="scoreDisplay" style="font-size:48px;">Score: 0</span>
 <span style="font-size:48px;">HP:</span>
 <span id="hp-text">20 / 20</span>
 </div>
 <div id="hp-container">
 <div id="hp-bar"></div>
+</div>
+<div id="score-group" style="display: flex; flex-direction: column; align-items: center;">
+<span id="scoreDisplay" style="font-size:48px;">Score: 0</span>
+<span id="highScoreDisplay" style="font-size:48px; color: gold;">Best: 0</span>
 </div>
 </div>
 <div id="menuBox">
@@ -95,6 +99,7 @@ let actionKeyPressed = false;
 let maxHealth = 20;
 let playerHealth = 20;
 let score = 0;
+let highScore = localStorage.getItem('endlessHighScore') || 0;
 let inventory = ['Monster Candy','Monster Candy','Monster Candy','Monster Candy','Bandage']
 let enemyHealth = 20;
 let enemyATK = 10;
@@ -114,6 +119,7 @@ let boxTop;
 let barPosition = 0;
 let moveBarID;
 let targetCenter = 480;
+document.getElementById('highScoreDisplay').innerHTML = 'Best: ' + highScore;
 function writeText(dialogue, callback, index = 0) {
 if (index === 0) {
 if (isTyping) return;
@@ -333,29 +339,15 @@ else {return;}
 function increaseScore() {
 score += 1
 document.getElementById('scoreDisplay').innerHTML = 'Score:' + score;
+if (score > highScore) {
+highScore = score; 
+document.getElementById('highScoreDisplay').innerHTML = 'Best:' + highScore; 
+localStorage.setItem('endlessHighScore', highScore);
+}
 }
 function playerDeath() {
+if (score > highScore) {localStorage.setItem('endlessHighScore', score);}
 location.href = 'gameover-endless.html';
-}
-function endEnemyTurn() {
-if (isEnemyTurn) {
-isEnemyTurn = false;
-isMenuPhase = true;
-clearInterval(flySpawner);
-gameContainer.appendChild(playerElement);
-bullets.forEach(fly => {
-fly.element.remove();
-});
-bullets = [];
-textBox.style.width = "1050px";
-textBox.style.height = "225px";
-textBox.style.margin = "15px auto";
-maxHoriz = 568;
-maxVerti = 268; 
-writeText("* Froggit awaits your next move!", function() {
-isActionActive = false; 
-});
-}
 }
 startBattle();
 </script>
