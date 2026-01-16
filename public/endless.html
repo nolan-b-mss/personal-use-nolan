@@ -258,7 +258,7 @@ playerElement.style.opacity = 1.0;
 }
 function startEnemyTurn() {
 if (isEnemyTurn) return;
-if (flyTimer > 375 || flyTimer < 100){ isCheating = true; }
+if (flyTimer > 375 || flyTimer < 100){ isCheating = true; console.log('Why you cheat? :('); }
 clearInterval(flySpawner);
 enemyDialogue = false;
 isActionActive = true;
@@ -333,6 +333,7 @@ fly.removed = true;
 bullets = bullets.filter(fly => fly.y <= 200 && !fly.removed);
 }
 function increaseDifficulty() {
+if (isCheating){return;}
 if (flyTimer > 100){
 flyTimer -= 25
 clearInterval(flySpawner)
