@@ -1,5 +1,5 @@
-<h1 align=center style="color:white;"> Interaction </h1>
-<p align=center class="white">You can press Z or ENTER to interact.</p>
+<h1 align=center style="color:white;"> You can press Z or ENTER to interact. </h1>
+<p align=center class="white"></p>
 <head>
  <title>Lobby</title>
  <style>.white {color:white;}</style>
@@ -26,6 +26,7 @@
   let playerElement = document.getElementById('myPlayer01');
   let healthDisplay = document.getElementById('myHealth');
   let battleOneBox = document.getElementById('battleOne');
+  let endlessModeBox = document.getElementById('endlessMode');
   let maxHoriz;
   let maxVerti;
   var isInvincible = false;
@@ -82,6 +83,12 @@
         myVerti < battleOneBox.offsetTop + 95 &&
         !battleInitiated && actionKeyPressed)
     {startBattleOne();}
+    if (myHoriz + 32 > endlessModeBox.offsetLeft &&
+        myHoriz < endlessModeBox.offsetLeft + 267 &&
+        myVerti + 32 > endlessModeBox.offsetTop &&
+        myVerti < endlessModeBox.offsetTop + 95 &&
+        !battleInitiated && actionKeyPressed)
+    {startEndlessMode();}
     }
  
  function updateBoundaries(){
@@ -127,6 +134,9 @@
  function startBattleOne(){
     battleInitiated = true; 
     window.location.href="level1.html";
- function startEndlessMode(){}
-}
+ }
+ function startEndlessMode(){
+    battleInitiated = true; 
+    window.location.href="endless.html";
+ }
 </script>
