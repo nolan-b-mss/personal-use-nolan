@@ -155,11 +155,13 @@ isWaitingToStart = true;
 }
 document.onkeydown = function(event){
 if (event.key === "z" || event.key === "Enter"){
+if (isTyping){return;} else{
 if (isWaitingToStart) {
 startEnemyTurn();
 isWaitingToStart = false;
 }
 else {return;}
+}
 }
 if (event.key === "w"){
 up = true;
