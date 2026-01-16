@@ -73,7 +73,7 @@
      if (right) { myHoriz += 3}
      if (myHoriz < 0){myHoriz = 0}
      if (myHoriz > maxHoriz){myHoriz = maxHoriz}
-     if (myVerti < 100){myVerti = 100}
+     if (myVerti < 0){myVerti = 0}
      if (myVerti > maxVerti){myVerti = maxVerti}
      playerElement.style.top = myVerti + 'px'
      playerElement.style.left = myHoriz + 'px'
@@ -94,7 +94,7 @@
  
  function updateBoundaries(){
     maxHoriz = 1000 - 32;
-
+    maxVerti = document.body.clientHeight - 32;
 }
  //=================\\
  //Battle Initiation\\
