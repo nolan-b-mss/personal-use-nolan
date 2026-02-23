@@ -349,6 +349,7 @@ function resetScore() {
 score = 0;
 highScore = 0;
 localStorage.setItem('endlessHighScore', score);
+document.getElementById('highScoreDisplay').innerHTML = 'Best:' + highScore; 
 }
 startBattle();
 </script>
