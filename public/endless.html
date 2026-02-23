@@ -345,6 +345,11 @@ if (score > highScore) {localStorage.setItem('endlessHighScore', score);}
 location.href = 'gameover-endless.html';
 dead = true;
 }
+function resetScore() {
+score = 0;
+highScore = 0;
+localStorage.setItem('endlessHighScore', score);
+}
 startBattle();
 </script>
 </body>
