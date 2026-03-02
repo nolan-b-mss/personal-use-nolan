@@ -310,6 +310,7 @@ fly.y + 10 < myVerti + 30 &&
 fly.element.classList.contains('god-fly')) {
 playerHealth = 20;
 increaseScore(100);
+collectGodFly();
 }
 if (!isInvincible) {
 if (fly.x + 10 > myHoriz + 2 && 
@@ -367,6 +368,22 @@ score = 0;
 highScore = 0;
 localStorage.setItem('endlessHighScore', score);
 document.getElementById('highScoreDisplay').innerHTML = 'Best:' + highScore; 
+}
+function collectGodFly() {
+let intervalID = setInterval(cycleColor();, 200)
+}
+function cycleColor(); {
+if (textBox.style.borderColor = 'white'){textBox.style.borderColor = 'red'}
+else if (textBox.style.borderColor = 'red'){textBox.style.borderColor = 'orange'}
+else if (textBox.style.borderColor = 'orange'){textBox.style.borderColor = 'yellow'}
+else if (textBox.style.borderColor = 'yellow'){textBox.style.borderColor = 'lime'}
+else if (textBox.style.borderColor = 'lime'){textBox.style.borderColor = 'green'}
+else if (textBox.style.borderColor = 'green'){textBox.style.borderColor = 'aqua'}
+else if (textBox.style.borderColor = 'aqua'){textBox.style.borderColor = 'cornflower blue'}
+else if (textBox.style.borderColor = 'cornflower blue'){textBox.style.borderColor = 'blue violet'}
+else if (textBox.style.borderColor = 'blue violet'){textBox.style.borderColor = 'fuchsia'}
+else if (textBox.style.borderColor = 'fuchsia'){textBox.style.borderColor = 'deep pink'}
+else if (textBox.style.borderColor = 'deep pink'){textBox.style.borderColor = 'white'; clearInterval(intervalID);}
 }
 startBattle();
 </script>
