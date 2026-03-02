@@ -242,7 +242,7 @@ playerElement.style.opacity = 1.0;
 }
 function startEnemyTurn() {
 if (isEnemyTurn) return;
-if (flyTimer > 375 || flyTimer < 100 || isCheating){ isCheating = true; console.log('Why you cheat? :('); textBox.style.borderColor = 'red'; }
+if (flyTimer > 375 || flyTimer < 100 || isCheating || isInvincible){ isCheating = true; console.log('Why you cheat? :('); textBox.style.borderColor = 'red'; }
 clearInterval(flySpawner);
 enemyDialogue = false;
 isActionActive = true;
@@ -290,9 +290,6 @@ let isGod = Math.random() < 0.01;
 if (isGod) {
 fly.src = 'sprites/froggit-god-fly.gif';
 fly.classList.add('god-fly');
-} else {
-fly.src = 'sprites/froggit-attack-fly.gif';
-fly.classList.add('fly-sprite');
 }
 }
 function moveBullets() {
