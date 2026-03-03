@@ -383,6 +383,7 @@ function cycleColor() {
 textBox.style.borderColor = colors[colorIndex];
 colorIndex += 1;
 if (colorIndex === colors.length) { 
+colorIndex = 0;
 cycleCount += 1;
 if (cycleCount === 3){
 clearInterval(intervalID);
