@@ -104,6 +104,9 @@ let barPosition = 0;
 let moveBarID;
 let targetCenter = 480;
 let intervalID;
+let cycleCount = 0;
+const colors = ["#FFFFFF","#E81416","#FFA500","#FAEB36","#79C314","#487DE7","#4B369D","#70369D"]; 
+let colorIndex = 0;
 document.getElementById('highScoreDisplay').innerHTML = 'Best: ' + highScore;
 function writeText(dialogue, callback, index = 0) {
 if (index === 0) {
@@ -371,20 +374,16 @@ localStorage.setItem('endlessHighScore', score);
 document.getElementById('highScoreDisplay').innerHTML = 'Best:' + highScore; 
 }
 function collectGodFly() {
-intervalID = setInterval(cycleColor, 200);
+cycleCount = 0;
+intervalID = setInterval(cycleColor, 100);
 }
 function cycleColor() {
-if (textBox.style.borderColor === 'white' || textBox.style.borderColor === ''){textBox.style.borderColor = 'red'; console.log('Color switched')}
-else if (textBox.style.borderColor === 'red'){textBox.style.borderColor = 'orange'; console.log('Color switched')}
-else if (textBox.style.borderColor === 'orange'){textBox.style.borderColor = 'yellow'; console.log('Color switched')}
-else if (textBox.style.borderColor === 'yellow'){textBox.style.borderColor = 'lime'; console.log('Color switched')}
-else if (textBox.style.borderColor === 'lime'){textBox.style.borderColor = 'green'; console.log('Color switched')}
-else if (textBox.style.borderColor === 'green'){textBox.style.borderColor = 'aqua'; console.log('Color switched')}
-else if (textBox.style.borderColor === 'aqua'){textBox.style.borderColor = 'cornflowerblue'; console.log('Color switched')}
-else if (textBox.style.borderColor === 'cornflowerblue'){textBox.style.borderColor = 'blueviolet'; console.log('Color switched')}
-else if (textBox.style.borderColor === 'blueviolet'){textBox.style.borderColor = 'fuchsia'; console.log('Color switched')}
-else if (textBox.style.borderColor === 'fuchsia'){textBox.style.borderColor = 'deeppink'; console.log('Color switched')}
-else if (textBox.style.borderColor === 'deeppink'){textBox.style.borderColor = 'white'; clearInterval(intervalID); console.log('Color switched and ended cycle')}
+textBox.style.borderColor = colors[colorIndex];
+colorIndex++;
+if (colorIndex === colors.length) { 
+clearInterval(colorInterval);
+colorIndex = 0; 
+}
 }
 startBattle();
 </script>
