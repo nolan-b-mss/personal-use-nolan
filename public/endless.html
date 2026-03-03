@@ -374,15 +374,22 @@ localStorage.setItem('endlessHighScore', score);
 document.getElementById('highScoreDisplay').innerHTML = 'Best:' + highScore; 
 }
 function collectGodFly() {
+console.log('Beginning invulnerability color cycle...')
 cycleCount = 0;
 intervalID = setInterval(cycleColor, 100);
 }
 function cycleColor() {
 textBox.style.borderColor = colors[colorIndex];
-colorIndex++;
+colorIndex += 1;
 if (colorIndex === colors.length) { 
-clearInterval(intervalID);
 colorIndex = 0; 
+cycleCount += 1;
+if (cycleCount === 3){
+clearInterval(intervalID);
+textBox.style.borderColor = "#FFFFFF";
+console.log('Invulnerability color cycle finished!')
+return;
+}
 }
 }
 startBattle();
