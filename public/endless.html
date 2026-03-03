@@ -403,10 +403,12 @@ return;
 }
 }
 function changeBackground() {
-if (backgroundHasChanged){
-body.style.background = "background3000.gif";
-body.style.backgroundRepeat = repeat;
-body.style.backgroundSize = '100%';
+if (!backgroundHasChanged) { 
+document.body.style.backgroundImage = "url('background3000.gif')";
+document.body.style.backgroundRepeat = "repeat";
+document.body.style.backgroundSize = "cover";
+backgroundHasChanged = true;
+console.log("Background changed!");
 }
 }
 startBattle();
