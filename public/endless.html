@@ -376,16 +376,18 @@ document.getElementById('highScoreDisplay').innerHTML = 'Best:' + highScore;
 function collectGodFly() {
 console.log('Beginning invulnerability color cycle...')
 cycleCount = 0;
+isInvincible = true;
 intervalID = setInterval(cycleColor, 100);
 }
 function cycleColor() {
 textBox.style.borderColor = colors[colorIndex];
 colorIndex += 1;
 if (colorIndex === colors.length) { 
-colorIndex = 0; 
 cycleCount += 1;
 if (cycleCount === 3){
 clearInterval(intervalID);
+isInvincible = false;
+colorIndex = 0;
 textBox.style.borderColor = "#FFFFFF";
 console.log('Invulnerability color cycle finished!')
 return;
