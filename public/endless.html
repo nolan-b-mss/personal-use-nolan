@@ -107,6 +107,7 @@ let intervalID;
 let cycleCount = 0;
 const colors = ["#FFFFFF","#E81416","#FFA500","#FAEB36","#79C314","#487DE7","#4B369D","#70369D"]; 
 let colorIndex = 0;
+let isEmpoweredByGodFly = false;
 document.getElementById('highScoreDisplay').innerHTML = 'Best: ' + highScore;
 function writeText(dialogue, callback, index = 0) {
 if (index === 0) {
@@ -311,7 +312,8 @@ if (fly.x + 10 > myHoriz + 2 &&
 fly.x + 10 < myHoriz + 30 &&
 fly.y + 10 > myVerti + 2 && 
 fly.y + 10 < myVerti + 30 &&
-fly.element.classList.contains('god-fly')) {
+fly.element.classList.contains('god-fly')
+&& !isEmpoweredByGodFly) {
 playerHealth = 20;
 increaseScore(100);
 collectGodFly();
@@ -374,6 +376,7 @@ localStorage.setItem('endlessHighScore', score);
 document.getElementById('highScoreDisplay').innerHTML = 'Best:' + highScore; 
 }
 function collectGodFly() {
+isEmpoweredByGodFly = true;
 console.log('Beginning invulnerability color cycle...')
 cycleCount = 0;
 isInvincible = true;
@@ -388,6 +391,7 @@ cycleCount += 1;
 if (cycleCount === 3){
 clearInterval(intervalID);
 isInvincible = false;
+isEmpoweredByGodFly = false;
 colorIndex = 0;
 textBox.style.borderColor = "#FFFFFF";
 console.log('Invulnerability color cycle finished!')
