@@ -374,7 +374,7 @@ function collectGodFly() {
 intervalID = setInterval(cycleColor, 200);
 }
 function cycleColor() {
-if (textBox.style.borderColor === 'white'){textBox.style.borderColor = 'red'; console.log('Color switched')}
+if (textBox.style.borderColor === 'white' || textBox.style.borderColor = ''){textBox.style.borderColor = 'red'; console.log('Color switched')}
 else if (textBox.style.borderColor === 'red'){textBox.style.borderColor = 'orange'; console.log('Color switched')}
 else if (textBox.style.borderColor === 'orange'){textBox.style.borderColor = 'yellow'; console.log('Color switched')}
 else if (textBox.style.borderColor === 'yellow'){textBox.style.borderColor = 'lime'; console.log('Color switched')}
