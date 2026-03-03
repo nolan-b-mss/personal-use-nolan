@@ -371,7 +371,7 @@ localStorage.setItem('endlessHighScore', score);
 document.getElementById('highScoreDisplay').innerHTML = 'Best:' + highScore; 
 }
 function collectGodFly() {
-intervalID = setInterval(cycleColor(), 200);
+intervalID = setInterval(cycleColor, 200);
 }
 function cycleColor() {
 if (textBox.style.borderColor === 'white'){textBox.style.borderColor = 'red'; console.log('Color switched')}
