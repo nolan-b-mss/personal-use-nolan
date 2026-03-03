@@ -103,6 +103,7 @@ let boxTop;
 let barPosition = 0;
 let moveBarID;
 let targetCenter = 480;
+let intervalID;
 document.getElementById('highScoreDisplay').innerHTML = 'Best: ' + highScore;
 function writeText(dialogue, callback, index = 0) {
 if (index === 0) {
@@ -370,7 +371,7 @@ localStorage.setItem('endlessHighScore', score);
 document.getElementById('highScoreDisplay').innerHTML = 'Best:' + highScore; 
 }
 function collectGodFly() {
-let intervalID = setInterval(cycleColor(), 200);
+intervalID = setInterval(cycleColor(), 200);
 }
 function cycleColor() {
 if (textBox.style.borderColor === 'white'){textBox.style.borderColor = 'red'; console.log('Color switched')}
@@ -379,11 +380,11 @@ else if (textBox.style.borderColor === 'orange'){textBox.style.borderColor = 'ye
 else if (textBox.style.borderColor === 'yellow'){textBox.style.borderColor = 'lime'; console.log('Color switched')}
 else if (textBox.style.borderColor === 'lime'){textBox.style.borderColor = 'green'; console.log('Color switched')}
 else if (textBox.style.borderColor === 'green'){textBox.style.borderColor = 'aqua'; console.log('Color switched')}
-else if (textBox.style.borderColor === 'aqua'){textBox.style.borderColor = 'cornflower blue'; console.log('Color switched')}
-else if (textBox.style.borderColor === 'cornflower blue'){textBox.style.borderColor = 'blue violet'; console.log('Color switched')}
-else if (textBox.style.borderColor === 'blue violet'){textBox.style.borderColor = 'fuchsia'; console.log('Color switched')}
-else if (textBox.style.borderColor === 'fuchsia'){textBox.style.borderColor = 'deep pink'; console.log('Color switched')}
-else if (textBox.style.borderColor === 'deep pink'){textBox.style.borderColor = 'white'; clearInterval(intervalID); console.log('Color switched and ended cycle')}
+else if (textBox.style.borderColor === 'aqua'){textBox.style.borderColor = 'cornflowerblue'; console.log('Color switched')}
+else if (textBox.style.borderColor === 'cornflowerblue'){textBox.style.borderColor = 'blueviolet'; console.log('Color switched')}
+else if (textBox.style.borderColor === 'blueviolet'){textBox.style.borderColor = 'fuchsia'; console.log('Color switched')}
+else if (textBox.style.borderColor === 'fuchsia'){textBox.style.borderColor = 'deeppink'; console.log('Color switched')}
+else if (textBox.style.borderColor === 'deeppink'){textBox.style.borderColor = 'white'; clearInterval(intervalID); console.log('Color switched and ended cycle')}
 }
 startBattle();
 </script>
