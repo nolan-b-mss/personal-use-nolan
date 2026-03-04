@@ -52,10 +52,9 @@ let up = false;
 let down = false;
 let right = false;
 let left = false;
-let currentMenuItem = 1;
-let currentActItem = 1;
-let currentItem = 1;
-let currentMercyItem = 1;
+let currentVertiLock = 2;
+let wKeyDebounced = false;
+let sKeyDebounced = false;
 let actionKeyPressed = false;
 let isAttackOne = false;
 let isInvincible = false;
@@ -69,9 +68,11 @@ let targetCenter = 480;
 document.onkeydown = function(event){
 if (event.key === "w"){
 up = true;
+wKeyDebounced = true;
 }
 if (event.key === "s"){
 down = true;
+sKeyDebounced = true;
 }
 if (event.key === "a"){
 left = true;
@@ -88,15 +89,15 @@ debugElement.style.display = 'block';
 }    
 }
 document.onkeyup = function(event){
-if (event.key === "w"){up = false; wMenuKeyDebounced = false;}
-if (event.key === "s"){down = false; sMenuKeyDebounced = false;}
-if (event.key === "a"){left = false; aMenuKeyDebounced = false;}
-if (event.key === "d"){right = false; dMenuKeyDebounced = false;}
+if (event.key === "w"){up = false; wKeyDebounced = false;}
+if (event.key === "s"){down = false; sKeyDebounced = false;}
+if (event.key === "a"){left = false;}
+if (event.key === "d"){right = false;}
 }
 function movement() {
 updateDebug();
-if (up) { myVerti -= 3; }
-if (down) { myVerti += 3; }
+//if (up) { myVerti -= 3; }
+//if (down) { myVerti += 3; }
 if (left) { myHoriz -= 3; }
 if (right) { myHoriz += 3; }
 if (myHoriz < 0) { myHoriz = 0; }
@@ -104,6 +105,21 @@ if (myVerti < 0) { myVerti = 0; }
 moveBullets();
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
+if (currentVertiLock === 3 && up && wMenuKeyDebounced) {
+wMenuKeyDebounced = false;
+currentVertiLock === 2
+}
+if (currentVertiLock === 2 && up && wMenuKeyDebounced) {
+wMenuKeyDebounced = false;
+currentVertiLock === 1
+}
+if (currentVertiLock === 1 && down && sMenuKeyDebounced) {
+sMenuKeyDebounced = false;
+currentVertiLock === 2
+}
+if (currentVertiLock === 2 && down && sMenuKeyDebounced) {
+sMenuKeyDebounced = false;
+currentVertiLock === 3
 }
 function updateDebug() {
 const debugElement = document.getElementById('debugMenu');
@@ -123,6 +139,7 @@ Up: ${up}<br>
 Left: ${left}<br>
 Down: ${down}<br>
 Right: ${right}<br>
+CurrentVertiLock: ${currentVertiLock}<br>
 X: ${myHoriz}<br>
 Y: ${myVerti}<br>
 Health: ${playerHealth}<br>
