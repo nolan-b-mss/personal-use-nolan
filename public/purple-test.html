@@ -9,7 +9,7 @@
 .bullet-sprite { width: 20px; height: 20px; }
 @font-face { font-family: 'DeterminationMono'; src: url('font/DeterminationMonoWebRegular-Z5oq.ttf') format('truetype'); }
 body {height:100vh; margin: 0; background-color:black; position: relative; font-family: 'DeterminationMono', monospace; }
-#gameContainer {width: 1050px; position: absolute; bottom: 50px; left: 400px; display: flex; flex-direction: column; box-sizing: border-box;}
+#gameContainer {width: 1050px; position: absolute; left: 400px; display: flex; flex-direction: column; box-sizing: border-box;}
 #hp-section { display: flex; justify-content: center; color: white; font-family: 'DeterminationMono', monospace; margin-top: 0px;}
 #hp-display-group { display: flex; flex-direction: column; align-items: center; margin-left: 30px;}
 #hp-container { width: 300px; height: 60px; background-color: #c00; margin: 0 10px;}
@@ -44,7 +44,7 @@ let playerElement = document.getElementById('myPlayer01');
 let maxHoriz;
 let maxVerti;
 let showDebug = false;
-let myHoriz = 900
+let myHoriz = 525
 let myVerti = 900
 let up = false;
 let down = false;
