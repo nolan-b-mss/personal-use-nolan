@@ -94,19 +94,15 @@ if (event.key === "d"){right = false; dMenuKeyDebounced = false;}
 }
 function movement() {
 updateDebug();
-if (isAttackOne) {
 if (up) { myVerti -= 3; }
 if (down) { myVerti += 3; }
 if (left) { myHoriz -= 3; }
 if (right) { myHoriz += 3; }
 if (myHoriz < 0) { myHoriz = 0; }
-if (myHoriz > maxHoriz) { myHoriz = maxHoriz; }
 if (myVerti < 0) { myVerti = 0; }
-if (myVerti > maxVerti) { myVerti = maxVerti; }
 moveBullets();
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
-}
 }
 function updateDebug() {
 const debugElement = document.getElementById('debugMenu');
