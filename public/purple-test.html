@@ -18,7 +18,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 </style>
 </head>
 <body style="background-color:black; position: relative; overflow: hidden;">
-<div id="debugMenu" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: lime; font-family: monospace; padding: 10px; border: 1px solid lime; z-index: 1000; font-size: 14px; pointer-events: none;">
+<div id="debug" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: lime; font-family: monospace; padding: 10px; border: 1px solid lime; z-index: 1000; font-size: 14px; pointer-events: none;">
 </div>
 <div id="gameContainer">
 <img src="sprites/soul-07.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0; z-index: 100;">
@@ -82,7 +82,7 @@ right = true;
 }
 if (event.ctrlKey && event.key === "q"){
 showDebug = !showDebug;
-const debugElement = document.getElementById('debugMenu');
+const debugElement = document.getElementById('debug');
 if (showDebug) {
 debugElement.style.display = 'block';
 } else {debugElement.style.display = 'none';}
@@ -105,27 +105,27 @@ if (myVerti < 0) { myVerti = 0; }
 moveBullets();
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
-if (currentVertiLock === 3 && up && wMenuKeyDebounced) {
-wMenuKeyDebounced = false;
+if (currentVertiLock === 3 && up && wKeyDebounced) {
+wKeyDebounced = false;
 currentVertiLock === 2
 }
-if (currentVertiLock === 2 && up && wMenuKeyDebounced) {
-wMenuKeyDebounced = false;
+if (currentVertiLock === 2 && up && wKeyDebounced) {
+wKeyDebounced = false;
 currentVertiLock === 1
 }
-if (currentVertiLock === 1 && down && sMenuKeyDebounced) {
-sMenuKeyDebounced = false;
+if (currentVertiLock === 1 && down && sKeyDebounced) {
+sKeyDebounced = false;
 currentVertiLock === 2
 }
-if (currentVertiLock === 2 && down && sMenuKeyDebounced) {
-sMenuKeyDebounced = false;
+if (currentVertiLock === 2 && down && sKeyDebounced) {
+sKeyDebounced = false;
 currentVertiLock === 3
 }
 }
 function updateDebug() {
-const debugElement = document.getElementById('debugMenu');
-if (!showDebug){debugMenu.style.display = 'none'}
-else if (showDebug){debugMenu.style.display = 'block'}
+const debugElement = document.getElementById('debug');
+if (!showDebug){debug.style.display = 'none'}
+else if (showDebug){debug.style.display = 'block'}
 if (!debugElement) return;
 debugElement.innerHTML = `
 ---------------- <br>
