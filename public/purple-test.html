@@ -68,11 +68,25 @@ let targetCenter = 480;
 document.onkeydown = function(event){
 if (event.key === "w"){
 up = true;
+if (currentVertiLock === 3 && !wKeyDebounced) {
 wKeyDebounced = true;
+currentVertiLock === 2
+}
+if (currentVertiLock === 2 && up && !wKeyDebounced) {
+wKeyDebounced = true;
+currentVertiLock === 1
+}
 }
 if (event.key === "s"){
 down = true;
+if (currentVertiLock === 1 && up && !sKeyDebounced) {
 sKeyDebounced = true;
+currentVertiLock === 2
+}
+if (currentVertiLock === 2 && up && !sKeyDebounced) {
+sKeyDebounced = true;
+currentVertiLock === 3
+}
 }
 if (event.key === "a"){
 left = true;
@@ -96,6 +110,7 @@ if (event.key === "d"){right = false;}
 }
 function movement() {
 updateDebug();
+updateVerti();
 //if (up) { myVerti -= 3; }
 //if (down) { myVerti += 3; }
 if (left) { myHoriz -= 3; }
@@ -105,23 +120,6 @@ if (myVerti < 0) { myVerti = 0; }
 moveBullets();
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
-if (currentVertiLock === 3 && up && !wKeyDebounced) {
-wKeyDebounced = false;
-currentVertiLock === 2
-}
-if (currentVertiLock === 2 && up && !wKeyDebounced) {
-wKeyDebounced = false;
-currentVertiLock === 1
-}
-if (currentVertiLock === 1 && down && !sKeyDebounced) {
-sKeyDebounced = false;
-currentVertiLock === 2
-}
-if (currentVertiLock === 2 && down && !sKeyDebounced) {
-sKeyDebounced = false;
-currentVertiLock === 3
-}
-updateVerti();
 }
 function updateDebug() {
 const debugElement = document.getElementById('debug');
@@ -221,7 +219,8 @@ function updateVerti() {
 if(currentVertiLock === 1){myVerti = vertiLock1}
 else if(currentVertiLock === 1){myVerti = vertiLock1}
 else if(currentVertiLock === 1){myVerti = vertiLock1}
-else {console.log('Error in setting Vertical Lock occurred: "Could not find your vertiLock!"');return;}
+else if(currentVertiLock === 1 || currentVertiLock === 2 || currentVertiLock === 3){return;}
+else {console.log('Error in setting Vertical Lock occurred: "Could not find your vertiLock!"')}
 }
 startBattle();
 </script>
