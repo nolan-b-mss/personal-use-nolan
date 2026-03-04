@@ -72,18 +72,18 @@ if (currentVertiLock === 3 && !wKeyDebounced) {
 wKeyDebounced = true;
 currentVertiLock === 2
 }
-if (currentVertiLock === 2 && up && !wKeyDebounced) {
+if (currentVertiLock === 2 && !wKeyDebounced) {
 wKeyDebounced = true;
 currentVertiLock === 1
 }
 }
 if (event.key === "s"){
 down = true;
-if (currentVertiLock === 1 && up && !sKeyDebounced) {
+if (currentVertiLock === 1 && !sKeyDebounced) {
 sKeyDebounced = true;
 currentVertiLock === 2
 }
-if (currentVertiLock === 2 && up && !sKeyDebounced) {
+if (currentVertiLock === 2 && !sKeyDebounced) {
 sKeyDebounced = true;
 currentVertiLock === 3
 }
