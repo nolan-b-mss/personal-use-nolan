@@ -117,6 +117,8 @@ if (left) { myHoriz -= 3; }
 if (right) { myHoriz += 3; }
 if (myHoriz < 0) { myHoriz = 0; }
 if (myVerti < 0) { myVerti = 0; }
+if (myHoriz < 234) {myHoriz = 234}
+if (myHoriz > 831) {myHoriz = 831}
 moveBullets();
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
@@ -219,8 +221,8 @@ playerElement.style.left = myHoriz + 'px'
 }
 function updateVerti() {
 if(currentVertiLock === 1){myVerti = vertiLock1}
-else if(currentVertiLock === 1){myVerti = vertiLock1}
-else if(currentVertiLock === 1){myVerti = vertiLock1}
+else if(currentVertiLock === 2){myVerti = vertiLock2}
+else if(currentVertiLock === 3){myVerti = vertiLock3}
 else if(currentVertiLock === 1 || currentVertiLock === 2 || currentVertiLock === 3){return;}
 else {console.log('Error in setting Vertical Lock occurred: "Could not find your vertiLock!"')}
 }
