@@ -121,6 +121,7 @@ if (currentVertiLock === 2 && down && sKeyDebounced) {
 sKeyDebounced = false;
 currentVertiLock === 3
 }
+updateVerti();
 }
 function updateDebug() {
 const debugElement = document.getElementById('debug');
@@ -216,6 +217,11 @@ setInterval(movement, 10)
 playerElement.style.top = myVerti + 'px'
 playerElement.style.left = myHoriz + 'px'
 }
+function updateVerti() {
+if(currentVertiLock === 1){myVerti = vertiLock1}
+else if(currentVertiLock === 1){myVerti = vertiLock1}
+else if(currentVertiLock === 1){myVerti = vertiLock1}
+else {console.log('Error in setting Vertical Lock occurred: "Could not find your vertiLock!"');return;}
 startBattle();
 </script>
 </body>
