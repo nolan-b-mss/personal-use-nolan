@@ -11,23 +11,17 @@
 body {height:100vh; margin: 0; background-color:black; position: relative; font-family: 'DeterminationMono', monospace; }
 #gameContainer {width: 1050px; position: absolute; bottom: 50px; left: 400px; display: flex; flex-direction: column; box-sizing: border-box;}
 #textBox {border: solid white; border-width: 12px; background-color: black; position: relative; height: 225px; width: 1050px; margin: 15px auto; color: white; font-size: 32px; padding: 20px; box-sizing: border-box; word-wrap: break-word; overflow-y: hidden; line-height: 1.4; }
-#enemyContainer { position: relative; height: 600px; width: 800px; margin: 0px auto 15px auto; border-width: 12px; box-sizing: border-box;}
-#menuBox {width: 1050px; height: 75px; margin: 10px auto 15px auto; display: flex; justify-content: space-around; }
 #hp-section { display: flex; justify-content: center; color: white; font-family: 'DeterminationMono', monospace; margin-top: 0px;}
 #hp-display-group { display: flex; flex-direction: column; align-items: center; margin-left: 30px;}
 #hp-container { width: 300px; height: 60px; background-color: #c00; margin: 0 10px;}
 #hp-bar { width: 100%; height: 100%; background-color: #ffff00;}
 #hp-text { font-size: 48px; }
-#enemy { width: 116px; height: 111px; position: absolute; top: 500px; left: 335px;}
 </style>
 </head>
 <body style="background-color:black; position: relative; overflow: hidden;">
 <div id="debugMenu" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: lime; font-family: monospace; padding: 10px; border: 1px solid lime; z-index: 1000; font-size: 14px; pointer-events: none;">
 </div>
 <div id="gameContainer">
-<div id="enemyContainer">
-<img id="enemy" src="sprites/froggit.gif">
-</div>
 <img src="sprites/soul-07.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0; z-index: 100;">
 <div id="textBox">
 </div>
@@ -198,6 +192,11 @@ bullet.removed = true;
 }
 });
 bullets = bullets.filter(bullet => bullet.y <= 200 && !bullet.removed);
+}
+function startBattle() {
+setInterval(movement, 10)
+playerElement.style.top = myVerti + 'px'
+playerElement.style.left = myHoriz + 'px'
 }
 startBattle();
 </script>
