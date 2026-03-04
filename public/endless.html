@@ -92,6 +92,7 @@ let playerHealth = 20;
 let score = 0;
 let highScore = localStorage.getItem('endlessHighScore') || 0;
 let isInvincible = false;
+let isTrueInvincible = false;
 let battleInitiated = false;
 let boxRect = textBox.getBoundingClientRect();
 let containerRect = gameContainer.getBoundingClientRect();
@@ -228,7 +229,7 @@ let hpText = document.getElementById("hp-text");
 hpText.innerText = playerHealth + " / " + maxHealth;
 }
 function takeDamage(damageAmount) {
-if (!isInvincible && playerHealth > 0) {
+if (!isInvincible && playerHealth > 0 || !isTrueInvincible && playerHealth > 0) {
 playerHealth -= damageAmount;
 updateUI();
 if (playerHealth <= 0) {
