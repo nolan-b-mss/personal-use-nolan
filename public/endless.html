@@ -356,7 +356,7 @@ flySpawner = setInterval(spawnFly, flyTimer)
 else {console.log('function increaseDifficulty failed: "Difficulty is at maximum"');return;}
 }
 function increaseScore(amount) {
-if (isCheating || dead){return;}
+if (isCheating || dead || isTrueInvincible){return;}
 else {
 score += amount;
 document.getElementById('scoreDisplay').innerHTML = 'Score:' + score;
@@ -379,11 +379,14 @@ localStorage.setItem('endlessHighScore', score);
 document.getElementById('highScoreDisplay').innerHTML = 'Best:' + highScore; 
 }
 function collectGodFly() {
+if (isTrueInvincible){return;}
+else {
 isEmpoweredByGodFly = true;
 console.log('Beginning invulnerability color cycle...')
 cycleCount = 0;
 isInvincible = true;
 intervalID = setInterval(cycleColor, 100);
+}
 }
 function cycleColor() {
 textBox.style.borderColor = colors[colorIndex];
