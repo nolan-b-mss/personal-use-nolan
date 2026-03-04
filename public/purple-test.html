@@ -62,6 +62,7 @@ let currentActItem = 1;
 let currentItem = 1;
 let currentMercyItem = 1;
 let actionKeyPressed = false;
+let isAttackOne = false;
 let isInvincible = false;
 let isTrueInvincible = false;
 let playerHealth = Infinity;
@@ -185,7 +186,6 @@ bullet.element.style.top = bullet.y + 'px';
 if (bullet.y > 200) {
 bullet.element.remove();
 }
-)}
 if (!isInvincible) {
 if (bullet.x + 10 > myHoriz + 2 && 
 bullet.x + 10 < myHoriz + 30 &&
@@ -196,6 +196,7 @@ bullet.element.remove();
 bullet.removed = true;
 }
 }
+});
 bullets = bullets.filter(bullet => bullet.y <= 200 && !bullet.removed);
 }
 startBattle();
