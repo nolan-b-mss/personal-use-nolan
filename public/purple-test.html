@@ -45,6 +45,9 @@ let maxVerti;
 let showDebug = false;
 let myHoriz = 513
 let myVerti = 492
+let vertiLock1 = document.getElementById('purpleLine1').style.top;
+let vertiLock2 = document.getElementById('purpleLine2').style.top;
+let vertiLock3 = document.getElementById('purpleLine3').style.top;
 let up = false;
 let down = false;
 let right = false;
@@ -111,6 +114,9 @@ debugElement.innerHTML = `
 ---------------- <br>
 Game Variables<br>
 Bullet spawnrate: ${bulletTimer}<br>
+VertiLock1: ${vertiLock1}<br>
+VertiLock2: ${vertiLock2}<br>
+VertiLock3: ${vertiLock3}<br>
 ---------------- <br>
 Player Variables<br>
 Up: ${up}<br>
