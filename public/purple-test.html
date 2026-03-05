@@ -27,6 +27,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 <div id="purpleLine3" style="position: absolute; width: 600px; height: 8px; background-color: purple; top: 600px; left: 250px;"></div>
 <div id="hp-section"> 
 <div id="hp-display-group">
+<input type="button" onClick="startAttackOne()"
 <div id="hp-text-wrapper">
 <span style="font-size:48px;">HP:</span>
 <span id="hp-text">Infinite</span>
@@ -213,6 +214,18 @@ bullet.removed = true;
 }
 });
 bullets = bullets.filter(bullet => bullet.y <= 200 && !bullet.removed);
+}
+function endAttackOne() {
+if (isAttackOne) {
+isAttackOne = false;
+clearInterval(bulletSpawner);
+gameContainer.appendChild(playerElement);
+bullets.forEach(bullet => {
+bullet.element.remove();
+});
+bullets = [];
+});
+}
 }
 function startBattle() {
 setInterval(movement, 10)
