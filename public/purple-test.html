@@ -121,7 +121,7 @@ if(currentVertiLock === 1){playerElement.style.top = vertiLock1 + 'px'}
 if(currentVertiLock === 2){playerElement.style.top = vertiLock2 + 'px'}
 if(currentVertiLock === 3){playerElement.style.top = vertiLock3 + 'px'} 
 moveBullets();
-//playerElement.style.top = myVerti + 'px';
+playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
 }
 function updateDebug() {
@@ -184,7 +184,7 @@ let bullet = document.createElement('img');
 bullet.style.position = 'absolute';
 let randomX = Math.random() * 597;      
 bullet.style.left = randomX + 'px';
-bullet.style.top = '-20px';
+bullet.style.top = '250px';
 //gameContainer.appendChild(bullet);
 bullets.push({
 element: bullet,
