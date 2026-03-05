@@ -110,8 +110,8 @@ if (event.key === "d"){right = false;}
 }
 function movement() {
 updateDebug();
-//if (up) { myVerti -= 3; }
-//if (down) { myVerti += 3; }
+if (up) { myVerti -= 3; }
+if (down) { myVerti += 3; }
 if (left) { myHoriz -= 3; }
 if (right) { myHoriz += 3; }
 if (myHoriz < 0) { myHoriz = 0; }
