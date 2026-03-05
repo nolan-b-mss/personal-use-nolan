@@ -118,9 +118,9 @@ if (myHoriz < 0) { myHoriz = 0; }
 if (myVerti < 0) { myVerti = 0; }
 if (myHoriz < 234) {myHoriz = 234}
 if (myHoriz > 831) {myHoriz = 831}
-if(currentVertiLock === 1){myVerti = vertiLock1 + 'px'}
-if(currentVertiLock === 2){myVerti = vertiLock2 + 'px'}
-if(currentVertiLock === 3){myVerti = vertiLock3 + 'px'} 
+if(currentVertiLock === 1){playerElement.style.top = vertiLock1 + 'px'}
+if(currentVertiLock === 2){playerElement.style.top = vertiLock2 + 'px'}
+if(currentVertiLock === 3){playerElement.style.top = vertiLock3 + 'px'} 
 moveBullets();
 //playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
