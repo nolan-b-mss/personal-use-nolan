@@ -175,8 +175,6 @@ playerElement.style.opacity = 1.0;
 function startAttackOne() {
 clearInterval(bulletSpawner);
 bullets = [];
-playerElement.style.left = myHoriz + 'px';
-playerElement.style.top = myVerti + 'px';
 bulletSpawner = setInterval(spawnbullet, bulletTimer);
 isAttackOne = true;
 setTimeout(endAttackOne, 5000);
@@ -187,7 +185,7 @@ bullet.style.position = 'absolute';
 let randomX = Math.random() * 597;      
 bullet.style.left = randomX + 'px';
 bullet.style.top = '-20px';
-gameContainer.appendChild(bullet);
+//gameContainer.appendChild(bullet);
 bullets.push({
 element: bullet,
 x: randomX,
@@ -198,9 +196,9 @@ bullet.classList.add('bullet-sprite');
 }
 function moveBullets() {
 bullets.forEach(bullet => {
-bullet.y += 3;
+bullet.y += 5;
 bullet.element.style.top = bullet.y + 'px';
-if (bullet.y > 650) {
+if (bullet.y > 1000) {
 bullet.element.remove();
 }
 if (!isInvincible) {
