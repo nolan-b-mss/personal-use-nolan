@@ -21,13 +21,13 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 <div id="debug" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: lime; font-family: monospace; padding: 10px; border: 1px solid lime; z-index: 1000; font-size: 14px; pointer-events: none;">
 </div>
 <div id="gameContainer">
+<input type="button" onClick="startAttackOne()" value="Example attack 1">
 <img src="sprites/soul-07.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0; z-index: 100;">
 <div id="purpleLine1" style="position: absolute; width: 600px; height: 8px; background-color: purple; top: 400px; left: 250px;"></div>
 <div id="purpleLine2" style="position: absolute; width: 600px; height: 8px; background-color: purple; top: 500px; left: 250px;"></div>
 <div id="purpleLine3" style="position: absolute; width: 600px; height: 8px; background-color: purple; top: 600px; left: 250px;"></div>
 <div id="hp-section"> 
 <div id="hp-display-group">
-<input type="button" onClick="startAttackOne()"
 <div id="hp-text-wrapper">
 <span style="font-size:48px;">HP:</span>
 <span id="hp-text">Infinite</span>
@@ -179,11 +179,12 @@ playerElement.style.left = myHoriz + 'px';
 playerElement.style.top = myVerti + 'px';
 bulletSpawner = setInterval(spawnbullet, bulletTimer);
 isAttackOne = true;
+setTimeout(endAttackOne, 5000);
 }
 function spawnbullet() {
 let bullet = document.createElement('img');
 bullet.style.position = 'absolute';
-let randomX = Math.random() * 160;      
+let randomX = Math.random() * 597;      
 bullet.style.left = randomX + 'px';
 bullet.style.top = '-20px';
 gameContainer.appendChild(bullet);
@@ -199,7 +200,7 @@ function moveBullets() {
 bullets.forEach(bullet => {
 bullet.y += 3;
 bullet.element.style.top = bullet.y + 'px';
-if (bullet.y > 200) {
+if (bullet.y > 650) {
 bullet.element.remove();
 }
 if (!isInvincible) {
