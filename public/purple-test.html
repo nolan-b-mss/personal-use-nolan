@@ -64,8 +64,7 @@ let playerHealth = Infinity;
 let containerRect = gameContainer.getBoundingClientRect();
 let bullets = [];
 let bulletSpawner;
-let bulletTimer = 375;
-let targetCenter = 480;
+let bulletTimer = 100;
 document.onkeydown = function(event){
 if (event.key === "w"){
 up = true;
@@ -182,7 +181,7 @@ setTimeout(endAttackOne, 5000);
 function spawnbullet() {
 let bullet = document.createElement('img');
 bullet.style.position = 'absolute';
-let randomX = Math.random() * 597;      
+let randomX = Math.random() * 775;      
 bullet.style.left = randomX + 'px';
 bullet.style.top = '250px';
 gameContainer.appendChild(bullet);
