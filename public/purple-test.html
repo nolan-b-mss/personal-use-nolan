@@ -201,10 +201,10 @@ if (bullet.y > 1000) {
 bullet.element.remove();
 }
 if (!isInvincible) {
-if (bullet.x + 10 > playerElement.style.left + 2 && 
-bullet.x + 10 < playerElement.style.left + 30 &&
-bullet.y + 10 > playerElement.style.top + 2 && 
-bullet.y + 10 < playerElement.style.top + 30) {
+if (bullet.x + 10 > myHoriz + 2 && 
+bullet.x + 10 < myHoriz + 30 &&
+bullet.y + 10 > myVerti + 2 && 
+bullet.y + 10 < myVerti + 30) {
 takeDamage(0);
 bullet.element.remove();
 bullet.removed = true;
