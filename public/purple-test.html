@@ -46,9 +46,9 @@ let maxVerti;
 let showDebug = false;
 let myHoriz = 513
 let myVerti = 492
-let vertiLock1 = parseInt(document.getElementById('purpleLine1').style.top) - 10;  //+ 'px';
-let vertiLock2 = parseInt(document.getElementById('purpleLine2').style.top) - 10;  //+ 'px';
-let vertiLock3 = parseInt(document.getElementById('purpleLine3').style.top) - 10;  //+ 'px'; 
+let vertiLock1 = parseInt(document.getElementById('purpleLine1').style.top) - 10;  
+let vertiLock2 = parseInt(document.getElementById('purpleLine2').style.top) - 10;  
+let vertiLock3 = parseInt(document.getElementById('purpleLine3').style.top) - 10; 
 let currentVertiLock = 2;
 let up = false;
 let down = false;
@@ -116,11 +116,11 @@ if (myHoriz < 0) { myHoriz = 0; }
 if (myVerti < 0) { myVerti = 0; }
 if (myHoriz < 234) {myHoriz = 234}
 if (myHoriz > 831) {myHoriz = 831}
-if(currentVertiLock === 1){playerElement.style.top = 390 + 'px'}
-if(currentVertiLock === 2){playerElement.style.top = 490 + 'px'}
-if(currentVertiLock === 3){playerElement.style.top = 590 + 'px'} 
+if(currentVertiLock === 1){myVerti = 390}
+if(currentVertiLock === 2){myVerti = 490}
+if(currentVertiLock === 3){myVerti = 590} 
 moveBullets();
-//playerElement.style.top = myVerti + 'px';
+playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
 }
 function updateDebug() {
@@ -226,7 +226,7 @@ bullets = [];
 }
 function startBattle() {
 setInterval(movement, 10)
-//playerElement.style.top = myVerti + 'px'
+playerElement.style.top = myVerti + 'px'
 playerElement.style.left = myHoriz + 'px'
 }
 startBattle();
