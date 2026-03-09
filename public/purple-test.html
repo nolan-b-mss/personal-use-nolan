@@ -22,6 +22,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 </div>
 <div id="gameContainer">
 <input type="button" class="blend" onClick="startAttackOne()" value="Example attack 1">
+<input type="button" class="blend" onClick="startAttackTwo()" value="Example attack 2">
 <img src="sprites/soul-07.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0; z-index: 100;">
 <div id="purpleLine1" style="position: absolute; width: 600px; height: 8px; background-color: purple; top: 400px; left: 250px;"></div>
 <div id="purpleLine2" style="position: absolute; width: 600px; height: 8px; background-color: purple; top: 500px; left: 250px;"></div>
@@ -63,7 +64,7 @@ let isTrueInvincible = false;
 let playerHealth = Infinity;
 let containerRect = gameContainer.getBoundingClientRect();
 let bullets = [];
-let bulletSpawner;
+let bulletSpawner1;
 let bulletTimer = 100;
 document.onkeydown = function(event){
 if (event.key === "w"){
@@ -119,7 +120,7 @@ if (myHoriz > 831) {myHoriz = 831}
 if(currentVertiLock === 1){myVerti = 390}
 if(currentVertiLock === 2){myVerti = 490}
 if(currentVertiLock === 3){myVerti = 590} 
-moveBullets();
+moveBullets1();
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
 }
@@ -172,13 +173,13 @@ playerElement.style.opacity = 1.0;
 }
 }
 function startAttackOne() {
-clearInterval(bulletSpawner);
+clearInterval(bulletSpawner1);
 bullets = [];
-bulletSpawner = setInterval(spawnbullet, bulletTimer);
+bulletSpawner1 = setInterval(spawnbullet1, bulletTimer);
 isAttackOne = true;
 setTimeout(endAttackOne, 5000);
 }
-function spawnbullet() {
+function spawnbullet1() {
 let bullet = document.createElement('img');
 bullet.style.position = 'absolute';
 let randomX = Math.random() * 775;      
@@ -193,7 +194,7 @@ y: 250
 bullet.src = 'sprites/placeholder-bullet.png';
 bullet.classList.add('bullet-sprite');
 }
-function moveBullets() {
+function moveBullets1() {
 bullets.forEach(bullet => {
 bullet.y += 5;
 bullet.element.style.top = bullet.y + 'px';
