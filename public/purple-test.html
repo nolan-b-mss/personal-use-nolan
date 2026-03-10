@@ -244,14 +244,15 @@ const max = 3;
 let bullet = document.createElement('img');
 bullet.style.position = 'absolute';
 let randomY = Math.floor(Math.random() * (max - min + 1)) + min;
-if (randomY === 1){bullet.style.top = '390px'}
-if (randomY === 2){bullet.style.top = '490px'}
-if (randomY === 3){bullet.style.top = '590px'}
+if (randomY === 1){actualTop = '390px'}
+if (randomY === 2){actualTop = '490px'}
+if (randomY === 3){actualTop = '590px'}
 bullet.style.left = '50px';
 gameContainer.appendChild(bullet);
 bullets.push({
 element: bullet,
 x: 50,
+y: actualTop,
 });
 bullet.src = 'sprites/placeholder-bullet.png';
 bullet.classList.add('bullet-sprite');
