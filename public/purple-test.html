@@ -124,6 +124,7 @@ if(currentVertiLock === 1){myVerti = 390}
 if(currentVertiLock === 2){myVerti = 490}
 if(currentVertiLock === 3){myVerti = 590} 
 moveBullets1();
+moveBullets2();
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
 }
@@ -243,9 +244,9 @@ const max = 3;
 let bullet = document.createElement('img');
 bullet.style.position = 'absolute';
 let randomY = Math.floor(Math.random() * (max - min + 1)) + min;
-if (randomY = 1){bullet.style.top = '390px'}
-if (randomY = 2){bullet.style.top = '490px'}
-if (randomY = 3){bullet.style.top = '590px'}
+if (randomY === 1){bullet.style.top = '390px'}
+if (randomY === 2){bullet.style.top = '490px'}
+if (randomY === 3){bullet.style.top = '590px'}
 bullet.style.left = '50px';
 gameContainer.appendChild(bullet);
 bullets.push({
@@ -275,16 +276,6 @@ bullet.removed = true;
 });
 bullets = bullets.filter(bullet => bullet.x <= 1000 && !bullet.removed);
 }
-
-
-
-
-
-
-
-
-
-
 function endAttackTwo() {
 if (isAttackTwo) {
 isAttackTwo = false;
