@@ -245,9 +245,9 @@ let bullet = document.createElement('img');
 let actualTop;
 bullet.style.position = 'absolute';
 let randomY = Math.floor(Math.random() * (max - min + 1)) + min;
-if (randomY === 1){actualTop = '390px'}
-if (randomY === 2){actualTop = '490px'}
-if (randomY === 3){actualTop = '590px'}
+if (randomY === 1){actualTop = 390}
+if (randomY === 2){actualTop = 490}
+if (randomY === 3){actualTop = 590}
 bullet.style.left = '50px';
 gameContainer.appendChild(bullet);
 bullets.push({
