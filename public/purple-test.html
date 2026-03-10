@@ -59,13 +59,16 @@ let wKeyDebounced = false;
 let sKeyDebounced = false;
 let actionKeyPressed = false;
 let isAttackOne = false;
+let isAttackTwo = false;
 let isInvincible = false;
 let isTrueInvincible = false;
 let playerHealth = Infinity;
 let containerRect = gameContainer.getBoundingClientRect();
 let bullets = [];
 let bulletSpawner1;
+let bulletSpawner2;
 let bulletTimer = 100;
+let bulletTimer2 = 750;
 document.onkeydown = function(event){
 if (event.key === "w"){
 up = true;
@@ -173,6 +176,7 @@ playerElement.style.opacity = 1.0;
 }
 }
 function startAttackOne() {
+endAttackTwo();
 clearInterval(bulletSpawner1);
 bullets = [];
 bulletSpawner1 = setInterval(spawnbullet1, bulletTimer);
@@ -218,6 +222,73 @@ function endAttackOne() {
 if (isAttackOne) {
 isAttackOne = false;
 clearInterval(bulletSpawner1);
+gameContainer.appendChild(playerElement);
+bullets.forEach(bullet => {
+bullet.element.remove();
+});
+bullets = [];
+};
+}
+function startAttackTwo() {
+endAttackOne();
+clearInterval(bulletSpawner2);
+bullets = [];
+bulletSpawner2 = setInterval(spawnbullet2, bulletTimer2);
+isAttackTwo = true;
+setTimeout(endAttackTwo, 5000);
+}
+function spawnbullet2() {
+const min = 1;
+const max = 3;
+let bullet = document.createElement('img');
+bullet.style.position = 'absolute';
+let randomY = Math.floor(Math.random() * (max - min + 1)) + min;
+if (randomY = 1){bullet.style.top = '390px'}
+if (randomY = 2){bullet.style.top = '490px'}
+if (randomY = 3){bullet.style.top = '590px'}
+bullet.style.left = '50px';
+gameContainer.appendChild(bullet);
+bullets.push({
+element: bullet,
+x: 50,
+});
+bullet.src = 'sprites/placeholder-bullet.png';
+bullet.classList.add('bullet-sprite');
+}
+function moveBullets2() {
+bullets.forEach(bullet => {
+bullet.x += 5;
+bullet.element.style.top = bullet.y + 'px';
+if (bullet.x > 1000) {
+bullet.element.remove();
+}
+if (!isInvincible) {
+if (bullet.x + 10 > myHoriz + 2 && 
+bullet.x + 10 < myHoriz + 30 &&
+bullet.y + 10 > myVerti + 2 && 
+bullet.y + 10 < myVerti + 30) {
+takeDamage(0);
+bullet.element.remove();
+bullet.removed = true;
+}
+}
+});
+bullets = bullets.filter(bullet => bullet.x <= 1000 && !bullet.removed);
+}
+
+
+
+
+
+
+
+
+
+
+function endAttackTwo() {
+if (isAttackTwo) {
+isAttackTwo = false;
+clearInterval(bulletSpawner2);
 gameContainer.appendChild(playerElement);
 bullets.forEach(bullet => {
 bullet.element.remove();
