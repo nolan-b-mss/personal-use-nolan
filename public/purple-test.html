@@ -217,7 +217,7 @@ bullets = bullets.filter(bullet => bullet.y <= 1000 && !bullet.removed);
 function endAttackOne() {
 if (isAttackOne) {
 isAttackOne = false;
-clearInterval(bulletSpawner);
+clearInterval(bulletSpawner1);
 gameContainer.appendChild(playerElement);
 bullets.forEach(bullet => {
 bullet.element.remove();
