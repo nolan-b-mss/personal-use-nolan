@@ -9,7 +9,8 @@
 .fly-sprite { width: 20px; height: 20px; }
 .green-fly { width: 20px; height: 20px;}
 .god-fly { width: 20px; height: 20px;}
-.friend {width: 200px; height: 200px;}
+/* Fixed the friend class to ensure it doesn't block the soul or look like a solid block */
+.friend { width: 200px; height: 200px; pointer-events: none; }
 @font-face { font-family: 'DeterminationMono'; src: url('font/DeterminationMonoWebRegular-Z5oq.ttf') format('truetype'); }
 body {height:100vh; margin: 0; background-color:black; position: relative; font-family: 'DeterminationMono', monospace; }
 #gameContainer {width: 1050px; position: absolute; bottom: 50px; left: 400px; display: flex; flex-direction: column; box-sizing: border-box;}
@@ -250,7 +251,7 @@ playerElement.style.opacity = 1.0;
 }
 function startEnemyTurn() {
 if (isEnemyTurn) return;
-if (flyTimer > 375 || flyTimer < 100 || isCheating || isInvincible){ isCheating = true; console.log('Why you cheat? :('); textBox.style.borderColor = 'red'; }
+if (flyTimer > 375 || flyTimer < 100 || isCheating || isInvincible){ isCheating = true; textBox.style.borderColor = 'red'; }
 clearInterval(flySpawner);
 bullets = [];
 textBox.innerHTML = '';
@@ -259,8 +260,8 @@ textBox.style.height = "200px";
 textBox.style.margin = "0 auto";
 textBox.style.overflow = 'hidden';
 textBox.appendChild(playerElement);
-maxHoriz = 143;
-maxVerti = 143;
+maxHoriz = 168; // Adjusted for 32px soul in 200px box
+maxVerti = 168;
 myHoriz = 84; 
 myVerti = 84;
 playerElement.style.left = myHoriz + 'px';
@@ -272,7 +273,7 @@ isEnemyTurn = true;
 function spawnFly() {
 let fly = document.createElement('img');
 fly.style.position = 'absolute';
-let randomX = Math.random() * 160;      
+let randomX = Math.random() * 180;      
 fly.style.left = randomX + 'px';
 fly.style.top = '-20px';
 textBox.appendChild(fly);
@@ -284,23 +285,23 @@ let currentX = randomX;
 let currentY = -20;
 if (isFriend) {
 fly.src = 'sprites/friend.png';
-fly.classList.add('friend');
+fly.className = 'friend';
 fly.style.width = '200px'; 
 fly.style.height = '200px';
 fly.style.zIndex = '999';
 currentX = 0;
 currentY = -200;
-fly.style.left = currentX + 'px';
+fly.style.left = '0px';
 fly.style.top = currentY + 'px';
 } else if (isGod) {
 fly.src = 'sprites/froggit-god-fly.gif';
-fly.classList.add('god-fly');
+fly.className = 'god-fly';
 } else if (isGreen) {
 fly.src = 'sprites/froggit-heal-fly.gif';
-fly.classList.add('green-fly');
+fly.className = 'green-fly';
 } else {
 fly.src = 'sprites/froggit-attack-fly.gif';
-fly.classList.add('fly-sprite');
+fly.className = 'fly-sprite';
 }
 bullets.push({
 element: fly,
@@ -315,7 +316,7 @@ bullets.forEach(fly => {
 fly.y += fly.speed;
 fly.element.style.top = fly.y + 'px';
 if (fly.element.classList.contains('friend')) {
-if (fly.y + 200 >= 200) { playerDeath(); }
+if (fly.y >= 0) { playerDeath(); }
 }
 if (fly.y > 200) {
 if (!fly.element.classList.contains('green-fly') && !fly.element.classList.contains('friend')) {
@@ -325,10 +326,8 @@ fly.element.remove();
 fly.removed = true;
 }
 if (!fly.removed) {
-if (fly.x + 10 > myHoriz + 2 && 
-fly.x + 10 < myHoriz + 30 &&
-fly.y + 10 > myVerti + 2 && 
-fly.y + 10 < myVerti + 30) {
+if (fly.x < myHoriz + 20 && fly.x + 20 > myHoriz &&
+fly.y < myVerti + 20 && fly.y + 20 > myVerti) {
 if (fly.element.classList.contains('god-fly') && !isEmpoweredByGodFly) {
 playerHealth = 20;
 increaseScore(100);
@@ -381,12 +380,6 @@ if (score > highScore) {localStorage.setItem('endlessHighScore', score);}
 location.href = 'gameover-endless.html';
 dead = true;
 }
-function resetScore() {
-score = 0;
-highScore = 0;
-localStorage.setItem('endlessHighScore', score);
-document.getElementById('highScoreDisplay').innerHTML = 'Best:' + highScore; 
-}
 function collectGodFly() {
 if (isTrueInvincible){return;}
 isEmpoweredByGodFly = true;
@@ -420,7 +413,7 @@ fly.style.zIndex = '999';
 fly.style.left = '0px';
 fly.style.top = '-200px';   
 fly.src = 'sprites/friend.png';
-fly.classList.add('friend');
+fly.className = 'friend';
 textBox.appendChild(fly);
 bullets.push({
 element: fly,
