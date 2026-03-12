@@ -9,7 +9,7 @@
 .fly-sprite { width: 20px; height: 20px; }
 .green-fly { width: 20px; height: 20px;}
 .god-fly { width: 20px; height: 20px;}
-.friend { width: 200px; height: 200px; pointer-events: none; }
+.friend {width: 200px; height: 200px;}
 @font-face { font-family: 'DeterminationMono'; src: url('font/DeterminationMonoWebRegular-Z5oq.ttf') format('truetype'); }
 body {height:100vh; margin: 0; background-color:black; position: relative; font-family: 'DeterminationMono', monospace; }
 #gameContainer {width: 1050px; position: absolute; bottom: 50px; left: 400px; display: flex; flex-direction: column; box-sizing: border-box;}
@@ -250,7 +250,7 @@ playerElement.style.opacity = 1.0;
 }
 function startEnemyTurn() {
 if (isEnemyTurn) return;
-if (flyTimer > 375 || flyTimer < 100 || isCheating || isInvincible){ isCheating = true; textBox.style.borderColor = 'red'; }
+if (flyTimer > 375 || flyTimer < 100 || isCheating || isInvincible){ isCheating = true; console.log('Why you cheat? :('); textBox.style.borderColor = 'red'; }
 clearInterval(flySpawner);
 bullets = [];
 textBox.innerHTML = '';
@@ -259,7 +259,7 @@ textBox.style.height = "200px";
 textBox.style.margin = "0 auto";
 textBox.style.overflow = 'hidden';
 textBox.appendChild(playerElement);
-maxHoriz = 168; // Adjusted for 32px soul in 200px box
+maxHoriz = 168;
 maxVerti = 168;
 myHoriz = 84; 
 myVerti = 84;
@@ -284,7 +284,7 @@ let currentX = randomX;
 let currentY = -20;
 if (isFriend) {
 fly.src = 'sprites/friend.png';
-fly.className = 'friend';
+fly.classList.add('friend');
 fly.style.width = '200px'; 
 fly.style.height = '200px';
 fly.style.zIndex = '999';
@@ -294,13 +294,13 @@ fly.style.left = '0px';
 fly.style.top = currentY + 'px';
 } else if (isGod) {
 fly.src = 'sprites/froggit-god-fly.gif';
-fly.className = 'god-fly';
+fly.classList.add('god-fly');
 } else if (isGreen) {
 fly.src = 'sprites/froggit-heal-fly.gif';
-fly.className = 'green-fly';
+fly.classList.add('green-fly');
 } else {
 fly.src = 'sprites/froggit-attack-fly.gif';
-fly.className = 'fly-sprite';
+fly.classList.add('fly-sprite');
 }
 bullets.push({
 element: fly,
@@ -325,8 +325,8 @@ fly.element.remove();
 fly.removed = true;
 }
 if (!fly.removed) {
-if (fly.x < myHoriz + 20 && fly.x + 20 > myHoriz &&
-fly.y < myVerti + 20 && fly.y + 20 > myVerti) {
+if (fly.x < myHoriz + 28 && fly.x + 16 > myHoriz &&
+fly.y < myVerti + 28 && fly.y + 16 > myVerti) {
 if (fly.element.classList.contains('god-fly') && !isEmpoweredByGodFly) {
 playerHealth = 20;
 increaseScore(100);
@@ -379,6 +379,12 @@ if (score > highScore) {localStorage.setItem('endlessHighScore', score);}
 location.href = 'gameover-endless.html';
 dead = true;
 }
+function resetScore() {
+score = 0;
+highScore = 0;
+localStorage.setItem('endlessHighScore', score);
+document.getElementById('highScoreDisplay').innerHTML = 'Best:' + highScore; 
+}
 function collectGodFly() {
 if (isTrueInvincible){return;}
 isEmpoweredByGodFly = true;
@@ -412,7 +418,7 @@ fly.style.zIndex = '999';
 fly.style.left = '0px';
 fly.style.top = '-200px';   
 fly.src = 'sprites/friend.png';
-fly.className = 'friend';
+fly.classList.add('friend');
 textBox.appendChild(fly);
 bullets.push({
 element: fly,
