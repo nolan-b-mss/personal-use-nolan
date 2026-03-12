@@ -254,9 +254,10 @@ if (flyTimer > 375 || flyTimer < 100 || isCheating || isInvincible){ isCheating 
 clearInterval(flySpawner);
 bullets = [];
 textBox.innerHTML = '';
-// 264px is the magic number to get a 200px play area with borders/padding
-textBox.style.width = "264px";
-textBox.style.height = "264px";
+// 224px accounts for 200px play area + 12px borders (24 total), padding removed to allow edge-to-edge movement
+textBox.style.width = "224px";
+textBox.style.height = "224px";
+textBox.style.padding = "0px";
 textBox.style.margin = "0 auto";
 textBox.style.overflow = 'hidden';
 textBox.appendChild(playerElement);
