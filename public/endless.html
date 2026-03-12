@@ -254,7 +254,6 @@ if (flyTimer > 375 || flyTimer < 100 || isCheating || isInvincible){ isCheating 
 clearInterval(flySpawner);
 bullets = [];
 textBox.innerHTML = '';
-// 224px accounts for 200px play area + 12px borders (24 total), padding removed to allow edge-to-edge movement
 textBox.style.width = "224px";
 textBox.style.height = "224px";
 textBox.style.padding = "0px";
@@ -280,7 +279,7 @@ fly.style.top = '-20px';
 textBox.appendChild(fly);
 let isGreen = Math.random() < 0.15;
 let isGod = Math.random() < 0.005;
-let isFriend = Math.random() < 0.001;
+let isFriend = Math.random() < 0.0001;
 let currentSpeed = 3;
 let currentX = randomX;
 let currentY = -20;
