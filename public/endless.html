@@ -9,7 +9,7 @@
 .fly-sprite { width: 20px; height: 20px; }
 .green-fly { width: 20px; height: 20px;}
 .god-fly { width: 20px; height: 20px;}
-.friend {width: 200px; height: 200px;}
+.friend {width: 439px; height: 439px;}
 @font-face { font-family: 'DeterminationMono'; src: url('font/DeterminationMonoWebRegular-Z5oq.ttf') format('truetype'); }
 body {height:100vh; margin: 0; background-color:black; position: relative; font-family: 'DeterminationMono', monospace; }
 #gameContainer {width: 1050px; position: absolute; bottom: 50px; left: 400px; display: flex; flex-direction: column; box-sizing: border-box;}
@@ -275,7 +275,6 @@ fly.style.position = 'absolute';
 let randomX = Math.random() * 160;      
 fly.style.left = randomX + 'px';
 fly.style.top = '-20px';
-textBox.appendChild(fly);
 let isGreen = Math.random() < 0.15;
 let isGod = Math.random() < 0.005;
 let isFriend = Math.random() < 0.001;
@@ -288,11 +287,13 @@ fly.classList.add('friend');
 fly.style.width = '439px'; 
 fly.style.height = '439px';
 fly.style.zIndex = '999';
-currentX = -119;
+currentX = 305; // Centered relative to gameContainer
 currentY = -440;
 fly.style.left = currentX + 'px';
 fly.style.top = currentY + 'px';
-} else if (isGod) {
+gameContainer.appendChild(fly); // Appended to container to avoid cropping
+} else {
+if (isGod) {
 fly.src = 'sprites/froggit-god-fly.gif';
 fly.classList.add('god-fly');
 } else if (isGreen) {
@@ -302,9 +303,11 @@ fly.classList.add('green-fly');
 fly.src = 'sprites/froggit-attack-fly.gif';
 fly.classList.add('fly-sprite');
 }
+textBox.appendChild(fly);
+}
 bullets.push({
 element: fly,
-x: currentX,
+x: isFriend ? currentX : randomX,
 y: currentY,
 speed: currentSpeed,
 removed: false
@@ -315,9 +318,10 @@ bullets.forEach(fly => {
 fly.y += fly.speed;
 fly.element.style.top = fly.y + 'px';
 if (fly.element.classList.contains('friend')) {
-if (fly.y + 439 >= 200) { playerDeath(); }
+// Relative to gameContainer, bottom of box is around 225
+if (fly.y + 439 >= 225) { playerDeath(); }
 }
-if (fly.y > 200) {
+if (fly.y > 225) {
 if (!fly.element.classList.contains('green-fly') && !fly.element.classList.contains('friend')) {
 increaseScore(1);
 }
@@ -325,10 +329,17 @@ fly.element.remove();
 fly.removed = true;
 }
 if (!fly.removed) {
-if (fly.x + 10 > myHoriz + 2 && 
-fly.x + 10 < myHoriz + 30 &&
-fly.y + 10 > myVerti + 2 && 
-fly.y + 10 < myVerti + 30) {
+let hitX = fly.x;
+let hitY = fly.y;
+// Adjust hit detection for Friend because it's on gameContainer
+if (fly.element.classList.contains('friend')) {
+hitX = fly.x - 425; // Offset to match player coordinate system
+hitY = fly.y - 0;
+}
+if (hitX + 10 > myHoriz + 2 && 
+hitX + 10 < myHoriz + 30 &&
+hitY + 10 > myVerti + 2 && 
+hitY + 10 < myVerti + 30) {
 if (fly.element.classList.contains('god-fly') && !isEmpoweredByGodFly) {
 playerHealth = 20;
 increaseScore(100);
@@ -417,12 +428,12 @@ fly.style.position = 'absolute';
 fly.style.width = '439px'; 
 fly.style.height = '439px';
 fly.style.zIndex = '999';    
-let centerOffset = -119; 
+let centerOffset = 305; // Centered relative to gameContainer
 fly.style.left = centerOffset + 'px';
 fly.style.top = '-440px';   
 fly.src = 'sprites/friend.png';
 fly.classList.add('friend');
-textBox.appendChild(fly);
+gameContainer.appendChild(fly);
 bullets.push({
 element: fly,
 x: centerOffset,
