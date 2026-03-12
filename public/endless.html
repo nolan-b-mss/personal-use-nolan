@@ -9,6 +9,7 @@
 .fly-sprite { width: 20px; height: 20px; }
 .green-fly { width: 20px; height: 20px;}
 .god-fly { width: 20px; height: 20px;}
+.friend {width: 200px; height: 200px;}
 @font-face { font-family: 'DeterminationMono'; src: url('font/DeterminationMonoWebRegular-Z5oq.ttf') format('truetype'); }
 body {height:100vh; margin: 0; background-color:black; position: relative; font-family: 'DeterminationMono', monospace; }
 #gameContainer {width: 1050px; position: absolute; bottom: 50px; left: 400px; display: flex; flex-direction: column; box-sizing: border-box;}
@@ -174,10 +175,10 @@ debugElement.style.display = 'block';
 }    
 }
 document.onkeyup = function(event){
-if (event.key === "w"){up = false; wMenuKeyDebounced = false;}
-if (event.key === "s"){down = false; sMenuKeyDebounced = false;}
-if (event.key === "a"){left = false; aMenuKeyDebounced = false;}
-if (event.key === "d"){right = false; dMenuKeyDebounced = false;}
+if (event.key === "w"){up = false;}
+if (event.key === "s"){down = false;}
+if (event.key === "a"){left = false;}
+if (event.key === "d"){right = false;}
 }
 function movement() {
 updateDebug();
@@ -197,8 +198,8 @@ playerElement.style.left = myHoriz + 'px';
 }
 function updateDebug() {
 const debugElement = document.getElementById('debugMenu');
-if (!showDebug){debugMenu.style.display = 'none'}
-else if (showDebug){debugMenu.style.display = 'block'}
+if (!showDebug){debugElement.style.display = 'none'}
+else if (showDebug){debugElement.style.display = 'block'}
 if (!debugElement) return;
 debugElement.innerHTML = `
 ---------------- <br>
@@ -251,11 +252,6 @@ function startEnemyTurn() {
 if (isEnemyTurn) return;
 if (flyTimer > 375 || flyTimer < 100 || isCheating || isInvincible){ isCheating = true; console.log('Why you cheat? :('); textBox.style.borderColor = 'red'; }
 clearInterval(flySpawner);
-enemyDialogue = false;
-isActionActive = true;
-isAttacking = false;
-hasAttacked = false;
-turnNum = 1;
 bullets = [];
 textBox.innerHTML = '';
 textBox.style.width = "200px";
@@ -280,62 +276,68 @@ let randomX = Math.random() * 160;
 fly.style.left = randomX + 'px';
 fly.style.top = '-20px';
 textBox.appendChild(fly);
-bullets.push({
-element: fly,
-x: randomX,
-y: -20
-});
 let isGreen = Math.random() < 0.15;
-if (isGreen) {
+let isGod = Math.random() < 0.005;
+let isFriend = Math.random() < 0.001;
+if (isFriend) {
+fly.src = 'sprites/friend.png';
+fly.classList.add('friend');
+} else if (isGod) {
+fly.src = 'sprites/froggit-god-fly.gif';
+fly.classList.add('god-fly');
+} else if (isGreen) {
 fly.src = 'sprites/froggit-heal-fly.gif';
 fly.classList.add('green-fly');
 } else {
 fly.src = 'sprites/froggit-attack-fly.gif';
 fly.classList.add('fly-sprite');
 }
-let isGod = Math.random() < 0.005;
-if (isGod) {
-fly.src = 'sprites/froggit-god-fly.gif';
-fly.classList.add('god-fly');
-}
+bullets.push({
+element: fly,
+x: randomX,
+y: -20,
+removed: false
+});
 }
 function moveBullets() {
 bullets.forEach(fly => {
 fly.y += 3;
 fly.element.style.top = fly.y + 'px';
+if (fly.element.classList.contains('friend')) {
+if (fly.y > -200) { playerDeath(); }
+}
 if (fly.y > 200) {
-if (fly.element.classList.contains('green-fly')) {fly.element.remove();}
-else {
-fly.element.remove();
+if (!fly.element.classList.contains('green-fly') && !fly.element.classList.contains('friend')) {
 increaseScore(1);
 }
+fly.element.remove();
+fly.removed = true;
 }
-if (fly.x + 10 > myHoriz + 2 && 
-fly.x + 10 < myHoriz + 30 &&
-fly.y + 10 > myVerti + 2 && 
-fly.y + 10 < myVerti + 30 &&
-fly.element.classList.contains('god-fly')
-&& !isEmpoweredByGodFly) {
-playerHealth = 20;
-increaseScore(100);
-collectGodFly();
-updateUI();
-}
-if (!isInvincible) {
+if (!fly.removed) {
 if (fly.x + 10 > myHoriz + 2 && 
 fly.x + 10 < myHoriz + 30 &&
 fly.y + 10 > myVerti + 2 && 
 fly.y + 10 < myVerti + 30) {
-
-if (fly.element.classList.contains('green-fly')) {
+if (fly.element.classList.contains('god-fly') && !isEmpoweredByGodFly) {
+playerHealth = 20;
+increaseScore(100);
+collectGodFly();
+updateUI();
+fly.element.remove();
+fly.removed = true;
+}
+else if (fly.element.classList.contains('green-fly')) {
 playerHealth += 3;
 increaseScore(5);
 if (playerHealth > 20) { playerHealth = 20; }
 updateUI();
 fly.element.remove();
 fly.removed = true;
-} else 
-{
+} 
+else if (fly.element.classList.contains('friend')) {
+playerDeath();
+}
+else if (!isInvincible) {
 takeDamage(3);
 fly.element.remove();
 fly.removed = true;
@@ -343,28 +345,24 @@ fly.removed = true;
 }
 }
 });
-bullets = bullets.filter(fly => fly.y <= 200 && !fly.removed);
+bullets = bullets.filter(fly => !fly.removed);
 }
 function increaseDifficulty() {
-if (isCheating){console.log('function increaseDifficulty failed: "Cheats are active"');return;}
+if (isCheating){return;}
 if (flyTimer > 100){
-console.log('Increased difficulty!')
-flyTimer -= 25
-clearInterval(flySpawner)
-flySpawner = setInterval(spawnFly, flyTimer)
+flyTimer -= 25;
+clearInterval(flySpawner);
+flySpawner = setInterval(spawnFly, flyTimer);
 }
-else {console.log('function increaseDifficulty failed: "Difficulty is at maximum"');return;}
 }
 function increaseScore(amount) {
 if (isCheating || dead || isTrueInvincible){return;}
-else {
 score += amount;
-document.getElementById('scoreDisplay').innerHTML = 'Score:' + score;
+document.getElementById('scoreDisplay').innerHTML = 'Score: ' + score;
 if (score > highScore) {
 highScore = score; 
-document.getElementById('highScoreDisplay').innerHTML = 'Best:' + highScore; 
+document.getElementById('highScoreDisplay').innerHTML = 'Best: ' + highScore; 
 localStorage.setItem('endlessHighScore', highScore);
-}
 }
 }
 function playerDeath() {
@@ -380,13 +378,10 @@ document.getElementById('highScoreDisplay').innerHTML = 'Best:' + highScore;
 }
 function collectGodFly() {
 if (isTrueInvincible){return;}
-else {
 isEmpoweredByGodFly = true;
-console.log('Beginning invulnerability color cycle...')
 cycleCount = 0;
 isInvincible = true;
 intervalID = setInterval(cycleColor, 100);
-}
 }
 function cycleColor() {
 textBox.style.borderColor = colors[colorIndex];
@@ -400,10 +395,29 @@ isInvincible = false;
 isEmpoweredByGodFly = false;
 colorIndex = 0;
 textBox.style.borderColor = "#FFFFFF";
-console.log('Invulnerability color cycle finished!')
 return;
 }
 }
+}
+function spawnHim() {
+if (!isEnemyTurn) {return;}
+let fly = document.createElement('img');
+fly.style.position = 'absolute';
+fly.style.width = '439px'; 
+fly.style.height = '439px';
+fly.style.zIndex = '999';    
+let centerOffset = -119; 
+fly.style.left = centerOffset + 'px';
+fly.style.top = '-440px';   
+fly.src = 'sprites/friend.png';
+fly.classList.add('friend');
+textBox.appendChild(fly);
+bullets.push({
+element: fly,
+x: centerOffset,
+y: -440,
+removed: false
+});
 }
 startBattle();
 </script>
