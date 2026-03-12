@@ -13,7 +13,8 @@
 @font-face { font-family: 'DeterminationMono'; src: url('font/DeterminationMonoWebRegular-Z5oq.ttf') format('truetype'); }
 body {height:100vh; margin: 0; background-color:black; position: relative; font-family: 'DeterminationMono', monospace; }
 #gameContainer {width: 1050px; position: absolute; bottom: 50px; left: 400px; display: flex; flex-direction: column; box-sizing: border-box;}
-#textBox {border: solid white; border-width: 12px; background-color: black; position: relative; height: 225px; width: 1050px; margin: 15px auto; color: white; font-size: 32px; padding: 20px; box-sizing: border-box; word-wrap: break-word; overflow-y: hidden; line-height: 1.4; }
+/* CHANGED TO CONTENT-BOX TO ENSURE INNER AREA IS EXACTLY 200x200 */
+#textBox {border: solid white; border-width: 12px; background-color: black; position: relative; height: 225px; width: 1050px; margin: 15px auto; color: white; font-size: 32px; padding: 20px; box-sizing: content-box; word-wrap: break-word; overflow-y: hidden; line-height: 1.4; }
 #enemyContainer { position: relative; height: 600px; width: 800px; margin: 0px auto 15px auto; border-width: 12px; box-sizing: border-box;}
 #menuBox {width: 1050px; height: 75px; margin: 10px auto 15px auto; display: flex; justify-content: space-around; }
 #hp-section { display: flex; justify-content: center; color: white; font-family: 'DeterminationMono', monospace; margin-top: 0px;}
@@ -257,9 +258,10 @@ textBox.innerHTML = '';
 textBox.style.width = "200px";
 textBox.style.height = "200px";
 textBox.style.margin = "0 auto";
+textBox.style.padding = "0px"; // REMOVED PADDING TO PREVENT BOX SHRINKAGE
 textBox.style.overflow = 'hidden';
 textBox.appendChild(playerElement);
-maxHoriz = 168;
+maxHoriz = 168; // 200 - 32
 maxVerti = 168;
 myHoriz = 84; 
 myVerti = 84;
