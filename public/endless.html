@@ -110,6 +110,7 @@ let cycleCount = 0;
 const colors = ["#FFFFFF","#E81416","#FFA500","#FAEB36","#79C314","#487DE7","#4B369D","#70369D"]; 
 let colorIndex = 0;
 let isEmpoweredByGodFly = false;
+let isPaused = false;
 document.getElementById('highScoreDisplay').innerHTML = 'Best: ' + highScore;
 function writeText(dialogue, callback, index = 0) {
 if (index === 0) {
@@ -136,7 +137,7 @@ writeText(dialogue, callback, index);
 }, delay);
 }
 function startBattle() {
-writeText("* Press Z or Enter to start Endless Mode...");
+writeText("* Press Z or Enter to start Endless Mode. <br> *You can press Space to pause and unpause the game.");
 menuBox.style.display = 'none'; 
 if (!battleInitiated) {
 setInterval(movement, 10);
@@ -172,7 +173,11 @@ const debugElement = document.getElementById('debugMenu');
 if (showDebug) {
 debugElement.style.display = 'block';
 } else {debugElement.style.display = 'none';}
-}    
+}
+if (event.key === "Space"){
+if (isPaused) {isPaused = false;}
+if (!isPaused) {isPaused = true;}
+}
 }
 document.onkeyup = function(event){
 if (event.key === "w"){up = false;}
@@ -182,6 +187,8 @@ if (event.key === "d"){right = false;}
 }
 function movement() {
 updateDebug();
+if (isPaused) { return; }
+else {
 if (isEnemyTurn) {
 if (up) { myVerti -= 3; }
 if (down) { myVerti += 3; }
@@ -194,6 +201,7 @@ if (myVerti > maxVerti) { myVerti = maxVerti; }
 moveBullets();
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
+}
 }
 }
 function updateDebug() {
@@ -260,7 +268,7 @@ textBox.style.padding = "0px";
 textBox.style.margin = "0 auto";
 textBox.style.overflow = 'hidden';
 textBox.appendChild(playerElement);
-maxHoriz = 168; // 200 - 32
+maxHoriz = 168;
 maxVerti = 168;
 myHoriz = 84; 
 myVerti = 84;
@@ -271,6 +279,7 @@ setInterval(increaseDifficulty, 7500);
 isEnemyTurn = true;
 }
 function spawnFly() {
+if (!isPaused) {
 let fly = document.createElement('img');
 fly.style.position = 'absolute';
 let randomX = Math.random() * 180;      
@@ -311,7 +320,9 @@ speed: currentSpeed,
 removed: false
 });
 }
+}
 function moveBullets() {
+if (!isPaused) {
 bullets.forEach(fly => {
 fly.y += fly.speed;
 fly.element.style.top = fly.y + 'px';
@@ -357,8 +368,9 @@ fly.removed = true;
 });
 bullets = bullets.filter(fly => !fly.removed);
 }
+}
 function increaseDifficulty() {
-if (isCheating){return;}
+if (isCheating || isPaused){return;}
 if (flyTimer > 100){
 flyTimer -= 25;
 clearInterval(flySpawner);
