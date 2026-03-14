@@ -357,6 +357,8 @@ fly.removed = true;
 } 
 else if (fly.element.classList.contains('friend')) {
 increaseScore(-500);
+fly.element.remove();
+fly.removed = true;
 }
 else if (!isInvincible) {
 takeDamage(3);
