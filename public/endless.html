@@ -320,7 +320,7 @@ function moveBullets() {
 if (!isPaused) {
 bullets.forEach(fly => {
 fly.y += fly.speed;
-fly.element.style.top = fly.y + 'px'};)
+fly.element.style.top = fly.y + 'px';})
 }
 if (fly.y > 200) {
 if (!fly.element.classList.contains('green-fly') && !fly.element.classList.contains('friend')) {
