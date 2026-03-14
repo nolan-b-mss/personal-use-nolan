@@ -95,6 +95,9 @@ let bullets = [];
 let fly;
 let flySpawner;
 let flyTimer = 375;
+let currentSpeed = 3;
+let currentX = randomX;
+let currentY = -20;
 let boxLeft;
 let boxTop;
 let barPosition = 0;
@@ -284,9 +287,7 @@ textBox.appendChild(fly);
 let isGreen = Math.random() < 0.15;
 let isGod = Math.random() < 0.005;
 let isFriend = Math.random() < 0.0001;
-let currentSpeed = 3;
-let currentX = randomX;
-let currentY = -20;
+
 if (isFriend) {
 fly.src = 'sprites/friend.png';
 fly.classList.add('friend');
