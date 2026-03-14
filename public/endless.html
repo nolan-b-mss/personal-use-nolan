@@ -26,7 +26,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 </style>
 </head>
 <body style="background-color:black; position: relative; overflow: hidden;">
-<div id="debugMenu" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: lime; font-family: monospace; padding: 10px; border: 1px solid lime; z-index: 1000; font-size: 14px; pointer-events: none;">
+<div id="debugMenu" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: lime; font-family: monospace; padding: 10px; border: 1px solid lime; z-index: 1000; font-size: 14px; pointer-events: none; display:none;">
 </div>
 <p style="font-size: 12px; color: gold;">  Creator's best: 16009</p>
 <div id="gameContainer">
@@ -77,11 +77,6 @@ let up = false;
 let down = false;
 let right = false;
 let left = false;
-let currentMenuItem = 1;
-let currentActItem = 1;
-let currentItem = 1;
-let currentMercyItem = 1;
-let actionKeyPressed = false;
 let maxHealth = 20;
 let playerHealth = 20;
 let score = 0;
@@ -89,29 +84,19 @@ let highScore = localStorage.getItem('endlessHighScore') || 0;
 let isInvincible = false;
 let isTrueInvincible = false;
 let battleInitiated = false;
-let boxRect = textBox.getBoundingClientRect();
-let containerRect = gameContainer.getBoundingClientRect();
 let bullets = [];
-let fly;
 let flySpawner;
 let flyTimer = 375;
-let randomX;
 let currentSpeed = 3;
-let currentX = randomX;
-let currentY = -20;
-let boxLeft;
-let boxTop;
-let barPosition = 0;
-let moveBarID;
-let targetCenter = 480;
-let intervalID;
-let cycleCount = 0;
 const colors = ["#FFFFFF","#E81416","#FFA500","#FAEB36","#79C314","#487DE7","#4B369D","#70369D"]; 
 let colorIndex = 0;
 let isEmpoweredByGodFly = false;
-let isSabotaged = false;
 let isPaused = false;
+let cycleCount = 0;
+let intervalID;
+
 document.getElementById('highScoreDisplay').innerHTML = 'Best: ' + highScore;
+
 function writeText(dialogue, callback, index = 0) {
 if (index === 0) {
 if (isTyping) return;
@@ -136,6 +121,7 @@ setTimeout(function() {
 writeText(dialogue, callback, index);
 }, delay);
 }
+
 function startBattle() {
 writeText("* Press Z or Enter to start Endless Mode. <br> * You can press Space to pause and unpause the game.");
 if (!battleInitiated) {
@@ -144,49 +130,37 @@ battleInitiated = true;
 }
 isWaitingToStart = true; 
 }
+
 document.onkeydown = function(event){
 if (event.key === "z" || event.key === "Enter"){
-if (isTyping){return;} else{
+if (isTyping){return;} 
 if (isWaitingToStart) {
 startEnemyTurn();
 isWaitingToStart = false;
 }
-else {return;}
 }
-}
-if (event.key === "w"){
-up = true;
-}
-if (event.key === "s"){
-down = true;
-}
-if (event.key === "a"){
-left = true;
-}
-if (event.key === "d"){
-right = true;
-}
+if (event.key === "w"){ up = true; }
+if (event.key === "s"){ down = true; }
+if (event.key === "a"){ left = true; }
+if (event.key === "d"){ right = true; }
 if (event.ctrlKey && event.key === "q"){
 showDebug = !showDebug;
-const debugElement = document.getElementById('debugMenu');
-if (showDebug) {
-debugElement.style.display = 'block';
-} else {debugElement.style.display = 'none';}
 }
 if (event.code === "Space"){
-isPaused = !isPaused
+isPaused = !isPaused;
 }
 }
+
 document.onkeyup = function(event){
 if (event.key === "w"){up = false;}
 if (event.key === "s"){down = false;}
 if (event.key === "a"){left = false;}
 if (event.key === "d"){right = false;}
 }
+
 function movement() {
 updateDebug();
 if (isPaused) { return; }
-else {
 if (isEnemyTurn) {
 if (up) { myVerti -= 3; }
 if (down) { myVerti += 3; }
@@ -201,49 +175,37 @@ playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
 }
 }
-}
+
 function updateDebug() {
 const debugElement = document.getElementById('debugMenu');
-if (!showDebug){debugElement.style.display = 'none'}
-else if (showDebug){debugElement.style.display = 'block'}
-if (!debugElement) return;
+debugElement.style.display = showDebug ? 'block' : 'none';
+if (!showDebug) return;
 debugElement.innerHTML = `
 ---------------- <br>
 Game Variables<br>
 Fly spawnrate: ${flyTimer}<br>
 Dialogue typing?: ${isTyping}<br>
 Waiting to start?: ${isWaitingToStart}<br>
-Cheats?: ${isCheating}<br>
 Paused?: ${isPaused}<br>
 ---------------- <br>
 Player Variables<br>
-Up: ${up}<br>
-Left: ${left}<br>
-Down: ${down}<br>
-Right: ${right}<br>
 X: ${myHoriz}<br>
 Y: ${myVerti}<br>
 Health: ${playerHealth}<br>
 `;
 }
+
 function updateUI() {
 let healthPercent = (playerHealth / maxHealth) * 100;
-if (healthPercent < 0) {
-healthPercent = 0;
+document.getElementById("hp-bar").style.width = Math.max(0, healthPercent) + "%";
+document.getElementById("hp-text").innerText = playerHealth + " / " + maxHealth;
 }
-let hpBar = document.getElementById("hp-bar");
-hpBar.style.width = healthPercent + "%";
-let hpText = document.getElementById("hp-text");
-hpText.innerText = playerHealth + " / " + maxHealth;
-}
+
 function takeDamage(damageAmount) {
-if (isTrueInvincible){return;}
-else if (!isInvincible && playerHealth > 0) {
+if (isTrueInvincible || isInvincible || playerHealth <= 0) return;
 playerHealth -= damageAmount;
 updateUI();
 if (playerHealth <= 0) {
-playerHealth = 0;
-updateUI();
 playerDeath();
 return;
 }
@@ -254,10 +216,9 @@ isInvincible = false;
 playerElement.style.opacity = 1.0;
 }, 1000);
 }
-}
+
 function startEnemyTurn() {
 if (isEnemyTurn) return;
-if (flyTimer > 375 || flyTimer < 100 || isCheating || isInvincible){ isCheating = true; console.log('Why you cheat? :('); textBox.style.borderColor = 'red'; }
 clearInterval(flySpawner);
 bullets = [];
 textBox.innerHTML = '';
@@ -267,73 +228,76 @@ textBox.style.padding = "0px";
 textBox.style.margin = "0 auto";
 textBox.style.overflow = 'hidden';
 textBox.appendChild(playerElement);
-maxHoriz = 168;
-maxVerti = 168;
-myHoriz = 84; 
-myVerti = 84;
+maxHoriz = 192; 
+maxVerti = 192;
+myHoriz = 96; 
+myVerti = 96;
 playerElement.style.left = myHoriz + 'px';
 playerElement.style.top = myVerti + 'px';
 flySpawner = setInterval(spawnFly, flyTimer);
 setInterval(increaseDifficulty, 7500);
 isEnemyTurn = true;
 }
+
 function spawnFly() {
-if (!isPaused) {
-let fly = document.createElement('img');
-fly.style.position = 'absolute';
-randomX = Math.random() * 180;      
-fly.style.left = randomX + 'px';
-fly.style.top = '-20px';
-textBox.appendChild(fly);
+if (isPaused) return;
+let flyElem = document.createElement('img');
+flyElem.style.position = 'absolute';
+let randomX = Math.random() * 180;      
+let startY = -20;
 let isGreen = Math.random() < 0.15;
 let isGod = Math.random() < 0.005;
 let isFriend = Math.random() < 0.0001;
 
 if (isFriend) {
-fly.src = 'sprites/friend.png';
-fly.classList.add('friend');
-fly.style.width = '200px'; 
-fly.style.height = '200px';
-fly.style.zIndex = '999';
-currentX = 0;
-currentY = -200;
-fly.style.left = '0px';
-fly.style.top = currentY + 'px';
+flyElem.src = 'sprites/friend.png';
+flyElem.classList.add('friend');
+flyElem.style.width = '200px'; 
+flyElem.style.height = '200px';
+flyElem.style.left = '0px';
+startY = -200;
 } else if (isGod) {
-fly.src = 'sprites/froggit-god-fly.gif';
-fly.classList.add('god-fly');
+flyElem.src = 'sprites/froggit-god-fly.gif';
+flyElem.classList.add('god-fly');
+flyElem.style.left = randomX + 'px';
 } else if (isGreen) {
-fly.src = 'sprites/froggit-heal-fly.gif';
-fly.classList.add('green-fly');
+flyElem.src = 'sprites/froggit-heal-fly.gif';
+flyElem.classList.add('green-fly');
+flyElem.style.left = randomX + 'px';
 } else {
-fly.src = 'sprites/froggit-attack-fly.gif';
-fly.classList.add('fly-sprite');
+flyElem.src = 'sprites/froggit-attack-fly.gif';
+flyElem.classList.add('fly-sprite');
+flyElem.style.left = randomX + 'px';
 }
+
+flyElem.style.top = startY + 'px';
+textBox.appendChild(flyElem);
+
 bullets.push({
-element: fly,
-x: currentX,
-y: currentY,
+element: flyElem,
+x: parseFloat(flyElem.style.left),
+y: startY,
 speed: currentSpeed,
 removed: false
 });
 }
-}
+
 function moveBullets() {
-if (!isPaused) {
+if (isPaused) return;
 bullets.forEach(fly => {
 fly.y += fly.speed;
-fly.element.style.top = fly.y + 'px';})
-}
-if (fly.y > 200) {
+fly.element.style.top = fly.y + 'px';
+
+if (fly.y > 224) {
 if (!fly.element.classList.contains('green-fly') && !fly.element.classList.contains('friend')) {
 increaseScore(1);
 }
 fly.element.remove();
 fly.removed = true;
-}
-if (!fly.removed) {
-if (fly.x < myHoriz + 28 && fly.x + 16 > myHoriz &&
-fly.y < myVerti + 28 && fly.y + 16 > myVerti) {
+} else if (!fly.removed) {
+// Collision Detection
+if (fly.x < myHoriz + 20 && fly.x + 20 > myHoriz &&
+fly.y < myVerti + 20 && fly.y + 20 > myVerti) {
 if (fly.element.classList.contains('god-fly') && !isEmpoweredByGodFly) {
 playerHealth = 20;
 increaseScore(100);
@@ -341,39 +305,38 @@ collectGodFly();
 updateUI();
 fly.element.remove();
 fly.removed = true;
-}
-else if (fly.element.classList.contains('green-fly')) {
-playerHealth += 3;
+} else if (fly.element.classList.contains('green-fly')) {
+playerHealth = Math.min(20, playerHealth + 3);
 increaseScore(5);
-if (playerHealth > 20) { playerHealth = 20; }
 updateUI();
 fly.element.remove();
 fly.removed = true;
-} 
-else if (fly.element.classList.contains('friend')) {
+} else if (fly.element.classList.contains('friend')) {
 increaseScore(-500);
 fly.element.remove();
 fly.removed = true;
-}
-else if (!isInvincible) {
+} else {
 takeDamage(3);
 fly.element.remove();
 fly.removed = true;
 }
 }
-};
+}
+});
 bullets = bullets.filter(fly => !fly.removed);
 }
+
 function increaseDifficulty() {
-if (isCheating || isPaused){return;}
+if (isCheating || isPaused) return;
 if (flyTimer > 100){
 flyTimer -= 25;
 clearInterval(flySpawner);
 flySpawner = setInterval(spawnFly, flyTimer);
 }
 }
+
 function increaseScore(amount) {
-if (isCheating || dead || isTrueInvincible){return;}
+if (isCheating || dead || isTrueInvincible) return;
 score += amount;
 document.getElementById('scoreDisplay').innerHTML = 'Score: ' + score;
 if (score > highScore) {
@@ -382,60 +345,34 @@ document.getElementById('highScoreDisplay').innerHTML = 'Best: ' + highScore;
 localStorage.setItem('endlessHighScore', highScore);
 }
 }
+
 function playerDeath() {
-if (score > highScore) {localStorage.setItem('endlessHighScore', score);}
+localStorage.setItem('endlessHighScore', Math.max(score, highScore));
 location.href = 'gameover-endless.html';
 dead = true;
 }
-function resetScore() {
-score = 0;
-highScore = 0;
-localStorage.setItem('endlessHighScore', score);
-document.getElementById('highScoreDisplay').innerHTML = 'Best:' + highScore; 
-}
+
 function collectGodFly() {
-if (isTrueInvincible){return;}
 isEmpoweredByGodFly = true;
 cycleCount = 0;
 isInvincible = true;
 intervalID = setInterval(cycleColor, 100);
 }
+
 function cycleColor() {
 textBox.style.borderColor = colors[colorIndex];
-colorIndex += 1;
-if (colorIndex === colors.length) { 
-colorIndex = 0;
+colorIndex = (colorIndex + 1) % colors.length;
+if (colorIndex === 0) { 
 cycleCount += 1;
 if (cycleCount === 3){
 clearInterval(intervalID);
 isInvincible = false;
 isEmpoweredByGodFly = false;
-colorIndex = 0;
 textBox.style.borderColor = "#FFFFFF";
-return;
 }
 }
 }
-function spawnHim() {
-if (!isEnemyTurn) {return;}
-let fly = document.createElement('img');
-fly.style.position = 'absolute';
-fly.style.width = '200px'; 
-fly.style.height = '200px';
-fly.style.zIndex = '999';    
-fly.style.left = '0px';
-fly.style.top = '-200px';   
-fly.src = 'sprites/friend.png';
-fly.classList.add('friend');
-textBox.appendChild(fly);
-bullets.push({
-element: fly,
-x: 0,
-y: -200,
-speed: 15,
-removed: false
-});
-}
+
 startBattle();
 </script>
 </body>
