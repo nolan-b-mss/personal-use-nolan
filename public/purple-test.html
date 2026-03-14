@@ -262,7 +262,7 @@ function moveBullets2() {
 bullets.forEach(bullet => {
 bullet.x += 5;
 bullet.y = actualTop + 'px';
-bullet.element.style.left = bullet.x + 'px'
+bullet.element.style.left = bullet.x;
 if (bullet.element.style.left > 1000) {
 bullet.element.remove();
 }
