@@ -52,12 +52,6 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 <span id="highScoreDisplay" style="font-size:48px; color: gold;">Best: 0</span>
 </div>
 </div>
-<div id="menuBox">
-<img id="fightBtn" src="sprites/fight.png" height="84" width="220">
-<img id="actBtn" src="sprites/act.png" height="84" width="220">
-<img id="itemBtn" src="sprites/item.png" height="84" width="220">
-<img id="mercyBtn" src="sprites/mercy.png" height="84" width="220">
-</div>
 </div>
 <script>
 let enemyContainer = document.getElementById('enemyContainer');
@@ -326,7 +320,7 @@ function moveBullets() {
 if (!isPaused) {
 bullets.forEach(fly => {
 fly.y += fly.speed;
-fly.element.style.top = fly.y + 'px';
+fly.element.style.top = fly.y + 'px';)
 }
 if (fly.y > 200) {
 if (!fly.element.classList.contains('green-fly') && !fly.element.classList.contains('friend')) {
