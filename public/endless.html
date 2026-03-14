@@ -356,7 +356,7 @@ fly.element.remove();
 fly.removed = true;
 } 
 else if (fly.element.classList.contains('friend')) {
-playerDeath();
+increaseScore(-500);
 }
 else if (!isInvincible) {
 takeDamage(3);
