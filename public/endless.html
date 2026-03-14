@@ -228,10 +228,10 @@ textBox.style.padding = "0px";
 textBox.style.margin = "0 auto";
 textBox.style.overflow = 'hidden';
 textBox.appendChild(playerElement);
-maxHoriz = 192; 
-maxVerti = 192;
-myHoriz = 96; 
-myVerti = 96;
+maxHoriz = 180; 
+maxVerti = 180;
+myHoriz = 90; 
+myVerti = 90;
 playerElement.style.left = myHoriz + 'px';
 playerElement.style.top = myVerti + 'px';
 flySpawner = setInterval(spawnFly, flyTimer);
@@ -377,8 +377,8 @@ function spawnHim() {
 if (!isEnemyTurn) { return; }
 let friendElem = document.createElement('img');
 friendElem.style.position = 'absolute';
-friendElem.style.width = '200px'; 
-friendElem.style.height = '200px';
+friendElem.style.width = '224px'; 
+friendElem.style.height = '224px';
 friendElem.style.zIndex = '999';    
 friendElem.style.left = '0px';
 friendElem.style.top = '-200px';   
