@@ -295,14 +295,12 @@ increaseScore(1);
 fly.element.remove();
 fly.removed = true;
 } else if (!fly.removed) {
-// Collision Detection
+
 if (fly.x < myHoriz + 20 && fly.x + 20 > myHoriz &&
 fly.y < myVerti + 20 && fly.y + 20 > myVerti) {
-if (fly.element.classList.contains('god-fly') && !isEmpoweredByGodFly) {
-playerHealth = 20;
-increaseScore(100);
-collectGodFly();
-updateUI();
+
+if (fly.element.classList.contains('friend')) {
+increaseScore(-500);
 fly.element.remove();
 fly.removed = true;
 } else if (fly.element.classList.contains('green-fly')) {
@@ -311,8 +309,11 @@ increaseScore(5);
 updateUI();
 fly.element.remove();
 fly.removed = true;
-} else if (fly.element.classList.contains('friend')) {
-increaseScore(-500);
+} else if (fly.element.classList.contains('god-fly') && !isEmpoweredByGodFly) {
+playerHealth = 20;
+increaseScore(100);
+collectGodFly();
+updateUI();
 fly.element.remove();
 fly.removed = true;
 } else {
