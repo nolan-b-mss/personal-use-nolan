@@ -9,7 +9,6 @@
 .fly-sprite { width: 20px; height: 20px; }
 .green-fly { width: 20px; height: 20px;}
 .god-fly { width: 20px; height: 20px;}
-.friend {width: 200px; height: 200px;}
 @font-face { font-family: 'DeterminationMono'; src: url('font/DeterminationMonoWebRegular-Z5oq.ttf') format('truetype'); }
 body {height:100vh; margin: 0; background-color:black; position: relative; font-family: 'DeterminationMono', monospace; }
 #gameContainer {width: 1050px; position: absolute; bottom: 50px; left: 400px; display: flex; flex-direction: column; box-sizing: border-box;}
@@ -247,16 +246,8 @@ let randomX = Math.random() * 180;
 let startY = -20;
 let isGreen = Math.random() < 0.15;
 let isGod = Math.random() < 0.005;
-let isFriend = Math.random() < 0.0001;
 
-if (isFriend) {
-flyElem.src = 'sprites/friend.png';
-flyElem.classList.add('friend');
-flyElem.style.width = '200px'; 
-flyElem.style.height = '200px';
-flyElem.style.left = '0px';
-startY = -200;
-} else if (isGod) {
+if (isGod) {
 flyElem.src = 'sprites/froggit-god-fly.gif';
 flyElem.classList.add('god-fly');
 flyElem.style.left = randomX + 'px';
@@ -372,28 +363,6 @@ isEmpoweredByGodFly = false;
 textBox.style.borderColor = "#FFFFFF";
 }
 }
-}
-
-function spawnHim() {
-if (!isEnemyTurn) { return; }
-let friendElem = document.createElement('img');
-friendElem.style.position = 'absolute';
-friendElem.style.width = '224px'; 
-friendElem.style.height = '224px';
-friendElem.style.zIndex = '999';    
-friendElem.style.left = '0px';
-friendElem.style.top = '-200px';   
-friendElem.src = 'sprites/friend.png';
-friendElem.classList.add('friend');
-textBox.appendChild(friendElem);
-    
-bullets.push({
-element: friendElem,
-x: 0,
-y: -200,
-speed: 15,
-removed: false
-});
 }
 
 startBattle();
