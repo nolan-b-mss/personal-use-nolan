@@ -137,7 +137,7 @@ writeText(dialogue, callback, index);
 }, delay);
 }
 function startBattle() {
-writeText("* Press Z or Enter to start Endless Mode. <br> *You can press Space to pause and unpause the game.");
+writeText("* Press Z or Enter to start Endless Mode. <br> * You can press Space to pause and unpause the game.");
 menuBox.style.display = 'none'; 
 if (!battleInitiated) {
 setInterval(movement, 10);
@@ -216,6 +216,7 @@ Fly spawnrate: ${flyTimer}<br>
 Dialogue typing?: ${isTyping}<br>
 Waiting to start?: ${isWaitingToStart}<br>
 Cheats?: ${isCheating}<br>
+Paused?: ${isPaused}<br>
 ---------------- <br>
 Player Variables<br>
 Up: ${up}<br>
