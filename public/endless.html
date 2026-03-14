@@ -373,6 +373,28 @@ textBox.style.borderColor = "#FFFFFF";
 }
 }
 
+function spawnHim() {
+if (!isEnemyTurn) { return; }
+let friendElem = document.createElement('img');
+friendElem.style.position = 'absolute';
+friendElem.style.width = '200px'; 
+friendElem.style.height = '200px';
+friendElem.style.zIndex = '999';    
+friendElem.style.left = '0px';
+friendElem.style.top = '-200px';   
+friendElem.src = 'sprites/friend.png';
+friendElem.classList.add('friend');
+textBox.appendChild(friendElem);
+    
+bullets.push({
+element: friendElem,
+x: 0,
+y: -200,
+speed: 15,
+removed: false
+});
+}
+
 startBattle();
 </script>
 </body>
