@@ -95,6 +95,7 @@ let bullets = [];
 let fly;
 let flySpawner;
 let flyTimer = 375;
+let randomX;
 let currentSpeed = 3;
 let currentX = randomX;
 let currentY = -20;
@@ -280,7 +281,7 @@ function spawnFly() {
 if (!isPaused) {
 let fly = document.createElement('img');
 fly.style.position = 'absolute';
-let randomX = Math.random() * 180;      
+randomX = Math.random() * 180;      
 fly.style.left = randomX + 'px';
 fly.style.top = '-20px';
 textBox.appendChild(fly);
