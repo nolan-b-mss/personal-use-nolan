@@ -69,6 +69,7 @@ let bulletSpawner1;
 let bulletSpawner2;
 let bulletTimer = 100;
 let bulletTimer2 = 750;
+let actualTop;
 document.onkeydown = function(event){
 if (event.key === "w"){
 up = true;
@@ -242,7 +243,6 @@ function spawnbullet2() {
 const min = 1;
 const max = 3;
 let bullet = document.createElement('img');
-let actualTop;
 bullet.style.position = 'absolute';
 let randomY = Math.floor(Math.random() * (max - min + 1)) + min;
 if (randomY === 1){actualTop = 390}
