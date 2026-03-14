@@ -110,6 +110,7 @@ let cycleCount = 0;
 const colors = ["#FFFFFF","#E81416","#FFA500","#FAEB36","#79C314","#487DE7","#4B369D","#70369D"]; 
 let colorIndex = 0;
 let isEmpoweredByGodFly = false;
+let isSabotaged = false;
 let isPaused = false;
 document.getElementById('highScoreDisplay').innerHTML = 'Best: ' + highScore;
 function writeText(dialogue, callback, index = 0) {
@@ -326,8 +327,6 @@ if (!isPaused) {
 bullets.forEach(fly => {
 fly.y += fly.speed;
 fly.element.style.top = fly.y + 'px';
-if (fly.element.classList.contains('friend')) {
-if (fly.y >= 0) { increaseScore(-500) }
 }
 if (fly.y > 200) {
 if (!fly.element.classList.contains('green-fly') && !fly.element.classList.contains('friend')) {
