@@ -174,9 +174,8 @@ if (showDebug) {
 debugElement.style.display = 'block';
 } else {debugElement.style.display = 'none';}
 }
-if (event.key === "Space"){
-if (isPaused) {isPaused = false;}
-if (!isPaused) {isPaused = true;}
+if (event.code === "Space"){
+isPaused = !isPaused
 }
 }
 document.onkeyup = function(event){
