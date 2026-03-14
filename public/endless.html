@@ -327,7 +327,7 @@ bullets.forEach(fly => {
 fly.y += fly.speed;
 fly.element.style.top = fly.y + 'px';
 if (fly.element.classList.contains('friend')) {
-if (fly.y >= 0) { playerDeath(); }
+if (fly.y >= 0) { increaseScore(-500) }
 }
 if (fly.y > 200) {
 if (!fly.element.classList.contains('green-fly') && !fly.element.classList.contains('friend')) {
