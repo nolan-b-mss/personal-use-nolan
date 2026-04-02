@@ -25,7 +25,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 </div>
 <div id="gameContainer">
 <div id="enemyContainer">
-<img id="enemy" src="sprites/froggit.gif">
+<img id="enemy" src="sprites/final-froggit.gif">
 </div>
 <img src="sprites/soul-01.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0; z-index: 100;">
 <div id="textBox">
@@ -91,7 +91,7 @@ let actionKeyPressed = false;
 let maxHealth = 20;
 let playerHealth = 20;
 let inventory = ['Monster Candy','Monster Candy','Monster Candy','Monster Candy','Bandage']
-let enemyHealth = 20;
+let enemyHealth = 60;
 let enemyATK = 10;
 let enemyDEF = 10;
 let enemyMercy = 0;
@@ -133,7 +133,7 @@ writeText(dialogue, callback, index);
 }, delay);
 }
 function startBattle() {
-writeText("* A Froggit appears!");
+writeText("* Final Froggit approaches boldly.");
 if (!battleInitiated) {
 setInterval(movement, 10);
 battleInitiated = true;
