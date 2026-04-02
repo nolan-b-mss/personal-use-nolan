@@ -290,13 +290,10 @@ fly.removed = true;
 if (fly.x < myHoriz + 20 && fly.x + 20 > myHoriz &&
 fly.y < myVerti + 20 && fly.y + 20 > myVerti) {
 
-if (fly.element.classList.contains('friend')) {
-increaseScore(-500);
-fly.element.remove();
-fly.removed = true;
-} else if (fly.element.classList.contains('green-fly')) {
+if (fly.element.classList.contains('green-fly')) {
 if (!isInvincible) {
-playerHealth = Math.min(20, playerHealth + 3);
+playerHealth += 3;
+if (playerHealth > 20){playerHealth = 20}
 increaseScore(5);
 updateUI();
 }
