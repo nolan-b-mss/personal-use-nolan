@@ -826,7 +826,13 @@ textBox.style.height = "225px";
 textBox.style.margin = "15px auto";
 maxHoriz = 568;
 maxVerti = 268;
-updateMenu(); 
+updateMenu();
+if (enemyMercy = 100) {
+writeText("* Final Froggit does not want to fight you anymore.", function() {
+isActionActive = false; 
+});
+}
+else {
 writeText("* Final Froggit is waiting.", function() {
 isActionActive = false; 
 });
