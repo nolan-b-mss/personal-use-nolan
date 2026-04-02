@@ -481,17 +481,17 @@ else if (isTargettingAct) {
 isTargettingAct = false;
 isMenuPhase = true;
 updateMenu();
-writeText("* A Froggit appears!");
+writeText("* Final Froggit stares at you.");
 }
 else if (isItemMenuPhase){
 isMenuPhase = true;
 isItemMenuPhase = false;
 updateMenu();
 if (turnNum === 1){
-writeText("* Froggit awaits your next move!");
+writeText("* Final Froggit is waiting.");
 }
 else {
-writeText("* A Froggit appears!");
+writeText("* Final Froggit stares at you.");
 }
 }
 else if (!isMenuPhase && !isActMenuPhase && !isTargettingAct) {
@@ -499,13 +499,13 @@ isMenuPhase = true;
 isMercyChoice = false;
 updateMenu();
 if (enemyMercy === 100) {
-writeText("* Froggit seems very reluctant to fight.")
+writeText("* Final Froggit has learned from you. <br> * They smile.")
 }
 if (turnNum === 1){
-writeText("* Froggit awaits your next move!")
+writeText("* Final Froggit is waiting.")
 }
 else if (turnNum === 0){
-writeText("* A Froggit appears!");
+writeText("* Final Froggit stares at you.");
 }
 }
 }
@@ -717,11 +717,10 @@ isMenuPhase = false;
 setTimeout(() => {startEnemyTurn();}, 7000)
 }
 else if (currentActItem === 2) {
-writeText ("* You complimented Froggit.<br>* It didn't understand a word you said, but was flattered anyway.");
+writeText ("* You complimented Froggit.<br>* It didn't understand a word you said.");
 isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
-enemyMercy = 100;
 setTimeout(() => {startEnemyTurn();}, 7000)
 }
 else if (currentActItem === 3) {
@@ -733,10 +732,20 @@ enemyDEF -= 3;
 setTimeout(() => {startEnemyTurn();}, 12000)
 }
 else if (currentActItem === 4) {
-writeText ("* You did nothing.<br>* Froggit was confused, but decided to attack anyway.")
+if (enemyMercy < 50){
+writeText ("* You acted mysterious.<br>* Final Froggit wants to know more.")
 isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
+enemyMercy = 50;
+setTimeout(() => {startEnemyTurn();}, 7000)
+}
+else if (enemyMercy >= 50){
+writeText ("* You acted mysterious.<br>* Final Froggit seems content.")
+isActMenuPhase = false;
+isTargettingAct = false;
+isMenuPhase = false;
+enemyMercy = 100;
 setTimeout(() => {startEnemyTurn();}, 7000)
 }
 }
@@ -817,7 +826,7 @@ textBox.style.margin = "15px auto";
 maxHoriz = 568;
 maxVerti = 268;
 updateMenu(); 
-writeText("* Froggit awaits your next move!", function() {
+writeText("* Final Froggit is waiting.", function() {
 isActionActive = false; 
 });
 }
@@ -830,7 +839,7 @@ function updateActTarget() {
 textBox.innerHTML = `
 <table style="width: 100%; height: 100%; table-layout: fixed; text-align: center;">
 <tr style="height: 50%;">
-<td class="${currentTargetItem === 1 ? 'yellow' : 'white'}">* Froggit</td>
+<td class="${currentTargetItem === 1 ? 'yellow' : 'white'}">* Final Froggit</td>
 <td class="${currentTargetItem === 2 ? 'yellow' : 'white'}"></td>
 </tr>
 <tr style="height: 50%;">
@@ -853,7 +862,7 @@ textBox.innerHTML = `
 </tr>
 <tr style="height: 50%;">
 <td class="${currentActItem === 3 ? 'yellow' : 'white'}">* Threaten</td>
-<td class="${currentActItem === 4 ? 'yellow' : 'white'}">* Do nothing</td>
+<td class="${currentActItem === 4 ? 'yellow' : 'white'}">* Mystify</td>
 </tr>
 </table>
 `;
