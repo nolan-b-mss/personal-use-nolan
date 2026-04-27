@@ -1,0 +1,14 @@
+{
+  "recursionLimit": 9983,
+  "manaConsumption": 0.0,
+  "oreMultiplier": 1.0,
+  "tileBlacklist": [
+    "Terraria:Dirt",
+    "Terraria:Stone",
+    "Terraria:Clay",
+    "Terraria:Sand",
+    "Terraria:Sandstone",
+    "Terraria:CorruptSand"
+  ],
+  "itemBlacklist": []
+}

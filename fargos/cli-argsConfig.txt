@@ -1,0 +1,2 @@
+-tmlsavedirectory C:\Program Files (x86)\Steam\steamapps\common\tModLoader\fargos\SaveData
+-steamworkshopfolder none

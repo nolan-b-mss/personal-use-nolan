@@ -1,0 +1,80 @@
+{
+  "useRenderEffectPVInOtherConfig": true,
+  "SwordModifyActive": false,
+  "byFuncData": {
+    "H": {},
+    "S": {},
+    "L": {}
+  },
+  "rgbData": {
+    "R": {
+      "valueOffset": 0.731,
+      "amplitude": 0.358,
+      "frequence": 1.077,
+      "phase": 0.965
+    },
+    "G": {
+      "valueOffset": 1.098,
+      "amplitude": 1.09,
+      "frequence": 0.36,
+      "phase": 2.265
+    },
+    "B": {
+      "valueOffset": 0.192,
+      "amplitude": 0.657,
+      "frequence": 0.328,
+      "phase": 0.837
+    },
+    "Global": {
+      "amplitude": 1.0,
+      "frequence": 1.0
+    }
+  },
+  "hslData": {
+    "H": {
+      "valueOffset": 0.5,
+      "amplitude": 0.5,
+      "frequence": 1.0
+    },
+    "S": {
+      "valueOffset": 0.5,
+      "amplitude": 0.5,
+      "frequence": 1.0
+    },
+    "L": {
+      "valueOffset": 0.5,
+      "amplitude": 0.5,
+      "frequence": 1.0
+    }
+  },
+  "designateData": {
+    "colors": [
+      {
+        "color": "0, 0, 255, 255"
+      },
+      {
+        "color": "0, 128, 0, 255",
+        "position": 0.5
+      },
+      {
+        "color": "255, 255, 0, 255",
+        "position": 1.0
+      }
+    ]
+  },
+  "directOfHeatMap": 3.15,
+  "distortConfigs": {},
+  "maskConfigs": {
+    "SkyStyle": 1,
+    "glowColor": "152, 74, 255, 255",
+    "tier1": 0.2,
+    "tier2": 0.25
+  },
+  "dyeConfigs": {},
+  "bloomConfigs": {
+    "intensity": 1.0,
+    "range": 1.0,
+    "times": 3,
+    "Available": true
+  }
+}

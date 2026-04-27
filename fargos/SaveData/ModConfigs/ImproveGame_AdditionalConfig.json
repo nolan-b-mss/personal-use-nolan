@@ -1,0 +1,38 @@
+{
+  "FavoritedModernConfigOptions": [
+    "ImproveConfigs.SuperVault",
+    "ImproveConfigs.GrabDistance",
+    "ImproveConfigs.ExtraToolSpeed",
+    "ImproveConfigs.ModifyPlayerPlaceSpeed",
+    "ImproveConfigs.ModifyPlayerTileRange",
+    "ImproveConfigs.NPCCoinDropRate",
+    "ImproveConfigs.BannerRequirement",
+    "ImproveConfigs.ModifyNPCHappiness",
+    "ImproveConfigs.WandMaterialNoConsume"
+  ],
+  "LifeformAnalyzer": {
+    "VanillaBlacklist": [
+      172,
+      442,
+      443,
+      444,
+      445,
+      446,
+      447,
+      448,
+      539,
+      592,
+      593,
+      601,
+      605,
+      613,
+      627
+    ]
+  },
+  "WandMode": {},
+  "HugeInventoryUIPosition": "150, 340",
+  "WorldFeaturePosition": "250, 280",
+  "ItemSearcherPosition": "620, 400",
+  "OpenBagPosition": "1138, 504",
+  "PlayerInfoTogglePosition": "1407, 2"
+}
