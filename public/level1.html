@@ -110,7 +110,7 @@ let moveBarID;
 let targetCenter = 480;
 let damage;
 let damageMod = Math.round(enemyDEF / 5);
-let trueDamage = damage - damageMod;
+let trueDamage = parseInt(damage - damageMod);
 function writeText(dialogue, callback, index = 0) {
 if (index === 0) {
 if (isTyping) return;
