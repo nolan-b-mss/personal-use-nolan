@@ -569,13 +569,13 @@ if (trueDamage <= 0){trueDamage = 1;}
 if (distance >= 480) {
 hitMessage = "* Missed!";
 } else if (distance <= 30) {
-hitMessage = `* A PERFECT HIT! Dealt ${trueDamage} damage!`;
+hitMessage = `* A PERFECT HIT! Dealt ${trueDamage} damage! <br> * Enemy has ${enemyHealth} health left.`;
 } else if (distance <= 60) {;
-hitMessage = `* A Great hit! Dealt ${trueDamage} damage!`;
+hitMessage = `* A Great hit! Dealt ${trueDamage} damage! <br> * Enemy has ${enemyHealth} health left.`;
 } else if (distance <= 120) {
-hitMessage = `* A Nice hit! Dealt ${trueDamage} damage!`;
+hitMessage = `* A Nice hit! Dealt ${trueDamage} damage! <br> * Enemy has ${enemyHealth} health left.`;
 } else if (distance < 480) {
-hitMessage = `* A Poor hit... Dealt ${trueDamage} damage.`;
+hitMessage = `* A Poor hit... Dealt ${trueDamage} damage. <br> * Enemy has ${enemyHealth} health left.`;
 }
 enemyHealth -= trueDamage;
 writeText(hitMessage);
