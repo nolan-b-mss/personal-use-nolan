@@ -547,7 +547,7 @@ requestAnimationFrame(moveBar);
 function handleHit(distance) {
 if (!hasAttacked) {
 hasAttacked = true;
-let damage = 0;
+damage = 0;
 let hitMessage = "";
 cancelAnimationFrame(moveBarID);
 setTimeout(function(){
@@ -557,18 +557,19 @@ if (distance >= 480) {
 hitMessage = "* Missed!";
 } else if (distance <= 30) {
 damage = 20;
-hitMessage = "* A PERFECT HIT! Dealt 20 damage!";
+hitMessage = `* A PERFECT HIT! Dealt ${trueDamage} damage!`;
 } else if (distance <= 60) {
 damage = 10;
-hitMessage = "* A Great hit! Dealt 10 damage!";
+hitMessage = `* A Great hit! Dealt ${trueDamage} damage!`;
 } else if (distance <= 120) {
 damage = 5;
-hitMessage = "* A Nice hit! Dealt 5 damage!";
+hitMessage = `* A Nice hit! Dealt ${trueDamage} damage!`;
 } else if (distance < 480) {
 damage = 2;
-hitMessage = "* A Poor hit... Dealt 2 damage.";
+hitMessage = `* A Poor hit... Dealt ${trueDamage} damage.`;
 }
-enemyHealth -= damage;
+if (trueDamage <= 0){trueDamage = 1;}
+enemyHealth -= trueDamage;
 writeText(hitMessage);
 setTimeout(() => {
 if (enemyHealth <= 0) {victorySequence();}
