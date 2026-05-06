@@ -154,6 +154,7 @@ myHoriz = 36;
 updateMenu();
 }
 document.onkeydown = function(event){
+if (event.key === "Space" && !battleInitiated) {startBattle();}
 if (event.key.toLowerCase() === 'z' && isAttacking || event.key === 'Enter' && isAttacking) {
 isAttacking = false;
 let distance = Math.abs(barPosition - targetCenter);
@@ -918,7 +919,7 @@ writeText("* You can press Enter to continue to level 2 (still a wip), or press 
 }
 }
 updateMenu();
-startBattle();
+writeText("* Press SPACE to begin battle.");
 </script>
 </body>
 </html>
