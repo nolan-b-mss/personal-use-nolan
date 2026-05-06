@@ -565,8 +565,9 @@ damage = 5;
 damage = 2;
 }
 trueDamage = parseInt(damage) - parseInt(damageMod)
-enemyHealth -= trueDamage;
 if (trueDamage <= 0){trueDamage = 1;}
+enemyHealth -= trueDamage;
+if (enemyHealth < 0) {enemyHealth = 0;}
 if (distance >= 480) {
 hitMessage = "* Missed!";
 } else if (distance <= 30) {
