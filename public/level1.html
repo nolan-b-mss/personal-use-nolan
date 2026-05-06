@@ -448,6 +448,7 @@ setTimeout(function() {
 isInvincible = false;
 playerElement.style.opacity = 1.0;
 }, 1000);
+damageSound.play();
 }
 }
 function updateMenu(){
@@ -483,6 +484,7 @@ actBtn.src = 'sprites/act.png'
 itemBtn.src = 'sprites/item.png'
 mercyBtn.src = 'sprites/mercySelected.png'
 }
+selectSound.play();
 }
 function handleCancel() {
 if (!isEnemyTurn) {
@@ -597,6 +599,7 @@ startEnemyTurn();
 }, 3500);
 }, 1000);
 }
+slashSound.play();
 }
 function startActMenu() {
 updateActMenu();
@@ -653,6 +656,7 @@ myVerti = 769;
 }
 playerElement.style.left = myHoriz + 'px';
 playerElement.style.top = myVerti + 'px';
+selectSound.play();
 }
 function updateMercySubmenu() {
 textBox.innerHTML = ``
@@ -672,6 +676,7 @@ if (currentMercyItem === 2){
 myVerti = 726
 myHoriz = 710
 }
+selectSound.play();
 }
 function executeMercy() {
 updateMenu();
@@ -691,6 +696,7 @@ else if (currentMercyItem === 2){
 writeText ("* Escaping...");
 setTimeout(() => {location = 'undertale-test-05.html';}, 3000)
 }
+selectSound.play();
 }
 function useItem() {
 actionKeyPressed = false;
@@ -728,6 +734,7 @@ else if (usedItem === 'jerry'){
 writeText(`* You used.... "jerry"? What even is that? <br> * Whatever it was, you restored ${healAmount} HP. <br> * Like you even have that much HP anyway.`);
 updateUI();
 }
+healSound.play();
 setTimeout(() => {startEnemyTurn(); }, 5000);
 }
 function executeAct() {
@@ -765,6 +772,7 @@ isTargettingAct = false;
 isMenuPhase = false;
 setTimeout(() => {startEnemyTurn();}, 7000)
 }
+selectSound.play();
 }
 function startEnemyTurn() {
 if (isEnemyTurn) return;
@@ -869,6 +877,7 @@ if (currentTargetItem === 1){
 myVerti = 687;
 myHoriz = 200;
 }
+selectSound.play();
 }
 function updateActMenu() {
 textBox.innerHTML = `
@@ -899,6 +908,7 @@ if (currentActItem === 4){
 myVerti = 763
 myHoriz = 667
 }
+selectSound.play();
 }
 function victorySequence(){
 if (enemyMercy === 100) {
