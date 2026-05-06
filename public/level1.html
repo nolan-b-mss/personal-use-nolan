@@ -56,6 +56,14 @@ const selectSound = new Audio('sounds/select.mp3')
 const enemyDeathSound = new Audio('sounds/enemydeath.mp3')
 const slashSound = new Audio('sounds/slash.mp3')
 const backgroundMusic = new Audio('music/enemy-approaching.mp3')
+//random bs for audio to go higher than 100%
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const source = audioCtx.createMediaElementSource(damageSound);
+const gainNode = audioCtx.createGain();
+gainNode.gain.value = 2.5;
+source.connect(gainNode);
+gainNode.connect(audioCtx.destination);
+//bs stops here ^^^
 let enemyContainer = document.getElementById('enemyContainer');
 let textBox = document.getElementById('textBox');
 let menuBox = document.getElementById('menuBox');
