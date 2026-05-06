@@ -565,6 +565,7 @@ damage = 5;
 damage = 2;
 }
 trueDamage = parseInt(damage) - parseInt(damageMod)
+enemyHealth -= trueDamage;
 if (trueDamage <= 0){trueDamage = 1;}
 if (distance >= 480) {
 hitMessage = "* Missed!";
@@ -577,7 +578,6 @@ hitMessage = `* A Nice hit! Dealt ${trueDamage} damage! <br> * Enemy has ${enemy
 } else if (distance < 480) {
 hitMessage = `* A Poor hit... Dealt ${trueDamage} damage. <br> * Enemy has ${enemyHealth} health left.`;
 }
-enemyHealth -= trueDamage;
 writeText(hitMessage);
 setTimeout(() => {
 if (enemyHealth <= 0) {victorySequence();}
