@@ -108,7 +108,7 @@ let boxTop;
 let barPosition = 0;
 let moveBarID;
 let targetCenter = 480;
-let damage;
+let damage = 0;
 let damageMod = Math.round(enemyDEF / 5);
 let trueDamage = parseInt(damage - damageMod);
 function writeText(dialogue, callback, index = 0) {
@@ -568,6 +568,7 @@ hitMessage = `* A Nice hit! Dealt ${trueDamage} damage!`;
 damage = 2;
 hitMessage = `* A Poor hit... Dealt ${trueDamage} damage.`;
 }
+trueDamage = parseInt(damage) - parseInt(damageMod)
 if (trueDamage <= 0){trueDamage = 1;}
 enemyHealth -= trueDamage;
 writeText(hitMessage);
