@@ -64,8 +64,8 @@ let playerElement = document.getElementById('myPlayer01');
 let enemy = document.getElementById('enemy');
 let attackBar = document.getElementById('attackBar');
 let attackZone = document.getElementById('attackZone');
-let maxHoriz = 568;
-let maxVerti = 268;
+let maxHoriz = 36;
+let maxVerti = 925;
 let showDebug = false;
 let wMenuKeyDebounced = false;
 let aMenuKeyDebounced = false;
@@ -919,6 +919,7 @@ writeText("* You can press Enter to continue to level 2 (still a wip), or press 
 }
 }
 updateMenu();
+debugMenu.style.display = 'none'
 writeText("* Press SPACE to begin battle.");
 </script>
 </body>
