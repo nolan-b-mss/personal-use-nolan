@@ -64,6 +64,13 @@ const gainNode = audioCtx.createGain();
 gainNode.gain.value = 2.5;
 source.connect(gainNode);
 gainNode.connect(audioCtx.destination);
+//
+const audioCtx2 = new (window.AudioContext || window.webkitAudioContext)();
+const source2 = audioCtx2.createMediaElementSource(menuSound);
+const gainNode2 = audioCtx2.createGain();
+gainNode2.gain.value = 2.5;
+source2.connect(gainNode2);
+gainNode2.connect(audioCtx2.destination);
 //bs stops here ^^^
 let enemyContainer = document.getElementById('enemyContainer');
 let textBox = document.getElementById('textBox');
@@ -869,6 +876,8 @@ isActionActive = false;
 }
 }
 function startTargettingAct() {
+isActMenuPhase = false;
+isMenuPhase = false;
 selectSound.play();
 currentTargetItem = 1;
 updateActTarget();
