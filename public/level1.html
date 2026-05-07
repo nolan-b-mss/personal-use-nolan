@@ -52,9 +52,10 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 <script>
 const damageSound = new Audio('sounds/damage.mp3')
 const healSound = new Audio('sounds/heal.mp3')
-const selectSound = new Audio('sounds/select.mp3')
+const  = new Audio('sounds/select.mp3')
 const enemyDeathSound = new Audio('sounds/enemydeath.mp3')
 const slashSound = new Audio('sounds/slash.mp3')
+const menuSound = new Audio('sounds/menu-movement.mp3')
 const backgroundMusic = new Audio('music/enemy-approaching.mp3')
 //random bs for audio to go higher than 100%
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -492,7 +493,7 @@ actBtn.src = 'sprites/act.png'
 itemBtn.src = 'sprites/item.png'
 mercyBtn.src = 'sprites/mercySelected.png'
 }
-selectSound.play();
+menuSound.play();
 }
 function handleCancel() {
 if (!isEnemyTurn) {
@@ -513,12 +514,6 @@ else if (isItemMenuPhase){
 isMenuPhase = true;
 isItemMenuPhase = false;
 updateMenu();
-if (turnNum === 1){
-writeText("* Froggit awaits your next move!");
-}
-else {
-writeText("* A Froggit appears!");
-}
 }
 else if (!isMenuPhase && !isActMenuPhase && !isTargettingAct) {
 isMenuPhase = true;
@@ -535,6 +530,12 @@ writeText("* A Froggit appears!");
 }
 }
 }
+}
+if (turnNum === 1){
+writeText("* Froggit awaits your next move!");
+}
+else {
+writeText("* A Froggit appears!");
 }
 }
 function startAttackBar() {
@@ -610,12 +611,15 @@ startEnemyTurn();
 slashSound.play();
 }
 function startActMenu() {
+selectSound.play();
 updateActMenu();
 }
 function startItemMenu() {
+selectSound.play();
 updateItemMenu();
 }
 function startMercyChoice() {
+selectSound.play();
 updateMercySubmenu();
 }
 function updateItemMenu() {
@@ -664,7 +668,7 @@ myVerti = 769;
 }
 playerElement.style.left = myHoriz + 'px';
 playerElement.style.top = myVerti + 'px';
-selectSound.play();
+menuSound.play();
 }
 function updateMercySubmenu() {
 textBox.innerHTML = ``
@@ -684,7 +688,7 @@ if (currentMercyItem === 2){
 myVerti = 726
 myHoriz = 710
 }
-selectSound.play();
+menuSound.play();
 }
 function executeMercy() {
 updateMenu();
@@ -865,6 +869,7 @@ isActionActive = false;
 }
 }
 function startTargettingAct() {
+selectSound.play();
 currentTargetItem = 1;
 updateActTarget();
 }
@@ -885,7 +890,7 @@ if (currentTargetItem === 1){
 myVerti = 687;
 myHoriz = 200;
 }
-selectSound.play();
+menuSound.play();
 }
 function updateActMenu() {
 textBox.innerHTML = `
@@ -916,11 +921,12 @@ if (currentActItem === 4){
 myVerti = 763
 myHoriz = 667
 }
-selectSound.play();
+menuSound.play();
 }
 function victorySequence(){
 if (enemyMercy === 100) {
 enemy.style.opacity = 0.5;
+enemyDeathSound.play();
 writeText("* You spared the enemy!<br>* You won!");
 setTimeout(() => {
 victory = true;
@@ -929,6 +935,7 @@ writeText("* You can press Enter to continue to level 2 (still a wip), or press 
 }
 else if (enemyHealth <= 0) {
 enemy.style.opacity = 0;
+enemyDeathSound.play();
 writeText("* You defeated the enemy!<br>* You won!");
 setTimeout(() => {
 victory = true;
