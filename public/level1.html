@@ -59,18 +59,13 @@ const menuSound = new Audio('sounds/menu-movement.mp3')
 const backgroundMusic = new Audio('music/enemy-approaching.mp3')
 //random bs for audio to go higher than 100%
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-const source = audioCtx.createMediaElementSource(damageSound);
-const gainNode = audioCtx.createGain();
-gainNode.gain.value = 2.5;
-source.connect(gainNode);
-gainNode.connect(audioCtx.destination);
-//
-const audioCtx2 = new (window.AudioContext || window.webkitAudioContext)();
-const source2 = audioCtx2.createMediaElementSource(menuSound);
-const gainNode2 = audioCtx2.createGain();
-gainNode2.gain.value = 2.5;
-source2.connect(gainNode2);
-gainNode2.connect(audioCtx2.destination);
+const masterGain = audioCtx.createGain();
+masterGain.gain.value = 2.5; 
+masterGain.connect(audioCtx.destination);
+const sourceDamage = audioCtx.createMediaElementSource(damageSound);
+sourceDamage.connect(masterGain);
+const sourceMenu = audioCtx.createMediaElementSource(menuSound);
+sourceMenu.connect(masterGain);
 //bs stops here ^^^
 let enemyContainer = document.getElementById('enemyContainer');
 let textBox = document.getElementById('textBox');
@@ -158,6 +153,7 @@ writeText(dialogue, callback, index);
 }, delay);
 }
 function startBattle() {
+audioCtx.resume();
 backgroundMusic.loop = true;
 backgroundMusic.play();
 writeText("* A Froggit appears!");
