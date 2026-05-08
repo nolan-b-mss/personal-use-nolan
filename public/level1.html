@@ -154,6 +154,7 @@ writeText(dialogue, callback, index);
 }
 function startBattle() {
 audioCtx.resume();
+backgroundMusic.volume = 0.7
 backgroundMusic.loop = true;
 backgroundMusic.play();
 writeText("* A Froggit appears!");
