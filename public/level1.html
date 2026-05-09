@@ -508,12 +508,21 @@ isMenuPhase = false;
 isActMenuPhase = false;
 isTargettingAct = true;
 startTargettingAct();
+writeText("");
 }
 else if (isTargettingAct) {
 isTargettingAct = false;
 isMenuPhase = true;
 updateMenu();
+if (enemyMercy === 100) {
+writeText("* Froggit seems very reluctant to fight.")
+}
+if (turnNum === 1){
+writeText("* Froggit awaits your next move!")
+}
+else if (turnNum === 0){
 writeText("* A Froggit appears!");
+}
 }
 else if (isItemMenuPhase){
 isMenuPhase = true;
