@@ -888,9 +888,16 @@ textBox.style.margin = "15px auto";
 maxHoriz = 568;
 maxVerti = 268;
 updateMenu(); 
-writeText("* Final Froggit is looking through you.", function() {
+if (enemyMercy === 100) {
+writeText("* You have impressed Final Froggit. <br> * They look like they wish not to fight you any longer.")
+}
+else if (turnNum === 1) {
+writeText("* Final Froggit is looking through you.");
+}
+else if (turnNum === 0) {
+writeText("* Final Froggit approaches with confidence.");
+}
 isActionActive = false; 
-});
 }
 }
 function startTargettingAct() {
