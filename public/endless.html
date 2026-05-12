@@ -81,6 +81,7 @@ let playerHealth = 20;
 let score = 0;
 let highScore = localStorage.getItem('endlessHighScore') || 0;
 let isInvincible = false;
+let isBlessed = false;
 let isTrueInvincible = false;
 let battleInitiated = false;
 let bullets = [];
@@ -201,7 +202,7 @@ document.getElementById("hp-text").innerText = playerHealth + " / " + maxHealth;
 }
 
 function takeDamage(damageAmount) {
-if (isTrueInvincible || isInvincible || playerHealth <= 0) return;
+if (isTrueInvincible || isBlessed || isInvincible || playerHealth <= 0) return;
 playerHealth -= damageAmount;
 updateUI();
 if (playerHealth <= 0) {
@@ -346,7 +347,7 @@ dead = true;
 function collectGodFly() {
 isEmpoweredByGodFly = true;
 cycleCount = 0;
-isTrueInvincible = true;
+isBlessed = true;
 intervalID = setInterval(cycleColor, 100);
 }
 
@@ -357,7 +358,7 @@ if (colorIndex === 0) {
 cycleCount += 1;
 if (cycleCount === 3){
 clearInterval(intervalID);
-isTrueInvincible = false;
+isBlessed = false;
 isEmpoweredByGodFly = false;
 textBox.style.borderColor = "#FFFFFF";
 }
