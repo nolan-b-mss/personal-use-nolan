@@ -17,7 +17,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 #hp-display-group { display: flex; align-items: center; margin-left: 30px;}
 #hp-container { width: 100px; height: 20px; background-color: #c00; margin: 0 10px;}
 #hp-bar { width: 100%; height: 100%; background-color: #ffff00;}
-#enemy { width: 130px; height: 130px; position: absolute; top: 315px; left: 135px;}
+#enemy { width: 116px; height: 111px; position: absolute; top: 325px; left: 150px;}
 </style>
 </head>
 <body style="background-color:black; position: relative;">
@@ -27,7 +27,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 <div id="enemyContainer">
 <img id="enemy" src="sprites/final-froggit.gif">
 </div>
-<img src="sprites/soul-01.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0; z-index: 100;">
+<img src="sprites/soul-01.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 36px; top: 925px; opacity: 1.0; z-index: 100;">
 <div id="textBox">
 </div>
 <img id="attackBar" src="sprites/attackbar.gif" style="position: absolute; display: none; width: 14px; height: 200px; z-index: 10;">
@@ -50,6 +50,23 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 </div>
 </div>
 <script>
+const damageSound = new Audio('sounds/damage.mp3')
+const healSound = new Audio('sounds/heal.mp3')
+const selectSound = new Audio('sounds/select.mp3')
+const enemyDeathSound = new Audio('sounds/enemydeath.mp3')
+const slashSound = new Audio('sounds/slash.mp3')
+const menuSound = new Audio('sounds/menu-movement.mp3')
+const backgroundMusic = new Audio('music/stronger-monsters.mp3')
+//random bs for audio to go higher than 100%
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const masterGain = audioCtx.createGain();
+masterGain.gain.value = 2.5; 
+masterGain.connect(audioCtx.destination);
+const sourceDamage = audioCtx.createMediaElementSource(damageSound);
+sourceDamage.connect(masterGain);
+const sourceMenu = audioCtx.createMediaElementSource(menuSound);
+sourceMenu.connect(masterGain);
+//bs stops here ^^^
 let enemyContainer = document.getElementById('enemyContainer');
 let textBox = document.getElementById('textBox');
 let menuBox = document.getElementById('menuBox');
@@ -58,8 +75,8 @@ let playerElement = document.getElementById('myPlayer01');
 let enemy = document.getElementById('enemy');
 let attackBar = document.getElementById('attackBar');
 let attackZone = document.getElementById('attackZone');
-let maxHoriz = 568;
-let maxVerti = 268;
+let maxHoriz = 36;
+let maxVerti = 925;
 let showDebug = false;
 let wMenuKeyDebounced = false;
 let aMenuKeyDebounced = false;
@@ -91,9 +108,9 @@ let actionKeyPressed = false;
 let maxHealth = 20;
 let playerHealth = 20;
 let inventory = ['Monster Candy','Monster Candy','Monster Candy','Monster Candy','Bandage']
-let enemyHealth = 60;
-let enemyATK = 10;
-let enemyDEF = 10;
+let enemyHealth = 50;
+let enemyATK = 4;
+let enemyDEF = 60;
 let enemyMercy = 0;
 let enemyDialogue = false;
 let turnNum = 0;
@@ -108,6 +125,9 @@ let boxTop;
 let barPosition = 0;
 let moveBarID;
 let targetCenter = 480;
+let damage = 0;
+let damageMod = Math.round(enemyDEF / 5);
+let trueDamage;
 function writeText(dialogue, callback, index = 0) {
 if (index === 0) {
 if (isTyping) return;
@@ -133,6 +153,11 @@ writeText(dialogue, callback, index);
 }, delay);
 }
 function startBattle() {
+writeText("");
+audioCtx.resume();
+backgroundMusic.volume = 0.7
+backgroundMusic.loop = true;
+backgroundMusic.play();
 writeText("* Final Froggit approaches with confidence.");
 if (!battleInitiated) {
 setInterval(movement, 10);
@@ -143,6 +168,7 @@ myHoriz = 36;
 updateMenu();
 }
 document.onkeydown = function(event){
+if (event.key === " " && !battleInitiated) {startBattle();}
 if (event.key.toLowerCase() === 'z' && isAttacking || event.key === 'Enter' && isAttacking) {
 isAttacking = false;
 let distance = Math.abs(barPosition - targetCenter);
@@ -286,7 +312,10 @@ debugElement.style.display = 'block';
 }
 }
 if (victory && event.key === "Enter") {
-location.reload()
+location = 'level2.html'
+}
+if (victory && event.key === "x") {
+location = 'level1.html'
 }
 }
 document.onkeyup = function(event){
@@ -402,6 +431,7 @@ Attack: ${enemyATK}<br>
 Defense: ${enemyDEF}<br>
 Mercy: ${enemyMercy}<br>
 Health: ${enemyHealth}<br>
+DamageMod: ${damageMod}<br>
 EnemyDialogue: ${enemyDialogue}<br>
 EnemyTurn: ${isEnemyTurn}<br>
 `;
@@ -432,6 +462,7 @@ setTimeout(function() {
 isInvincible = false;
 playerElement.style.opacity = 1.0;
 }, 1000);
+damageSound.play();
 }
 }
 function updateMenu(){
@@ -467,6 +498,7 @@ actBtn.src = 'sprites/act.png'
 itemBtn.src = 'sprites/item.png'
 mercyBtn.src = 'sprites/mercySelected.png'
 }
+menuSound.play();
 }
 function handleCancel() {
 if (!isEnemyTurn) {
@@ -476,39 +508,48 @@ isMenuPhase = false;
 isActMenuPhase = false;
 isTargettingAct = true;
 startTargettingAct();
+updateActTarget();
 }
 else if (isTargettingAct) {
 isTargettingAct = false;
 isMenuPhase = true;
 updateMenu();
-writeText("* Final Froggit stares at you.");
+if (enemyMercy === 100) {
+writeText("* You have impressed Final Froggit. <br> * They look like they wish not to fight you any longer.")
+}
+if (turnNum === 1){
+writeText("* Final Froggit is looking through you.")
+}
+else if (turnNum === 0){
+writeText("* Final Froggit approaches with confidence.");
+}
 }
 else if (isItemMenuPhase){
 isMenuPhase = true;
 isItemMenuPhase = false;
 updateMenu();
-if (turnNum === 1){
-writeText("* Final Froggit is waiting.");
-}
-else {
-writeText("* Final Froggit stares at you.");
-}
 }
 else if (!isMenuPhase && !isActMenuPhase && !isTargettingAct) {
 isMenuPhase = true;
 isMercyChoice = false;
 updateMenu();
 if (enemyMercy === 100) {
-writeText("* Final Froggit has learned from you. <br> * They smile.")
+writeText("* You have impressed Final Froggit. <br> * They look like they wish not to fight you any longer.")
 }
 if (turnNum === 1){
-writeText("* Final Froggit is waiting.")
+writeText("* Final Froggit is looking through you.")
 }
 else if (turnNum === 0){
-writeText("* Final Froggit stares at you.");
+writeText("* Final Froggit approaches with confidence.");
 }
 }
 }
+}
+if (turnNum === 1){
+writeText("* Final Froggit is looking through you.");
+}
+else {
+writeText("* Final Froggit approaches with confidence.");
 }
 }
 function startAttackBar() {
@@ -540,7 +581,7 @@ requestAnimationFrame(moveBar);
 function handleHit(distance) {
 if (!hasAttacked) {
 hasAttacked = true;
-let damage = 0;
+damage = 0;
 let hitMessage = "";
 cancelAnimationFrame(moveBarID);
 setTimeout(function(){
@@ -550,35 +591,49 @@ if (distance >= 480) {
 hitMessage = "* Missed!";
 } else if (distance <= 30) {
 damage = 20;
-hitMessage = "* A PERFECT HIT! Dealt 20 damage!";
 } else if (distance <= 60) {
 damage = 10;
-hitMessage = "* A Great hit! Dealt 10 damage!";
 } else if (distance <= 120) {
 damage = 5;
-hitMessage = "* A Nice hit! Dealt 5 damage!";
 } else if (distance < 480) {
 damage = 2;
-hitMessage = "* A Poor hit... Dealt 2 damage.";
 }
-enemyHealth -= damage;
+trueDamage = parseInt(damage) - parseInt(damageMod)
+if (trueDamage <= 0){trueDamage = 1;}
+enemyHealth -= trueDamage;
+if (enemyHealth < 0) {enemyHealth = 0;}
+if (distance >= 480) {
+hitMessage = "* Missed!";
+} else if (distance <= 30) {
+hitMessage = `* A PERFECT HIT! Dealt ${trueDamage} damage! <br> * Enemy has ${enemyHealth} health left.`;
+} else if (distance <= 60) {;
+hitMessage = `* A Great hit! Dealt ${trueDamage} damage! <br> * Enemy has ${enemyHealth} health left.`;
+} else if (distance <= 120) {
+hitMessage = `* A Nice hit! Dealt ${trueDamage} damage! <br> * Enemy has ${enemyHealth} health left.`;
+} else if (distance < 480) {
+hitMessage = `* A Poor hit... Dealt ${trueDamage} damage. <br> * Enemy has ${enemyHealth} health left.`;
+}
 writeText(hitMessage);
 setTimeout(() => {
 if (enemyHealth <= 0) {victorySequence();}
 else {
 startEnemyTurn();
 }
-}, 2000);
+}, 3500);
 }, 1000);
 }
+slashSound.play();
 }
 function startActMenu() {
+selectSound.play();
 updateActMenu();
 }
 function startItemMenu() {
+selectSound.play();
 updateItemMenu();
 }
 function startMercyChoice() {
+selectSound.play();
 updateMercySubmenu();
 }
 function updateItemMenu() {
@@ -607,26 +662,27 @@ ${itemRows}
 </table>
 `;
 if (currentItem === 1) {
-    myHoriz = 70;
-    myVerti = 689;
+myHoriz = 70;
+myVerti = 689;
 } else if (currentItem === 2) {
-    myHoriz = 400; 
-    myVerti = 689;
+myHoriz = 400; 
+myVerti = 689;
 } else if (currentItem === 3) {
-    myHoriz = 723;
-    myVerti = 689;
+myHoriz = 723;
+myVerti = 689;
 } else if (currentItem === 4) {
-    myHoriz = 70;
-    myVerti = 769;
+myHoriz = 70;
+myVerti = 769;
 } else if (currentItem === 5) {
-    myHoriz = 440;
-    myVerti = 769;
+myHoriz = 440;
+myVerti = 769;
 } else if (currentItem === 6) {
-    myHoriz = 723;
-    myVerti = 769;
+myHoriz = 723;
+myVerti = 769;
 }
 playerElement.style.left = myHoriz + 'px';
 playerElement.style.top = myVerti + 'px';
+menuSound.play();
 }
 function updateMercySubmenu() {
 textBox.innerHTML = ``
@@ -646,6 +702,7 @@ if (currentMercyItem === 2){
 myVerti = 726
 myHoriz = 710
 }
+menuSound.play();
 }
 function executeMercy() {
 updateMenu();
@@ -665,6 +722,7 @@ else if (currentMercyItem === 2){
 writeText ("* Escaping...");
 setTimeout(() => {location = 'undertale-test-05.html';}, 3000)
 }
+selectSound.play();
 }
 function useItem() {
 actionKeyPressed = false;
@@ -699,9 +757,10 @@ writeText(`* You used the ${usedItem}.<br>* You restored ${actualHeal} HP!`);
 updateUI();
 }
 else if (usedItem === 'jerry'){
-writeText(`* You used.... "jerry"? What even is that? <br> * Whatever it was, you restored ${healAmount} HP. <br> * Like you even have that many HP anyway.`);
+writeText(`* You used.... "jerry"? What even is that? <br> * Whatever it was, you restored ${healAmount} HP. <br> * Like you even have that much HP anyway.`);
 updateUI();
 }
+healSound.play();
 setTimeout(() => {startEnemyTurn(); }, 5000);
 }
 function executeAct() {
@@ -710,45 +769,44 @@ updateMenu();
 isActionActive = true;
 actionKeyPressed = false;
 if (currentActItem === 1) {
-writeText (`*FROGGIT - ${enemyATK} ATK ${enemyDEF} DEF <br>* It looks like it can learn a lot from this world.`);
+writeText (`* FINAL FROGGIT - ${enemyATK} ATK ${enemyDEF} DEF <br>* Seems like you've inconvenienced it.`);
 isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
 setTimeout(() => {startEnemyTurn();}, 7000)
 }
 else if (currentActItem === 2) {
-writeText ("* You complimented Froggit.<br>* It didn't understand a word you said.");
+writeText ("* You complimented Final Froggit.<br>* It didn't understand a word you said.");
 isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
 setTimeout(() => {startEnemyTurn();}, 7000)
 }
 else if (currentActItem === 3) {
-writeText ("* You threatened Froggit.<br>* It doesn't have the faintest clue of what you just said, but your tone was intimidating.<br>* Froggits DEFENSE decreased!");
+writeText ("* You threatened Froggit.<br>* ");
 isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
 enemyDEF -= 3;
 setTimeout(() => {startEnemyTurn();}, 12000)
 }
-else if (currentActItem === 4) {
-if (enemyMercy < 50){
-writeText ("* You acted mysterious.<br>* Final Froggit wants to know more.")
+else if (currentActItem === 4 && enemyMercy === 0) {
+writeText ("* You did something you thought Final Froggit hasn't seen yet.<br>* It seems intrigued and wants to know more.")
 isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
 enemyMercy = 50;
 setTimeout(() => {startEnemyTurn();}, 7000)
 }
-else if (enemyMercy >= 50){
-writeText ("* You acted mysterious.<br>* Final Froggit seems content.")
+else if (currentActItem === 4 && enemyMercy === 50) {
+writeText ("* You attempted to explain to Final Froggit what you did.<br>* They seem impressed.")
 isActMenuPhase = false;
 isTargettingAct = false;
 isMenuPhase = false;
 enemyMercy = 100;
 setTimeout(() => {startEnemyTurn();}, 7000)
 }
-}
+selectSound.play();
 }
 function startEnemyTurn() {
 if (isEnemyTurn) return;
@@ -802,7 +860,7 @@ if (fly.x + 10 > myHoriz + 2 &&
 fly.x + 10 < myHoriz + 30 &&
 fly.y + 10 > myVerti + 2 && 
 fly.y + 10 < myVerti + 30) {        
-takeDamage(3); 
+takeDamage(4); 
 }
 }
 });
@@ -826,20 +884,17 @@ textBox.style.height = "225px";
 textBox.style.margin = "15px auto";
 maxHoriz = 568;
 maxVerti = 268;
-updateMenu();
-if (enemyMercy = 100) {
-writeText("* Final Froggit does not want to fight you anymore.", function() {
+updateMenu(); 
+writeText("* Final Froggit is looking through you.", function() {
 isActionActive = false; 
 });
-}
-else {
-writeText("* Final Froggit is waiting.", function() {
-isActionActive = false; 
-});
-}
 }
 }
 function startTargettingAct() {
+writeText(" ")
+isActMenuPhase = false;
+isMenuPhase = false;
+selectSound.play();
 currentTargetItem = 1;
 updateActTarget();
 }
@@ -847,7 +902,7 @@ function updateActTarget() {
 textBox.innerHTML = `
 <table style="width: 100%; height: 100%; table-layout: fixed; text-align: center;">
 <tr style="height: 50%;">
-<td class="${currentTargetItem === 1 ? 'yellow' : 'white'}">* Final Froggit</td>
+<td class="${currentTargetItem === 1 ? 'yellow' : 'white'}">* Froggit</td>
 <td class="${currentTargetItem === 2 ? 'yellow' : 'white'}"></td>
 </tr>
 <tr style="height: 50%;">
@@ -860,6 +915,7 @@ if (currentTargetItem === 1){
 myVerti = 687;
 myHoriz = 200;
 }
+menuSound.play();
 }
 function updateActMenu() {
 textBox.innerHTML = `
@@ -890,27 +946,33 @@ if (currentActItem === 4){
 myVerti = 763
 myHoriz = 667
 }
+menuSound.play();
 }
 function victorySequence(){
 if (enemyMercy === 100) {
 enemy.style.opacity = 0.5;
+enemyDeathSound.play();
 writeText("* You spared the enemy!<br>* You won!");
 setTimeout(() => {
 victory = true;
-writeText("* You can press Enter to restart the battle :)");
+writeText("* Theres nothing else for now :P ");
 }, 5000); 
 }
 else if (enemyHealth <= 0) {
 enemy.style.opacity = 0;
+enemyDeathSound.play();
 writeText("* You defeated the enemy!<br>* You won!");
 setTimeout(() => {
 victory = true;
-writeText("* You can press Enter to restart the battle :)");
+writeText("* Theres nothing else for now :P ");
 }, 5000); 
 }
 }
 updateMenu();
-startBattle();
+debugMenu.style.display = 'none'
+maxHoriz = 36;
+maxVerti = 925;
+writeText("* Press SPACE to begin battle.");
 </script>
 </body>
 </html>
