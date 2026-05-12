@@ -507,7 +507,7 @@ if (isActMenuPhase) {
 isMenuPhase = false;
 isActMenuPhase = false;
 isTargettingAct = true;
-startTargettingAct();
+updateActTarget();
 }
 else if (isTargettingAct) {
 isTargettingAct = false;
@@ -882,6 +882,7 @@ isActionActive = false;
 }
 }
 function startTargettingAct() {
+writeText(" ")
 isActMenuPhase = false;
 isMenuPhase = false;
 selectSound.play();
@@ -889,7 +890,7 @@ currentTargetItem = 1;
 updateActTarget();
 }
 function updateActTarget() {
-writeText(`
+textBox.innerHTML = `
 <table style="width: 100%; height: 100%; table-layout: fixed; text-align: center;">
 <tr style="height: 50%;">
 <td class="${currentTargetItem === 1 ? 'yellow' : 'white'}">* Froggit</td>
@@ -900,7 +901,7 @@ writeText(`
 <td class="${currentTargetItem === 4 ? 'yellow' : 'white'}"></td>
 </tr>
 </table>
-`);
+`;
 if (currentTargetItem === 1){
 myVerti = 687;
 myHoriz = 200;
