@@ -545,10 +545,13 @@ writeText("* Final Froggit approaches with confidence.");
 }
 }
 }
-if (turnNum === 1){
+if (enemyMercy === 100) {
+writeText("* You have impressed Final Froggit. <br> * They look like they wish not to fight you any longer.")
+}
+else if (turnNum === 1) {
 writeText("* Final Froggit is looking through you.");
 }
-else {
+else if (turnNum === 0) {
 writeText("* Final Froggit approaches with confidence.");
 }
 }
