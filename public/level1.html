@@ -498,6 +498,7 @@ actBtn.src = 'sprites/act.png'
 itemBtn.src = 'sprites/item.png'
 mercyBtn.src = 'sprites/mercySelected.png'
 }
+menuSound.currentTime = 0;
 menuSound.play();
 }
 function handleCancel() {
@@ -682,6 +683,7 @@ myVerti = 769;
 }
 playerElement.style.left = myHoriz + 'px';
 playerElement.style.top = myVerti + 'px';
+menuSound.currentTime = 0;  
 menuSound.play();
 }
 function updateMercySubmenu() {
@@ -702,6 +704,7 @@ if (currentMercyItem === 2){
 myVerti = 726
 myHoriz = 710
 }
+menuSound.currentTime = 0;
 menuSound.play();
 }
 function executeMercy() {
@@ -907,6 +910,7 @@ if (currentTargetItem === 1){
 myVerti = 687;
 myHoriz = 200;
 }
+menuSound.currentTime = 0;  
 menuSound.play();
 }
 function updateActMenu() {
@@ -938,6 +942,7 @@ if (currentActItem === 4){
 myVerti = 763
 myHoriz = 667
 }
+menuSound.currentTime = 0;  
 menuSound.play();
 }
 function victorySequence(){
