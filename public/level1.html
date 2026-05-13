@@ -56,7 +56,7 @@ const selectSound = new Audio('sounds/select.mp3')
 const enemyDeathSound = new Audio('sounds/enemydeath.mp3')
 const slashSound = new Audio('sounds/slash.mp3')
 const menuSound = new Audio('sounds/menu-movement.mp3')
-//const backgroundMusic = new Audio('music/enemy-approaching.mp3')
+const backgroundMusic = new Audio('music/enemy-approaching.mp3')
 //random bs for audio to go higher than 100%
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const masterGain = audioCtx.createGain();
@@ -155,9 +155,9 @@ writeText(dialogue, callback, index);
 function startBattle() {
 writeText("");
 audioCtx.resume();
-//backgroundMusic.volume = 0.7
-//backgroundMusic.loop = true;
-//backgroundMusic.play();
+backgroundMusic.volume = 0.7
+backgroundMusic.loop = true;
+backgroundMusic.play();
 writeText("* A Froggit appears!");
 if (!battleInitiated) {
 setInterval(movement, 10);
@@ -169,6 +169,7 @@ updateMenu();
 }
 document.onkeydown = function(event){
 if (event.key === " " && !battleInitiated) {startBattle();}
+if (battleInitiated){
 if (event.key.toLowerCase() === 'z' && isAttacking || event.key === 'Enter' && isAttacking) {
 isAttacking = false;
 let distance = Math.abs(barPosition - targetCenter);
@@ -316,6 +317,7 @@ location = 'level2.html'
 }
 if (victory && event.key === "x") {
 location = 'level1.html'
+}
 }
 }
 document.onkeyup = function(event){
