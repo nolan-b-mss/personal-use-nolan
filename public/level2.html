@@ -841,21 +841,21 @@ let fly = document.createElement('img');
 fly.src = 'sprites/froggit-attack-fly.gif';
 fly.className = 'fly-sprite'; 
 fly.style.position = 'absolute';
-let randomX = Math.random() * 160;      
+let randomY = Math.random() * 160;      
 fly.style.left = randomX + 'px';
 fly.style.top = '-20px';
 textBox.appendChild(fly);
 bullets.push({
 element: fly,
-x: randomX,
-y: -20
+x: -20,
+y: randomY
 });
 }
 function moveBullets() {
 bullets.forEach(fly => {
-fly.y += 3;
-fly.element.style.top = fly.y + 'px';
-if (fly.y > 200) {
+fly.x += 3;
+fly.element.style.top = fly.x + 'px';
+if (fly.x > 200) {
 fly.element.remove();
 }
 if (!isInvincible) {
@@ -867,7 +867,7 @@ takeDamage(4);
 }
 }
 });
-bullets = bullets.filter(fly => fly.y <= 200);
+bullets = bullets.filter(fly => fly.x <= 200);
 }
 function playerDeath() {
 location.href = 'gameover.html';
