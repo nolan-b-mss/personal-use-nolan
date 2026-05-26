@@ -842,8 +842,8 @@ fly.src = 'sprites/froggit-attack-fly.gif';
 fly.className = 'fly-sprite'; 
 fly.style.position = 'absolute';
 let randomY = Math.random() * 160;      
-fly.style.left = randomX + 'px';
-fly.style.top = '-20px';
+fly.style.top = randomY + 'px';
+fly.style.left = '-20px';
 textBox.appendChild(fly);
 bullets.push({
 element: fly,
