@@ -104,6 +104,7 @@ let currentMenuItem = 1;
 let currentActItem = 1;
 let currentItem = 1;
 let currentMercyItem = 1;
+let currentAttack = 0;
 let actionKeyPressed = false;
 let maxHealth = 20;
 let playerHealth = 20;
@@ -120,6 +121,7 @@ let boxRect = textBox.getBoundingClientRect();
 let containerRect = gameContainer.getBoundingClientRect();
 let bullets = [];
 let flySpawner;
+let homingSpawner;
 let boxLeft;
 let boxTop;
 let barPosition = 0;
@@ -816,8 +818,11 @@ setTimeout(() => {startEnemyTurn();}, 7000)
 selectSound.play();
 }
 function startEnemyTurn() {
+
 if (isEnemyTurn) return;
+currentAttack = Math.random() < 0.5 ? 1 : 2;
 clearInterval(flySpawner);
+clearInterval(homingSpawner);
 enemyDialogue = false;
 isActionActive = true;
 isAttacking = false;
@@ -836,7 +841,11 @@ myHoriz = 84;
 myVerti = 84;
 playerElement.style.left = myHoriz + 'px';
 playerElement.style.top = myVerti + 'px';
-flySpawner = setInterval(spawnFly, 375);
+if (currentAttack === 1) {
+    flySpawner = setInterval(spawnFly, 375);
+} else {
+    homingSpawner = setInterval(spawnHomingBullet, 1000);
+}
 setTimeout(endEnemyTurn, 8000);
 isEnemyTurn = true;
 }
@@ -853,6 +862,21 @@ bullets.push({
 element: fly,
 x: -20,
 y: randomY
+});
+}
+function spawnHomingBullet() {
+let homingBullet = document.createElement('img');
+homingBullet.src = 'sprites/froggit-attack-fly.gif';
+homingBullet.className = 'fly-sprite'; 
+homingBullet.style.position = 'absolute';
+let randomX = Math.random() * 160;      
+homingBullet.style.left = randomX + 'px';
+homingBullet.style.top = '-20px';    
+textBox.appendChild(homingBullet);
+bullets.push({
+element: homingBullet,
+x: randomX,
+y: -20
 });
 }
 function moveBullets() {
