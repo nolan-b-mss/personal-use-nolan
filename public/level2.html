@@ -858,7 +858,7 @@ y: randomY
 function moveBullets() {
 bullets.forEach(fly => {
 fly.x += 3;
-fly.element.style.top = fly.x + 'px';
+fly.element.style.left = fly.x + 'px';
 if (fly.x > 200) {
 fly.element.remove();
 }
