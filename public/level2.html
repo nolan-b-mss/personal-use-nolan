@@ -176,6 +176,7 @@ handleHit(distance);
 return;
 }
 if (event.key === "w"){
+if (!battleInitiated) {return;}
 up = true;
 if (isActMenuPhase){
 if (!wMenuKeyDebounced){
@@ -197,6 +198,7 @@ wMenuKeyDebounced = true;
 }
 }
 if (event.key === "s"){
+if (!battleInitiated) {return;}
 down = true;
 if (isActMenuPhase){
 if (!sMenuKeyDebounced){
@@ -218,6 +220,7 @@ sMenuKeyDebounced = true;
 }
 }
 if (event.key === "a"){
+if (!battleInitiated) {return;}
 left = true;
 if (isMenuPhase){
 if (!aMenuKeyDebounced){
@@ -260,6 +263,7 @@ aMenuKeyDebounced = true;
 }
 }
 if (event.key === "d"){
+if (!battleInitiated) {return;}
 right = true;
 if (isMenuPhase){
 if (!dMenuKeyDebounced){
