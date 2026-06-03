@@ -836,18 +836,22 @@ textBox.innerHTML = '';
 if (currentAttack === 1) {
 textBox.style.width = "200px";
 textBox.style.height = "200px";
-}
-else if (currentAttack === 2) {
-textBox.style.width = "300px";
-textBox.style.height = "300px";
-}
-textBox.style.margin = "0 auto";
-textBox.style.overflow = 'hidden';
-textBox.appendChild(playerElement);
 maxHoriz = 143;
 maxVerti = 143;
 myHoriz = 84; 
 myVerti = 84;
+}
+else if (currentAttack === 2) {
+textBox.style.width = "300px";
+textBox.style.height = "300px";
+maxHoriz = 243;
+maxVerti = 243;
+myHoriz = 134; 
+myVerti = 134;
+}
+textBox.style.margin = "0 auto";
+textBox.style.overflow = 'hidden';
+textBox.appendChild(playerElement);
 playerElement.style.left = myHoriz + 'px';
 playerElement.style.top = myVerti + 'px';
 if (currentAttack === 1) {
