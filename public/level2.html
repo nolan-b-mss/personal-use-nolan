@@ -396,7 +396,11 @@ if (myHoriz < 0) { myHoriz = 0; }
 if (myHoriz > maxHoriz) { myHoriz = maxHoriz; }
 if (myVerti < 0) { myVerti = 0; }
 if (myVerti > maxVerti) { myVerti = maxVerti; }
+if (currentAttack === 1) {
 moveBullets();
+} else if (currentAttack === 2) {
+moveHomingBullets();
+}
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
 }
@@ -818,7 +822,6 @@ setTimeout(() => {startEnemyTurn();}, 7000)
 selectSound.play();
 }
 function startEnemyTurn() {
-
 if (isEnemyTurn) return;
 currentAttack = Math.random() < 0.5 ? 1 : 2;
 clearInterval(flySpawner);
@@ -842,9 +845,9 @@ myVerti = 84;
 playerElement.style.left = myHoriz + 'px';
 playerElement.style.top = myVerti + 'px';
 if (currentAttack === 1) {
-    flySpawner = setInterval(spawnFly, 375);
+flySpawner = setInterval(spawnFly, 375);
 } else {
-    homingSpawner = setInterval(spawnHomingBullet, 1000);
+homingSpawner = setInterval(spawnHomingBullet, 1000);
 }
 setTimeout(endEnemyTurn, 8000);
 isEnemyTurn = true;
@@ -897,6 +900,34 @@ takeDamage(4);
 });
 bullets = bullets.filter(fly => fly.x <= 200);
 }
+function moveHomingBullets() {
+bullets.forEach(bullet => {
+let distanceX = myHoriz - bullet.x;
+let distanceY = myVerti - bullet.y;
+let totalDistance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+if (totalDistance === 0) totalDistance = 0.1;
+let speedX = (distanceX / totalDistance) * 3;
+let speedY = (distanceY / totalDistance) * 3;
+bullet.x += speedX;
+bullet.y += speedY;
+bullet.element.style.left = bullet.x + 'px';
+bullet.element.style.top = bullet.y + 'px';
+if (bullet.x + 10 > myHoriz + 2 && 
+bullet.x + 10 < myHoriz + 30 &&
+bullet.y + 10 > myVerti + 2 && 
+bullet.y + 10 < myVerti + 30) {
+takeDamage(4); 
+bullet.element.remove();
+bullet.dead = true;
+}
+if (bullet.x > 200 || bullet.x < -20 || bullet.y > 200 || bullet.y < -20) {
+bullet.element.remove();
+}
+});
+bullets = bullets.filter(bullet => {
+return bullet.x > -20 && bullet.x < 200 && bullet.y > -20 && bullet.y < 200 && !bullet.dead;
+});
+}
 function playerDeath() {
 location.href = 'gameover.html';
 }
@@ -904,6 +935,7 @@ function endEnemyTurn() {
 if (isEnemyTurn) {
 isEnemyTurn = false;
 isMenuPhase = true;
+clearInterval(homingSpawner);
 clearInterval(flySpawner);
 gameContainer.appendChild(playerElement);
 bullets.forEach(fly => {
