@@ -833,8 +833,14 @@ hasAttacked = false;
 turnNum = 1;
 bullets = [];
 textBox.innerHTML = '';
+if (currentAttack === 1) {
 textBox.style.width = "200px";
 textBox.style.height = "200px";
+}
+else if (currentAttack === 2) {
+textBox.style.width = "300px";
+textBox.style.height = "300px";
+}
 textBox.style.margin = "0 auto";
 textBox.style.overflow = 'hidden';
 textBox.appendChild(playerElement);
@@ -920,12 +926,12 @@ takeDamage(4);
 bullet.element.remove();
 bullet.dead = true;
 }
-if (bullet.x > 200 || bullet.x < -20 || bullet.y > 200 || bullet.y < -20) {
+if (bullet.x > 300 || bullet.x < -20 || bullet.y > 300 || bullet.y < -20) {
 bullet.element.remove();
 }
 });
 bullets = bullets.filter(bullet => {
-return bullet.x > -20 && bullet.x < 200 && bullet.y > -20 && bullet.y < 200 && !bullet.dead;
+return bullet.x > -20 && bullet.x < 300 && bullet.y > -20 && bullet.y < 300 && !bullet.dead;
 });
 }
 function playerDeath() {
