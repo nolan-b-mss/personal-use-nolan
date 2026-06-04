@@ -261,7 +261,8 @@ bullet.classList.add('bullet-sprite');
 function moveBullets2() {
 bullets.forEach(bullet => {
 bullet.x += 5;
-bullet.element.style.left = bullet.x + 'px'
+bullet.element.style.top = bullet.y + 'px';
+bullet.element.style.left = bullet.x + 'px';
 if (bullet.element.style.left > 1000) {
 bullet.element.remove();
 }
