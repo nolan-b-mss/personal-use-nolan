@@ -121,11 +121,11 @@ if (myHoriz < 0) { myHoriz = 0; }
 if (myVerti < 0) { myVerti = 0; }
 if (myHoriz < 234) {myHoriz = 234}
 if (myHoriz > 831) {myHoriz = 831}
-if(currentVertiLock === 1){myVerti = 390}
-if(currentVertiLock === 2){myVerti = 490}
-if(currentVertiLock === 3){myVerti = 590} 
-moveBullets1();
-moveBullets2();
+if (currentVertiLock === 1){myVerti = 390}
+if (currentVertiLock === 2){myVerti = 490}
+if (currentVertiLock === 3){myVerti = 590} 
+if (isAttackOne) {moveBullets1();}
+if (isAttackTwo) {moveBullets2();}
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
 }
@@ -261,7 +261,6 @@ bullet.classList.add('bullet-sprite');
 function moveBullets2() {
 bullets.forEach(bullet => {
 bullet.x += 5;
-bullet.y = actualTop + 'px';
 bullet.element.style.left = bullet.x + 'px'
 if (bullet.element.style.left > 1000) {
 bullet.element.remove();
