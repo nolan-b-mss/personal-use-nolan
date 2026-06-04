@@ -263,7 +263,7 @@ bullets.forEach(bullet => {
 bullet.x += 5;
 bullet.element.style.top = bullet.y + 'px';
 bullet.element.style.left = bullet.x + 'px';
-if (bullet.element.style.left > 1000) {
+if (bullet.element.x > 1000) {
 bullet.element.remove();
 }
 if (!isInvincible) {
