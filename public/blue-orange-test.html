@@ -44,6 +44,9 @@ let maxVerti;
 let showDebug = false;
 let myHoriz = 513
 let myVerti = 492
+let prevHoriz;
+let prevVerti;
+let isMoving = false;
 let up = false;
 let down = false;
 let right = false;
@@ -104,6 +107,9 @@ if (isAttackOne) {moveBullets1();}
 if (isAttackTwo) {moveBullets2();}
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
+prevHoriz = myHoriz;
+prevVerti = myVerti;
+isMoving = (prevHoriz !== myHoriz || prevVerti !== myVerti);
 }
 function updateDebug() {
 const debugElement = document.getElementById('debug');
@@ -119,6 +125,7 @@ Up: ${up}<br>
 Left: ${left}<br>
 Down: ${down}<br>
 Right: ${right}<br>
+isMoving? ${isMoving}<br>
 wKeyDebounced: ${wKeyDebounced}<br>
 sKeyDebounced: ${sKeyDebounced}<br>
 X: ${myHoriz}<br>
@@ -159,6 +166,9 @@ setTimeout(endAttackOne, 5000);
 function spawnbullet1() {
 let bullet = document.createElement('img');
 bullet.style.position = 'absolute';
+let bulletColor = Math.random() < 0.5 ? 'blue' : 'orange';
+bullet.src = bulletColor === 'blue' ? 'sprites/placeholder-bullet-blue.png' : 'sprites/placeholder-bullet-blue.png';
+}
 let randomX = Math.random() * 1090;      
 bullet.style.left = randomX + 'px';
 bullet.style.top = '150px';
@@ -166,7 +176,8 @@ gameContainer.appendChild(bullet);
 bullets.push({
 element: bullet,
 x: randomX,
-y: 150
+y: 150,
+bulletColor: bulletColor
 });
 bullet.src = 'sprites/placeholder-bullet.png';
 bullet.classList.add('bullet-sprite');
@@ -179,13 +190,25 @@ if (bullet.y > 1000) {
 bullet.element.remove();
 }
 if (!isInvincible) {
-if (bullet.x + 10 > myHoriz + 2 && 
+if (bullet.bulletColor === 'blue' && isMoving) {
+if (bullet.x + 10 > myHoriz + 2 && 
 bullet.x + 10 < myHoriz + 30 &&
-bullet.y + 10 > myVerti + 2 && 
+bullet.y + 10 > myVerti + 2 && 
 bullet.y + 10 < myVerti + 30) {
 takeDamage(0);
 bullet.element.remove();
 bullet.removed = true;
+}
+}
+if (bullet.bulletColor === 'orange' && !isMoving) {
+if (bullet.x + 10 > myHoriz + 2 && 
+bullet.x + 10 < myHoriz + 30 &&
+bullet.y + 10 > myVerti + 2 && 
+bullet.y + 10 < myVerti + 30) {
+takeDamage(0);
+bullet.element.remove();
+bullet.removed = true;
+}
 }
 }
 });
