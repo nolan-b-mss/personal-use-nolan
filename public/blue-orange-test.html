@@ -168,7 +168,6 @@ let bullet = document.createElement('img');
 bullet.style.position = 'absolute';
 let bulletColor = Math.random() < 0.5 ? 'blue' : 'orange';
 bullet.src = bulletColor === 'blue' ? 'sprites/placeholder-bullet-blue.png' : 'sprites/placeholder-bullet-blue.png';
-}
 let randomX = Math.random() * 1090;      
 bullet.style.left = randomX + 'px';
 bullet.style.top = '150px';
@@ -212,6 +211,7 @@ bullet.removed = true;
 }
 });
 bullets = bullets.filter(bullet => bullet.y <= 1000 && !bullet.removed);
+}
 }
 function endAttackOne() {
 if (isAttackOne) {
