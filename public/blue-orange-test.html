@@ -1,7 +1,7 @@
 <!DOCTYPE html> 
 <html>
 <head>
-<title>purple-test.html</title>
+<title>blue-orange-test.html</title>
 <style>
 .yellow {color:yellow;}
 .white {color:white;}
@@ -159,14 +159,14 @@ setTimeout(endAttackOne, 5000);
 function spawnbullet1() {
 let bullet = document.createElement('img');
 bullet.style.position = 'absolute';
-let randomX = Math.random() * 775;      
+let randomX = Math.random() * 1090;      
 bullet.style.left = randomX + 'px';
-bullet.style.top = '250px';
+bullet.style.top = '150px';
 gameContainer.appendChild(bullet);
 bullets.push({
 element: bullet,
 x: randomX,
-y: 250
+y: 150
 });
 bullet.src = 'sprites/placeholder-bullet.png';
 bullet.classList.add('bullet-sprite');
@@ -211,20 +211,15 @@ isAttackTwo = true;
 setTimeout(endAttackTwo, 6000);
 }
 function spawnbullet2() {
-const min = 1;
-const max = 3;
 let bullet = document.createElement('img');
 bullet.style.position = 'absolute';
-let randomY = Math.floor(Math.random() * (max - min + 1)) + min;
-if (randomY === 1){actualTop = 390}
-if (randomY === 2){actualTop = 490}
-if (randomY === 3){actualTop = 590}
+let randomY = Math.random() * 870;
 bullet.style.left = '50px';
 gameContainer.appendChild(bullet);
 bullets.push({
 element: bullet,
 x: 50,
-y: actualTop,
+y: randomY,
 });
 bullet.src = 'sprites/placeholder-bullet.png';
 bullet.classList.add('bullet-sprite');
