@@ -96,6 +96,8 @@ if (event.key === "d"){right = false;}
 }
 function movement() {
 updateDebug();
+prevHoriz = myHoriz;
+prevVerti = myVerti;
 if (up) { myVerti -= 3; }
 if (down) { myVerti += 3;}
 if (left) { myHoriz -= 3; }
@@ -108,8 +110,6 @@ if (isAttackOne) {moveBullets1();}
 if (isAttackTwo) {moveBullets2();}
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
-prevHoriz = myHoriz;
-prevVerti = myVerti;
 if (prevHoriz !== myHoriz || prevVerti !== myVerti) {isMoving = true;}
 else {isMoving = false;}
 }
@@ -132,7 +132,8 @@ wKeyDebounced: ${wKeyDebounced}<br>
 sKeyDebounced: ${sKeyDebounced}<br>
 X: ${myHoriz}<br>
 Y: ${playerElement.style.top}<br>
-Health: ${playerHealth - 'px'}<br>
+PreviousX: ${prevHoriz}<br>
+PreviousY: ${prevVerti}<br>
 `;
 }
 function updateUI() {
