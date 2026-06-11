@@ -172,8 +172,8 @@ let bullet = document.createElement('img');
 bullet.style.position = 'absolute';
 let bulletColor;
 let bulletColorNum = Math.random() 
-if (bulletColorNum >= 0.5) {bullet.bulletColor = 'blue'; bullet.src = "sprites/placeholder-bullet-blue.png"} 
-else {bullet.bulletColor = 'orange'; bullet.src = "sprites/placeholder-bullet-orange.png"}
+if (bulletColorNum >= 0.5) {bulletColor = 'blue'; bullet.src = "sprites/placeholder-bullet-blue.png"} 
+else {bulletColor = 'orange'; bullet.src = "sprites/placeholder-bullet-orange.png"}
 let randomX = Math.random() * 1090;      
 bullet.style.left = randomX + 'px';
 bullet.style.top = '150px';
