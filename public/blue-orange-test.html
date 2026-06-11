@@ -110,7 +110,8 @@ playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
 prevHoriz = myHoriz;
 prevVerti = myVerti;
-isMoving = (prevHoriz !== myHoriz || prevVerti !== myVerti);
+if (prevHoriz !== myHoriz || prevVerti !== myVerti) {isMoving = true;}
+else {isMoving = false;}
 }
 function updateDebug() {
 const debugElement = document.getElementById('debug');
