@@ -96,7 +96,9 @@ if (event.key === "d"){right = false;}
 }
 function movement() {
 updateDebug();
-setTimeout( prevHoriz = myHoriz; prevVerti = myVerti; 10);
+setTimeout(function(){
+prevHoriz = myHoriz; prevVerti = myVerti;}, 
+10);
 if (up) { myVerti -= 3; }
 if (down) { myVerti += 3;}
 if (left) { myHoriz -= 3; }
