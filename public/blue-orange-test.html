@@ -65,6 +65,7 @@ let bulletSpawner1;
 let bulletSpawner2;
 let bulletTimer = 100;
 let bulletTimer2 = 100;
+let bulletColorNum;
 let actualTop;
 document.onkeydown = function(event){
 if (event.key === "w"){
@@ -166,8 +167,9 @@ setTimeout(endAttackOne, 5000);
 function spawnbullet1() {
 let bullet = document.createElement('img');
 bullet.style.position = 'absolute';
-let bulletColor = Math.random() < 0.5 ? 'blue' : 'orange';
-bullet.src = bulletColor === 'blue' ? 'sprites/placeholder-bullet-blue.png' : 'sprites/placeholder-bullet-orange.png';
+let bulletColorNum = Math.random() 
+if (bulletColorNum >= 0.5) {bullet.bulletColor = 'blue'; bullet.src = "sprites/placeholder-bullet-blue.png"} 
+else {bullet.bulletColor = 'orange'; bullet.src = "sprites/placeholder-bullet-orange.png"}
 let randomX = Math.random() * 1090;      
 bullet.style.left = randomX + 'px';
 bullet.style.top = '150px';
