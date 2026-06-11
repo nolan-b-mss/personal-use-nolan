@@ -167,6 +167,7 @@ setTimeout(endAttackOne, 5000);
 function spawnbullet1() {
 let bullet = document.createElement('img');
 bullet.style.position = 'absolute';
+let bulletColor;
 let bulletColorNum = Math.random() 
 if (bulletColorNum >= 0.5) {bullet.bulletColor = 'blue'; bullet.src = "sprites/placeholder-bullet-blue.png"} 
 else {bullet.bulletColor = 'orange'; bullet.src = "sprites/placeholder-bullet-orange.png"}
