@@ -105,8 +105,8 @@ if (left) { myHoriz -= 3; }
 if (right) { myHoriz += 3; }
 if (myHoriz < 0) { myHoriz = 0; }
 if (myVerti < 0) { myVerti = 0; }
-if (myHoriz < 234) {myHoriz = 234}
-if (myHoriz > 831) {myHoriz = 831}
+if (myHoriz < 0) {myHoriz = 0}
+if (myHoriz > 1090) {myHoriz = 1090}
 if (isAttackOne) {moveBullets1();}
 if (isAttackTwo) {moveBullets2();}
 playerElement.style.top = myVerti + 'px';
