@@ -75,28 +75,24 @@ up = true;
 down = false;
 left = false;
 right = false;
-wKeyDebounced = true;
 }
 if (event.key === "s"){
 down = true;
 up = false;
 left = false;
 right = false;
-sKeyDebounced = true;
 }
 if (event.key === "a"){
 left = true;
 up = false;
 down = false;
 right = false;
-aKeyDebounced = true;
 }
 if (event.key === "d"){
 right = true;
 left = false;
 down = false;
 up = false;
-dKeyDebounced = true;
 }
 if (event.ctrlKey && event.key === "q"){
 showDebug = !showDebug;
@@ -112,27 +108,24 @@ up = true;
 down = false;
 left = false;
 right = false;
-wKeyDebounced = false;
 }
 if (event.key === "s"){
 down = true;
 up = false;
 left = false;
 right = false;
-sKeyDebounced = false;}
+}
 if (event.key === "a"){
 left = true;
 up = false;
 down = false;
 right = false;
-aKeyDebounced = false;
 }
 if (event.key === "d"){
 right = true;
 left = false;
 down = false;
 up = false;
-dKeyDebounced = false;
 }
 }
 function movement() {
