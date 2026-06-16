@@ -52,6 +52,10 @@ let up = false;
 let down = false;
 let right = false;
 let left = false;
+let upDelay = false;
+let downDelay = false;
+let rightDelay = false;
+let leftDelay = false;
 let wKeyDebounced = false;
 let sKeyDebounced = false;
 let aKeyDebounced = false;
@@ -98,18 +102,22 @@ document.onkeyup = function(event){
 if (event.key === "w"){
 up = false;
 wKeyDebounced = false;
+upDelay = false;
 }
 if (event.key === "s"){
 down = false;
 sKeyDebounced = false;
+downDelay = false;
 }
 if (event.key === "a"){
 left = false;
 aKeyDebounced = false;
+leftDelay = false;
 }
 if (event.key === "d"){
 right = false;
 dKeyDebounced = false;
+rightDelay = false;
 }
 }
 function movement() {
@@ -117,10 +125,10 @@ updateDebug();
 setTimeout(function(){
 prevHoriz = myHoriz; prevVerti = myVerti;}, 
 10);
-if (up && !wKeyDebounced) { myVerti -= 3; }
-if (down && !sKeyDebounced) { myVerti += 3;}
-if (left && !aKeyDebounced) { myHoriz -= 3; }
-if (right && !dKeyDebounced) { myHoriz += 3; }
+if (up && !upDelay) { myVerti -= 3; upDelay = true; }
+if (down && !downDelay) { myVerti += 3; downDelay = true;}
+if (left && !leftDelay) { myHoriz -= 3; leftDelay = true;}
+if (right && !rightDelay) { myHoriz += 3; rightDelay = true;}
 if (myHoriz < 0) { myHoriz = 0; }
 if (myVerti < 0) { myVerti = 0; }
 if (myHoriz < 0) {myHoriz = 0}
@@ -149,6 +157,8 @@ Right: ${right}<br>
 isMoving? ${isMoving}<br>
 wKeyDebounced: ${wKeyDebounced}<br>
 sKeyDebounced: ${sKeyDebounced}<br>
+aKeyDebounced: ${aKeyDebounced}<br>
+dKeyDebounced: ${dKeyDebounced}<br>
 X: ${myHoriz}<br>
 Y: ${playerElement.style.top}<br>
 PreviousX: ${prevHoriz}<br>
