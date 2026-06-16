@@ -72,19 +72,31 @@ let actualTop;
 document.onkeydown = function(event){
 if (event.key === "w"){
 up = true;
+down = false;
+left = false;
+right = false;
 wKeyDebounced = true;
 }
 if (event.key === "s"){
 down = true;
-sKeyDebounced = false;
+up = false;
+left = false;
+right = false;
+sKeyDebounced = true;
 }
 if (event.key === "a"){
 left = true;
-aKeyDebounced = false;
+up = false;
+down = false;
+right = false;
+aKeyDebounced = true;
 }
 if (event.key === "d"){
 right = true;
-dKeyDebounced = false;
+left = false;
+down = false;
+up = false;
+dKeyDebounced = true;
 }
 if (event.ctrlKey && event.key === "q"){
 showDebug = !showDebug;
