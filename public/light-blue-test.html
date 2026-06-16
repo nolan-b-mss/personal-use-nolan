@@ -125,10 +125,10 @@ updateDebug();
 setTimeout(function(){
 prevHoriz = myHoriz; prevVerti = myVerti;}, 
 10);
-if (up && !upDelay) { myVerti -= 3; upDelay = true; }
-if (down && !downDelay) { myVerti += 3; downDelay = true;}
-if (left && !leftDelay) { myHoriz -= 3; leftDelay = true;}
-if (right && !rightDelay) { myHoriz += 3; rightDelay = true;}
+if (up && !upDelay) { myVerti -= 6; upDelay = true; }
+if (down && !downDelay) { myVerti += 6; downDelay = true;}
+if (left && !leftDelay) { myHoriz -= 6; leftDelay = true;}
+if (right && !rightDelay) { myHoriz += 6; rightDelay = true;}
 if (myHoriz < 0) { myHoriz = 0; }
 if (myVerti < 0) { myVerti = 0; }
 if (myHoriz < 0) {myHoriz = 0}
