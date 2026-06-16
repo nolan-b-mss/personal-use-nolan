@@ -23,7 +23,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 <div id="gameContainer">
 <input type="button" class="blend" onClick="startAttackOne()" value="Example attack 1">
 <input type="button" class="blend" onClick="startAttackTwo()" value="Example attack 2">
-<img src="sprites/soul-01.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0; z-index: 100;">
+<img src="sprites/soul-03.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0; z-index: 100;">
 <div id="hp-section"> 
 <div id="hp-display-group">
 <div id="hp-text-wrapper">
@@ -54,6 +54,8 @@ let right = false;
 let left = false;
 let wKeyDebounced = false;
 let sKeyDebounced = false;
+let aKeyDebounced = false;
+let dKeyDebounced = false;
 let actionKeyPressed = false;
 let isAttackOne = false;
 let isAttackTwo = false;
@@ -70,15 +72,19 @@ let actualTop;
 document.onkeydown = function(event){
 if (event.key === "w"){
 up = true;
+wKeyDebounced = true;
 }
 if (event.key === "s"){
 down = true;
+sKeyDebounced = true;
 }
 if (event.key === "a"){
 left = true;
+aKeyDebounced = true;
 }
 if (event.key === "d"){
 right = true;
+dKeyDebounced = true;
 }
 if (event.ctrlKey && event.key === "q"){
 showDebug = !showDebug;
@@ -91,18 +97,18 @@ debugElement.style.display = 'block';
 document.onkeyup = function(event){
 if (event.key === "w"){up = false; wKeyDebounced = false;}
 if (event.key === "s"){down = false; sKeyDebounced = false;}
-if (event.key === "a"){left = false;}
-if (event.key === "d"){right = false;}
+if (event.key === "a"){left = false; aKeyDebounced = false;}
+if (event.key === "d"){right = false; dKeyDebounced = false;}
 }
 function movement() {
 updateDebug();
 setTimeout(function(){
 prevHoriz = myHoriz; prevVerti = myVerti;}, 
 10);
-if (up) { myVerti -= 3; }
-if (down) { myVerti += 3;}
-if (left) { myHoriz -= 3; }
-if (right) { myHoriz += 3; }
+if (up && !wKeyDebounced) { myVerti -= 3; }
+if (down && !sKeyDebounced) { myVerti += 3;}
+if (left && !aKeyDebounced) { myHoriz -= 3; }
+if (right && !dKeyDebounced) { myHoriz += 3; }
 if (myHoriz < 0) { myHoriz = 0; }
 if (myVerti < 0) { myVerti = 0; }
 if (myHoriz < 0) {myHoriz = 0}
