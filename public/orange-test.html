@@ -72,15 +72,19 @@ let actualTop;
 document.onkeydown = function(event){
 if (event.key === "w"){
 up = true;
+wKeyDebounced = true;
 }
 if (event.key === "s"){
 down = true;
+sKeyDebounced = false;
 }
 if (event.key === "a"){
 left = true;
+aKeyDebounced = false;
 }
 if (event.key === "d"){
 right = true;
+dKeyDebounced = false;
 }
 if (event.ctrlKey && event.key === "q"){
 showDebug = !showDebug;
@@ -96,33 +100,38 @@ up = true;
 down = false;
 left = false;
 right = false;
+wKeyDebounced = false;
 }
 if (event.key === "s"){
 down = true;
 up = false;
 left = false;
-right = false;}
+right = false;
+sKeyDebounced = false;}
 if (event.key === "a"){
 left = true;
 up = false;
 down = false;
 right = false;
+aKeyDebounced = false;
 }
 if (event.key === "d"){
 right = true;
 left = false;
 down = false;
-up = false;}
+up = false;
+dKeyDebounced = false;
+}
 }
 function movement() {
 updateDebug();
 setTimeout(function(){
 prevHoriz = myHoriz; prevVerti = myVerti;}, 
 10);
-if (up) { myVerti -= 3; }
-if (down) { myVerti += 3;}
-if (left) { myHoriz -= 3; }
-if (right) { myHoriz += 3; }
+if (up && !wKeyDebounced) { myVerti -= 3; }
+if (down && !sKeyDebounced) { myVerti += 3;}
+if (left && !aKeyDebounced) { myHoriz -= 3; }
+if (right && !dKeyDebounced) { myHoriz += 3; }
 if (myHoriz < 0) { myHoriz = 0; }
 if (myVerti < 0) { myVerti = 0; }
 if (myHoriz < 0) {myHoriz = 0}
