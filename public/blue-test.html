@@ -24,7 +24,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 <input type="button" class="blend" onClick="startAttackOne()" value="Example attack 1">
 <input type="button" class="blend" onClick="startAttackTwo()" value="Example attack 2">
 <img src="sprites/soul-04.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0; z-index: 100;">
-<div id="platform1" style="position: absolute; width: 1090px; height: 8px; background-color: white; top: 400px; left: 250px;"></div>
+<div id="platform1" style="position: absolute; width: 1090px; height: 8px; background-color: white; top: 400px;"></div>
 <div id="hp-section"> 
 <div id="hp-display-group">
 <div id="hp-text-wrapper">
@@ -53,6 +53,10 @@ let up = false;
 let down = false;
 let right = false;
 let left = false;
+let velocityY = 0;
+const gravity = 0.2;
+const jumpStrength = 5;
+let isGrounded = false;
 let wKeyDebounced = false;
 let sKeyDebounced = false;
 let aKeyDebounced = false;
@@ -73,6 +77,7 @@ let actualTop;
 document.onkeydown = function(event){
 if (event.key === "w"){
 up = true;
+wKeyDebounced = true;
 }
 if (event.key === "s"){
 down = true;
@@ -94,6 +99,7 @@ debugElement.style.display = 'block';
 document.onkeyup = function(event){
 if (event.key === "w"){
 up = false;
+wKeyDebounced = false;
 }
 if (event.key === "s"){
 down = false;
@@ -110,10 +116,19 @@ updateDebug();
 setTimeout(function(){
 prevHoriz = myHoriz; prevVerti = myVerti;}, 
 10);
-if (up) { myVerti -= 3; }
+if (up && !wKeyDebounced && isGrounded) { velocityY = -jumpStrength; wKeyDebounced = true;}
 if (down) { myVerti += 3; }
 if (left) { myHoriz -= 3; }
 if (right) { myHoriz += 3; }
+velocityY += gravity;
+myVerti += velocityY;
+if (myVerti >= 368) {
+myVerti = 368;
+velocityY = 0;
+isGrounded = true;
+} else {
+isGrounded = false;
+}
 if (myHoriz < 0) { myHoriz = 0; }
 if (myVerti < 0) { myVerti = 0; }
 if (myHoriz < 0) {myHoriz = 0}
