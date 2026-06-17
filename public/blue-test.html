@@ -45,7 +45,7 @@ let maxHoriz;
 let maxVerti;
 let showDebug = false;
 let myHoriz = 513
-let myVerti = 492
+let myVerti = 368
 let prevHoriz;
 let prevVerti;
 let isMoving = false;
@@ -77,7 +77,6 @@ let actualTop;
 document.onkeydown = function(event){
 if (event.key === "w"){
 up = true;
-wKeyDebounced = true;
 }
 if (event.key === "s"){
 down = true;
@@ -155,6 +154,7 @@ Left: ${left}<br>
 Down: ${down}<br>
 Right: ${right}<br>
 isMoving? ${isMoving}<br>
+isGrounded? ${isGrounded}<br>
 wKeyDebounced: ${wKeyDebounced}<br>
 sKeyDebounced: ${sKeyDebounced}<br>
 aKeyDebounced: ${aKeyDebounced}<br>
