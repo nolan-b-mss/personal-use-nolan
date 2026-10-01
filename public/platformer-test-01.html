@@ -21,8 +21,6 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 <div id="debug" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: lime; font-family: monospace; padding: 10px; border: 1px solid lime; z-index: 1000; font-size: 14px; pointer-events: none;">
 </div>
 <div id="gameContainer">
-<input type="button" class="blend" onClick="startAttackOne()" value="Example attack 1">
-<input type="button" class="blend" onClick="startAttackTwo()" value="Example attack 2">
 <img src="sprites/soul-04.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0; z-index: 100;">
 <div id="platform1" style="position: absolute; width: 1090px; height: 8px; background-color: white; top: 400px;"></div>
 <div id="hp-section"> 
@@ -61,17 +59,10 @@ let sKeyDebounced = false;
 let aKeyDebounced = false;
 let dKeyDebounced = false;
 let actionKeyPressed = false;
-let isAttackOne = false;
-let isAttackTwo = false;
 let isInvincible = false;
 let isTrueInvincible = false;
 let playerHealth = Infinity;
 let containerRect = gameContainer.getBoundingClientRect();
-let bullets = [];
-let bulletSpawner1;
-let bulletSpawner2;
-let bulletTimer = 100;
-let bulletTimer2 = 100;
 let actualTop;
 document.onkeydown = function(event){
 if (event.key === "w"){
@@ -186,122 +177,6 @@ isInvincible = false;
 playerElement.style.opacity = 1.0;
 }, 1000);
 }
-}
-function startAttackOne() {
-endAttackTwo();
-clearInterval(bulletSpawner1);
-bullets = [];
-bulletSpawner1 = setInterval(spawnbullet1, bulletTimer);
-isAttackOne = true;
-setTimeout(endAttackOne, 5000);
-}
-function spawnbullet1() {
-let bullet = document.createElement('img');
-bullet.style.position = 'absolute';
-let randomX = Math.random() * 1090;      
-bullet.style.left = randomX + 'px';
-bullet.style.top = '150px';
-gameContainer.appendChild(bullet);
-bullets.push({
-element: bullet,
-x: randomX,
-y: 150,
-});
-bullet.src = 'sprites/placeholder-bullet.png';
-bullet.classList.add('bullet-sprite');
-}
-function moveBullets1() {
-bullets.forEach(bullet => {
-bullet.y += 5;
-bullet.element.style.top = bullet.y + 'px';
-if (bullet.y > 1000) {
-bullet.element.remove();
-}
-if (!isInvincible) {
-if (bullet.x + 10 > myHoriz + 2 && 
-bullet.x + 10 < myHoriz + 30 &&
-bullet.y + 10 > myVerti + 2 && 
-bullet.y + 10 < myVerti + 30) {
-takeDamage(0);
-bullet.element.remove();
-bullet.removed = true;
-}
-}
-if (bullet.x + 10 > myHoriz + 2 && 
-bullet.x + 10 < myHoriz + 30 &&
-bullet.y + 10 > myVerti + 2 && 
-bullet.y + 10 < myVerti + 30) {
-takeDamage(0);
-bullet.element.remove();
-bullet.removed = true;
-}
-});
-bullets = bullets.filter(bullet => bullet.y <= 1000 && !bullet.removed);
-}
-function endAttackOne() {
-if (isAttackOne) {
-isAttackOne = false;
-clearInterval(bulletSpawner1);
-gameContainer.appendChild(playerElement);
-bullets.forEach(bullet => {
-bullet.element.remove();
-});
-bullets = [];
-};
-}
-function startAttackTwo() {
-endAttackOne();
-clearInterval(bulletSpawner2);
-bullets = [];
-bulletSpawner2 = setInterval(spawnbullet2, bulletTimer2);
-isAttackTwo = true;
-setTimeout(endAttackTwo, 6000);
-}
-function spawnbullet2() {
-let bullet = document.createElement('img');
-bullet.style.position = 'absolute';
-let randomY = Math.random() * 870;
-bullet.style.left = '50px';
-gameContainer.appendChild(bullet);
-bullets.push({
-element: bullet,
-x: 50,
-y: randomY,
-});
-bullet.src = 'sprites/placeholder-bullet.png';
-bullet.classList.add('bullet-sprite');
-}
-function moveBullets2() {
-bullets.forEach(bullet => {
-bullet.x += 5;
-bullet.element.style.top = bullet.y + 'px';
-bullet.element.style.left = bullet.x + 'px';
-if (bullet.x > 1000) {
-bullet.element.remove();
-}
-if (!isInvincible) {
-if (bullet.x + 10 > myHoriz + 2 && 
-bullet.x + 10 < myHoriz + 30 &&
-bullet.y + 10 > myVerti + 2 && 
-bullet.y + 10 < myVerti + 30) {
-takeDamage(0);
-bullet.element.remove();
-bullet.removed = true;
-}
-}
-});
-bullets = bullets.filter(bullet => bullet.x <= 1000 && !bullet.removed);
-}
-function endAttackTwo() {
-if (isAttackTwo) {
-isAttackTwo = false;
-clearInterval(bulletSpawner2);
-gameContainer.appendChild(playerElement);
-bullets.forEach(bullet => {
-bullet.element.remove();
-});
-bullets = [];
-};
 }
 function startBattle() {
 setInterval(movement, 10)
