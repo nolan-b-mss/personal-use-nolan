@@ -128,8 +128,6 @@ velocityY += gravity;
 myVerti += velocityY;
 velocityY = 0;
 isGrounded = true;
-} else {
-isGrounded = false;
 }
 platforms.forEach(p => {
 if (((myVerti + 32) >= p.top) && velocityY >= 0 && (prevVerti + 32) <= p.top && myHoriz < (p.left + p.width) && (myHoriz + 32) >= p.left) {
