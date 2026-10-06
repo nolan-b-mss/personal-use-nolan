@@ -35,6 +35,11 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 </div>
 </div>
 <script>
+const platforms = [
+    { left: 0, top: 400, width: 1090, height: 8 },  // The ground floor
+    { left: 200, top: 280, width: 200, height: 8 }, // A middle platform
+    { left: 550, top: 180, width: 250, height: 8 }  // A higher platform
+];
 let enemyContainer = document.getElementById('enemyContainer');
 let gameContainer = document.getElementById('gameContainer');
 let playerElement = document.getElementById('myPlayer01');
@@ -64,6 +69,16 @@ let isTrueInvincible = false;
 let playerHealth = Infinity;
 let containerRect = gameContainer.getBoundingClientRect();
 let actualTop;
+platforms.forEach(p => {
+    let plat = document.createElement('div');
+    plat.style.position = 'absolute';
+    plat.style.left = p.left + 'px';
+    plat.style.top = p.top + 'px';
+    plat.style.width = p.width + 'px';
+    plat.style.height = p.height + 'px';
+    plat.style.backgroundColor = 'white';
+    gameContainer.appendChild(plat);
+});
 document.onkeydown = function(event){
 if (event.key === "w"){
 up = true;
@@ -118,6 +133,13 @@ isGrounded = true;
 } else {
 isGrounded = false;
 }
+platforms.forEach(p => {
+if (((myHoriz >= p.left && myHoriz <= (p.left + p.width)) && (myVerti + 32) >= p.top) && velocityY >= 0) {
+velocityY = 0;
+isGrounded = true;
+myVerti = p.top - 32;
+}
+});
 if (myHoriz < 0) { myHoriz = 0; }
 if (myVerti < 0) { myVerti = 0; }
 if (myHoriz < 0) {myHoriz = 0}
