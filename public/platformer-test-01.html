@@ -57,7 +57,7 @@ let right = false;
 let left = false;
 let velocityY = 0;
 const gravity = 0.2;
-const jumpStrength = 5;
+const jumpStrength = 10;
 let isGrounded = false;
 let wKeyDebounced = false;
 let sKeyDebounced = false;
@@ -121,6 +121,7 @@ setTimeout(function(){
 prevHoriz = myHoriz; prevVerti = myVerti;}, 
 10);
 if (up && !wKeyDebounced && isGrounded) { velocityY = -jumpStrength; wKeyDebounced = true;}
+isGrounded = false;
 if (down) { myVerti += 3; }
 if (left) { myHoriz -= 3; }
 if (right) { myHoriz += 3; }
@@ -134,7 +135,7 @@ isGrounded = true;
 isGrounded = false;
 }
 platforms.forEach(p => {
-if (((myHoriz >= p.left && myHoriz <= (p.left + p.width)) && (myVerti + 32) >= p.top) && velocityY >= 0) {
+if (((myVerti + 32) >= p.top) && velocityY >= 0 && (prevVerti + 32) <= p.top && myHoriz < (p.left + p.width) && (myHoriz + 32) >= p.left) {
 velocityY = 0;
 isGrounded = true;
 myVerti = p.top - 32;
