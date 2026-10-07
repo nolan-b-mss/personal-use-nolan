@@ -41,6 +41,9 @@ const platforms = [
     { left: 550, top: 580, width: 250, height: 8 },
     { left: 200, top: 460, width: 200, height: 8 }
 ];
+const redPlatforms = [
+    { left: 0, top: 900, width: 1200, height: 8} // rock bottom
+];
 let enemyContainer = document.getElementById('enemyContainer');
 let gameContainer = document.getElementById('gameContainer');
 let playerElement = document.getElementById('myPlayer01');
@@ -48,7 +51,7 @@ let maxHoriz;
 let maxVerti;
 let showDebug = false;
 let myHoriz = 513
-let myVerti = 368
+let myVerti = 768
 let prevHoriz;
 let prevVerti;
 let isMoving = false;
@@ -79,6 +82,16 @@ platforms.forEach(p => {
     plat.style.height = p.height + 'px';
     plat.style.backgroundColor = 'white';
     gameContainer.appendChild(plat);
+});
+redPlatforms.forEach(p => {
+    let redPlat = document.createElement('div');
+    redPlat.style.position = 'absolute';
+    redPlat.style.left = p.left + 'px';
+    redPlat.style.top = p.top + 'px';
+    redPlat.style.width = p.width + 'px';
+    redPlat.style.height = p.height + 'px';
+    redPlat.style.backgroundColor = 'red';
+    gameContainer.appendChild(redPlat);
 });
 document.onkeydown = function(event){
 if (event.key === "w"){
@@ -133,6 +146,14 @@ if (((myVerti + 32) >= p.top) && velocityY >= 0 && (prevVerti + 32) <= p.top && 
 velocityY = 0;
 isGrounded = true;
 myVerti = p.top - 32;
+}
+});
+redPlatforms.forEach(p => {
+if (((myVerti + 32) >= p.top) && velocityY >= 0 && (prevVerti + 32) <= p.top && myHoriz < (p.left + p.width) && (myHoriz + 32) >= p.left) {
+velocityY = 0;
+isGrounded = true;
+myVerti = 768;
+myHoriz = 513
 }
 });
 if (myHoriz < 0) { myHoriz = 0; }
