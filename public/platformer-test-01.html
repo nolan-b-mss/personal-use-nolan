@@ -45,6 +45,8 @@ const platforms = [
 const redPlatforms = [
     { left: 0, top: 850, width: 1200, height: 8} // rock bottom
 ];
+const playerWidth = 32;
+const playerHeight = 32;
 let enemyContainer = document.getElementById('enemyContainer');
 let gameContainer = document.getElementById('gameContainer');
 let playerElement = document.getElementById('myPlayer01');
@@ -143,13 +145,25 @@ if (right) { myHoriz += 3; }
 velocityY += gravity;
 myVerti += velocityY;
 platforms.forEach(p => {
-if ((myVerti + 32) > p.top && p.top + p.height > myVerti && right && p.width < 50 && (prevHoriz + 32) <= p.left && (myHoriz + 32) > p.left) {
-myHoriz = p.left - 32;
+
+let isVerticallyOverlapping = (myVerti + playerHeight > p.top) && (myVerti < p.top + p.height);
+
+if (isVerticallyOverlapping) {
+if (p.width < 50 && p.height > 50) {
+if (right && prevHoriz + playerWidth <= p.left && myHoriz + playerWidth > p.left) {
+myHoriz = p.left - playerWidth;
 }
-if (((myVerti + 32) >= p.top) && velocityY >= 0 && (prevVerti + 32) <= p.top && myHoriz < (p.left + p.width) && (myHoriz + 32) >= p.left && p.height === 8) {
+else if (left && prevHoriz >= p.left + p.width && myHoriz < p.left + p.width) {
+myHoriz = p.left + p.width;
+}
+}
+}
+if (p.height === 8) {
+if (((myVerti + playerHeight) >= p.top) && velocityY >= 0 && (prevVerti + playerHeight) <= p.top && myHoriz < (p.left + p.width) && (myHoriz + playerHeight) >= p.left) {
 velocityY = 0;
 isGrounded = true;
-myVerti = p.top - 32;
+myVerti = p.top - playerHeight;
+}
 }
 });
 redPlatforms.forEach(p => {
