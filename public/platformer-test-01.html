@@ -143,8 +143,8 @@ if (right) { myHoriz += 3; }
 velocityY += gravity;
 myVerti += velocityY;
 platforms.forEach(p => {
-if ((myVerti + 32) > p.top && (myHoriz + 32) >= p.left && (p.top + p.height) > myVerti && right && p.width < 50){
-myHoriz = p.left - 32
+if ((myVerti + 32) > p.top && (myHoriz + 32) >= p.left && (p.top + p.height) > myVerti && right && p.width < 50 && (prevHoriz + 32) <= p.left) {
+myHoriz = p.left - 32;
 }
 if (((myVerti + 32) >= p.top) && velocityY >= 0 && (prevVerti + 32) <= p.top && myHoriz < (p.left + p.width) && (myHoriz + 32) >= p.left && p.height === 8) {
 velocityY = 0;
