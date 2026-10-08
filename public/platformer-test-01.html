@@ -175,11 +175,16 @@ else if (left && prevHoriz >= p.left + p.width && myHoriz < p.left + p.width) {
 myHoriz = mySpawnX;
 }
 }
-}if (p.height === 8) {
+}
+if (p.height === 8) {
 if (((myVerti + playerSize) >= p.top) && velocityY >= 0 && (prevVerti + playerSize) <= p.top && myHoriz < (p.left + p.width) && (myHoriz + playerSize) > p.left) {
 velocityY = 0;
 myVerti = mySpawnY;
 }
+}
+if (myVerti <= (p.top + p.height) && velocityY < 0 && prevVerti >= (p.top + p.height) && myHoriz < (p.left + p.width) && (myHoriz + playerSize) > p.left) {
+velocityY = 0
+myVerti = mySpawnY;
 }
 });
 
