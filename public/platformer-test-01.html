@@ -47,6 +47,8 @@ const redPlatforms = [
     { left: 0, top: 850, width: 1200, height: 8 },// rock bottom
     { left: 800, top: 612, width: 8, height: 100 } // wall
 ];
+const checkpoints = [
+];
 let enemyContainer = document.getElementById('enemyContainer');
 let gameContainer = document.getElementById('gameContainer');
 let playerElement = document.getElementById('myPlayer01');
@@ -108,6 +110,19 @@ redPlatforms.forEach(p => {
     gameContainer.appendChild(redPlat);
 });
 
+checkpoints.forEach(p => {
+
+    let checkpoint = document.createElement('div');
+    checkpoint.style.position = 'absolute';
+    checkpoint.style.left = p.left + 'px';
+    checkpoint.style.top = p.top + 'px';
+    checkpoint.style.width = p.width + 'px';
+    checkpoint.style.height = p.height + 'px';
+    checkpoint.style.backgroundImage = "url('sprites/undertale-save.gif')";
+    checkpoint.style.backgroundSize = 'cover';
+    gameContainer.appendChild(checkpoint);
+
+});
 document.onkeydown = function(event){
 if (event.key === "w"){ up = true; }
 if (event.key === "s"){ down = true; }
