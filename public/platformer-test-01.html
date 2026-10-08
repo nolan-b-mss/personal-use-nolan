@@ -81,6 +81,11 @@ let playerHealth = Infinity;
 let containerRect = gameContainer.getBoundingClientRect();
 let actualTop;
 
+gameContainer.addEventListener('mousemove', (event) => {
+    myCursorX = Math.round(event.clientX - containerRect.left);
+    myCursorY = Math.round(event.clientY - containerRect.top);
+});
+
 platforms.forEach(p => {
     let plat = document.createElement('div');
     plat.style.position = 'absolute';
@@ -230,6 +235,8 @@ X: ${myHoriz}<br>
 Y: ${playerElement.style.top}<br>
 PreviousX: ${prevHoriz}<br>
 PreviousY: ${prevVerti}<br>
+CursorX: ${myCursorX}<br>
+CursorY: ${myCursorY}<br>
 `;
 }
 
