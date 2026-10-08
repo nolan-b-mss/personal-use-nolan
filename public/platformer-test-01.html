@@ -40,7 +40,8 @@ const platforms = [
     { left: 200, top: 468, width: 8, height: 232 }, // wall
     { left: 200, top: 700, width: 200, height: 8 },
     { left: 550, top: 580, width: 250, height: 8 },
-    { left: 200, top: 460, width: 200, height: 8 }
+    { left: 200, top: 460, width: 200, height: 8 },
+    { left: 800, top: 700, width: 200, height: 8 },
 ];
 const redPlatforms = [
     { left: 0, top: 850, width: 1200, height: 8 },// rock bottom
@@ -56,6 +57,8 @@ let mySpawnX = 513
 let mySpawnY = 730
 let myHoriz = 513
 let myVerti = 730
+let myCursorX;
+let myCursorY;
 let prevHoriz;
 let prevVerti;
 let isMoving = false;
@@ -225,8 +228,8 @@ aKeyDebounced: ${aKeyDebounced}<br>
 dKeyDebounced: ${dKeyDebounced}<br>
 X: ${myHoriz}<br>
 Y: ${playerElement.style.top}<br>
-PreviousX: ${prevHoriz}<br>
-PreviousY: ${prevVerti}<br>
+PreviousX: ${prevHoriz.toFixed(1)}<br>
+PreviousY: ${prevVerti.toFixed(1)}<br>
 `;
 }
 
