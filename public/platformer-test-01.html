@@ -179,6 +179,11 @@ velocityY = 0;
 isGrounded = true;
 myVerti = p.top - playerSize;
 }
+if (myVerti >= p.top && velocityY > 0 && prevVerti < p.top && myHoriz < (p.left + p.width) && (myHoriz + playerSize) > p.left) {
+velocityY = 0;
+isGrounded = true;
+myVerti = p.top - playerSize;
+}
 }
 if (myVerti <= (p.top + p.height) && velocityY < 0 && prevVerti >= (p.top + p.height) && myHoriz < (p.left + p.width) && (myHoriz + playerSize) > p.left) {
 velocityY = 0
@@ -209,6 +214,11 @@ myHoriz = mySpawnX;
 }
 }
 if (myVerti <= (p.top + p.height) && velocityY < 0 && prevVerti >= (p.top + p.height) && myHoriz < (p.left + p.width) && (myHoriz + playerSize) > p.left) {
+velocityY = 0
+myVerti = mySpawnY;
+myHoriz = mySpawnX;
+}
+if (myVerti >= p.top && velocityY > 0 && prevVerti < p.top && myHoriz < (p.left + p.width) && (myHoriz + playerSize) > p.left) {
 velocityY = 0
 myVerti = mySpawnY;
 myHoriz = mySpawnX;
