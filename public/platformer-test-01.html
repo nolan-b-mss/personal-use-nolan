@@ -37,13 +37,14 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 //platforms are listed from ground floor to highest platform
 const platforms = [
     { left: 0, top: 800, width: 1090, height: 8 },  // ground floor
-    { left: 200, top: 468, width: 8, height: 232 }, // wall attempt
+    { left: 200, top: 468, width: 8, height: 232 }, // wall
     { left: 200, top: 700, width: 200, height: 8 },
     { left: 550, top: 580, width: 250, height: 8 },
     { left: 200, top: 460, width: 200, height: 8 }
 ];
 const redPlatforms = [
-    { left: 0, top: 850, width: 1200, height: 8} // rock bottom
+    { left: 0, top: 850, width: 1200, height: 8 },// rock bottom
+    { left: 800, top: 612, width: 8, height: 100 } // wall
 ];
 let enemyContainer = document.getElementById('enemyContainer');
 let gameContainer = document.getElementById('gameContainer');
@@ -121,7 +122,7 @@ function movement() {
 updateDebug();
 setTimeout(function(){
 prevHoriz = myHoriz; 
-prevVerti = myVerti; // Fixed: properly tracks vertical previous position
+prevVerti = myVerti;
 }, 10);
 
 if (up && !wKeyDebounced && isGrounded) { velocityY = -jumpStrength; wKeyDebounced = true;}
@@ -135,38 +136,44 @@ velocityY += gravity;
 myVerti += velocityY;
 
 platforms.forEach(p => {
-    const playerSize = 32;
-
-    let isVerticallyOverlapping = (myVerti + playerSize > p.top) && (myVerti < p.top + p.height);
-
-    // Wall collision (vertical columns)
-    if (isVerticallyOverlapping) {
-        if (p.width < 50 && p.height > 50) {
-            if (right && prevHoriz + playerSize <= p.left && myHoriz + playerSize > p.left) {
-                myHoriz = p.left - playerSize;
-            }
-            else if (left && prevHoriz >= p.left + p.width && myHoriz < p.left + p.width) {
-                myHoriz = p.left + p.width;
-            }
-        }
-    }
-
-    // Floor collision (horizontal platforms)
-    if (p.height === 8) {
-        if (((myVerti + playerSize) >= p.top) && velocityY >= 0 && (prevVerti + playerSize) <= p.top && myHoriz < (p.left + p.width) && (myHoriz + playerSize) > p.left) {
-            velocityY = 0;
-            isGrounded = true;
-            myVerti = p.top - playerSize;
-        }
-    }
+const playerSize = 32;
+let isVerticallyOverlapping = (myVerti + playerSize > p.top) && (myVerti < p.top + p.height);
+if (isVerticallyOverlapping) {
+if (p.width < 50 && p.height > 50) {
+if (right && prevHoriz + playerSize <= p.left && myHoriz + playerSize > p.left) {
+myHoriz = p.left - playerSize;
+}
+else if (left && prevHoriz >= p.left + p.width && myHoriz < p.left + p.width) {
+myHoriz = p.left + p.width;
+}
+}
+}if (p.height === 8) {
+if (((myVerti + playerSize) >= p.top) && velocityY >= 0 && (prevVerti + playerSize) <= p.top && myHoriz < (p.left + p.width) && (myHoriz + playerSize) > p.left) {
+velocityY = 0;
+isGrounded = true;
+myVerti = p.top - playerSize;
+}
+}
 });
 
 redPlatforms.forEach(p => {
-if (((myVerti + 32) >= p.top) && velocityY >= 0 && (prevVerti + 32) <= p.top && myHoriz < (p.left + p.width) && (myHoriz + 32) >= p.left) {
+const playerSize = 32;
+let isVerticallyOverlapping = (myVerti + playerSize > p.top) && (myVerti < p.top + p.height);
+if (isVerticallyOverlapping) {
+if (p.width < 50 && p.height > 50) {
+if (right && prevHoriz + playerSize <= p.left && myHoriz + playerSize > p.left) {
+myHoriz = p.left - playerSize;
+}
+else if (left && prevHoriz >= p.left + p.width && myHoriz < p.left + p.width) {
+myHoriz = p.left + p.width;
+}
+}
+}if (p.height === 8) {
+if (((myVerti + playerSize) >= p.top) && velocityY >= 0 && (prevVerti + playerSize) <= p.top && myHoriz < (p.left + p.width) && (myHoriz + playerSize) > p.left) {
 velocityY = 0;
 isGrounded = true;
-myVerti = 768;
-myHoriz = 513
+myVerti = p.top - playerSize;
+}
 }
 });
 
