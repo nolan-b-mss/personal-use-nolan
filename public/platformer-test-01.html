@@ -170,9 +170,11 @@ if (isVerticallyOverlapping) {
 if (p.width < 50 && p.height > 50) {
 if (right && prevHoriz + playerSize <= p.left && myHoriz + playerSize > p.left) {
 myHoriz = mySpawnX;
+myVerti = mySpawnY;
 }
 else if (left && prevHoriz >= p.left + p.width && myHoriz < p.left + p.width) {
 myHoriz = mySpawnX;
+myVerti = mySpawnY;
 }
 }
 }
@@ -180,11 +182,13 @@ if (p.height === 8) {
 if (((myVerti + playerSize) >= p.top) && velocityY >= 0 && (prevVerti + playerSize) <= p.top && myHoriz < (p.left + p.width) && (myHoriz + playerSize) > p.left) {
 velocityY = 0;
 myVerti = mySpawnY;
+myHoriz = mySpawnX;
 }
 }
 if (myVerti <= (p.top + p.height) && velocityY < 0 && prevVerti >= (p.top + p.height) && myHoriz < (p.left + p.width) && (myHoriz + playerSize) > p.left) {
 velocityY = 0
 myVerti = mySpawnY;
+myHoriz = mySpawnX;
 }
 });
 
