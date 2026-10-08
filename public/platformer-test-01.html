@@ -211,8 +211,6 @@ const debugElement = document.getElementById('debug');
 if (!showDebug){ debug.style.display = 'none'; }
 else if (showDebug){ debug.style.display = 'block'; }
 if (!debugElement) return;
-let myDebugPrevX = prevHoriz.toFixed(0)
-let myDebugPrevY = prevVerti.toFixed(0)
 debugElement.innerHTML = `
 ---------------- <br>
 Game Variables<br>
@@ -230,8 +228,8 @@ aKeyDebounced: ${aKeyDebounced}<br>
 dKeyDebounced: ${dKeyDebounced}<br>
 X: ${myHoriz}<br>
 Y: ${playerElement.style.top}<br>
-PreviousX: ${myDebugPrevX}<br>
-PreviousY: ${myDebugPrevY}<br>
+PreviousX: ${prevHoriz}<br>
+PreviousY: ${prevVerti}<br>
 `;
 }
 
