@@ -81,7 +81,7 @@ let playerHealth = Infinity;
 let containerRect = gameContainer.getBoundingClientRect();
 let actualTop;
 
-gameContainer.addEventListener('mousemove', (event) => {
+document.addEventListener('mousemove', (event) => {
     myCursorX = Math.round(event.clientX - containerRect.left);
     myCursorY = Math.round(event.clientY - containerRect.top);
 });
