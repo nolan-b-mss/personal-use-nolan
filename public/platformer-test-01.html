@@ -120,8 +120,9 @@ if (event.key === "d"){ right = false; }
 function movement() {
 updateDebug();
 setTimeout(function(){
-prevHoriz = myHoriz; prevVerti = myHoriz;}, 
-10);
+prevHoriz = myHoriz; 
+prevVerti = myVerti; // Fixed: properly tracks vertical previous position
+}, 10);
 
 if (up && !wKeyDebounced && isGrounded) { velocityY = -jumpStrength; wKeyDebounced = true;}
 isGrounded = false;
@@ -134,15 +135,15 @@ velocityY += gravity;
 myVerti += velocityY;
 
 platforms.forEach(p => {
-    const playerWidth = 32;
-    const playerHeight = 32;
+    const playerSize = 32;
 
-    let isVerticallyOverlapping = (myVerti + playerHeight > p.top) && (myVerti < p.top + p.height);
+    let isVerticallyOverlapping = (myVerti + playerSize > p.top) && (myVerti < p.top + p.height);
 
+    // Wall collision (vertical columns)
     if (isVerticallyOverlapping) {
         if (p.width < 50 && p.height > 50) {
-            if (right && prevHoriz + playerWidth <= p.left && myHoriz + playerWidth > p.left) {
-                myHoriz = p.left - playerWidth;
+            if (right && prevHoriz + playerSize <= p.left && myHoriz + playerSize > p.left) {
+                myHoriz = p.left - playerSize;
             }
             else if (left && prevHoriz >= p.left + p.width && myHoriz < p.left + p.width) {
                 myHoriz = p.left + p.width;
@@ -150,12 +151,12 @@ platforms.forEach(p => {
         }
     }
 
-    // Fixed: changed >= p.left to strict > p.left to prevent side-snapping corner traps
+    // Floor collision (horizontal platforms)
     if (p.height === 8) {
-        if (((myVerti + playerHeight) >= p.top) && velocityY >= 0 && (prevVerti + playerHeight) <= p.top && myHoriz < (p.left + p.width) && (myHoriz + playerHeight) > p.left) {
+        if (((myVerti + playerSize) >= p.top) && velocityY >= 0 && (prevVerti + playerSize) <= p.top && myHoriz < (p.left + p.width) && (myHoriz + playerSize) > p.left) {
             velocityY = 0;
             isGrounded = true;
-            myVerti = p.top - playerHeight;
+            myVerti = p.top - playerSize;
         }
     }
 });
