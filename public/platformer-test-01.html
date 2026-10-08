@@ -45,8 +45,6 @@ const platforms = [
 const redPlatforms = [
     { left: 0, top: 850, width: 1200, height: 8} // rock bottom
 ];
-const playerWidth = 32;
-const playerHeight = 32;
 let enemyContainer = document.getElementById('enemyContainer');
 let gameContainer = document.getElementById('gameContainer');
 let playerElement = document.getElementById('myPlayer01');
@@ -76,6 +74,7 @@ let isTrueInvincible = false;
 let playerHealth = Infinity;
 let containerRect = gameContainer.getBoundingClientRect();
 let actualTop;
+
 platforms.forEach(p => {
     let plat = document.createElement('div');
     plat.style.position = 'absolute';
@@ -86,6 +85,7 @@ platforms.forEach(p => {
     plat.style.backgroundColor = 'white';
     gameContainer.appendChild(plat);
 });
+
 redPlatforms.forEach(p => {
     let redPlat = document.createElement('div');
     redPlat.style.position = 'absolute';
@@ -96,76 +96,70 @@ redPlatforms.forEach(p => {
     redPlat.style.backgroundColor = 'red';
     gameContainer.appendChild(redPlat);
 });
+
 document.onkeydown = function(event){
-if (event.key === "w"){
-up = true;
-}
-if (event.key === "s"){
-down = true;
-}
-if (event.key === "a"){
-left = true;
-}
-if (event.key === "d"){
-right = true;
-}
+if (event.key === "w"){ up = true; }
+if (event.key === "s"){ down = true; }
+if (event.key === "a"){ left = true; }
+if (event.key === "d"){ right = true; }
 if (event.ctrlKey && event.key === "q"){
 showDebug = !showDebug;
 const debugElement = document.getElementById('debug');
-if (showDebug) {
-debugElement.style.display = 'block';
-} else {debugElement.style.display = 'none';}
+if (showDebug) { debugElement.style.display = 'block'; } 
+else { debugElement.style.display = 'none'; }
 }    
 }
+
 document.onkeyup = function(event){
-if (event.key === "w"){
-up = false;
-wKeyDebounced = false;
+if (event.key === "w"){ up = false; wKeyDebounced = false; }
+if (event.key === "s"){ down = false; }
+if (event.key === "a"){ left = false; }
+if (event.key === "d"){ right = false; }
 }
-if (event.key === "s"){
-down = false;
-}
-if (event.key === "a"){
-left = false;
-}
-if (event.key === "d"){
-right = false;
-}
-}
+
 function movement() {
 updateDebug();
 setTimeout(function(){
-prevHoriz = myHoriz; prevVerti = myVerti;}, 
+prevHoriz = myHoriz; prevVerti = myHoriz;}, 
 10);
+
 if (up && !wKeyDebounced && isGrounded) { velocityY = -jumpStrength; wKeyDebounced = true;}
 isGrounded = false;
+
 if (down) { myVerti += 3; }
 if (left) { myHoriz -= 3; }
 if (right) { myHoriz += 3; }
+
 velocityY += gravity;
 myVerti += velocityY;
+
 platforms.forEach(p => {
+    const playerWidth = 32;
+    const playerHeight = 32;
 
-let isVerticallyOverlapping = (myVerti + playerHeight > p.top) && (myVerti < p.top + p.height);
+    let isVerticallyOverlapping = (myVerti + playerHeight > p.top) && (myVerti < p.top + p.height);
 
-if (isVerticallyOverlapping) {
-if (p.width < 50 && p.height > 50) {
-if (right && prevHoriz + playerWidth <= p.left && myHoriz + playerWidth > p.left) {
-myHoriz = p.left - playerWidth;
-}
-else if (left && prevHoriz >= p.left + p.width && myHoriz < p.left + p.width) {
-myHoriz = p.left + p.width;
-}
-}
-}
-if (p.height === 8) {
-if (((myVerti + playerHeight) >= p.top) && velocityY >= 0 && (prevVerti + playerHeight) <= p.top && myHoriz < (p.left + p.width) && (myHoriz + playerHeight) >= p.left) {
-velocityY = 0;
-isGrounded = true;
-myVerti = p.top - playerHeight;
-}
-}
+    if (isVerticallyOverlapping) {
+        if (p.width < 50 && p.height > 50) {
+            if (right && prevHoriz + playerWidth <= p.left && myHoriz + playerWidth > p.left) {
+                myHoriz = p.left - playerWidth;
+            }
+            else if (left && prevHoriz >= p.left + p.width && myHoriz < p.left + p.width) {
+                myHoriz = p.left + p.width;
+            }
+        }
+    }
+
+    // Fixed: changed >= p.left to strict > p.left to prevent side-snapping corner traps
+    if (p.height === 8) {
+        if (((myVerti + playerHeight) >= p.top) && velocityY >= 0 && (prevVerti + playerHeight) <= p.top && myHoriz < (p.left + p.width) && (myHoriz + playerHeight) > p.left) {
+            velocityY = 0;
+            isGrounded = true;
+            myVerti = p.top - playerHeight;
+        }
+    }
 });
+
 redPlatforms.forEach(p => {
 if (((myVerti + 32) >= p.top) && velocityY >= 0 && (prevVerti + 32) <= p.top && myHoriz < (p.left + p.width) && (myHoriz + 32) >= p.left) {
 velocityY = 0;
@@ -174,19 +168,22 @@ myVerti = 768;
 myHoriz = 513
 }
 });
+
 if (myHoriz < 0) { myHoriz = 0; }
 if (myVerti < 0) { myVerti = 0; }
-if (myHoriz < 0) {myHoriz = 0}
-if (myHoriz > 1090) {myHoriz = 1090}
+if (myHoriz > 1090) { myHoriz = 1090; }
+
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
-if (prevHoriz !== myHoriz || prevVerti !== myVerti) {isMoving = true;}
-else {isMoving = false;}
+
+if (prevHoriz !== myHoriz || prevVerti !== myVerti) { isMoving = true; }
+else { isMoving = false; }
 }
+
 function updateDebug() {
 const debugElement = document.getElementById('debug');
-if (!showDebug){debug.style.display = 'none'}
-else if (showDebug){debug.style.display = 'block'}
+if (!showDebug){ debug.style.display = 'none'; }
+else if (showDebug){ debug.style.display = 'block'; }
 if (!debugElement) return;
 debugElement.innerHTML = `
 ---------------- <br>
@@ -209,33 +206,11 @@ PreviousX: ${prevHoriz}<br>
 PreviousY: ${prevVerti}<br>
 `;
 }
-function updateUI() {
-let healthPercent = (playerHealth / maxHealth) * 100;
-if (healthPercent < 0) {
-healthPercent = 0;
-}
-let hpBar = document.getElementById("hp-bar");
-hpBar.style.width = healthPercent + "%";
-let hpText = document.getElementById("hp-text");
-hpText.innerText = playerHealth + " / " + maxHealth;
-}
-function takeDamage(damageAmount) {
-if (isTrueInvincible){return;}
-else if (!isInvincible && playerHealth > 0) {
-playerHealth -= damageAmount;
-isInvincible = true;
-playerElement.style.opacity = 0.5;
 
-setTimeout(function() {
-isInvincible = false;
-playerElement.style.opacity = 1.0;
-}, 1000);
-}
-}
 function startBattle() {
-setInterval(movement, 10)
-playerElement.style.top = myVerti + 'px'
-playerElement.style.left = myHoriz + 'px'
+setInterval(movement, 10);
+playerElement.style.top = myVerti + 'px';
+playerElement.style.left = myHoriz + 'px';
 }
 startBattle();
 </script>
