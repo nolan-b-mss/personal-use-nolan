@@ -194,7 +194,7 @@ myVerti = mySpawnY;
 }
 }
 if (rp.height === 8) {
-if (((myVerti + playerSize) >= rp.top) && velocityY >= 0 && (prevVerti + playerSize) <= rp.top && myHoriz < (rp.left + p.width) && (myHoriz + playerSize) > rp.left) {
+if (((myVerti + playerSize) >= rp.top) && velocityY >= 0 && (prevVerti + playerSize) <= rp.top && myHoriz < (rp.left + rp.width) && (myHoriz + playerSize) > rp.left) {
 velocityY = 0;
 myVerti = mySpawnY;
 myHoriz = mySpawnX;
