@@ -25,17 +25,13 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 //platforms are listed from ground floor to highest platform
 const platforms = [
     { left: 0, top: 800, width: 1090, height: 8 },  // ground floor
-    { left: 0, top: 100, width: 200, height: 8 },
-    { left: 200, top: 468, width: 8, height: 232 } // wall
+    { left: 0, top: 180, width: 200, height: 8 },
+    { left: 200, top: 468, width: 8, height: 232 },
 ];
 const redPlatforms = [
-    { left: -800, top: 850, width: 3200, height: 8 },// rock bottom
-    { left: 800, top: 612, width: 8, height: 100 },
-    { left: 654, top: 650, width: 8, height: 100 }
+    { left: -800, top: 850, width: 3200, height: 8 }, // rock bottom
 ];
 const checkpoints = [
-    { left: 276, top: 377, width: 40, height: 38 },
-    { left: 651, top: 504, width: 40, height: 38 }
 ];
 const playerSize = 32;
 let enemyContainer = document.getElementById('enemyContainer');
