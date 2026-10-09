@@ -10,14 +10,12 @@
 @font-face { font-family: 'DeterminationMono'; src: url('font/DeterminationMonoWebRegular-Z5oq.ttf') format('truetype'); }
 body {height:100vh; margin: 0; background-color:black; position: relative; font-family: 'DeterminationMono', monospace; }
 #gameContainer {width: 1050px; position: absolute; left: 400px; display: flex; flex-direction: column; box-sizing: border-box;}
-#hp-section { display: flex; justify-content: center; color: white; font-family: 'DeterminationMono', monospace; margin-top: 0px;}
-#hp-display-group { display: flex; flex-direction: column; align-items: center; margin-left: 30px;}
-#hp-container { width: 300px; height: 60px; background-color: #c00; margin: 0 10px;}
-#hp-bar { width: 100%; height: 100%; background-color: #ffff00;}
-#hp-text { font-size: 48px; }
 </style>
 </head>
 <body style="background-color:black; position: relative; overflow: hidden;">
+<div id="tutorialScreen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: black; z-index: 2000; display: flex; justify-content: center; align-items: center;">
+    <img src="sprites/tutorial.jpg" style="max-width: 100%; max-height: 100%;">
+</div>
 <div id="debug" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: lime; font-family: monospace; padding: 10px; border: 1px solid lime; z-index: 1000; font-size: 14px; pointer-events: none;">
 </div>
 <div id="gameContainer">
@@ -71,6 +69,7 @@ let sKeyDebounced = false;
 let aKeyDebounced = false;
 let dKeyDebounced = false;
 let actionKeyPressed = false;
+let tutorialOnScreen = true;
 let containerRect = gameContainer.getBoundingClientRect();
 let actualTop;
 
@@ -102,7 +101,6 @@ redPlatforms.forEach(p => {
 });
 
 checkpoints.forEach(c => {
-
     let checkpoint = document.createElement('div');
     checkpoint.style.position = 'absolute';
     checkpoint.style.left = c.left + 'px';
@@ -112,7 +110,6 @@ checkpoints.forEach(c => {
     checkpoint.style.backgroundImage = "url('sprites/checkpoint.gif')";
     checkpoint.style.backgroundSize = 'cover';
     gameContainer.appendChild(checkpoint);
-
 });
 document.onkeydown = function(event){
     if (event.key === "w"){ up = true; }
@@ -124,7 +121,11 @@ document.onkeydown = function(event){
         const debugElement = document.getElementById('debug');
         if (showDebug) { debugElement.style.display = 'block'; } 
         else { debugElement.style.display = 'none'; }
-}    
+    }
+    if (event.key === " "){
+        const myTutorialScreen = document.getElementById('tutorialScreen')
+        myTutorialScreen.style.display = 'none';
+    }    
 }
 
 document.onkeyup = function(event){
@@ -136,6 +137,7 @@ document.onkeyup = function(event){
 
 function movement() {
 updateDebug();
+if (!tutorialOnScreen){
 setTimeout(function(){
 prevHoriz = myHoriz; 
 prevVerti = myVerti;
@@ -233,6 +235,7 @@ playerElement.style.left = myHoriz + 'px';
 
 if (prevHoriz !== myHoriz || prevVerti !== myVerti) { isMoving = true; }
 else { isMoving = false; }
+}
 }
 
 function updateDebug() {
