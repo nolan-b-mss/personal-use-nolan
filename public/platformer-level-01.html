@@ -22,16 +22,6 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 </div>
 <div id="gameContainer">
 <img src="sprites/soul-04.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0; z-index: 100;">
-<div id="hp-section"> 
-<div id="hp-display-group">
-<div id="hp-text-wrapper">
-<span style="font-size:48px;">HP:</span>
-<span id="hp-text">Infinite</span>
-</div>
-<div id="hp-container">
-<div id="hp-bar"></div>
-</div>
-</div>
 </div>
 <script>
 //platforms are listed from ground floor to highest platform
@@ -81,9 +71,6 @@ let sKeyDebounced = false;
 let aKeyDebounced = false;
 let dKeyDebounced = false;
 let actionKeyPressed = false;
-let isInvincible = false;
-let isTrueInvincible = false;
-let playerHealth = Infinity;
 let containerRect = gameContainer.getBoundingClientRect();
 let actualTop;
 
