@@ -117,10 +117,10 @@ checkpoints.forEach(c => {
 
     let checkpoint = document.createElement('div');
     checkpoint.style.position = 'absolute';
-    checkpoint.style.left = p.left + 'px';
-    checkpoint.style.top = p.top + 'px';
-    checkpoint.style.width = p.width + 'px';
-    checkpoint.style.height = p.height + 'px';
+    checkpoint.style.left = c.left + 'px';
+    checkpoint.style.top = c.top + 'px';
+    checkpoint.style.width = c.width + 'px';
+    checkpoint.style.height = c.height + 'px';
     checkpoint.style.backgroundImage = "url('sprites/undertale-save.gif')";
     checkpoint.style.backgroundSize = 'cover';
     gameContainer.appendChild(checkpoint);
