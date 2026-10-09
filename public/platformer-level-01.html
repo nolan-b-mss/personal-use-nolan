@@ -23,13 +23,13 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 </div>
 <script>
 const platforms = [
-    { left: 0, top: 800, width: 1090, height: 8 }, // ground floor
-    { left: -8, top: 0, width: 8, height: 3200},
+    { left: 0, top: 850, width: 1090, height: 8 }, // ground floor
+    { left: -8, top: 0, width: 8, height: 850},
+    { left: 1098, top: 0, width: 8, height: 850},
     { left: 0, top: 200, width: 200, height: 8 },
     { left: 350, top: 200, width: 400, height: 8 },
 ];
 const redPlatforms = [
-    { left: -800, top: 850, width: 3200, height: 8 }, // rock bottom
     { left: 200, top: 200, width: 150, height: 8 },
     { left: 483, top: 100, width: 8, height: 100 },
 ];
@@ -84,13 +84,13 @@ platforms.forEach(p => {
     gameContainer.appendChild(plat);
 });
 
-redPlatforms.forEach(p => {
+redPlatforms.forEach(rp => {
     let redPlat = document.createElement('div');
     redPlat.style.position = 'absolute';
-    redPlat.style.left = p.left + 'px';
-    redPlat.style.top = p.top + 'px';
-    redPlat.style.width = p.width + 'px';
-    redPlat.style.height = p.height + 'px';
+    redPlat.style.left = rp.left + 'px';
+    redPlat.style.top = rp.top + 'px';
+    redPlat.style.width = rp.width + 'px';
+    redPlat.style.height = rp.height + 'px';
     redPlat.style.backgroundColor = 'red';
     gameContainer.appendChild(redPlat);
 });
@@ -179,33 +179,33 @@ myVerti = p.top + p.height
 }
 });
 
-redPlatforms.forEach(p => {
-let isVerticallyOverlapping = (myVerti + playerSize > p.top) && (myVerti < p.top + p.height);
+redPlatforms.forEach(rp => {
+let isVerticallyOverlapping = (myVerti + playerSize > rp.top) && (myVerti < rp.top + rp.height);
 if (isVerticallyOverlapping) {
-if (p.width < 50 && p.height > 50) {
-if (right && prevHoriz + playerSize <= p.left && myHoriz + playerSize > p.left) {
+if (rp.width < 50 && rp.height > 50) {
+if (right && prevHoriz + playerSize <= rp.left && myHoriz + playerSize > rp.left) {
 myHoriz = mySpawnX;
 myVerti = mySpawnY;
 }
-else if (left && prevHoriz >= p.left + p.width && myHoriz < p.left + p.width) {
+else if (left && prevHoriz >= rp.left + rp.width && myHoriz < rp.left + rp.width) {
 myHoriz = mySpawnX;
 myVerti = mySpawnY;
 }
 }
 }
-if (p.height === 8) {
-if (((myVerti + playerSize) >= p.top) && velocityY >= 0 && (prevVerti + playerSize) <= p.top && myHoriz < (p.left + p.width) && (myHoriz + playerSize) > p.left) {
+if (rp.height === 8) {
+if (((myVerti + playerSize) >= rp.top) && velocityY >= 0 && (prevVerti + playerSize) <= rp.top && myHoriz < (rp.left + p.width) && (myHoriz + playerSize) > rp.left) {
 velocityY = 0;
 myVerti = mySpawnY;
 myHoriz = mySpawnX;
 }
 }
-if (myVerti <= (p.top + p.height) && velocityY < 0 && prevVerti >= (p.top + p.height) && myHoriz < (p.left + p.width) && (myHoriz + playerSize) > p.left) {
+if (myVerti <= (rp.top + rp.height) && velocityY < 0 && prevVerti >= (rp.top + rp.height) && myHoriz < (rp.left + rp.width) && (myHoriz + playerSize) > rp.left) {
 velocityY = 0
 myVerti = mySpawnY;
 myHoriz = mySpawnX;
 }
-if (myVerti >= p.top && velocityY > 0 && prevVerti < p.top && myHoriz < (p.left + p.width) && (myHoriz + playerSize) > p.left) {
+if (myVerti >= rp.top && velocityY > 0 && prevVerti < rp.top && myHoriz < (rp.left + rp.width) && (myHoriz + playerSize) > rp.left) {
 velocityY = 0
 myVerti = mySpawnY;
 myHoriz = mySpawnX;
