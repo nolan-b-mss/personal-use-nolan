@@ -227,12 +227,13 @@ myHoriz = mySpawnX;
 });
 
 checkpoints.forEach(c => {
-    if (myHoriz < checkpoint.left + checkpoint.width && 
-    myHoriz + playerSize > checkpoint.left && 
-    myVerti < checkpoint.top + checkpoint.height && 
-    myVerti + playerSize > checkpoint.top) {
-    mySpawnX = checkpoint.left + (checkpoint.width / 2)
-    mySpawnY = checkpoint.top + (checkpoint.height / 2)
+    if (myHoriz < c.left + c.width && 
+    myHoriz + playerSize > c.left && 
+    myVerti < c.top + c.height && 
+    myVerti + playerSize > c.top) 
+    {
+    mySpawnX = c.left + (c.width / 2)
+    mySpawnY = c.top + (c.height / 2)
     }
 });
 if (myHoriz < 0) { myHoriz = 0; }
