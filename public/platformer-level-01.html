@@ -25,11 +25,8 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 //platforms are listed from ground floor to highest platform
 const platforms = [
     { left: 0, top: 800, width: 1090, height: 8 },  // ground floor
-    { left: 200, top: 468, width: 8, height: 232 }, // wall
-    { left: 200, top: 700, width: 200, height: 8 },
-    { left: 550, top: 580, width: 250, height: 8 },
-    { left: 200, top: 460, width: 200, height: 8 },
-    { left: 800, top: 700, width: 200, height: 8 },
+    { left: 0, top: 100, width: 200, height: 8 },
+    { left: 200, top: 468, width: 8, height: 232 } // wall
 ];
 const redPlatforms = [
     { left: -800, top: 850, width: 3200, height: 8 },// rock bottom
@@ -47,8 +44,8 @@ let playerElement = document.getElementById('myPlayer01');
 let maxHoriz;
 let maxVerti;
 let showDebug = false;
-let mySpawnX = 513
-let mySpawnY = 730
+let mySpawnX = 88
+let mySpawnY = 88
 let myHoriz = 513
 let myVerti = 730
 let myCursorX;
