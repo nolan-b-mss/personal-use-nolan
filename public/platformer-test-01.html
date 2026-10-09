@@ -49,7 +49,7 @@ const redPlatforms = [
     { left: 654, top: 650, width: 8, height: 100 }
 ];
 const checkpoints = [
-    { left: 276, top: 377, width: 32, height: 32 }
+    { left: 276, top: 377, width: 40, height: 38 }
 ];
 const playerSize = 32;
 let enemyContainer = document.getElementById('enemyContainer');
@@ -121,7 +121,7 @@ checkpoints.forEach(c => {
     checkpoint.style.top = c.top + 'px';
     checkpoint.style.width = c.width + 'px';
     checkpoint.style.height = c.height + 'px';
-    checkpoint.style.backgroundImage = "url('sprites/undertale-save.gif')";
+    checkpoint.style.backgroundImage = "url('sprites/checkpoint.gif')";
     checkpoint.style.backgroundSize = 'cover';
     gameContainer.appendChild(checkpoint);
 
