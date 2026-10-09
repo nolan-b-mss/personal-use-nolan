@@ -49,7 +49,9 @@ const redPlatforms = [
     { left: 654, top: 650, width: 8, height: 100 }
 ];
 const checkpoints = [
+    { left: 276, top: 377, width: 32, height: 32 }
 ];
+const playerSize = 32;
 let enemyContainer = document.getElementById('enemyContainer');
 let gameContainer = document.getElementById('gameContainer');
 let playerElement = document.getElementById('myPlayer01');
@@ -125,23 +127,23 @@ checkpoints.forEach(p => {
 
 });
 document.onkeydown = function(event){
-if (event.key === "w"){ up = true; }
-if (event.key === "s"){ down = true; }
-if (event.key === "a"){ left = true; }
-if (event.key === "d"){ right = true; }
-if (event.ctrlKey && event.key === "q"){
-showDebug = !showDebug;
-const debugElement = document.getElementById('debug');
-if (showDebug) { debugElement.style.display = 'block'; } 
-else { debugElement.style.display = 'none'; }
+    if (event.key === "w"){ up = true; }
+    if (event.key === "s"){ down = true; }
+    if (event.key === "a"){ left = true; }
+    if (event.key === "d"){ right = true; }
+    if (event.ctrlKey && event.key === "q"){
+        showDebug = !showDebug;
+        const debugElement = document.getElementById('debug');
+        if (showDebug) { debugElement.style.display = 'block'; } 
+        else { debugElement.style.display = 'none'; }
 }    
 }
 
 document.onkeyup = function(event){
-if (event.key === "w"){ up = false; wKeyDebounced = false; }
-if (event.key === "s"){ down = false; }
-if (event.key === "a"){ left = false; }
-if (event.key === "d"){ right = false; }
+    if (event.key === "w"){ up = false; wKeyDebounced = false; }
+    if (event.key === "s"){ down = false; }
+    if (event.key === "a"){ left = false; }
+    if (event.key === "d"){ right = false; }
 }
 
 function movement() {
@@ -162,23 +164,22 @@ velocityY += gravity;
 myVerti += velocityY;
 
 platforms.forEach(p => {
-const playerSize = 32;
-let isVerticallyOverlapping = (myVerti + playerSize > p.top) && (myVerti < p.top + p.height);
-if (isVerticallyOverlapping) {
-if (p.width < 50 && p.height > 50) {
-if (right && prevHoriz + playerSize <= p.left && myHoriz + playerSize > p.left) {
-myHoriz = p.left - playerSize;
-}
-else if (left && prevHoriz >= p.left + p.width && myHoriz < p.left + p.width) {
-myHoriz = p.left + p.width;
-}
-}
-}
+    let isVerticallyOverlapping = (myVerti + playerSize > p.top) && (myVerti < p.top + p.height);
+    if (isVerticallyOverlapping) {
+        if (p.width < 50 && p.height > 50) {
+            if (right && prevHoriz + playerSize <= p.left && myHoriz + playerSize > p.left) {
+                myHoriz = p.left - playerSize;
+                }
+            else if (left && prevHoriz >= p.left + p.width && myHoriz < p.left + p.width) {
+                myHoriz = p.left + p.width;
+                }
+            }
+        }
 if (p.height === 8) {
 if (((myVerti + playerSize) >= p.top) && velocityY >= 0 && (prevVerti + playerSize) <= p.top && myHoriz < (p.left + p.width) && (myHoriz + playerSize) > p.left) {
-velocityY = 0;
-isGrounded = true;
-myVerti = p.top - playerSize;
+    velocityY = 0;
+    isGrounded = true;
+    myVerti = p.top - playerSize;
 }
 if (myVerti >= p.top && velocityY > 0 && prevVerti < p.top && myHoriz < (p.left + p.width) && (myHoriz + playerSize) > p.left) {
 velocityY = 0;
@@ -193,7 +194,6 @@ myVerti = p.top + p.height
 });
 
 redPlatforms.forEach(p => {
-const playerSize = 32;
 let isVerticallyOverlapping = (myVerti + playerSize > p.top) && (myVerti < p.top + p.height);
 if (isVerticallyOverlapping) {
 if (p.width < 50 && p.height > 50) {
@@ -226,6 +226,15 @@ myHoriz = mySpawnX;
 }
 });
 
+checkpoints.forEach(c => {
+    if (myHoriz < checkpoint.left + checkpoint.width && 
+    myHoriz + playerSize > checkpoint.left && 
+    myVerti < checkpoint.top + checkpoint.height && 
+    myVerti + playerSize > checkpoint.top) {
+    mySpawnX = checkpoint.left + (checkpoint.width / 2)
+    mySpawnY = checkpoint.top + (checkpoint.height / 2)
+    }
+});
 if (myHoriz < 0) { myHoriz = 0; }
 if (myVerti < 0) { myVerti = 0; }
 if (myHoriz > 1090) { myHoriz = 1090; }
