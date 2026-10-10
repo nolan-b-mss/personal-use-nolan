@@ -28,7 +28,7 @@ const platforms = [
     { left: 1098, top: 0, width: 8, height: 850},
     { left: 0, top: 200, width: 200, height: 8 },
     { left: 350, top: 200, width: 500, height: 8 },
-    { left: 200, top: 450, width: 890, height: 8 },
+    { left: 200, top: 450, width: 900, height: 8 },
 ];
 const redPlatforms = [
     { left: 200, top: 200, width: 150, height: 8 },
@@ -298,9 +298,11 @@ bp.element.style.left = bp.left + 'px'
 });
 
 bluePlatforms.forEach(bp => {
-if (isMoving){
+if (isMoving) {
+let isHorizontallyOverlapping = (myHoriz + playerSize > bp.left) && (myHoriz < bp.left + bp.width);
 let isVerticallyOverlapping = (myVerti + playerSize > bp.top) && (myVerti < bp.top + bp.height);
-if (isVerticallyOverlapping) {
+        
+if (isVerticallyOverlapping && isHorizontallyOverlapping) {
 if (bp.width < 50 && bp.height > 50) {
 if (right && prevHoriz + playerSize <= bp.left && myHoriz + playerSize > bp.left) {
 myHoriz = mySpawnX;
@@ -313,19 +315,19 @@ myVerti = mySpawnY;
 }
 }
 if (bp.height === 8) {
-if (((myVerti + playerSize) >= bp.top) && velocityY >= 0 && (prevVerti + playerSize) <= bp.top && myHoriz < (bp.left + bp.width) && (myHoriz + playerSize) > bp.left) {
+if (((myVerti + playerSize) >= bp.top) && velocityY >= 0 && (prevVerti + playerSize) <= bp.top && isHorizontallyOverlapping) {
 velocityY = 0;
 myVerti = mySpawnY;
 myHoriz = mySpawnX;
 }
 }
-if (myVerti <= (bp.top + bp.height) && velocityY < 0 && prevVerti >= (bp.top + bp.height) && myHoriz < (bp.left + bp.width) && (myHoriz + playerSize) > bp.left) {
-velocityY = 0
+if (myVerti <= (bp.top + bp.height) && velocityY < 0 && prevVerti >= (bp.top + bp.height) && isHorizontallyOverlapping) {
+velocityY = 0;
 myVerti = mySpawnY;
-myHoriz = mySpawnX;
+myHoriz = mySpawnX; 
 }
-if (myVerti >= bp.top && velocityY > 0 && prevVerti < bp.top && myHoriz < (bp.left + bp.width) && (myHoriz + playerSize) > bp.left) {
-velocityY = 0
+if (myVerti >= bp.top && velocityY > 0 && prevVerti < bp.top && isHorizontallyOverlapping) {
+velocityY = 0;
 myVerti = mySpawnY;
 myHoriz = mySpawnX;
 }
