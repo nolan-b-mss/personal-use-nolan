@@ -41,6 +41,7 @@ const orangePlatforms = [
     { left: 850, top: 200, width: 245, height: 8 },
 ];
 const bluePlatforms = [
+    { left: 300, top: 300, width: 8, height: 100, minX: 200, maxX: 500, speed: 2, direction: 1, },
 ];
 const checkpoints = [
     { left: 954, top: 388, width: 40, height: 38 }
@@ -124,7 +125,12 @@ bluePlatforms.forEach(bp => {
     bluePlat.style.width = bp.width + 'px';
     bluePlat.style.height = bp.height + 'px';
     bluePlat.style.backgroundColor = '#0098F7';
+    bluePlat.minX = bp.minX + 'px';
+    bluePlat.maxX = bp.maxX + 'px';
+    bluePlat.direction = bp.direction
+    bluePlat.speed = bp.speed
     gameContainer.appendChild(bluePlat);
+    bp.element = bluePlat
 });
 
 checkpoints.forEach(c => {
@@ -277,6 +283,17 @@ myVerti = mySpawnY;
 myHoriz = mySpawnX;
 }
 }
+});
+
+bluePlatforms.forEach(bp => {
+if (bp.left >= bp.maxX){
+bp.direction = -1
+}
+if (bp.left <= bp.minX){
+bp.direction = 1
+}
+bp.left += bp.speed * bp.direction
+bp.element.style.left = bp.left + 'px'
 });
 
 bluePlatforms.forEach(bp => {
