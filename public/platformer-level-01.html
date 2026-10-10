@@ -36,6 +36,11 @@ const redPlatforms = [
     { left: 675, top: 100, width: 8, height: 100 },
     { left: 789, top: 100, width: 8, height: 100 },
 ];
+const orangePlatforms = [
+    { left: 850, top: 200, width: 240, height: 8 },
+];
+const bluePlatforms = [
+];
 const checkpoints = [
 ];
 const playerSize = 32;
@@ -96,6 +101,28 @@ redPlatforms.forEach(rp => {
     redPlat.style.height = rp.height + 'px';
     redPlat.style.backgroundColor = 'red';
     gameContainer.appendChild(redPlat);
+});
+
+orangePlatforms.forEach(op => {
+    let orangePlat = document.createElement('div');
+    orangePlat.style.position = 'absolute';
+    orangePlat.style.left = op.left + 'px';
+    orangePlat.style.top = op.top + 'px';
+    orangePlat.style.width = op.width + 'px';
+    orangePlat.style.height = op.height + 'px';
+    orangePlat.style.backgroundColor = '#F75F00';
+    gameContainer.appendChild(orangePlat);
+});
+
+bluePlatforms.forEach(bp => {
+    let bluePlat = document.createElement('div');
+    bluePlat.style.position = 'absolute';
+    bluePlat.style.left = bp.left + 'px';
+    bluePlat.style.top = bp.top + 'px';
+    bluePlat.style.width = bp.width + 'px';
+    bluePlat.style.height = bp.height + 'px';
+    bluePlat.style.backgroundColor = '#0098F7';
+    gameContainer.appendChild(bluePlat);
 });
 
 checkpoints.forEach(c => {
@@ -215,6 +242,76 @@ myHoriz = mySpawnX;
 }
 });
 
+orangePlatforms.forEach(op => {
+if (!isMoving){
+let isVerticallyOverlapping = (myVerti + playerSize > op.top) && (myVerti < op.top + op.height);
+if (isVerticallyOverlapping) {
+if (op.width < 50 && op.height > 50) {
+if (right && prevHoriz + playerSize <= op.left && myHoriz + playerSize > op.left) {
+myHoriz = mySpawnX;
+myVerti = mySpawnY;
+}
+else if (left && prevHoriz >= op.left + op.width && myHoriz < op.left + op.width) {
+myHoriz = mySpawnX;
+myVerti = mySpawnY;
+}
+}
+}
+if (op.height === 8) {
+if (((myVerti + playerSize) >= op.top) && velocityY >= 0 && (prevVerti + playerSize) <= op.top && myHoriz < (op.left + op.width) && (myHoriz + playerSize) > op.left) {
+velocityY = 0;
+myVerti = mySpawnY;
+myHoriz = mySpawnX;
+}
+}
+if (myVerti <= (op.top + op.height) && velocityY < 0 && prevVerti >= (op.top + op.height) && myHoriz < (op.left + op.width) && (myHoriz + playerSize) > op.left) {
+velocityY = 0
+myVerti = mySpawnY;
+myHoriz = mySpawnX;
+}
+if (myVerti >= op.top && velocityY > 0 && prevVerti < op.top && myHoriz < (op.left + op.width) && (myHoriz + playerSize) > op.left) {
+velocityY = 0
+myVerti = mySpawnY;
+myHoriz = mySpawnX;
+}
+}
+});
+
+bluePlatforms.forEach(bp => {
+if (isMoving){
+let isVerticallyOverlapping = (myVerti + playerSize > bp.top) && (myVerti < bp.top + bp.height);
+if (isVerticallyOverlapping) {
+if (bp.width < 50 && bp.height > 50) {
+if (right && prevHoriz + playerSize <= bp.left && myHoriz + playerSize > bp.left) {
+myHoriz = mySpawnX;
+myVerti = mySpawnY;
+}
+else if (left && prevHoriz >= bp.left + bp.width && myHoriz < bp.left + bp.width) {
+myHoriz = mySpawnX;
+myVerti = mySpawnY;
+}
+}
+}
+if (bp.height === 8) {
+if (((myVerti + playerSize) >= bp.top) && velocityY >= 0 && (prevVerti + playerSize) <= bp.top && myHoriz < (bp.left + bp.width) && (myHoriz + playerSize) > bp.left) {
+velocityY = 0;
+myVerti = mySpawnY;
+myHoriz = mySpawnX;
+}
+}
+if (myVerti <= (bp.top + bp.height) && velocityY < 0 && prevVerti >= (bp.top + bp.height) && myHoriz < (bp.left + bp.width) && (myHoriz + playerSize) > bp.left) {
+velocityY = 0
+myVerti = mySpawnY;
+myHoriz = mySpawnX;
+}
+if (myVerti >= bp.top && velocityY > 0 && prevVerti < bp.top && myHoriz < (bp.left + bp.width) && (myHoriz + playerSize) > bp.left) {
+velocityY = 0
+myVerti = mySpawnY;
+myHoriz = mySpawnX;
+}
+}
+});
+
 checkpoints.forEach(c => {
     if (myHoriz < c.left + c.width && 
     myHoriz + playerSize > c.left && 
@@ -236,6 +333,7 @@ if (prevHoriz !== myHoriz || prevVerti !== myVerti) { isMoving = true; }
 else { isMoving = false; }
 }
 }
+
 
 function updateDebug() {
 const debugElement = document.getElementById('debug');
