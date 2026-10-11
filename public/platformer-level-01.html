@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html> 
 <html>
 <head>
@@ -187,6 +186,20 @@ if (right) { myHoriz += 3; }
 velocityY += gravity;
 myVerti += velocityY;
 
+// Move blue platforms first so their positions are updated for collision checks
+bluePlatforms.forEach(bp => {
+if (bp.left >= bp.maxX) {
+bp.left = bp.maxX;
+bp.direction = -1;
+}
+if (bp.left <= bp.minX) {
+bp.left = bp.minX;
+bp.direction = 1;
+}
+bp.left += bp.speed * bp.direction;
+bp.element.style.left = bp.left + 'px';
+});
+
 platforms.forEach(p => {
 let isVerticallyOverlapping = (myVerti + playerSize > p.top) && (myVerti < p.top + p.height);
 if (isVerticallyOverlapping) {
@@ -269,7 +282,7 @@ myVerti = mySpawnY;
 }
 }
 if (op.height === 8) {
-if (((myVerti + playerSize) >= op.top) && velocityY >= 0 && (prevVerti + playerSize) <= op.top && myHoriz < (op.left + op.width) && (myHoriz + playerSize) > op.left) {
+if (((myVerti + playerSize) >= op.top) && velocityY >= 0 && (prevVerti + playerSize) <= op.top && myHoriz < (op.left + op.width) && (myHoriz + playerSize) > p.left) {
 if (!isMoving){
 velocityY = 0;
 myVerti = mySpawnY;
@@ -295,58 +308,22 @@ myHoriz = mySpawnX;
 });
 
 bluePlatforms.forEach(bp => {
-if (bp.left >= bp.maxX) {
-bp.left = bp.maxX;
-bp.direction = -1;
-}
-if (bp.left <= bp.minX) {
-bp.left = bp.minX;
-bp.direction = 1;
-}
-bp.left += bp.speed * bp.direction;
-bp.element.style.left = bp.left + 'px';
-});
-
-bluePlatforms.forEach(bp => {
 let isHorizontallyOverlapping = (myHoriz + playerSize > bp.left) && (myHoriz < bp.left + bp.width);
 let isVerticallyOverlapping = (myVerti + playerSize > bp.top) && (myVerti < bp.top + bp.height);     
 if (isVerticallyOverlapping && isHorizontallyOverlapping) {
-if (bp.width < 50 && bp.height > 50) {
-if (right && prevHoriz + playerSize <= bp.left && myHoriz + playerSize > bp.left) {
-if (isMoving){
-myHoriz = mySpawnX;
-myVerti = mySpawnY;
-}
-}
-else if (left && prevHoriz >= bp.left + bp.width && myHoriz < bp.left + bp.width) {
-if (isMoving){
-myHoriz = mySpawnX;
-myVerti = mySpawnY;
-}
-}
-}
-}
-if (bp.height === 8) {
-if (((myVerti + playerSize) >= bp.top) && velocityY >= 0 && (prevVerti + playerSize) <= bp.top && isHorizontallyOverlapping) {
-if (isMoving){
-velocityY = 0;
-myVerti = mySpawnY;
-myHoriz = mySpawnX;
-}
-}
-}
-if (myVerti <= (bp.top + bp.height) && velocityY < 0 && prevVerti >= (bp.top + bp.height) && isHorizontallyOverlapping) {
-if (isMoving){
-velocityY = 0;
-myVerti = mySpawnY;
-myHoriz = mySpawnX;
-}
-}
-if (myVerti >= bp.top && velocityY > 0 && prevVerti < bp.top && isHorizontallyOverlapping) {
-if (isMoving){
-velocityY = 0;
-myVerti = mySpawnY;
-myHoriz = mySpawnX;
+// If standing still inside/colliding with blue, allow physical solid blocking so you don't clip through
+if (!isMoving) {
+    if (bp.width < 50 && bp.height > 50) {
+        if (bp.direction > 0) {
+            myHoriz = bp.left - playerSize;
+        } else {
+            myHoriz = bp.left + bp.width;
+        }
+    }
+} else {
+    // If moving while colliding with blue, respawn
+    myHoriz = mySpawnX;
+    myVerti = mySpawnY;
 }
 }
 });
@@ -365,11 +342,11 @@ if (myHoriz < 0) { myHoriz = 0; }
 if (myVerti < 0) { myVerti = 0; }
 if (myHoriz > 1090) { myHoriz = 1090; }
 
+// Determine movement state accurately based on key inputs or coordinate changes
+isMoving = (left || right || up || down || prevHoriz !== myHoriz || prevVerti !== myVerti);
+
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
-
-if (prevHoriz !== myHoriz || prevVerti !== myVerti) { isMoving = true; }
-else { isMoving = false; }
 }
 }
 
@@ -412,5 +389,3 @@ startBattle();
 </script>
 </body>
 </html>
-
-```
