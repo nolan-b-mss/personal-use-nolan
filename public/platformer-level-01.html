@@ -173,10 +173,8 @@ document.onkeyup = function(event){
 function movement() {
 updateDebug();
 if (!tutorialOnScreen){
-setTimeout(function(){
 prevHoriz = myHoriz; 
 prevVerti = myVerti;
-}, 10);
 
 if (up && !wKeyDebounced && isGrounded) { velocityY = -jumpStrength; wKeyDebounced = true;}
 isGrounded = false;
