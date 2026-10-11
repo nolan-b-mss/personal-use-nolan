@@ -250,15 +250,18 @@ myHoriz = mySpawnX;
 });
 
 orangePlatforms.forEach(op => {
-if (!isMoving){
+let isHorizontallyOverlapping = (myHoriz + playerSize > op.left) && (myHoriz < op.left + op.width);
 let isVerticallyOverlapping = (myVerti + playerSize > op.top) && (myVerti < op.top + op.height);
-if (isVerticallyOverlapping) {
+if (isVerticallyOverlapping && isHorizontallyOverlapping) {
 if (op.width < 50 && op.height > 50) {
 if (right && prevHoriz + playerSize <= op.left && myHoriz + playerSize > op.left) {
+if (!isMoving){
 myHoriz = mySpawnX;
 myVerti = mySpawnY;
 }
+}
 else if (left && prevHoriz >= op.left + op.width && myHoriz < op.left + op.width) {
+if (!isMoving){
 myHoriz = mySpawnX;
 myVerti = mySpawnY;
 }
@@ -266,20 +269,26 @@ myVerti = mySpawnY;
 }
 if (op.height === 8) {
 if (((myVerti + playerSize) >= op.top) && velocityY >= 0 && (prevVerti + playerSize) <= op.top && myHoriz < (op.left + op.width) && (myHoriz + playerSize) > op.left) {
+if (!isMoving){
 velocityY = 0;
 myVerti = mySpawnY;
 myHoriz = mySpawnX;
 }
 }
+}
 if (myVerti <= (op.top + op.height) && velocityY < 0 && prevVerti >= (op.top + op.height) && myHoriz < (op.left + op.width) && (myHoriz + playerSize) > op.left) {
+if (!isMoving){
 velocityY = 0
 myVerti = mySpawnY;
 myHoriz = mySpawnX;
 }
+}
 if (myVerti >= op.top && velocityY > 0 && prevVerti < op.top && myHoriz < (op.left + op.width) && (myHoriz + playerSize) > op.left) {
+if (!isMoving){
 velocityY = 0
 myVerti = mySpawnY;
 myHoriz = mySpawnX;
+}
 }
 }
 });
@@ -298,35 +307,42 @@ bp.element.style.left = bp.left + 'px';
 });
 
 bluePlatforms.forEach(bp => {
-if (isMoving) {
 let isHorizontallyOverlapping = (myHoriz + playerSize > bp.left) && (myHoriz < bp.left + bp.width);
-let isVerticallyOverlapping = (myVerti + playerSize > bp.top) && (myVerti < bp.top + bp.height);
-        
+let isVerticallyOverlapping = (myVerti + playerSize > bp.top) && (myVerti < bp.top + bp.height);     
 if (isVerticallyOverlapping && isHorizontallyOverlapping) {
 if (bp.width < 50 && bp.height > 50) {
 if (right && prevHoriz + playerSize <= bp.left && myHoriz + playerSize > bp.left) {
+if (isMoving){
 myHoriz = mySpawnX;
 myVerti = mySpawnY;
 }
+}
 else if (left && prevHoriz >= bp.left + bp.width && myHoriz < bp.left + bp.width) {
+if (isMoving){
 myHoriz = mySpawnX;
 myVerti = mySpawnY;
+}
 }
 }
 }
 if (bp.height === 8) {
 if (((myVerti + playerSize) >= bp.top) && velocityY >= 0 && (prevVerti + playerSize) <= bp.top && isHorizontallyOverlapping) {
+if (isMoving){
 velocityY = 0;
 myVerti = mySpawnY;
 myHoriz = mySpawnX;
 }
 }
+}
 if (myVerti <= (bp.top + bp.height) && velocityY < 0 && prevVerti >= (bp.top + bp.height) && isHorizontallyOverlapping) {
+if (isMoving){
 velocityY = 0;
 myVerti = mySpawnY;
-myHoriz = mySpawnX; 
+myHoriz = mySpawnX;
+}
 }
 if (myVerti >= bp.top && velocityY > 0 && prevVerti < bp.top && isHorizontallyOverlapping) {
+if (isMoving){
 velocityY = 0;
 myVerti = mySpawnY;
 myHoriz = mySpawnX;
