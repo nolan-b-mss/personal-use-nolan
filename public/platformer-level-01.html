@@ -237,10 +237,12 @@ let isVerticallyOverlapping = (myVerti + playerSize > rp.top) && (myVerti < rp.t
 if (isVerticallyOverlapping) {
 if (rp.width < 50 && rp.height > 50) {
 if (right && prevHoriz + playerSize <= rp.left && myHoriz + playerSize > rp.left) {
+console.log('Respawned via Red Platform');
 myHoriz = mySpawnX;
 myVerti = mySpawnY;
 }
 else if (left && prevHoriz >= rp.left + rp.width && myHoriz < rp.left + rp.width) {
+console.log('Respawned via Red Platform');
 myHoriz = mySpawnX;
 myVerti = mySpawnY;
 }
@@ -248,17 +250,20 @@ myVerti = mySpawnY;
 }
 if (rp.height === 8) {
 if (((myVerti + playerSize) >= rp.top) && velocityY >= 0 && (prevHoriz + playerSize) <= rp.top && myHoriz < (rp.left + rp.width) && (myHoriz + playerSize) > rp.left) {
+console.log('Respawned via Red Platform');
 velocityY = 0;
 myVerti = mySpawnY;
 myHoriz = mySpawnX;
 }
 }
 if (myVerti <= (rp.top + rp.height) && velocityY < 0 && prevVerti >= (rp.top + rp.height) && myHoriz < (rp.left + rp.width) && (myHoriz + playerSize) > rp.left) {
+console.log('Respawned via Red Platform');
 velocityY = 0
 myVerti = mySpawnY;
 myHoriz = mySpawnX;
 }
 if (myVerti >= rp.top && velocityY > 0 && prevVerti < rp.top && myHoriz < (rp.left + rp.width) && (myHoriz + playerSize) > rp.left) {
+console.log('Respawned via Red Platform');
 velocityY = 0
 myVerti = mySpawnY;
 myHoriz = mySpawnX;
@@ -270,6 +275,7 @@ let isHorizontallyOverlapping = (myHoriz + playerSize > op.left) && (myHoriz < o
 let isVerticallyOverlapping = (myVerti + playerSize > op.top) && (myVerti < op.top + op.height);
 if (isVerticallyOverlapping && isHorizontallyOverlapping) {
 if (!isMoving) {
+    console.log('Respawned via Orange Platform');
     myHoriz = mySpawnX;
     myVerti = mySpawnY;
 }
@@ -281,6 +287,7 @@ let isHorizontallyOverlapping = (myHoriz + playerSize > bp.left) && (myHoriz < b
 let isVerticallyOverlapping = (myVerti + playerSize > bp.top) && (myVerti < bp.top + bp.height);     
 if (isVerticallyOverlapping && isHorizontallyOverlapping) {
 if (isMoving) {
+    console.log('Respawned via Blue Platform');
     myHoriz = mySpawnX;
     myVerti = mySpawnY;
 }
