@@ -287,14 +287,16 @@ myHoriz = mySpawnX;
 });
 
 bluePlatforms.forEach(bp => {
-if (bp.left >= bp.maxX){
-bp.direction = -1
+if (bp.left >= bp.maxX) {
+bp.left = bp.maxX;
+bp.direction = -1;
 }
-if (bp.left <= bp.minX){
-bp.direction = 1
+if (bp.left <= bp.minX) {
+bp.left = bp.minX;
+bp.direction = 1;
 }
-bp.left += bp.speed * bp.direction
-bp.element.style.left = bp.left + 'px'
+bp.left += bp.speed * bp.direction;
+bp.element.style.left = bp.left + 'px';
 });
 
 bluePlatforms.forEach(bp => {
