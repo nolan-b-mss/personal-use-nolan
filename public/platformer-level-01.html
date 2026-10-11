@@ -234,39 +234,11 @@ myVerti = p.top + p.height
 
 redPlatforms.forEach(rp => {
 let isVerticallyOverlapping = (myVerti + playerSize > rp.top) && (myVerti < rp.top + rp.height);
-if (isVerticallyOverlapping) {
-if (rp.width < 50 && rp.height > 50) {
-if (right && prevHoriz + playerSize <= rp.left && myHoriz + playerSize > rp.left) {
+let isHorizontallyOverlapping = (myHoriz + playerSize > rp.left) && (myHoriz < rp.left + rp.width);
+if (isVerticallyOverlapping && isHorizontallyOverlapping) {
 console.log('Respawned via Red Platform');
 myHoriz = mySpawnX;
 myVerti = mySpawnY;
-}
-else if (left && prevHoriz >= rp.left + rp.width && myHoriz < rp.left + rp.width) {
-console.log('Respawned via Red Platform');
-myHoriz = mySpawnX;
-myVerti = mySpawnY;
-}
-}
-}
-if (rp.height === 8) {
-if (((myVerti + playerSize) >= rp.top) && velocityY >= 0 && (prevHoriz + playerSize) <= rp.top && myHoriz < (rp.left + rp.width) && (myHoriz + playerSize) > rp.left) {
-console.log('Respawned via Red Platform');
-velocityY = 0;
-myVerti = mySpawnY;
-myHoriz = mySpawnX;
-}
-}
-if (myVerti <= (rp.top + rp.height) && velocityY < 0 && prevVerti >= (rp.top + rp.height) && myHoriz < (rp.left + rp.width) && (myHoriz + playerSize) > rp.left) {
-console.log('Respawned via Red Platform');
-velocityY = 0
-myVerti = mySpawnY;
-myHoriz = mySpawnX;
-}
-if (myVerti >= rp.top && velocityY > 0 && prevVerti < rp.top && myHoriz < (rp.left + rp.width) && (myHoriz + playerSize) > rp.left) {
-console.log('Respawned via Red Platform');
-velocityY = 0
-myVerti = mySpawnY;
-myHoriz = mySpawnX;
 }
 });
 
