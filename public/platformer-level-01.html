@@ -126,12 +126,12 @@ bluePlatforms.forEach(bp => {
     bluePlat.style.width = bp.width + 'px';
     bluePlat.style.height = bp.height + 'px';
     bluePlat.style.backgroundColor = '#0098F7';
-    bluePlat.minX = bp.minX + 'px';
-    bluePlat.maxX = bp.maxX + 'px';
-    bluePlat.direction = bp.direction
-    bluePlat.speed = bp.speed
+    bluePlat.minX = bp.minX;
+    bluePlat.maxX = bp.maxX;
+    bluePlat.direction = bp.direction;
+    bluePlat.speed = bp.speed;
     gameContainer.appendChild(bluePlat);
-    bp.element = bluePlat
+    bp.element = bluePlat;
 });
 
 checkpoints.forEach(c => {
