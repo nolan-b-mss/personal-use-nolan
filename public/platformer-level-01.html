@@ -53,31 +53,25 @@ const orangePlatforms = [
     { left: 908, top: 670, width: 190, height: 8 },
 ];
 const bluePlatforms = [
-//layer 1
-//layer 2
     { left: 300, top: 208, width: 8, height: 242, minX: 200, maxX: 500, speed: 2, direction: 1 },
     { left: 350, top: 208, width: 8, height: 242, minX: 200, maxX: 500, speed: 2, direction: 1 },
-//layer 3
     { left: 200, top: 458, width: 8, height: 212, minX: 200, maxX: 908, speed: 2, direction: 1 },
     { left: 908, top: 458, width: 8, height: 212, minX: 200, maxX: 908, speed: 2, direction: -1 },
     { left: 300, top: 458, width: 8, height: 212, minX: 200, maxX: 908, speed: 2, direction: 1 },
     { left: 808, top: 458, width: 8, height: 212, minX: 200, maxX: 908, speed: 2, direction: -1 },
-//layer 4
-    
     { left: 808, top: 678, width: 8, height: 222, minX: 200, maxX: 908, speed: 2, direction: -1 },
-    
     { left: 608, top: 678, width: 8, height: 222, minX: 200, maxX: 908, speed: 2, direction: -1 },
-    
     { left: 408, top: 678, width: 8, height: 222, minX: 200, maxX: 908, speed: 2, direction: -1 },
-    
     { left: 208, top: 678, width: 8, height: 222, minX: 200, maxX: 908, speed: 2, direction: -1 },
+];
+const greenPlatforms = [
+    // { left: 100, top: 300, width: 100, height: 8, minX: 50, maxX: 250, speed: 2, direction: 1 }
+    { left: 975, top: 820, width: 32, height: 32 },
 ];
 const checkpoints = [
     { left: 954, top: 388, width: 40, height: 38 },
     { left: 84, top: 610, width: 40, height: 38 },
     { left: 975, top: 840, width: 40, height: 38 },
-];
-const greenPlatforms = [
 ];
 const playerSize = 32;
 let enemyContainer = document.getElementById('enemyContainer');
@@ -109,6 +103,7 @@ let aKeyDebounced = false;
 let dKeyDebounced = false;
 let actionKeyPressed = false;
 let tutorialOnScreen = true;
+let goingToNextLevel = false;
 let containerRect = gameContainer.getBoundingClientRect();
 let actualTop;
 
@@ -141,6 +136,7 @@ platforms.forEach(p => setupPlatform(p, 'white'));
 redPlatforms.forEach(rp => setupPlatform(rp, 'red'));
 orangePlatforms.forEach(op => setupPlatform(op, '#F75F00'));
 bluePlatforms.forEach(bp => setupPlatform(bp, '#0098F7'));
+greenPlatforms.forEach(gp => setupPlatform(gp, '#00FF00'));
 
 checkpoints.forEach(c => {
     let checkpoint = document.createElement('div');
@@ -219,6 +215,7 @@ updateMovingPlatforms(platforms);
 updateMovingPlatforms(redPlatforms);
 updateMovingPlatforms(orangePlatforms);
 updateMovingPlatforms(bluePlatforms);
+updateMovingPlatforms(greenPlatforms);
 
 platforms.forEach(p => {
 let isVerticallyOverlapping = (myVerti + playerSize > p.top) && (myVerti < p.top + p.height);
@@ -281,6 +278,16 @@ if (isMoving) {
     myHoriz = mySpawnX;
     myVerti = mySpawnY;
 }
+}
+});
+
+greenPlatforms.forEach(gp => {
+let isHorizontallyOverlapping = (myHoriz + playerSize > gp.left) && (myHoriz < gp.left + gp.width);
+let isVerticallyOverlapping = (myVerti + playerSize > gp.top) && (myVerti < gp.top + gp.height);     
+if (isVerticallyOverlapping && isHorizontallyOverlapping && !goingToNextLevel) {
+    console.log('Going to next level');
+    goingToNextLevel = true;
+    location = 'platformer-level-02.html';
 }
 });
 
