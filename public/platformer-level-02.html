@@ -13,7 +13,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 </style>
 </head>
 <body style="background-color:black; position: relative; overflow: hidden;">
-<div id="tutorialScreen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: black; z-index: 2000; display: flex; justify-content: center; align-items: center;">
+<div id="tutorialScreen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: black; z-index: 2000; display: none; justify-content: center; align-items: center;">
     <img src="sprites/tutorial.jpg" style="max-width: 100%; max-height: 100%;">
 </div>
 <div id="debug" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: lime; font-family: monospace; padding: 10px; border: 1px solid lime; z-index: 1000; font-size: 14px; pointer-events: none;">
@@ -86,7 +86,7 @@ let sKeyDebounced = false;
 let aKeyDebounced = false;
 let dKeyDebounced = false;
 let actionKeyPressed = false;
-let tutorialOnScreen = true;
+let tutorialOnScreen = false;
 let goingToNextLevel = false;
 let containerRect = gameContainer.getBoundingClientRect();
 let actualTop;
