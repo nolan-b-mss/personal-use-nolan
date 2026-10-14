@@ -1,7 +1,7 @@
 <!DOCTYPE html> 
 <html>
 <head>
-<title>platformer-level-01.html</title>
+<title>platformer-level-01.html </title>
 <style>
 .yellow {color:yellow;}
 .white {color:white;}
@@ -23,9 +23,9 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 </div>
 <script>
 const platforms = [
-    { left: -8, top: 850, width: 1114, height: 8 }, // ground floor
-    { left: -8, top: 0, width: 8, height: 850},
-    { left: 1098, top: 0, width: 8, height: 850},
+    { left: -8, top: 900, width: 1114, height: 8 }, // ground floor
+    { left: -8, top: 0, width: 8, height: 900},
+    { left: 1098, top: 0, width: 8, height: 900},
     { left: 0, top: 200, width: 200, height: 8 },
     { left: 350, top: 200, width: 500, height: 8 },
     { left: 200, top: 450, width: 900, height: 8 },
@@ -53,12 +53,12 @@ const orangePlatforms = [
     { left: 908, top: 670, width: 190, height: 8 },
 ];
 const bluePlatforms = [
-    { left: 300, top: 208, width: 8, height: 242, minX: 200, maxX: 500, speed: 2, direction: 1, },
-    { left: 350, top: 208, width: 8, height: 242, minX: 200, maxX: 500, speed: 2, direction: 1, },
-    { left: 200, top: 458, width: 8, height: 212, minX: 200, maxX: 908, speed: 2, direction: 1, },
-    { left: 908, top: 458, width: 8, height: 212, minX: 200, maxX: 908, speed: 2, direction: -1, },
-    { left: 300, top: 458, width: 8, height: 212, minX: 200, maxX: 908, speed: 2, direction: 1, },
-    { left: 808, top: 458, width: 8, height: 212, minX: 200, maxX: 908, speed: 2, direction: -1, },
+    { left: 300, top: 208, width: 8, height: 242, minX: 200, maxX: 500, speed: 2, direction: 1 },
+    { left: 350, top: 208, width: 8, height: 242, minX: 200, maxX: 500, speed: 2, direction: 1 },
+    { left: 200, top: 458, width: 8, height: 212, minX: 200, maxX: 908, speed: 2, direction: 1 },
+    { left: 908, top: 458, width: 8, height: 212, minX: 200, maxX: 908, speed: 2, direction: -1 },
+    { left: 300, top: 458, width: 8, height: 212, minX: 200, maxX: 908, speed: 2, direction: 1 },
+    { left: 808, top: 458, width: 8, height: 212, minX: 200, maxX: 908, speed: 2, direction: -1 },
 ];
 const checkpoints = [
     { left: 954, top: 388, width: 40, height: 38 },
@@ -102,54 +102,30 @@ document.addEventListener('mousemove', (event) => {
     myCursorY = Math.round(event.clientY - containerRect.top);
 });
 
-platforms.forEach(p => {
+function setupPlatform(p, color) {
     let plat = document.createElement('div');
     plat.style.position = 'absolute';
     plat.style.left = p.left + 'px';
     plat.style.top = p.top + 'px';
     plat.style.width = p.width + 'px';
     plat.style.height = p.height + 'px';
-    plat.style.backgroundColor = 'white';
+    plat.style.backgroundColor = color;
+    
+    if (p.minX !== undefined && p.maxX !== undefined) {
+        plat.minX = p.minX;
+        plat.maxX = p.maxX;
+        plat.direction = p.direction || 1;
+        plat.speed = p.speed || 2;
+    }
+    
     gameContainer.appendChild(plat);
-});
+    p.element = plat;
+}
 
-redPlatforms.forEach(rp => {
-    let redPlat = document.createElement('div');
-    redPlat.style.position = 'absolute';
-    redPlat.style.left = rp.left + 'px';
-    redPlat.style.top = rp.top + 'px';
-    redPlat.style.width = rp.width + 'px';
-    redPlat.style.height = rp.height + 'px';
-    redPlat.style.backgroundColor = 'red';
-    gameContainer.appendChild(redPlat);
-});
-
-orangePlatforms.forEach(op => {
-    let orangePlat = document.createElement('div');
-    orangePlat.style.position = 'absolute';
-    orangePlat.style.left = op.left + 'px';
-    orangePlat.style.top = op.top + 'px';
-    orangePlat.style.width = op.width + 'px';
-    orangePlat.style.height = op.height + 'px';
-    orangePlat.style.backgroundColor = '#F75F00';
-    gameContainer.appendChild(orangePlat);
-});
-
-bluePlatforms.forEach(bp => {
-    let bluePlat = document.createElement('div');
-    bluePlat.style.position = 'absolute';
-    bluePlat.style.left = bp.left + 'px';
-    bluePlat.style.top = bp.top + 'px';
-    bluePlat.style.width = bp.width + 'px';
-    bluePlat.style.height = bp.height + 'px';
-    bluePlat.style.backgroundColor = '#0098F7';
-    bluePlat.minX = bp.minX;
-    bluePlat.maxX = bp.maxX;
-    bluePlat.direction = bp.direction;
-    bluePlat.speed = bp.speed;
-    gameContainer.appendChild(bluePlat);
-    bp.element = bluePlat;
-});
+platforms.forEach(p => setupPlatform(p, 'white'));
+redPlatforms.forEach(rp => setupPlatform(rp, 'red'));
+orangePlatforms.forEach(op => setupPlatform(op, '#F75F00'));
+bluePlatforms.forEach(bp => setupPlatform(bp, '#0098F7'));
 
 checkpoints.forEach(c => {
     let checkpoint = document.createElement('div');
@@ -162,11 +138,12 @@ checkpoints.forEach(c => {
     checkpoint.style.backgroundSize = 'cover';
     gameContainer.appendChild(checkpoint);
 });
+
 document.onkeydown = function(event){
-    if (event.key === "w"){ up = true; }
-    if (event.key === "s"){ down = true; }
-    if (event.key === "a"){ left = true; }
-    if (event.key === "d"){ right = true; }
+    if (event.key === "w" || event.key === "W" || event.key === "ArrowUp"){ up = true; }
+    if (event.key === "s" || event.key === "S" || event.key === "ArrowDown"){ down = true; }
+    if (event.key === "a" || event.key === "A" || event.key === "ArrowLeft"){ left = true; }
+    if (event.key === "d" || event.key === "D" || event.key === "ArrowRight"){ right = true; }
     if (event.ctrlKey && event.key === "q"){
         showDebug = !showDebug;
         const debugElement = document.getElementById('debug');
@@ -181,10 +158,27 @@ document.onkeydown = function(event){
 }
 
 document.onkeyup = function(event){
-    if (event.key === "w"){ up = false; wKeyDebounced = false; }
-    if (event.key === "s"){ down = false; }
-    if (event.key === "a"){ left = false; }
-    if (event.key === "d"){ right = false; }
+    if (event.key === "w" || event.key === "W" || event.key === "ArrowUp"){ up = false; wKeyDebounced = false; }
+    if (event.key === "s" || event.key === "S" || event.key === "ArrowDown"){ down = false; }
+    if (event.key === "a" || event.key === "A" || event.key === "ArrowLeft"){ left = false; }
+    if (event.key === "d" || event.key === "D" || event.key === "ArrowRight"){ right = false; }
+}
+
+function updateMovingPlatforms(platformList) {
+    platformList.forEach(bp => {
+        if (bp.minX !== undefined && bp.maxX !== undefined) {
+            if (bp.left >= bp.maxX) {
+                bp.left = bp.maxX;
+                bp.direction = -1;
+            }
+            if (bp.left <= bp.minX) {
+                bp.left = bp.minX;
+                bp.direction = 1;
+            }
+            bp.left += bp.speed * bp.direction;
+            bp.element.style.left = bp.left + 'px';
+        }
+    });
 }
 
 function movement() {
@@ -203,19 +197,10 @@ if (right) { myHoriz += 3; }
 velocityY += gravity;
 myVerti += velocityY;
 
-// Update blue platform positions first
-bluePlatforms.forEach(bp => {
-if (bp.left >= bp.maxX) {
-bp.left = bp.maxX;
-bp.direction = -1;
-}
-if (bp.left <= bp.minX) {
-bp.left = bp.minX;
-bp.direction = 1;
-}
-bp.left += bp.speed * bp.direction;
-bp.element.style.left = bp.left + 'px';
-});
+updateMovingPlatforms(platforms);
+updateMovingPlatforms(redPlatforms);
+updateMovingPlatforms(orangePlatforms);
+updateMovingPlatforms(bluePlatforms);
 
 platforms.forEach(p => {
 let isVerticallyOverlapping = (myVerti + playerSize > p.top) && (myVerti < p.top + p.height);
@@ -295,7 +280,6 @@ if (myHoriz < 0) { myHoriz = 0; }
 if (myVerti < 0) { myVerti = 0; }
 if (myHoriz > 1090) { myHoriz = 1090; }
 
-// Determine movement state accurately based on key inputs or coordinate changes
 isMoving = (left || right || up || down || prevHoriz !== myHoriz || prevVerti !== myVerti);
 
 playerElement.style.top = myVerti + 'px';
