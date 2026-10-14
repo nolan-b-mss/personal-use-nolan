@@ -63,6 +63,7 @@ const bluePlatforms = [
 const checkpoints = [
     { left: 954, top: 388, width: 40, height: 38 },
     { left: 84, top: 610, width: 40, height: 38 },
+    { left: 975, top: 388, width: 40, height: 38 },
 ];
 const playerSize = 32;
 let enemyContainer = document.getElementById('enemyContainer');
@@ -155,6 +156,10 @@ document.onkeydown = function(event){
         myTutorialScreen.style.display = 'none';
         tutorialOnScreen = false;
     }    
+    if (event.key === "r" || event.key === "R"){
+        myHoriz = mySpawnX;
+        myVerti = mySpawnY;
+    }
 }
 
 document.onkeyup = function(event){
@@ -190,7 +195,6 @@ prevVerti = myVerti;
 if (up && !wKeyDebounced && isGrounded) { velocityY = -jumpStrength; wKeyDebounced = true;}
 isGrounded = false;
 
-if (down) { myVerti += 3; }
 if (left) { myHoriz -= 3; }
 if (right) { myHoriz += 3; }
 
