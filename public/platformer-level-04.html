@@ -23,14 +23,13 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 </div>
 <script>
 const platforms = [
-  //keep first three
+  //keep
     { left: -8, top: 900, width: 1114, height: 8},
     { left: -8, top: 0, width: 8, height: 900},
     { left: 1098, top: 0, width: 8, height: 900},
   //below can change
     { left: 0, top: 200, width: 908, height: 8 },
     { left: 200, top: 450, width: 900, height: 8 },
-    { left: 0, top: 670, width: 908, height: 8 },
 ];
 const redPlatforms = [
     { left: 200, top: 208, width: 8, height: 100 },
@@ -44,10 +43,9 @@ const redPlatforms = [
     
 ];
 const orangePlatforms = [
-  //first three should probably stay
+  //should probably stay
     { left: 908, top: 200, width: 190, height: 8 },
     { left: 0, top: 450, width: 200, height: 8 },
-    { left: 908, top: 670, width: 190, height: 8 },
   //rest can change
     { left: 900, top: 0, width: 8, height: 200 },
     { left: 800, top: 0, width: 8, height: 200 },
@@ -65,12 +63,11 @@ const bluePlatforms = [
     { left: 400, top: 208, width: 8, height: 242, minX: 200, maxX: 900, speed: 5, direction: -1},
 ];
 const greenPlatforms = [
-    { left: 84, top: 820, width: 32, height: 32 },
+    { left: 975, top: 840, width: 32, height: 32 },
 ];
 const checkpoints = [
     { left: 975, top: 388, width: 40, height: 38 },
     { left: 84, top: 610, width: 40, height: 38 },
-    { left: 975, top: 840, width: 40, height: 38 },
 ];
 const playerSize = 32;
 let enemyContainer = document.getElementById('enemyContainer');
