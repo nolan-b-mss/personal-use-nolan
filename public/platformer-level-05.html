@@ -120,6 +120,8 @@ const gravity = 0.2;
 const jumpStrength = 8;
 let playerHealth = 5;
 let maxHealth = 5;
+let isInvincible = false;
+let isTrueInvincible = false;
 let isGrounded = false;
 let wKeyDebounced = false;
 let sKeyDebounced = false;
@@ -275,9 +277,8 @@ redPlatforms.forEach(rp => {
 let isVerticallyOverlapping = (myVerti + playerSize > rp.top) && (myVerti < rp.top + rp.height);
 let isHorizontallyOverlapping = (myHoriz + playerSize > rp.left) && (myHoriz < rp.left + rp.width);
 if (isVerticallyOverlapping && isHorizontallyOverlapping) {
-console.log('Respawned via Red Platform');
-myHoriz = mySpawnX;
-myVerti = mySpawnY;
+console.log('Took 1 damage via Red Platform');
+takeDamage(1);
 }
 });
 
@@ -286,9 +287,8 @@ let isHorizontallyOverlapping = (myHoriz + playerSize > op.left) && (myHoriz < o
 let isVerticallyOverlapping = (myVerti + playerSize > op.top) && (myVerti < op.top + op.height);
 if (isVerticallyOverlapping && isHorizontallyOverlapping) {
 if (!isMoving) {
-    console.log('Respawned via Orange Platform');
-    myHoriz = mySpawnX;
-    myVerti = mySpawnY;
+    console.log('Took 1 damage via Orange Platform');
+    takeDamage(1);
 }
 }
 });
@@ -298,9 +298,8 @@ let isHorizontallyOverlapping = (myHoriz + playerSize > bp.left) && (myHoriz < b
 let isVerticallyOverlapping = (myVerti + playerSize > bp.top) && (myVerti < bp.top + bp.height);     
 if (isVerticallyOverlapping && isHorizontallyOverlapping) {
 if (isMoving) {
-    console.log('Respawned via Blue Platform');
-    myHoriz = mySpawnX;
-    myVerti = mySpawnY;
+    console.log('Took 1 damage via Blue Platform');
+    takeDamage(1);
 }
 }
 });
@@ -353,6 +352,7 @@ updateUI();
 if (playerHealth <= 0) {
 playerHealth = 0;
 updateUI();
+location.reload()
 return;
 }
 isInvincible = true;
