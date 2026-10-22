@@ -381,6 +381,8 @@ Up: ${up}<br>
 Left: ${left}<br>
 Down: ${down}<br>
 Right: ${right}<br>
+Health: ${playerHealth}<br>
+MaxHealth: ${maxHealth}<br>
 isMoving? ${isMoving}<br>
 isGrounded? ${isGrounded}<br>
 wKeyDebounced: ${wKeyDebounced}<br>
@@ -388,7 +390,7 @@ sKeyDebounced: ${sKeyDebounced}<br>
 aKeyDebounced: ${aKeyDebounced}<br>
 dKeyDebounced: ${dKeyDebounced}<br>
 X: ${myHoriz}<br>
-Y: ${playerElement.style.top}<br>
+Y: ${myVerti}<br>
 PreviousX: ${Math.round(prevHoriz)}<br>
 PreviousY: ${Math.round(prevVerti)}<br>
 CursorX: ${myCursorX}<br>
@@ -398,7 +400,7 @@ CursorY: ${myCursorY}<br>
 
 function spawnBullet1() {
 let bullet = document.createElement('img');
-bullet.src = 'sprites/arrow-bullet-right.png';
+bullet.src = 'sprites/arrow-bullet-down.png';
 bullet.className = 'bullet-sprite'; 
 bullet.style.position = 'absolute';
 let randomX = Math.random() * 1050;      
