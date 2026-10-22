@@ -1,0 +1,320 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<title>platformer-level-05.html</title>
+<style>
+.yellow {color:yellow;}
+.white {color:white;}
+.blend {background-color:black;color:white;border-color:black;}
+.bullet-sprite { width: 20px; height: 20px; }
+@font-face { font-family: 'DeterminationMono'; src: url('font/DeterminationMonoWebRegular-Z5oq.ttf') format('truetype'); }
+body {height:100vh; margin: 0; background-color:black; position: relative; font-family: 'DeterminationMono', monospace; }
+#gameContainer {width: 1050px; position: absolute; left: 400px; display: flex; flex-direction: column; box-sizing: border-box;}
+</style>
+</head>
+<body style="background-color:black; position: relative; overflow: hidden;">
+<div id="tutorialScreen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: black; z-index: 2000; display: none; justify-content: center; align-items: center;">
+    <img src="sprites/tutorial.jpg" style="max-width: 100%; max-height: 100%;">
+</div>
+<div id="debug" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: lime; font-family: monospace; padding: 10px; border: 1px solid lime; z-index: 1000; font-size: 14px; pointer-events: none;">
+</div>
+<div id="gameContainer">
+<img src="sprites/soul-04.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0; z-index: 100;">
+</div>
+<script>
+const platforms = [
+  //keep
+    { left: -8, top: 900, width: 1114, height: 8},
+    { left: -8, top: 0, width: 8, height: 900},
+    { left: 1098, top: 0, width: 8, height: 900},
+  //below can change
+    { left: 0, top: 200, width: 908, height: 8 },
+];
+const redPlatforms = [
+];
+const orangePlatforms = [
+];
+const bluePlatforms = [
+];
+const greenPlatforms = [
+];
+const checkpoints = [
+];
+const playerSize = 32;
+let enemyContainer = document.getElementById('enemyContainer');
+let gameContainer = document.getElementById('gameContainer');
+let playerElement = document.getElementById('myPlayer01');
+let maxHoriz;
+let maxVerti;
+let showDebug = false;
+let mySpawnX = 525
+let mySpawnY = 450
+let myHoriz = 525
+let myVerti = 450
+let myCursorX;
+let myCursorY;
+let prevHoriz;
+let prevVerti;
+let isMoving = false;
+let up = false;
+let down = false;
+let right = false;
+let left = false;
+let velocityY = 0;
+const gravity = 0.2;
+const jumpStrength = 8;
+let isGrounded = false;
+let wKeyDebounced = false;
+let sKeyDebounced = false;
+let aKeyDebounced = false;
+let dKeyDebounced = false;
+let actionKeyPressed = false;
+let tutorialOnScreen = false;
+let goingToNextLevel = false;
+let containerRect = gameContainer.getBoundingClientRect();
+let actualTop;
+
+document.addEventListener('mousemove', (event) => {
+    myCursorX = Math.round(event.clientX - containerRect.left);
+    myCursorY = Math.round(event.clientY - containerRect.top);
+});
+
+function setupPlatform(p, color) {
+    let plat = document.createElement('div');
+    plat.style.position = 'absolute';
+    plat.style.left = p.left + 'px';
+    plat.style.top = p.top + 'px';
+    plat.style.width = p.width + 'px';
+    plat.style.height = p.height + 'px';
+    plat.style.backgroundColor = color;
+    
+    if (p.minX !== undefined && p.maxX !== undefined) {
+        plat.minX = p.minX;
+        plat.maxX = p.maxX;
+        plat.direction = p.direction || 1;
+        plat.speed = p.speed || 2;
+    }
+    
+    gameContainer.appendChild(plat);
+    p.element = plat;
+}
+
+platforms.forEach(p => setupPlatform(p, 'white'));
+redPlatforms.forEach(rp => setupPlatform(rp, 'red'));
+orangePlatforms.forEach(op => setupPlatform(op, '#F75F00'));
+bluePlatforms.forEach(bp => setupPlatform(bp, '#0098F7'));
+greenPlatforms.forEach(gp => setupPlatform(gp, '#00FF00'));
+
+checkpoints.forEach(c => {
+    let checkpoint = document.createElement('div');
+    checkpoint.style.position = 'absolute';
+    checkpoint.style.left = c.left + 'px';
+    checkpoint.style.top = c.top + 'px';
+    checkpoint.style.width = c.width + 'px';
+    checkpoint.style.height = c.height + 'px';
+    checkpoint.style.backgroundImage = "url('sprites/checkpoint.gif')";
+    checkpoint.style.backgroundSize = 'cover';
+    gameContainer.appendChild(checkpoint);
+});
+
+document.onkeydown = function(event){
+    if (event.key === "w" || event.key === "W" || event.key === "ArrowUp"){ up = true; }
+    if (event.key === "s" || event.key === "S" || event.key === "ArrowDown"){ down = true; }
+    if (event.key === "a" || event.key === "A" || event.key === "ArrowLeft"){ left = true; }
+    if (event.key === "d" || event.key === "D" || event.key === "ArrowRight"){ right = true; }
+    if (event.ctrlKey && event.key === "q"){
+        showDebug = !showDebug;
+        const debugElement = document.getElementById('debug');
+        if (showDebug) { debugElement.style.display = 'block'; } 
+        else { debugElement.style.display = 'none'; }
+    }
+    if (event.key === " "){
+        const myTutorialScreen = document.getElementById('tutorialScreen')
+        myTutorialScreen.style.display = 'none';
+        tutorialOnScreen = false;
+    }    
+    if (event.key === "r" || event.key === "R"){
+        myHoriz = mySpawnX;
+        myVerti = mySpawnY;
+    }
+}
+
+document.onkeyup = function(event){
+    if (event.key === "w" || event.key === "W" || event.key === "ArrowUp"){ up = false; wKeyDebounced = false; }
+    if (event.key === "s" || event.key === "S" || event.key === "ArrowDown"){ down = false; }
+    if (event.key === "a" || event.key === "A" || event.key === "ArrowLeft"){ left = false; }
+    if (event.key === "d" || event.key === "D" || event.key === "ArrowRight"){ right = false; }
+}
+
+function updateMovingPlatforms(platformList) {
+    platformList.forEach(bp => {
+        if (bp.minX !== undefined && bp.maxX !== undefined) {
+            if (bp.left >= bp.maxX) {
+                bp.left = bp.maxX;
+                bp.direction = -1;
+            }
+            if (bp.left <= bp.minX) {
+                bp.left = bp.minX;
+                bp.direction = 1;
+            }
+            bp.left += bp.speed * bp.direction;
+            bp.element.style.left = bp.left + 'px';
+        }
+    });
+}
+
+function movement() {
+updateDebug();
+if (!tutorialOnScreen){
+prevHoriz = myHoriz; 
+prevVerti = myVerti;
+
+if (up && !wKeyDebounced && isGrounded) { velocityY = -jumpStrength; wKeyDebounced = true;}
+isGrounded = false;
+
+if (left) { myHoriz -= 3; }
+if (right) { myHoriz += 3; }
+
+velocityY += gravity;
+myVerti += velocityY;
+
+updateMovingPlatforms(platforms);
+updateMovingPlatforms(redPlatforms);
+updateMovingPlatforms(orangePlatforms);
+updateMovingPlatforms(bluePlatforms);
+updateMovingPlatforms(greenPlatforms);
+
+platforms.forEach(p => {
+let isVerticallyOverlapping = (myVerti + playerSize > p.top) && (myVerti < p.top + p.height);
+if (isVerticallyOverlapping) {
+if (p.width < 50 && p.height > 50) {
+if (right && prevHoriz + playerSize <= p.left && myHoriz + playerSize > p.left) {
+myHoriz = p.left - playerSize;
+}
+else if (left && prevHoriz >= p.left + p.width && myHoriz < p.left + p.width) {
+myHoriz = p.left + p.width;
+}
+}
+}
+if (p.height === 8) {
+if (((myVerti + playerSize) >= p.top) && velocityY >= 0 && (prevVerti + playerSize) <= p.top && myHoriz < (p.left + p.width) && (myHoriz + playerSize) > p.left) {
+velocityY = 0;
+isGrounded = true;
+myVerti = p.top - playerSize;
+}
+if (myVerti >= p.top && velocityY > 0 && prevVerti < p.top && myHoriz < (p.left + p.width) && (myHoriz + playerSize) > p.left) {
+velocityY = 0;
+isGrounded = true;
+myVerti = p.top - playerSize;
+}
+}
+if (myVerti <= (p.top + p.height) && velocityY < 0 && prevVerti >= (p.top + p.height) && myHoriz < (p.left + p.width) && (myHoriz + playerSize) > p.left) {
+velocityY = 0
+myVerti = p.top + p.height
+}
+});
+
+redPlatforms.forEach(rp => {
+let isVerticallyOverlapping = (myVerti + playerSize > rp.top) && (myVerti < rp.top + rp.height);
+let isHorizontallyOverlapping = (myHoriz + playerSize > rp.left) && (myHoriz < rp.left + rp.width);
+if (isVerticallyOverlapping && isHorizontallyOverlapping) {
+console.log('Respawned via Red Platform');
+myHoriz = mySpawnX;
+myVerti = mySpawnY;
+}
+});
+
+orangePlatforms.forEach(op => {
+let isHorizontallyOverlapping = (myHoriz + playerSize > op.left) && (myHoriz < op.left + op.width);
+let isVerticallyOverlapping = (myVerti + playerSize > op.top) && (myVerti < op.top + op.height);
+if (isVerticallyOverlapping && isHorizontallyOverlapping) {
+if (!isMoving) {
+    console.log('Respawned via Orange Platform');
+    myHoriz = mySpawnX;
+    myVerti = mySpawnY;
+}
+}
+});
+
+bluePlatforms.forEach(bp => {
+let isHorizontallyOverlapping = (myHoriz + playerSize > bp.left) && (myHoriz < bp.left + bp.width);
+let isVerticallyOverlapping = (myVerti + playerSize > bp.top) && (myVerti < bp.top + bp.height);     
+if (isVerticallyOverlapping && isHorizontallyOverlapping) {
+if (isMoving) {
+    console.log('Respawned via Blue Platform');
+    myHoriz = mySpawnX;
+    myVerti = mySpawnY;
+}
+}
+});
+
+greenPlatforms.forEach(gp => {
+let isHorizontallyOverlapping = (myHoriz + playerSize > gp.left) && (myHoriz < gp.left + gp.width);
+let isVerticallyOverlapping = (myVerti + playerSize > gp.top) && (myVerti < gp.top + gp.height);     
+if (isVerticallyOverlapping && isHorizontallyOverlapping && !goingToNextLevel) {
+    console.log('Going to next level');
+    goingToNextLevel = true;
+    location = 'platformer-level-05.html';
+}
+});
+
+checkpoints.forEach(c => {
+    if (myHoriz < c.left + c.width && 
+    myHoriz + playerSize > c.left && 
+    myVerti < c.top + c.height && 
+    myVerti + playerSize > c.top) 
+    {
+    mySpawnX = c.left
+    mySpawnY = c.top
+    }
+});
+if (myHoriz < 0) { myHoriz = 0; }
+if (myVerti < 0) { myVerti = 0; }
+if (myHoriz > 1090) { myHoriz = 1090; }
+
+isMoving = (left || right || up || down || prevHoriz !== myHoriz || prevVerti !== myVerti);
+
+playerElement.style.top = myVerti + 'px';
+playerElement.style.left = myHoriz + 'px';
+}
+}
+
+
+function updateDebug() {
+const debugElement = document.getElementById('debug');
+if (!showDebug){ debug.style.display = 'none'; }
+else if (showDebug){ debug.style.display = 'block'; }
+if (!debugElement) return;
+debugElement.innerHTML = `
+---------------- <br>
+Game Variables<br>
+---------------- <br>
+Player Variables<br>
+Up: ${up}<br>
+Left: ${left}<br>
+Down: ${down}<br>
+Right: ${right}<br>
+isMoving? ${isMoving}<br>
+isGrounded? ${isGrounded}<br>
+wKeyDebounced: ${wKeyDebounced}<br>
+sKeyDebounced: ${sKeyDebounced}<br>
+aKeyDebounced: ${aKeyDebounced}<br>
+dKeyDebounced: ${dKeyDebounced}<br>
+X: ${myHoriz}<br>
+Y: ${playerElement.style.top}<br>
+PreviousX: ${Math.round(prevHoriz)}<br>
+PreviousY: ${Math.round(prevVerti)}<br>
+CursorX: ${myCursorX}<br>
+CursorY: ${myCursorY}<br>
+`;
+}
+
+function startBattle() {
+setInterval(movement, 10);
+playerElement.style.top = myVerti + 'px';
+playerElement.style.left = myHoriz + 'px';
+}
+startBattle();
+</script>
+</body>
+</html>
