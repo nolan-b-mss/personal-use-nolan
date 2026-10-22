@@ -415,9 +415,9 @@ y: -20
 }
 function moveBullets1() {
 bullets.forEach(bullet => {
-bullet.y += 3;
+bullet.y += 5;
 bullet.element.style.top = bullet.y + 'px';
-if (bullet.y > 200) {
+if (bullet.y > 932) {
 bullet.element.remove();
 }
 if (!isInvincible) {
