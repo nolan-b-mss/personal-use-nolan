@@ -92,6 +92,7 @@ const orangePlatforms = [
 const bluePlatforms = [
 ];
 const greenPlatforms = [
+      { left: 525, top:658, width: 32, height: 32 },
 ];
 const checkpoints = [
 ];
@@ -132,6 +133,7 @@ let tutorialOnScreen = false;
 let goingToNextLevel = false;
 let containerRect = gameContainer.getBoundingClientRect();
 let actualTop;
+let bossStarted = false;
 let bullets = [];
 
 document.addEventListener('mousemove', (event) => {
@@ -308,10 +310,9 @@ if (isMoving) {
 greenPlatforms.forEach(gp => {
 let isHorizontallyOverlapping = (myHoriz + playerSize > gp.left) && (myHoriz < gp.left + gp.width);
 let isVerticallyOverlapping = (myVerti + playerSize > gp.top) && (myVerti < gp.top + gp.height);     
-if (isVerticallyOverlapping && isHorizontallyOverlapping && !goingToNextLevel) {
-    console.log('Going to next level');
-    goingToNextLevel = true;
-    location = 'platformer-level-05.html';
+if (isVerticallyOverlapping && isHorizontallyOverlapping && !bossStarted) {
+      bossStarted = true;
+      startBossBattle();
 }
 });
 
@@ -336,7 +337,8 @@ playerElement.style.left = myHoriz + 'px';
 }
 }
 
-
+function startBossBattle(){
+}
 
 function updateUI() {
 let healthPercent = (playerHealth / maxHealth) * 100;
