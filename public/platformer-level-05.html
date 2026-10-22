@@ -6,7 +6,7 @@
 .yellow {color:yellow;}
 .white {color:white;}
 .blend {background-color:black;color:white;border-color:black;}
-.bullet-sprite { width: 20px; height: 20px; }
+.bullet-sprite { width: 32px; height: 32px; }
 @font-face { font-family: 'DeterminationMono'; src: url('font/DeterminationMonoWebRegular-Z5oq.ttf') format('truetype'); }
 body {height:100vh;
       margin: 0; 
@@ -132,6 +132,7 @@ let tutorialOnScreen = false;
 let goingToNextLevel = false;
 let containerRect = gameContainer.getBoundingClientRect();
 let actualTop;
+let bullets = [];
 
 document.addEventListener('mousemove', (event) => {
     myCursorX = Math.round(event.clientX - containerRect.left);
@@ -329,11 +330,13 @@ if (myVerti < 0) { myVerti = 0; }
 if (myHoriz > 1090) { myHoriz = 1090; }
 
 isMoving = (left || right || up || down || prevHoriz !== myHoriz || prevVerti !== myVerti);
-
+moveBullets1();
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
 }
 }
+
+
 
 function updateUI() {
 let healthPercent = (playerHealth / maxHealth) * 100;
@@ -391,6 +394,40 @@ PreviousY: ${Math.round(prevVerti)}<br>
 CursorX: ${myCursorX}<br>
 CursorY: ${myCursorY}<br>
 `;
+}
+
+function spawnBullet1() {
+let bullet = document.createElement('img');
+bullet.src = 'sprites/arrow-bullet-right.png';
+bullet.className = 'bullet-sprite'; 
+bullet.style.position = 'absolute';
+let randomX = Math.random() * 1050;      
+bullet.style.left = randomX + 'px';
+bullet.style.top = '-20px';
+gameContainer.appendChild(bullet);
+bullets.push({
+element: bullet,
+x: randomX,
+y: -20
+});
+}
+function moveBullets1() {
+bullets.forEach(bullet => {
+bullet.y += 3;
+bullet.element.style.top = bullet.y + 'px';
+if (bullet.y > 200) {
+bullet.element.remove();
+}
+if (!isInvincible) {
+if (bullet.x + 10 > myHoriz + 2 && 
+bullet.x + 10 < myHoriz + 30 &&
+bullet.y + 10 > myVerti + 2 && 
+bullet.y + 10 < myVerti + 30) {        
+takeDamage(1); 
+}
+}
+});
+bullets = bullets.filter(bullet => bullet.y <= 200);
 }
 
 function startBattle() {
