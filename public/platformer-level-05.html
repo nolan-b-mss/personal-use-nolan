@@ -133,6 +133,7 @@ let tutorialOnScreen = false;
 let goingToNextLevel = false;
 let containerRect = gameContainer.getBoundingClientRect();
 let randomAttackNumber;
+let currentAttackInterval;
 let actualTop;
 let bossStarted = false;
 let bullets = [];
@@ -344,12 +345,7 @@ playerElement.style.left = myHoriz + 'px';
 }
 }
 function chooseRandomAttack(){
-      clearInterval(spawnBullet1);
-      clearInterval(spawnBullet2);
-      clearInterval(spawnBullet3);
-      clearInterval(spawnBullet4);
-      clearInterval(spawnBullet5);
-      clearInterval(spawnBullet6);
+      clearInterval(currentAttackInterval);
       randomAttackNumber = Math.floor(Math.random()*6) + 1;
       if (randomAttackNumber == 1){
             startAttack1();
@@ -371,27 +367,27 @@ function chooseRandomAttack(){
       }
 }
 function startAttack1(){
-      setInterval(spawnBullet1, 100);
+      currentAttackInterval = setInterval(spawnBullet1, 100);
       setTimeout(chooseRandomAttack, 10000);
 }
 function startAttack2(){
-      setInterval(spawnBullet2, 100);
+      currentAttackInterval = setInterval(spawnBullet2, 100);
       setTimeout(chooseRandomAttack, 10000);
 } 
 function startAttack3(){
-      setInterval(spawnBullet3, 100);
+      currentAttackInterval = setInterval(spawnBullet3, 100);
       setTimeout(chooseRandomAttack, 10000);
 } 
 function startAttack4(){
-      setInterval(spawnBullet4, 100);
+      currentAttackInterval = setInterval(spawnBullet4, 100);
       setTimeout(chooseRandomAttack, 10000);
 } 
 function startAttack5(){
-      setInterval(spawnBullet5, 100);
+      currentAttackInterval = setInterval(spawnBullet5, 100);
       setTimeout(chooseRandomAttack, 10000);
 } 
 function startAttack6(){
-      setInterval(spawnBullet6, 100);
+      currentAttackInterval = setInterval(spawnBullet6, 100);
       setTimeout(chooseRandomAttack, 10000);
 } 
 function startBossBattle(){
