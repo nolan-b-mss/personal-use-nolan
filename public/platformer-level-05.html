@@ -491,8 +491,39 @@ takeDamage(1);
 });
 bullets = bullets.filter(bullet => bullet.y <= 932);
 }
-function spawnBullet2(){}
-function moveBullets2(){}
+function spawnBullet2(){
+      let bullet = document.createElement('img');
+      bullet.src = 'sprites/arrow-bullet-right.png';
+      bullet.className = 'bullet-sprite'; 
+      bullet.style.position = 'absolute';
+      let randomY = Math.random() * 868;      
+      bullet.style.left = '0px';
+      bullet.style.top = randomY + 'px';
+      gameContainer.appendChild(bullet);
+      bullets.push({
+            element: bullet,
+            x: 0,
+            y: randomY,
+      });
+}
+function moveBullets2(){
+      bullets.forEach(bullet => {
+            bullet.x += 5;
+            bullet.element.style.left = bullet.x + 'px';
+            if (bullet.x > 1082) {
+                  bullet.element.remove();
+            }
+      if (!isInvincible) {
+            if (bullet.x + 15 > myHoriz + 2 && 
+            bullet.x + 15 < myHoriz + 30 &&
+            bullet.y + 15 > myVerti + 2 && 
+            bullet.y + 15 < myVerti + 30) {        
+                  takeDamage(1); 
+                  }
+            }
+      });
+bullets = bullets.filter(bullet => bullet.x <= 1082);
+}
 function spawnBullet3(){}
 function moveBullets3(){}
 function spawnBullet4(){}
