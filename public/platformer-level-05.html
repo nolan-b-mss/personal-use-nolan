@@ -132,6 +132,7 @@ let actionKeyPressed = false;
 let tutorialOnScreen = false;
 let goingToNextLevel = false;
 let containerRect = gameContainer.getBoundingClientRect();
+let randomAttackNumber;
 let actualTop;
 let bossStarted = false;
 let bullets = [];
@@ -313,6 +314,7 @@ let isVerticallyOverlapping = (myVerti + playerSize > gp.top) && (myVerti < gp.t
 if (isVerticallyOverlapping && isHorizontallyOverlapping && !bossStarted) {
       bossStarted = true;
       startBossBattle();
+      gp.element.style.opacity = 0;
 }
 });
 
@@ -332,12 +334,68 @@ if (myHoriz > 1090) { myHoriz = 1090; }
 
 isMoving = (left || right || up || down || prevHoriz !== myHoriz || prevVerti !== myVerti);
 moveBullets1();
+moveBullets2();
+moveBullets3();
+moveBullets4();
+moveBullets5();
+moveBullets6();
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
 }
 }
-
+function chooseRandomAttack(){
+      clearInterval(spawnBullet1)
+      clearInterval(spawnBullet2);
+      clearInterval(spawnBullet3);
+      clearInterval(spawnBullet4);
+      clearInterval(spawnBullet5);
+      clearInterval(spawnBullet6);
+      randomAttackNumber = Math.floor(Math.random()*6) + 1;
+      if (randomAttackNumber == 1){
+            startAttack1();
+      }
+      else if (randomAttackNumber == 2){
+            startAttack2();
+      }
+      else if (randomAttackNumber == 3){
+            startAttack3();
+      }
+      else if (randomAttackNumber == 4){
+            startAttack4();
+      }
+      else if (randomAttackNumber == 5){
+            startAttack5();
+      }
+      else if (randomAttackNumber == 6){
+            startAttack6();
+      }
+}
+function startAttack1(){
+      setInterval(spawnBullet1, 100);
+      setTimeout(chooseRandomAttack, 10000);
+}
+function startAttack2(){
+      setInterval(spawnBullet2, 100);
+      setTimeout(chooseRandomAttack, 10000);
+} 
+function startAttack3(){
+      setInterval(spawnBullet3, 100);
+      setTimeout(chooseRandomAttack, 10000);
+} 
+function startAttack4(){
+      setInterval(spawnBullet4, 100);
+      setTimeout(chooseRandomAttack, 10000);
+} 
+function startAttack5(){
+      setInterval(spawnBullet5, 100);
+      setTimeout(chooseRandomAttack, 10000);
+} 
+function startAttack6(){
+      setInterval(spawnBullet6, 100);
+      setTimeout(chooseRandomAttack, 10000);
+} 
 function startBossBattle(){
+      chooseRandomAttack();
 }
 
 function updateUI() {
@@ -377,6 +435,9 @@ if (!debugElement) return;
 debugElement.innerHTML = `
 ---------------- <br>
 Game Variables<br>
+BossStarted? ${bossStarted}<br>
+Invincible? ${isInvincible}<br>
+TrueInvincible?${isTrueInvincible}<br>
 ---------------- <br>
 Player Variables<br>
 Up: ${up}<br>
@@ -433,6 +494,16 @@ takeDamage(1);
 });
 bullets = bullets.filter(bullet => bullet.y <= 932);
 }
+function spawnBullet2(){}
+function moveBullets2(){}
+function spawnBullet3(){}
+function moveBullets3(){}
+function spawnBullet4(){}
+function moveBullets4(){}
+function spawnBullet5(){}
+function moveBullets5(){}
+function spawnBullet6(){}
+function moveBullets6(){}
 
 function startBattle() {
 updateUI();
