@@ -497,20 +497,20 @@ y: -20
 });
 }
 function moveBullets1() {
-bullets1.forEach(bullet => {
-bullet.y += 5;
-bullet.element.style.top = bullet.y + 'px';
-if (bullet.y > 932) {
-bullet.element.remove();
-}
-if (!isInvincible) {
-if (bullet.x + 15 > myHoriz + 2 && 
-bullet.x + 15 < myHoriz + 30 &&
-bullet.y + 15 > myVerti + 2 && 
-bullet.y + 15 < myVerti + 30) {        
-takeDamage(1); 
-}
-}
+      bullets1.forEach(bullet => {
+            bullet.y += 5;
+            bullet.element.style.top = bullet.y + 'px';
+            if (bullet.y > 932) {
+                  bullet.element.remove();
+            }
+      if (!isInvincible) {
+            if (bullet.x + 15 > myHoriz + 2 && 
+                bullet.x + 15 < myHoriz + 30 &&
+                bullet.y + 15 > myVerti + 2 && 
+                bullet.y + 15 < myVerti + 30) {        
+                  takeDamage(1); 
+            }
+      }
 });
 bullets1 = bullets1.filter(bullet => bullet.y <= 932);
 }
@@ -580,8 +580,39 @@ function moveBullets3(){
       });
 bullets3 = bullets3.filter(bullet => bullet.x >= 0);
 }
-function spawnBullet4(){}
-function moveBullets4(){}
+function spawnBullet4() {
+let bullet = document.createElement('img');
+bullet.src = 'sprites/arrow-bullet-up.png';
+bullet.className = 'bullet-sprite'; 
+bullet.style.position = 'absolute';
+let randomX = Math.random() * 1050;      
+bullet.style.left = randomX + 'px';
+bullet.style.top = '932px';
+gameContainer.appendChild(bullet);
+bullets1.push({
+element: bullet,
+x: randomX,
+y: 932
+});
+}
+function moveBullets4() {
+      bullets1.forEach(bullet => {
+            bullet.y -= 3;
+            bullet.element.style.top = bullet.y + 'px';
+            if (bullet.y > -32) {
+                  bullet.element.remove();
+            }
+      if (!isInvincible) {
+            if (bullet.x + 15 > myHoriz + 2 && 
+                bullet.x + 15 < myHoriz + 30 &&
+                bullet.y + 15 > myVerti + 2 && 
+                bullet.y + 15 < myVerti + 30) {        
+                  takeDamage(1); 
+            }
+      }
+});
+bullets1 = bullets1.filter(bullet => bullet.y <= -32);
+}
 function spawnBullet5(){}
 function moveBullets5(){}
 function spawnBullet6(){}
