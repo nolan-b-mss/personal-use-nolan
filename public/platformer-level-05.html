@@ -138,7 +138,12 @@ let actualTop;
 let bossStarted = false;
 let bossHealth = 100;
 let bossMaxHealth = 100;
-let bullets = [];
+let bullets1 = [];
+let bullets2 = [];
+let bullets3 = [];
+let bullets4 = [];
+let bullets5 = [];
+let bullets6 = [];
 
 document.addEventListener('mousemove', (event) => {
     myCursorX = Math.round(event.clientX - containerRect.left);
@@ -394,7 +399,7 @@ function startAttack6(){
 } 
 function startBossBattle(){
       chooseRandomAttack();
-      setInterval(bossDamage(1), 1000);
+      setInterval(function() { bossDamage(1); }, 1000);.
 }
 function updateUI() {
 let healthPercent = (playerHealth / maxHealth) * 100;
@@ -484,14 +489,14 @@ let randomX = Math.random() * 1050;
 bullet.style.left = randomX + 'px';
 bullet.style.top = '-20px';
 gameContainer.appendChild(bullet);
-bullets.push({
+bullets1.push({
 element: bullet,
 x: randomX,
 y: -20
 });
 }
 function moveBullets1() {
-bullets.forEach(bullet => {
+bullets1.forEach(bullet => {
 bullet.y += 5;
 bullet.element.style.top = bullet.y + 'px';
 if (bullet.y > 932) {
@@ -506,7 +511,7 @@ takeDamage(1);
 }
 }
 });
-bullets = bullets.filter(bullet => bullet.y <= 932);
+bullets1 = bullets1.filter(bullet => bullet.y <= 932);
 }
 function spawnBullet2(){
       let bullet = document.createElement('img');
@@ -517,14 +522,14 @@ function spawnBullet2(){
       bullet.style.left = '0px';
       bullet.style.top = randomY + 'px';
       gameContainer.appendChild(bullet);
-      bullets.push({
+      bullets2.push({
             element: bullet,
             x: 0,
             y: randomY,
       });
 }
 function moveBullets2(){
-      bullets.forEach(bullet => {
+      bullets2.forEach(bullet => {
             bullet.x += 5;
             bullet.element.style.left = bullet.x + 'px';
             if (bullet.x > 1082) {
@@ -539,7 +544,7 @@ function moveBullets2(){
                   }
             }
       });
-bullets = bullets.filter(bullet => bullet.x <= 1082);
+bullets2 = bullets2.filter(bullet => bullet.x <= 1082);
 }
 function spawnBullet3(){}
 function moveBullets3(){}
