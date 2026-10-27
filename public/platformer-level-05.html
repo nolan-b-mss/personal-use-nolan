@@ -410,7 +410,7 @@ if (bossHealthPercent < 0) {
 bossHealthPercent = 0;
 }
 let bossHealthGraphic = document.getElementById('bossHealthFill');
-bossHealthGraphic = bossHealthPercent + '%';
+bossHealthGraphic.style.width = bossHealthPercent + '%';
 let bossHPText = document.getElementById("hpText");
 bossHPText.innerText = bossHealth + '/' + bossMaxHealth;
 }
