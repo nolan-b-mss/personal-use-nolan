@@ -599,7 +599,7 @@ function moveBullets4() {
       bullets4.forEach(bullet => {
             bullet.y -= 3;
             bullet.element.style.top = bullet.y + 'px';
-            if (bullet.y > -32) {
+            if (bullet.y < -32) {
                   bullet.element.remove();
             }
       if (!isInvincible) {
