@@ -136,6 +136,8 @@ let randomAttackNumber;
 let currentAttackInterval;
 let actualTop;
 let bossStarted = false;
+let bossHealth = 100;
+let bossMaxHealth = 100;
 let bullets = [];
 
 document.addEventListener('mousemove', (event) => {
@@ -403,6 +405,15 @@ let hpBar = document.getElementById("hp-bar");
 hpBar.style.width = healthPercent + "%";
 let hpText = document.getElementById("hp-text");
 hpText.innerText = playerHealth + " / " + maxHealth;
+let bossHealthPercent = (bossHealth / bossMaxHealth) * 100;
+if (bossHealthPercent < 0) {
+bossHealthPercent = 0;
+}
+let bossHealthGraphic = document.getElementById('bossHealthFill');
+bossHealthGraphic = bossHealthPercent + '%';
+let bossHPText = document.getElementById("hpText");
+bossHPText.innerText = bossHealth + '/' + bossMaxHealth;
+let 
 }
 function takeDamage(damageAmount) {
 if (!isInvincible && playerHealth > 0) {
