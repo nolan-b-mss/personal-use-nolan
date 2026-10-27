@@ -394,8 +394,8 @@ function startAttack6(){
 } 
 function startBossBattle(){
       chooseRandomAttack();
+      setInterval(bossDamage(1), 1000);
 }
-
 function updateUI() {
 let healthPercent = (playerHealth / maxHealth) * 100;
 if (healthPercent < 0) {
@@ -433,6 +433,13 @@ playerElement.style.opacity = 1.0;
 }
 }
 
+function bossDamage(damageAmount) {
+bossHealth -= damageAmount;
+if (bossHealth <= 0){
+      victorySequence();
+}
+updateUI();
+}
 function updateDebug() {
 const debugElement = document.getElementById('debug');
 if (!showDebug){ debug.style.display = 'none'; }
@@ -543,6 +550,7 @@ function moveBullets5(){}
 function spawnBullet6(){}
 function moveBullets6(){}
 
+function victorySequence(){}
 function startBattle() {
 updateUI();
 setInterval(movement, 10);
