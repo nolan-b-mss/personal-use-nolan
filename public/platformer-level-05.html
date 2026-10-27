@@ -441,6 +441,7 @@ playerElement.style.opacity = 1.0;
 function bossDamage(damageAmount) {
 bossHealth -= damageAmount;
 if (bossHealth <= 0){
+      bossHealth = 0;
       victorySequence();
 }
 updateUI();
@@ -546,8 +547,39 @@ function moveBullets2(){
       });
 bullets2 = bullets2.filter(bullet => bullet.x <= 1082);
 }
-function spawnBullet3(){}
-function moveBullets3(){}
+function spawnBullet3(){
+      let bullet = document.createElement('img');
+      bullet.src = 'sprites/arrow-bullet-left.png';
+      bullet.className = 'bullet-sprite'; 
+      bullet.style.position = 'absolute';
+      let randomY = Math.random() * 868;      
+      bullet.style.left = '1082px';
+      bullet.style.top = randomY + 'px';
+      gameContainer.appendChild(bullet);
+      bullets3.push({
+            element: bullet,
+            x: 0,
+            y: randomY,
+      });
+}
+function moveBullets3(){
+      bullets3.forEach(bullet => {
+            bullet.x -= 5;
+            bullet.element.style.left = bullet.x + 'px';
+            if (bullet.x < 0) {
+                  bullet.element.remove();
+            }
+      if (!isInvincible) {
+            if (bullet.x + 15 > myHoriz + 2 && 
+            bullet.x + 15 < myHoriz + 30 &&
+            bullet.y + 15 > myVerti + 2 && 
+            bullet.y + 15 < myVerti + 30) {        
+                  takeDamage(1); 
+                  }
+            }
+      });
+bullets3 = bullets3.filter(bullet => bullet.x <= 0);
+}
 function spawnBullet4(){}
 function moveBullets4(){}
 function spawnBullet5(){}
