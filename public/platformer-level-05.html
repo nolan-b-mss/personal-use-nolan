@@ -58,7 +58,7 @@ body {height:100vh;
 <div id="debug" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: lime; font-family: monospace; padding: 10px; border: 1px solid lime; z-index: 1000; font-size: 14px; pointer-events: none;">
 </div>
 <div id="bossHealthBarContainer" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 400px; height: 24px; background: rgba(0,0,0,0.8); z-index: 1000; padding: 2px;">
-    <div id="bossName" style="color: white; font-size: 20px; text-align: center; position: absolute; width: 100%; z-index: 1001; line-height: 20px;">BOSS HP: <span id="hpText">100</span></div>
+    <div id="bossName" style="color: white; font-size: 20px; text-align: center; position: absolute; width: 100%; z-index: 1001; line-height: 20px;">Survive! Time left: <span id="hpText">100</span></div>
     <div id="bossHealthFill" style="width: 100%; height: 100%; background: #FF0055;"></div>
 </div>
 <div id="gameContainer">
@@ -134,6 +134,7 @@ let goingToNextLevel = false;
 let containerRect = gameContainer.getBoundingClientRect();
 let randomAttackNumber;
 let currentAttackInterval;
+let currentAttackInterval2;
 let actualTop;
 let bossStarted = false;
 let bossHealth = 100;
@@ -345,14 +346,13 @@ moveBullets1();
 moveBullets2();
 moveBullets3();
 moveBullets4();
-moveBullets5();
-moveBullets6();
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
 }
 }
 function chooseRandomAttack(){
       clearInterval(currentAttackInterval);
+      clearInterval(currentAttackInterval2);
       randomAttackNumber = Math.floor(Math.random()*6) + 1;
       if (randomAttackNumber == 1){
             startAttack1();
@@ -390,11 +390,13 @@ function startAttack4(){
       setTimeout(chooseRandomAttack, 10000);
 } 
 function startAttack5(){
-      currentAttackInterval = setInterval(spawnBullet5, 100);
+      currentAttackInterval = setInterval(spawnBullet1, 100);
+      currentAttackInterval2 = setInterval(spawnBullet4, 100);
       setTimeout(chooseRandomAttack, 10000);
 } 
 function startAttack6(){
-      currentAttackInterval = setInterval(spawnBullet6, 100);
+      currentAttackInterval = setInterval(spawnBullet2, 100);
+      currentAttackInterval2 = setInterval(spawnBullet3, 100);
       setTimeout(chooseRandomAttack, 10000);
 } 
 function startBossBattle(){
@@ -613,10 +615,6 @@ function moveBullets4() {
 });
 bullets4 = bullets4.filter(bullet => bullet.y >= -32);
 }
-function spawnBullet5(){}
-function moveBullets5(){}
-function spawnBullet6(){}
-function moveBullets6(){}
 
 function victorySequence(){}
 function startBattle() {
