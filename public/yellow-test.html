@@ -126,6 +126,10 @@ function movement() {
     if (down) { myVerti += 3; playerElement.src = 'sprites/soul-06-down.png'}
     if (left) { myHoriz -= 3; playerElement.src = 'sprites/soul-06-left.png'}
     if (right) { myHoriz += 3; playerElement.src = 'sprites/soul-06-right.png'}
+    if (up && right) { playerElement.src = 'sprites/soul-06-up.png';}
+    if (up && left) { playerElement.src = 'sprites/soul-06-up.png';}
+    if (down && right) { playerElement.src = 'sprites/soul-06-down.png';}
+    if (down && left) { playerElement.src = 'sprites/soul-06-down.png';}
     if (myHoriz < 0) { myHoriz = 0; }
     if (myVerti < 0) { myVerti = 0; }
     if (myHoriz > 1090) { myHoriz = 1090; }
@@ -322,11 +326,11 @@ function endAttackTwo() {
 }
 
 function shootPlayerBullet() {
-    let bullet = document.createElement('div');
+    let bullet = document.createElement('img');
     bullet.style.position = 'absolute';
     bullet.style.width = '8px';
     bullet.style.height = '8px';
-    bullet.style.backgroundColor = 'yellow';
+    bullet.src = 'sprites/yellow-soul-bullet.png'
     bullet.style.zIndex = '99';
 
     let startX = myHoriz + 12;
