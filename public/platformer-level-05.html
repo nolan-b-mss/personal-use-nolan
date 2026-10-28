@@ -3,16 +3,29 @@
 <head>
 <title>platformer-level-05.html</title>
 <style>
-.yellow {color:yellow;}
-.white {color:white;}
-.blend {background-color:black;color:white;border-color:black;}
-.bullet-sprite { width: 32px; height: 32px; color: 'red';}
+.yellow {
+      color:yellow;
+}
+.white {
+      color:white;
+}
+.blend {
+      background-color:black;
+      color:white;
+      border-color:black;
+}
+.bullet-sprite {
+      width: 32px;
+      height: 32px;
+}
 @font-face { font-family: 'DeterminationMono'; src: url('font/DeterminationMonoWebRegular-Z5oq.ttf') format('truetype'); }
-body {height:100vh;
+body {
+      height:100vh;
       margin: 0; 
       background-color:black;
       position: relative; 
-      font-family: 'DeterminationMono', monospace; }
+      font-family: 'DeterminationMono', monospace; 
+}
 #gameContainer {
     width: 1050px; 
     position: absolute; 
@@ -66,7 +79,6 @@ body {height:100vh;
     <div id="hp-display-group">
         <div id="hp-text-wrapper">
             <div style="font-size:48px;font-family: 'DeterminationMono', monospace;">HP:<span id="hp-text">5</span></div>
-            
         </div>
         <div id="hp-container">
         <div id="hp-bar"></div>
@@ -444,7 +456,7 @@ function bossDamage(damageAmount) {
 bossHealth -= damageAmount;
 if (bossHealth <= 0){
       bossHealth = 0;
-      victorySequence();
+      location = 'platformer-level-06.html'
 }
 let bossNameText = document.getElementById('bossName');
 bossNameText.innerText = `Survive! Time left: ${bossHealth}`
