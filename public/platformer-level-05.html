@@ -446,6 +446,8 @@ if (bossHealth <= 0){
       bossHealth = 0;
       victorySequence();
 }
+let bossNameText = document.getElementById('bossName');
+bossNameText.innerText = `Survive! Time left: ${bossHealth}`
 updateUI();
 }
 function updateDebug() {
