@@ -400,6 +400,8 @@ function startAttack6(){
       setTimeout(chooseRandomAttack, 10000);
 } 
 function startBossBattle(){
+let bossNameText = document.getElementById('bossName');
+bossNameText.innerText = `Survive! Time left: ${bossHealth}`
       chooseRandomAttack();
       setInterval(function() { bossDamage(1); }, 1000);
 }
@@ -418,8 +420,6 @@ bossHealthPercent = 0;
 }
 let bossHealthGraphic = document.getElementById('bossHealthFill');
 bossHealthGraphic.style.width = bossHealthPercent + '%';
-let bossNameText = document.getElementById('bossName');
-bossNameText.innerText = `Survive! Time left: ${bossHealth}`
 }
 function takeDamage(damageAmount) {
 if (!isInvincible && playerHealth > 0) {
