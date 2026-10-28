@@ -60,6 +60,7 @@ let isAttackTwo = false;
 let isInvincible = false;
 let isTrueInvincible = false;
 let playerHealth = Infinity;
+let maxHealth = Infinity;
 let containerRect = gameContainer.getBoundingClientRect();
 let bullets = [];
 let bulletSpawner1;
@@ -70,63 +71,74 @@ let bulletColorNum;
 let actualTop;
 let playerBullets = [];
 let lastFacing = 'down';
+
 document.onkeydown = function(event){
-if (event.key === "w"){
-up = true;
-}
-if (event.key === "s"){
-down = true;
-}
-if (event.key === "a"){
-left = true;
-}
-if (event.key === "d"){
-right = true;
-}
-if (event.ctrlKey && event.key === "q"){
-showDebug = !showDebug;
-const debugElement = document.getElementById('debug');
-if (showDebug) {
-debugElement.style.display = 'block';
-} else {debugElement.style.display = 'none';}
-}
+    if (event.key === "w"){
+        up = true;
+        lastFacing = 'up';
+    }
+    if (event.key === "s"){
+        down = true;
+        lastFacing = 'down';
+    }
+    if (event.key === "a"){
+        left = true;
+        lastFacing = 'left';
+    }
+    if (event.key === "d"){
+        right = true;
+        lastFacing = 'right';
+    }
+    if (event.ctrlKey && event.key === "q"){
+        showDebug = !showDebug;
+        const debugElement = document.getElementById('debug');
+        if (showDebug) {
+            debugElement.style.display = 'block';
+        } else {
+            debugElement.style.display = 'none';
+        }
+    }
     if (event.key === "z" || event.key === "Z" || event.key === " ") {
         shootPlayerBullet();
-}
-document.onkeyup = function(event){
-if (event.key === "w"){up = false; wKeyDebounced = false;}
-if (event.key === "s"){down = false; sKeyDebounced = false;}
-if (event.key === "a"){left = false;}
-if (event.key === "d"){right = false;}
-}
-function movement() {
-updateDebug();
-setTimeout(function(){
-prevHoriz = myHoriz; prevVerti = myVerti;}, 
-10);
-if (up) { myVerti -= 3; playerElement.src = 'sprites/soul-06-up.png' }
-if (down) { myVerti += 3; playerElement.src = 'sprites/soul-06-down.png'}
-if (left) { myHoriz -= 3; playerElement.src = 'sprites/soul-06-left.png'}
-if (right) { myHoriz += 3; playerElement.src = 'sprites/soul-06-right.png'}
-if (myHoriz < 0) { myHoriz = 0; }
-if (myVerti < 0) { myVerti = 0; }
-if (myHoriz < 0) {myHoriz = 0}
-if (myHoriz > 1090) {myHoriz = 1090}
-moveBullets1();
-moveBullets2();
-movePlayerBullets();
+    }
+};
 
-playerElement.style.top = myVerti + 'px';
-playerElement.style.left = myHoriz + 'px';
-if (prevHoriz !== myHoriz || prevVerti !== myVerti) {isMoving = true;}
-else {isMoving = false;}
+document.onkeyup = function(event){
+    if (event.key === "w"){up = false; wKeyDebounced = false;}
+    if (event.key === "s"){down = false; sKeyDebounced = false;}
+    if (event.key === "a"){left = false;}
+    if (event.key === "d"){right = false;}
+};
+
+function movement() {
+    updateDebug();
+    setTimeout(function(){
+        prevHoriz = myHoriz; prevVerti = myVerti;
+    }, 10);
+    if (up) { myVerti -= 3; playerElement.src = 'sprites/soul-06-up.png' }
+    if (down) { myVerti += 3; playerElement.src = 'sprites/soul-06-down.png'}
+    if (left) { myHoriz -= 3; playerElement.src = 'sprites/soul-06-left.png'}
+    if (right) { myHoriz += 3; playerElement.src = 'sprites/soul-06-right.png'}
+    if (myHoriz < 0) { myHoriz = 0; }
+    if (myVerti < 0) { myVerti = 0; }
+    if (myHoriz > 1090) { myHoriz = 1090; }
+    
+    moveBullets1();
+    moveBullets2();
+    movePlayerBullets();
+
+    playerElement.style.top = myVerti + 'px';
+    playerElement.style.left = myHoriz + 'px';
+    if (prevHoriz !== myHoriz || prevVerti !== myVerti) {isMoving = true;}
+    else {isMoving = false;}
 }
+
 function updateDebug() {
-const debugElement = document.getElementById('debug');
-if (!showDebug){debug.style.display = 'none'}
-else if (showDebug){debug.style.display = 'block'}
-if (!debugElement) return;
-debugElement.innerHTML = `
+    const debugElement = document.getElementById('debug');
+    if (!debugElement) return;
+    if (!showDebug){debugElement.style.display = 'none'; return;}
+    else if (showDebug){debugElement.style.display = 'block';}
+    debugElement.innerHTML = `
 ---------------- <br>
 Game Variables<br>
 ---------------- <br>
@@ -144,159 +156,170 @@ PreviousX: ${prevHoriz}<br>
 PreviousY: ${prevVerti}<br>
 `;
 }
+
 function updateUI() {
-let healthPercent = (playerHealth / maxHealth) * 100;
-if (healthPercent < 0) {
-healthPercent = 0;
+    let healthPercent = (playerHealth / maxHealth) * 100;
+    if (healthPercent < 0) {
+        healthPercent = 0;
+    }
+    let hpBar = document.getElementById("hp-bar");
+    hpBar.style.width = healthPercent + "%";
+    let hpText = document.getElementById("hp-text");
+    hpText.innerText = playerHealth === Infinity ? "Infinite" : (playerHealth + " / " + maxHealth);
 }
-let hpBar = document.getElementById("hp-bar");
-hpBar.style.width = healthPercent + "%";
-let hpText = document.getElementById("hp-text");
-hpText.innerText = playerHealth + " / " + maxHealth;
-}
+
 function takeDamage(damageAmount) {
-if (isTrueInvincible){return;}
-else if (!isInvincible && playerHealth > 0) {
-playerHealth -= damageAmount;
-isInvincible = true;
-playerElement.style.opacity = 0.5;
-damageSound.play();
-setTimeout(function() {
-isInvincible = false;
-playerElement.style.opacity = 1.0;
-}, 1000);
+    if (isTrueInvincible){return;}
+    else if (!isInvincible && playerHealth > 0) {
+        if(playerHealth !== Infinity) playerHealth -= damageAmount;
+        isInvincible = true;
+        playerElement.style.opacity = 0.5;
+        damageSound.play();
+        setTimeout(function() {
+            isInvincible = false;
+            playerElement.style.opacity = 1.0;
+        }, 1000);
+    }
 }
-}
+
 function startAttackOne() {
-endAttackTwo();
-clearInterval(bulletSpawner1);
-bullets = [];
-bulletSpawner1 = setInterval(spawnbullet1, bulletTimer);
-isAttackOne = true;
-setTimeout(endAttackOne, 5000);
+    endAttackTwo();
+    clearInterval(bulletSpawner1);
+    bullets = [];
+    bulletSpawner1 = setInterval(spawnbullet1, bulletTimer);
+    isAttackOne = true;
+    setTimeout(endAttackOne, 5000);
 }
+
 function spawnbullet1() {
-let bullet = document.createElement('img');
-bullet.style.position = 'absolute';
-let bulletColor;
-let bulletColorNum = Math.random() 
-if (bulletColorNum >= 0.5) {bulletColor = 'blue'; bullet.src = "sprites/placeholder-bullet-blue.png"} 
-else {bulletColor = 'orange'; bullet.src = "sprites/placeholder-bullet-orange.png"}
-let randomX = Math.random() * 1090;      
-bullet.style.left = randomX + 'px';
-bullet.style.top = '150px';
-gameContainer.appendChild(bullet);
-bullets.push({
-element: bullet,
-x: randomX,
-y: 150,
-bulletColor: bulletColor
-});
-bullet.classList.add('bullet-sprite');
+    let bullet = document.createElement('img');
+    bullet.style.position = 'absolute';
+    let bulletColor;
+    let bulletColorNum = Math.random();
+    if (bulletColorNum >= 0.5) {bulletColor = 'blue'; bullet.src = "sprites/placeholder-bullet-blue.png"} 
+    else {bulletColor = 'orange'; bullet.src = "sprites/placeholder-bullet-orange.png"}
+    let randomX = Math.random() * 1090;      
+    bullet.style.left = randomX + 'px';
+    bullet.style.top = '150px';
+    gameContainer.appendChild(bullet);
+    bullets.push({
+        element: bullet,
+        x: randomX,
+        y: 150,
+        bulletColor: bulletColor
+    });
+    bullet.classList.add('bullet-sprite');
 }
+
 function moveBullets1() {
-bullets.forEach(bullet => {
-bullet.y += 5;
-bullet.element.style.top = bullet.y + 'px';
-if (bullet.y > 1000) {
-bullet.element.remove();
+    bullets.forEach(bullet => {
+        bullet.y += 5;
+        bullet.element.style.top = bullet.y + 'px';
+        if (bullet.y > 1000) {
+            bullet.element.remove();
+            bullet.removed = true;
+        }
+        if (!isInvincible) {
+            if (bullet.bulletColor === 'blue' && isMoving) {
+                if (bullet.x + 10 > myHoriz + 2 && 
+                    bullet.x + 10 < myHoriz + 30 &&
+                    bullet.y + 10 > myVerti + 2 && 
+                    bullet.y + 10 < myVerti + 30) {
+                    takeDamage(10);
+                    bullet.element.remove();
+                    bullet.removed = true;
+                }
+            }
+            if (bullet.bulletColor === 'orange' && !isMoving) {
+                if (bullet.x + 10 > myHoriz + 2 && 
+                    bullet.x + 10 < myHoriz + 30 &&
+                    bullet.y + 10 > myVerti + 2 && 
+                    bullet.y + 10 < myVerti + 30) {
+                    takeDamage(10);
+                    bullet.element.remove();
+                    bullet.removed = true;
+                }
+            }
+        }
+    });
+    bullets = bullets.filter(bullet => bullet.y <= 1000 && !bullet.removed);
 }
-if (!isInvincible) {
-if (bullet.bulletColor === 'blue' && isMoving) {
-if (bullet.x + 10 > myHoriz + 2 && 
-bullet.x + 10 < myHoriz + 30 &&
-bullet.y + 10 > myVerti + 2 && 
-bullet.y + 10 < myVerti + 30) {
-takeDamage(0);
-bullet.element.remove();
-bullet.removed = true;
-}
-}
-if (bullet.bulletColor === 'orange' && !isMoving) {
-if (bullet.x + 10 > myHoriz + 2 && 
-bullet.x + 10 < myHoriz + 30 &&
-bullet.y + 10 > myVerti + 2 && 
-bullet.y + 10 < myVerti + 30) {
-takeDamage(0);
-bullet.element.remove();
-bullet.removed = true;
-}
-}
-}
-});
-bullets = bullets.filter(bullet => bullet.y <= 1000 && !bullet.removed);
-}
+
 function endAttackOne() {
-if (isAttackOne) {
-isAttackOne = false;
-clearInterval(bulletSpawner1);
-gameContainer.appendChild(playerElement);
-bullets.forEach(bullet => {
-bullet.element.remove();
-});
-bullets = [];
-};
+    if (isAttackOne) {
+        isAttackOne = false;
+        clearInterval(bulletSpawner1);
+        bullets.forEach(bullet => {
+            bullet.element.remove();
+        });
+        bullets = [];
+    }
 }
+
 function startAttackTwo() {
-endAttackOne();
-clearInterval(bulletSpawner2);
-bullets = [];
-bulletSpawner2 = setInterval(spawnbullet2, bulletTimer2);
-isAttackTwo = true;
-setTimeout(endAttackTwo, 6000);
+    endAttackOne();
+    clearInterval(bulletSpawner2);
+    bullets = [];
+    bulletSpawner2 = setInterval(spawnbullet2, bulletTimer2);
+    isAttackTwo = true;
+    setTimeout(endAttackTwo, 6000);
 }
+
 function spawnbullet2() {
-let bullet = document.createElement('img');
-bullet.style.position = 'absolute';
-let randomY = Math.random() * 870;
-bullet.style.left = '50px';
-gameContainer.appendChild(bullet);
-bullets.push({
-element: bullet,
-x: 50,
-y: randomY,
-});
-bullet.src = 'sprites/placeholder-bullet.png';
-bullet.classList.add('bullet-sprite');
+    let bullet = document.createElement('img');
+    bullet.style.position = 'absolute';
+    let randomY = Math.random() * 870;
+    bullet.style.left = '50px';
+    bullet.style.top = randomY + 'px';
+    gameContainer.appendChild(bullet);
+    bullets.push({
+        element: bullet,
+        x: 50,
+        y: randomY,
+    });
+    bullet.src = 'sprites/placeholder-bullet.png';
+    bullet.classList.add('bullet-sprite');
 }
+
 function moveBullets2() {
-bullets.forEach(bullet => {
-bullet.x += 5;
-bullet.element.style.top = bullet.y + 'px';
-bullet.element.style.left = bullet.x + 'px';
-if (bullet.x > 1000) {
-bullet.element.remove();
+    bullets.forEach(bullet => {
+        bullet.x += 5;
+        bullet.element.style.left = bullet.x + 'px';
+        if (bullet.x > 1000) {
+            bullet.element.remove();
+            bullet.removed = true;
+        }
+        if (!isInvincible) {
+            if (bullet.x + 10 > myHoriz + 2 && 
+                bullet.x + 10 < myHoriz + 30 &&
+                bullet.y + 10 > myVerti + 2 && 
+                bullet.y + 10 < myVerti + 30) {
+                takeDamage(10);
+                bullet.element.remove();
+                bullet.removed = true;
+            }
+        }
+    });
+    bullets = bullets.filter(bullet => bullet.x <= 1000 && !bullet.removed);
 }
-if (!isInvincible) {
-if (bullet.x + 10 > myHoriz + 2 && 
-bullet.x + 10 < myHoriz + 30 &&
-bullet.y + 10 > myVerti + 2 && 
-bullet.y + 10 < myVerti + 30) {
-takeDamage(0);
-bullet.element.remove();
-bullet.removed = true;
-}
-}
-});
-bullets = bullets.filter(bullet => bullet.x <= 1000 && !bullet.removed);
-}
+
 function endAttackTwo() {
-if (isAttackTwo) {
-isAttackTwo = false;
-clearInterval(bulletSpawner2);
-gameContainer.appendChild(playerElement);
-bullets.forEach(bullet => {
-bullet.element.remove();
-});
-bullets = [];
-};
+    if (isAttackTwo) {
+        isAttackTwo = false;
+        clearInterval(bulletSpawner2);
+        bullets.forEach(bullet => {
+            bullet.element.remove();
+        });
+        bullets = [];
+    }
 }
+
 function shootPlayerBullet() {
     let bullet = document.createElement('div');
     bullet.style.position = 'absolute';
     bullet.style.width = '8px';
     bullet.style.height = '8px';
-    bullet.src = 'sprites/yellow-soul-bullet.png'
+    bullet.style.backgroundColor = 'yellow';
     bullet.style.zIndex = '99';
 
     let startX = myHoriz + 12;
@@ -340,13 +363,15 @@ function movePlayerBullets() {
         }
     });
 
-    playerBullets = playerBullets.filter(bullet => !b.removed);
+    playerBullets = playerBullets.filter(bullet => !bullet.removed);
 }
+
 function startBattle() {
-setInterval(movement, 10)
-playerElement.style.top = myVerti + 'px'
-playerElement.style.left = myHoriz + 'px'
+    setInterval(movement, 10);
+    playerElement.style.top = myVerti + 'px';
+    playerElement.style.left = myHoriz + 'px';
 }
+
 startBattle();
 </script>
 </body>
