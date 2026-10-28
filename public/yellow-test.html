@@ -68,6 +68,8 @@ let bulletTimer = 100;
 let bulletTimer2 = 100;
 let bulletColorNum;
 let actualTop;
+let playerBullets = [];
+let lastFacing = 'down';
 document.onkeydown = function(event){
 if (event.key === "w"){
 up = true;
@@ -87,7 +89,9 @@ const debugElement = document.getElementById('debug');
 if (showDebug) {
 debugElement.style.display = 'block';
 } else {debugElement.style.display = 'none';}
-}    
+}
+    if (event.key === "z" || event.key === "Z" || event.key === " ") {
+        shootPlayerBullet();
 }
 document.onkeyup = function(event){
 if (event.key === "w"){up = false; wKeyDebounced = false;}
@@ -108,8 +112,10 @@ if (myHoriz < 0) { myHoriz = 0; }
 if (myVerti < 0) { myVerti = 0; }
 if (myHoriz < 0) {myHoriz = 0}
 if (myHoriz > 1090) {myHoriz = 1090}
-if (isAttackOne) {moveBullets1();}
-if (isAttackTwo) {moveBullets2();}
+moveBullets1();
+moveBullets2();
+movePlayerBullets();
+
 playerElement.style.top = myVerti + 'px';
 playerElement.style.left = myHoriz + 'px';
 if (prevHoriz !== myHoriz || prevVerti !== myVerti) {isMoving = true;}
@@ -284,6 +290,57 @@ bullet.element.remove();
 });
 bullets = [];
 };
+}
+function shootPlayerBullet() {
+    let bullet = document.createElement('div');
+    bullet.style.position = 'absolute';
+    bullet.style.width = '8px';
+    bullet.style.height = '8px';
+    bullet.src = 'sprites/yellow-soul-bullet.png'
+    bullet.style.zIndex = '99';
+
+    let startX = myHoriz + 12;
+    let startY = myVerti + 12;
+
+    bullet.style.left = startX + 'px';
+    bullet.style.top = startY + 'px';
+    gameContainer.appendChild(bullet);
+
+    let velocityX = 0;
+    let velocityY = 0;
+    const speed = 10;
+
+    switch (lastFacing) {
+        case 'up': velocityY = -speed; break;
+        case 'down': velocityY = speed; break;
+        case 'left': velocityX = -speed; break;
+        case 'right': velocityX = speed; break;
+    }
+
+    playerBullets.push({
+        element: bullet,
+        x: startX,
+        y: startY,
+        veloX: velocityX,
+        veloY: velocityY
+    });
+}
+
+function movePlayerBullets() {
+    playerBullets.forEach(bullet => {
+        bullet.x += bullet.veloX;
+        bullet.y += bullet.veloY;
+
+        bullet.element.style.left = bullet.x + 'px';
+        bullet.element.style.top = bullet.y + 'px';
+
+        if (bullet.x < 0 || bullet.x > 1100 || bullet.y < 0 || bullet.y > 900) {
+            bullet.element.remove();
+            bullet.removed = true;
+        }
+    });
+
+    playerBullets = playerBullets.filter(bullet => !b.removed);
 }
 function startBattle() {
 setInterval(movement, 10)
