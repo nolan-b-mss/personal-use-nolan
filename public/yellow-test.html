@@ -54,6 +54,7 @@ let right = false;
 let left = false;
 let wKeyDebounced = false;
 let sKeyDebounced = false;
+let shootKeyDebounced = false;
 let actionKeyPressed = false;
 let isAttackOne = false;
 let isAttackTwo = false;
@@ -99,7 +100,10 @@ document.onkeydown = function(event){
         }
     }
     if (event.key === "z" || event.key === "Z" || event.key === " ") {
-        shootPlayerBullet();
+        if (!shootKeyDebounced){
+            shootKeyDebounced = true;
+            shootPlayerBullet();
+        }
     }
 };
 
@@ -108,6 +112,9 @@ document.onkeyup = function(event){
     if (event.key === "s"){down = false; sKeyDebounced = false;}
     if (event.key === "a"){left = false;}
     if (event.key === "d"){right = false;}
+    if (event.key === "z" || event.key === "Z" || event.key === " ") {
+        shootKeyDebounced = false;
+    }
 };
 
 function movement() {
