@@ -366,17 +366,48 @@ function shootPlayerBullet() {
 }
 
 function movePlayerBullets() {
-    playerBullets.forEach(bullet => {
-        bullet.x += bullet.veloX;
-        bullet.y += bullet.veloY;
+    playerBullets.forEach(pBullet => {
+        pBullet.x += pBullet.veloX;
+        pBullet.y += pBullet.veloY;
 
-        bullet.element.style.left = bullet.x + 'px';
-        bullet.element.style.top = bullet.y + 'px';
+        pBullet.element.style.left = pBullet.x + 'px';
+        pBullet.element.style.top = pBullet.y + 'px';
 
-        if (bullet.x < 0 || bullet.x > 1100 || bullet.y < 0 || bullet.y > 900) {
-            bullet.element.remove();
-            bullet.removed = true;
+        if (pBullet.x < 0 || pBullet.x > 1100 || pBullet.y < 0 || pBullet.y > 900) {
+            pBullet.element.remove();
+            pBullet.removed = true;
+            return;
         }
+
+        bullets.forEach(eBullet => {
+            if (!eBullet.removed && !pBullet.removed) {
+                if (pBullet.x < eBullet.x + 20 &&
+                    pBullet.x + 16 > eBullet.x &&
+                    pBullet.y < eBullet.y + 20 &&
+                    pBullet.y + 16 > eBullet.y) {
+                    
+                    pBullet.element.remove();
+                    pBullet.removed = true;
+                    eBullet.element.remove();
+                    eBullet.removed = true;
+                }
+            }
+        });
+
+        bullets2.forEach(eBullet => {
+            if (!eBullet.removed && !pBullet.removed) {
+                if (pBullet.x < eBullet.x + 20 &&
+                    pBullet.x + 16 > eBullet.x &&
+                    pBullet.y < eBullet.y + 20 &&
+                    pBullet.y + 16 > eBullet.y) {
+                    
+                    pBullet.element.remove();
+                    pBullet.removed = true;
+                    eBullet.element.remove();
+                    eBullet.removed = true;
+                }
+            }
+        });
     });
 
     playerBullets = playerBullets.filter(bullet => !bullet.removed);
