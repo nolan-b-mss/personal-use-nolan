@@ -345,10 +345,10 @@ function shootPlayerBullet() {
     const speed = 10;
 
     switch (lastFacing) {
-        case 'up': velocityY = -speed; break;
-        case 'down': velocityY = speed; break;
-        case 'left': velocityX = -speed; break;
-        case 'right': velocityX = speed; break;
+        case 'up': velocityY = -speed; bullet.src = 'sprites/yellow-soul-bullet.png'; break;
+        case 'down': velocityY = speed; bullet.src = 'sprites/yellow-soul-bullet-down.png'; break;
+        case 'left': velocityX = -speed; bullet.src = 'sprites/yellow-soul-bullet-left.png'; break;
+        case 'right': velocityX = speed; bullet.src = 'sprites/yellow-soul-bullet-right.png'; break;
     }
 
     playerBullets.push({
