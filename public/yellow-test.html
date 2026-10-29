@@ -119,6 +119,9 @@ document.onkeyup = function(event){
     if (event.key === "z" || event.key === "Z" || event.key === " ") {
         shootKeyDebounced = false;
     }
+    if (event.key === "e" || event.key === "E") {
+        rotateKeyDebounced = false;
+    }
 };
 
 function movement() {
@@ -149,15 +152,15 @@ function movement() {
 function rotatePlayer(){
     if (facing === "down"){
         facing = "left"; 
-        playerElement.src = 'sprites/soul-06-left';
+        playerElement.src = 'sprites/soul-06-left.png';
     }
     if (facing === "left"){
         facing = "up";
-        playerElement.src = 'sprites/soul-06-up';
+        playerElement.src = 'sprites/soul-06-up.png';
     }
     if (facing === "up"){
         facing = "right";
-        playerElement.src = 'sprites/soul-06-right';
+        playerElement.src = 'sprites/soul-06-right.png';
     }
     if (facing === "right"){
         facing = "down";
@@ -181,8 +184,8 @@ Down: ${down}<br>
 Right: ${right}<br>
 Facing: ${facing}<br>
 isMoving? ${isMoving}<br>
-wKeyDebounced: ${wKeyDebounced}<br>
-sKeyDebounced: ${sKeyDebounced}<br>
+ShootKeyDebounced: ${shootKeyDebounced}<br>
+RotateKeyDebounced: ${rotateKeyDebounced}<br>
 X: ${myHoriz}<br>
 Y: ${playerElement.style.top}<br>
 PreviousX: ${prevHoriz}<br>
