@@ -133,6 +133,7 @@ function movement() {
     if (myHoriz < 0) { myHoriz = 0; }
     if (myVerti < 0) { myVerti = 0; }
     if (myHoriz > 1090) { myHoriz = 1090; }
+    if (myVerti > 900) { myVerti = 900; }
     
     moveBullets1();
     moveBullets2();
@@ -158,6 +159,7 @@ Up: ${up}<br>
 Left: ${left}<br>
 Down: ${down}<br>
 Right: ${right}<br>
+LastFacing: ${lastFacing}<br>
 isMoving? ${isMoving}<br>
 wKeyDebounced: ${wKeyDebounced}<br>
 sKeyDebounced: ${sKeyDebounced}<br>
