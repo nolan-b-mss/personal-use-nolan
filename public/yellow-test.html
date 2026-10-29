@@ -153,15 +153,15 @@ function rotatePlayer(){
         facing = "left"; 
         playerElement.src = 'sprites/soul-06-left.png';
     }
-    if (facing === "left"){
+    else if (facing === "left"){
         facing = "up";
         playerElement.src = 'sprites/soul-06-up.png';
     }
-    if (facing === "up"){
+    else if (facing === "up"){
         facing = "right";
         playerElement.src = 'sprites/soul-06-right.png';
     }
-    if (facing === "right"){
+    else if (facing === "right"){
         facing = "down";
         playerElement.src = 'sprites/soul-06-down';
     }
