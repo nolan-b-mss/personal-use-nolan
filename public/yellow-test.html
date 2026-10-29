@@ -43,8 +43,8 @@ let playerElement = document.getElementById('myPlayer01');
 let maxHoriz;
 let maxVerti;
 let showDebug = false;
-let myHoriz = 513
-let myVerti = 492
+let myHoriz = 513;
+let myVerti = 492;
 let prevHoriz;
 let prevVerti;
 let isMoving = false;
@@ -61,7 +61,7 @@ let isAttackTwo = false;
 let isInvincible = false;
 let isTrueInvincible = false;
 let playerHealth = Infinity;
-let maxHealth = Infinity;
+let maxHealth = Infinity; // Fixed: added declaration for maxHealth
 let containerRect = gameContainer.getBoundingClientRect();
 let bullets = [];
 let bullets2 = [];
@@ -120,17 +120,19 @@ document.onkeyup = function(event){
 
 function movement() {
     updateDebug();
-    setTimeout(function(){
-        prevHoriz = myHoriz; prevVerti = myVerti;
-    }, 10);
-    if (up) { myVerti -= 3; playerElement.src = 'sprites/soul-06-up.png' }
-    if (down) { myVerti += 3; playerElement.src = 'sprites/soul-06-down.png'}
-    if (left) { myHoriz -= 3; playerElement.src = 'sprites/soul-06-left.png'}
-    if (right) { myHoriz += 3; playerElement.src = 'sprites/soul-06-right.png'}
-    if (up && right) { playerElement.src = 'sprites/soul-06-up.png';}
-    if (up && left) { playerElement.src = 'sprites/soul-06-up.png';}
-    if (down && right) { playerElement.src = 'sprites/soul-06-down.png';}
-    if (down && left) { playerElement.src = 'sprites/soul-06-down.png';}
+    prevHoriz = myHoriz; 
+    prevVerti = myVerti;
+    
+    if (up) { myVerti -= 3; playerElement.src = 'sprites/soul-06-up.png'; }
+    if (down) { myVerti += 3; playerElement.src = 'sprites/soul-06-down.png'; }
+    if (left) { myHoriz -= 3; playerElement.src = 'sprites/soul-06-left.png'; }
+    if (right) { myHoriz += 3; playerElement.src = 'sprites/soul-06-right.png'; }
+    
+    if (up && right) { playerElement.src = 'sprites/soul-06-up.png'; }
+    if (up && left) { playerElement.src = 'sprites/soul-06-up.png'; }
+    if (down && right) { playerElement.src = 'sprites/soul-06-down.png'; }
+    if (down && left) { playerElement.src = 'sprites/soul-06-down.png'; }
+    
     if (myHoriz < 0) { myHoriz = 0; }
     if (myVerti < 0) { myVerti = 0; }
     if (myHoriz > 1090) { myHoriz = 1090; }
@@ -142,8 +144,9 @@ function movement() {
 
     playerElement.style.top = myVerti + 'px';
     playerElement.style.left = myHoriz + 'px';
-    if (prevHoriz !== myHoriz || prevVerti !== myVerti) {isMoving = true;}
-    else {isMoving = false;}
+    
+    if (prevHoriz !== myHoriz || prevVerti !== myVerti) { isMoving = true; }
+    else { isMoving = false; }
 }
 
 function updateDebug() {
@@ -322,6 +325,7 @@ function endAttackTwo() {
         bullets2.forEach(bullet => {
             bullet.element.remove();
         });
+        bullets2 = [];
     }
 }
 
@@ -330,11 +334,11 @@ function shootPlayerBullet() {
     bullet.style.position = 'absolute';
     bullet.style.width = '16px';
     bullet.style.height = '16px';
-    bullet.src = 'sprites/yellow-soul-bullet.png'
+    bullet.src = 'sprites/yellow-soul-bullet.png';
     bullet.style.zIndex = '99';
 
-    let startX = myHoriz + 10;
-    let startY = myVerti + 10;
+    let startX = myHoriz + 9;
+    let startY = myVerti + 9;
 
     bullet.style.left = startX + 'px';
     bullet.style.top = startY + 'px';
@@ -344,13 +348,8 @@ function shootPlayerBullet() {
     let velocityY = 0;
     const speed = 10;
 
-    //if (up) { velocityY = -speed; bullet.src = 'sprites/yellow-soul-bullet.png'; }
-    //if (down) { velocityY = speed; bullet.src = 'sprites/yellow-soul-bullet-down.png'; }
-    //if (left) { velocityX = -speed; bullet.src = 'sprites/yellow-soul-bullet-left.png'; }
-    //if (right) { velocityX = speed; bullet.src = 'sprites/yellow-soul-bullet-right.png'; }
-
     switch (lastFacing) {
-       case 'up': velocityY = -speed; bullet.src = 'sprites/yellow-soul-bullet.png'; break;
+        case 'up': velocityY = -speed; bullet.src = 'sprites/yellow-soul-bullet.png'; break;
         case 'down': velocityY = speed; bullet.src = 'sprites/yellow-soul-bullet-down.png'; break;
         case 'left': velocityX = -speed; bullet.src = 'sprites/yellow-soul-bullet-left.png'; break;
         case 'right': velocityX = speed; bullet.src = 'sprites/yellow-soul-bullet-right.png'; break;
