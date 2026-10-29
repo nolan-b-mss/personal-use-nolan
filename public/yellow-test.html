@@ -64,6 +64,7 @@ let playerHealth = Infinity;
 let maxHealth = Infinity;
 let containerRect = gameContainer.getBoundingClientRect();
 let bullets = [];
+let bullets2 = [];
 let bulletSpawner1;
 let bulletSpawner2;
 let bulletTimer = 100;
@@ -198,7 +199,6 @@ function takeDamage(damageAmount) {
 function startAttackOne() {
     endAttackTwo();
     clearInterval(bulletSpawner1);
-    bullets = [];
     bulletSpawner1 = setInterval(spawnbullet1, bulletTimer);
     isAttackOne = true;
     setTimeout(endAttackOne, 5000);
@@ -272,7 +272,6 @@ function endAttackOne() {
 function startAttackTwo() {
     endAttackOne();
     clearInterval(bulletSpawner2);
-    bullets = [];
     bulletSpawner2 = setInterval(spawnbullet2, bulletTimer2);
     isAttackTwo = true;
     setTimeout(endAttackTwo, 6000);
@@ -285,7 +284,7 @@ function spawnbullet2() {
     bullet.style.left = '50px';
     bullet.style.top = randomY + 'px';
     gameContainer.appendChild(bullet);
-    bullets.push({
+    bullets2.push({
         element: bullet,
         x: 50,
         y: randomY,
@@ -295,7 +294,7 @@ function spawnbullet2() {
 }
 
 function moveBullets2() {
-    bullets.forEach(bullet => {
+    bullets2.forEach(bullet => {
         bullet.x += 5;
         bullet.element.style.left = bullet.x + 'px';
         if (bullet.x > 1000) {
@@ -313,17 +312,16 @@ function moveBullets2() {
             }
         }
     });
-    bullets = bullets.filter(bullet => bullet.x <= 1000 && !bullet.removed);
+    bullets2 = bullets2.filter(bullet => bullet.x <= 1000 && !bullet.removed);
 }
 
 function endAttackTwo() {
     if (isAttackTwo) {
         isAttackTwo = false;
         clearInterval(bulletSpawner2);
-        bullets.forEach(bullet => {
+        bullets2.forEach(bullet => {
             bullet.element.remove();
         });
-        bullets = [];
     }
 }
 
