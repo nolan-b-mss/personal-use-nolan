@@ -266,3 +266,164 @@ function endAttackOne() {
     if (isAttackOne) {
         isAttackOne = false;
         clearInterval(bulletSpawner1);
+        bullets.forEach(bullet => {
+            bullet.element.remove();
+        });
+        bullets = [];
+    }
+}
+
+function startAttackTwo() {
+    endAttackOne();
+    clearInterval(bulletSpawner2);
+    bulletSpawner2 = setInterval(spawnbullet2, bulletTimer2);
+    isAttackTwo = true;
+    setTimeout(endAttackTwo, 6000);
+}
+
+function spawnbullet2() {
+    let bullet = document.createElement('img');
+    bullet.style.position = 'absolute';
+    let randomY = Math.random() * 870;
+    bullet.style.left = '50px';
+    bullet.style.top = randomY + 'px';
+    gameContainer.appendChild(bullet);
+    bullets2.push({
+        element: bullet,
+        x: 50,
+        y: randomY,
+    });
+    bullet.src = 'sprites/placeholder-bullet-yellow.png';
+    bullet.classList.add('bullet-sprite');
+}
+
+function moveBullets2() {
+    bullets2.forEach(bullet => {
+        bullet.x += 5;
+        bullet.element.style.left = bullet.x + 'px';
+        if (bullet.x > 1000) {
+            bullet.element.remove();
+            bullet.removed = true;
+        }
+        if (!isInvincible) {
+            if (bullet.x + 10 > myHoriz + 2 && 
+                bullet.x + 10 < myHoriz + 30 &&
+                bullet.y + 10 > myVerti + 2 && 
+                bullet.y + 10 < myVerti + 30) {
+                takeDamage(10);
+                bullet.element.remove();
+                bullet.removed = true;
+            }
+      }
+    });
+    bullets2 = bullets2.filter(bullet => bullet.x <= 1000 && !bullet.removed);
+}
+
+function endAttackTwo() {
+    if (isAttackTwo) {
+        isAttackTwo = false;
+        clearInterval(bulletSpawner2);
+        bullets2.forEach(bullet => {
+            bullet.element.remove();
+        });
+        bullets2 = [];
+    }
+}
+
+function shootPlayerBullet() {
+    if (playerBullets.length >= 4) {
+        return;
+    }
+
+    let bullet = document.createElement('img');
+    bullet.style.position = 'absolute';
+    bullet.style.width = '16px';
+    bullet.style.height = '16px';
+    bullet.src = 'sprites/yellow-soul-bullet.png';
+    bullet.style.zIndex = '99';
+
+    let startX = myHoriz + 9;
+    let startY = myVerti + 9;
+
+    bullet.style.left = startX + 'px';
+    bullet.style.top = startY + 'px';
+    gameContainer.appendChild(bullet);
+
+    let velocityX = 0;
+    let velocityY = 0;
+    const speed = 10;
+
+    switch (facing) {
+        case 'up': velocityY = -speed; bullet.src = 'sprites/yellow-soul-bullet.png'; break;
+        case 'down': velocityY = speed; bullet.src = 'sprites/yellow-soul-bullet-down.png'; break;
+        case 'left': velocityX = -speed; bullet.src = 'sprites/yellow-soul-bullet-left.png'; break;
+        case 'right': velocityX = speed; bullet.src = 'sprites/yellow-soul-bullet-right.png'; break;
+    }
+
+    playerBullets.push({
+        element: bullet,
+        x: startX,
+        y: startY,
+        veloX: velocityX,
+        veloY: velocityY
+    });
+}
+
+function movePlayerBullets() {
+    playerBullets.forEach(pBullet => {
+        pBullet.x += pBullet.veloX;
+        pBullet.y += pBullet.veloY;
+
+        pBullet.element.style.left = pBullet.x + 'px';
+        pBullet.element.style.top = pBullet.y + 'px';
+
+        if (pBullet.x < 0 || pBullet.x > 1100 || pBullet.y < 0 || pBullet.y > 900) {
+            pBullet.element.remove();
+            pBullet.removed = true;
+            return;
+        }
+
+        bullets.forEach(eBullet => {
+            if (!eBullet.removed && !pBullet.removed) {
+                if (pBullet.x < eBullet.x + 20 &&
+                    pBullet.x + 16 > eBullet.x &&
+                    pBullet.y < eBullet.y + 20 &&
+                    pBullet.y + 16 > eBullet.y) {
+                    
+                    pBullet.element.remove();
+                    pBullet.removed = true;
+                    eBullet.element.remove();
+                    eBullet.removed = true;
+                }
+            }
+        });
+
+        bullets2.forEach(eBullet => {
+            if (!eBullet.removed && !pBullet.removed) {
+                if (pBullet.x < eBullet.x + 20 &&
+                    pBullet.x + 16 > eBullet.x &&
+                    pBullet.y < eBullet.y + 20 &&
+                    pBullet.y + 16 > eBullet.y) {
+                    
+                    pBullet.element.remove();
+                    pBullet.removed = true;
+                    eBullet.element.remove();
+                    eBullet.removed = true;
+                }
+            }
+        });
+    });
+
+    playerBullets = playerBullets.filter(bullet => !bullet.removed);
+}
+
+function startBattle() {
+    setInterval(movement, 10);
+    playerElement.style.top = myVerti + 'px';
+    playerElement.style.left = myHoriz + 'px';
+}
+
+startBattle();
+</script>
+</body>
+</html>
