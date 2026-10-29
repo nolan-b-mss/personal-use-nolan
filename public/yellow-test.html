@@ -36,7 +36,6 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 </div>
 </div>
 <script>
-const damageSound = new Audio('sounds/damage.mp3')
 let enemyContainer = document.getElementById('enemyContainer');
 let gameContainer = document.getElementById('gameContainer');
 let playerElement = document.getElementById('myPlayer01');
@@ -62,7 +61,7 @@ let isAttackTwo = false;
 let isInvincible = false;
 let isTrueInvincible = false;
 let playerHealth = Infinity;
-let maxHealth = Infinity; // Fixed: added declaration for maxHealth
+let maxHealth = Infinity;
 let containerRect = gameContainer.getBoundingClientRect();
 let bullets = [];
 let bullets2 = [];
@@ -210,7 +209,6 @@ function takeDamage(damageAmount) {
         if(playerHealth !== Infinity) playerHealth -= damageAmount;
         isInvincible = true;
         playerElement.style.opacity = 0.5;
-        damageSound.play();
         setTimeout(function() {
             isInvincible = false;
             playerElement.style.opacity = 1.0;
