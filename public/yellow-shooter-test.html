@@ -36,6 +36,10 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 </div>
 </div>
 <script>
+const waves = [
+    { enemies: [{ type: 'chaser', count: 5 }] },
+    { enemies: [{ type: 'chaser', count: 5 }, { type: 'ranger', count: 3 }] }
+];
 let enemyContainer = document.getElementById('enemyContainer');
 let gameContainer = document.getElementById('gameContainer');
 let playerElement = document.getElementById('myPlayer01');
