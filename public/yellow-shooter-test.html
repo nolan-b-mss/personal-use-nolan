@@ -84,6 +84,7 @@ let facing = 'down';
 let tutorialOnScreen = true;
 let gameRunning = false;
 let currentWaveIndex = 0;
+let waveTransitioning = false;
 
 document.onkeydown = function(event){
     if (event.key === "w" || event.key === "W"){ up = true; }
@@ -331,6 +332,14 @@ function movePlayerBullets() {
                     pBullet.element.remove();
                     pBullet.removed = true;
                     enemy.health -= playerDamage;
+                    
+                    enemy.element.style.filter = 'brightness(2) sepia(1) hue-rotate(5deg) saturate(1000%)';
+                    setTimeout(() => {
+                        if (!enemy.removed) {
+                            enemy.element.style.filter = 'none';
+                        }
+                    }, 100);
+
                     if (enemy.health <= 0){
                         enemy.element.remove();
                         enemy.removed = true;
@@ -364,7 +373,10 @@ function getRandomEdgePosition(containerWidth, containerHeight, enemySize) {
 }
 
 function spawnWave(waveIndex) {
-    if (waveIndex >= waveConfigurations.length) return;
+    if (waveIndex >= waveConfigurations.length) {
+        gameRunning = false;
+        return;
+    }
     let currentWave = waveConfigurations[waveIndex];
     
     for (let i = 0; i < currentWave.enemies.length; i++) {
@@ -397,6 +409,7 @@ function spawnWave(waveIndex) {
             });
         }
     }
+    waveTransitioning = false;
 }
 
 function updateEnemies() {
@@ -414,10 +427,13 @@ function updateEnemies() {
         }
     });
 
-    if (activeEnemies.length === 0 && gameRunning) {
+    if (activeEnemies.length === 0 && gameRunning && !waveTransitioning) {
+        waveTransitioning = true;
         currentWaveIndex++;
         if (currentWaveIndex < waveConfigurations.length) {
             setTimeout(() => spawnWave(currentWaveIndex), 1000);
+        } else {
+            gameRunning = false;
         }
     }
 }
@@ -425,6 +441,8 @@ function updateEnemies() {
 function startGame() {
     if (gameRunning) return;
     gameRunning = true;
+    currentWaveIndex = 0;
+    waveTransitioning = false;
     setInterval(movement, 10);
     playerElement.style.top = myVerti + 'px';
     playerElement.style.left = myHoriz + 'px';
