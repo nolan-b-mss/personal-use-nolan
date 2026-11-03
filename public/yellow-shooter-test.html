@@ -21,8 +21,6 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 <div id="debug" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: lime; font-family: monospace; padding: 10px; border: 1px solid lime; z-index: 1000; font-size: 14px; pointer-events: none;">
 </div>
 <div id="gameContainer">
-<input type="button" class="blend" onClick="startAttackOne()" value="Example attack 1">
-<input type="button" class="blend" onClick="startAttackTwo()" value="Example attack 2">
 <img src="sprites/soul-06-down.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0; z-index: 100;">
 <div id="hp-section"> 
 <div id="hp-display-group">
@@ -36,10 +34,33 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 </div>
 </div>
 <script>
-const waves = [
-    { enemies: [{ type: 'chaser', count: 5 }] },
-    { enemies: [{ type: 'chaser', count: 5 }, { type: 'ranger', count: 3 }] }
+const enemyTypes = {
+    chaser: {
+        health: 10,
+        speed: 3.5,
+        damage: 1,
+        size: 32
+    },
+    ranger: {
+        health: 5,
+        speed: 1,
+        damage: 1,
+        size: 32
+    }
+};
+const waveConfigurations = [
+    { waveID: 1, enemies: [{ 
+        type: 'chaser', count: 5 
+        }] 
+    },
+    { waveID: 2, enemies: [{ 
+        type: 'chaser', count: 5 
+        },{
+        type: 'ranger', count: 3 
+        }] 
+    },
 ];
+let activeEnemies = [];
 let enemyContainer = document.getElementById('enemyContainer');
 let gameContainer = document.getElementById('gameContainer');
 let playerElement = document.getElementById('myPlayer01');
@@ -65,24 +86,19 @@ let isAttackOne = false;
 let isAttackTwo = false;
 let isInvincible = false;
 let isTrueInvincible = false;
-let playerHealth = 10;
+let playerHealth = 5;
+let maxHealth = 5;
 let playerSpeed = 3;
 let playerDamage = 1;
-let maxHealth = 10;
 let maxBullets = 4;
 let bulletSize = 1.0;
 let bulletSpeed = 10
 let containerRect = gameContainer.getBoundingClientRect();
-let bullets = [];
-let bullets2 = [];
-let bulletSpawner1;
-let bulletSpawner2;
-let bulletTimer = 100;
-let bulletTimer2 = 100;
-let bulletColorNum;
+let enemySize = 32;
 let actualTop;
 let playerBullets = [];
 let facing = 'down';
+let tutorialOnScreen = true;
 
 document.onkeydown = function(event){
     if (event.key === "w"){
@@ -107,7 +123,7 @@ document.onkeydown = function(event){
         }
     }
     if (event.key === "z" || event.key === "Z" || event.key === " ") {
-        if (!shootKeyDebounced){
+        if (!shootKeyDebounced && !tutorialOnScreen){
             shootKeyDebounced = true;
             shootPlayerBullet();
         }
@@ -123,6 +139,10 @@ document.onkeydown = function(event){
             otherRotateKeyDebounced = true;
             otherRotatePlayer();
         }
+    }
+    if (event.key === " " && tutorialOnScreen){
+        tutorialOnScreen = false;
+        startGame();
     }
 };
 
@@ -161,6 +181,20 @@ function movement() {
     moveBullets2();
     movePlayerBullets();
     updateUI();
+    updateEnemies();
+    
+    //enemy collision
+    activeEnemies.forEach(enemy => {
+    if (!enemy.removed) {
+                if (myHoriz < enemy.x + 32 &&
+                    myHoriz + 32 > enemy.x &&
+                    myVerti < enemy.y + 32 &&
+                    myVerti + 32 > enemy.y) {
+                    takeDamage(enemy.damage);
+                    }
+    }
+    });
+
 
     playerElement.style.top = myVerti + 'px';
     playerElement.style.left = myHoriz + 'px';
@@ -293,96 +327,6 @@ function spawnbullet1() {
     bullet.src = 'sprites/placeholder-bullet-yellow.png';
 }
 
-function moveBullets1() {
-    bullets.forEach(bullet => {
-        bullet.y += 5;
-        bullet.element.style.top = bullet.y + 'px';
-        if (bullet.y > 1000) {
-            bullet.element.remove();
-            bullet.removed = true;
-        }
-        if (!isInvincible) {
-                if (bullet.x + 10 > myHoriz + 2 && 
-                    bullet.x + 10 < myHoriz + 30 &&
-                    bullet.y + 10 > myVerti + 2 && 
-                    bullet.y + 10 < myVerti + 30) {
-                    takeDamage(10);
-                    bullet.element.remove();
-                    bullet.removed = true;
-                }
-            }
-        });
-    bullets = bullets.filter(bullet => bullet.y <= 1000 && !bullet.removed);
-}
-
-function endAttackOne() {
-    if (isAttackOne) {
-        isAttackOne = false;
-        clearInterval(bulletSpawner1);
-        bullets.forEach(bullet => {
-            bullet.element.remove();
-        });
-        bullets = [];
-    }
-}
-
-function startAttackTwo() {
-    endAttackOne();
-    clearInterval(bulletSpawner2);
-    bulletSpawner2 = setInterval(spawnbullet2, bulletTimer2);
-    isAttackTwo = true;
-    setTimeout(endAttackTwo, 6000);
-}
-
-function spawnbullet2() {
-    let bullet = document.createElement('img');
-    bullet.style.position = 'absolute';
-    let randomY = Math.random() * 870;
-    bullet.style.left = '50px';
-    bullet.style.top = randomY + 'px';
-    gameContainer.appendChild(bullet);
-    bullets2.push({
-        element: bullet,
-        x: 50,
-        y: randomY,
-    });
-    bullet.src = 'sprites/placeholder-bullet-yellow.png';
-    bullet.classList.add('bullet-sprite');
-}
-
-function moveBullets2() {
-    bullets2.forEach(bullet => {
-        bullet.x += 5;
-        bullet.element.style.left = bullet.x + 'px';
-        if (bullet.x > 1000) {
-            bullet.element.remove();
-            bullet.removed = true;
-        }
-        if (!isInvincible) {
-            if (bullet.x + 10 > myHoriz + 2 && 
-                bullet.x + 10 < myHoriz + 30 &&
-                bullet.y + 10 > myVerti + 2 && 
-                bullet.y + 10 < myVerti + 30) {
-                takeDamage(10);
-                bullet.element.remove();
-                bullet.removed = true;
-            }
-      }
-    });
-    bullets2 = bullets2.filter(bullet => bullet.x <= 1000 && !bullet.removed);
-}
-
-function endAttackTwo() {
-    if (isAttackTwo) {
-        isAttackTwo = false;
-        clearInterval(bulletSpawner2);
-        bullets2.forEach(bullet => {
-            bullet.element.remove();
-        });
-        bullets2 = [];
-    }
-}
-
 function shootPlayerBullet() {
     if (playerBullets.length >= maxBullets) {
         return;
@@ -435,47 +379,106 @@ function movePlayerBullets() {
             return;
         }
 
-        bullets.forEach(eBullet => {
-            if (!eBullet.removed && !pBullet.removed) {
-                if (pBullet.x < eBullet.x + 20 &&
-                    pBullet.x + 16 > eBullet.x &&
-                    pBullet.y < eBullet.y + 20 &&
-                    pBullet.y + 16 > eBullet.y) {
+        activeEnemies.forEach(enemy => {
+            if (!enemy.removed && !pBullet.removed) {
+                if (pBullet.x < enemy.x + 20 &&
+                    pBullet.x + 16 > enemy.x &&
+                    pBullet.y < enemy.y + 20 &&
+                    pBullet.y + 16 > enemy.y) {
                     
                     pBullet.element.remove();
                     pBullet.removed = true;
-                    eBullet.element.remove();
-                    eBullet.removed = true;
-                }
-            }
-        });
-
-        bullets2.forEach(eBullet => {
-            if (!eBullet.removed && !pBullet.removed) {
-                if (pBullet.x < eBullet.x + 20 &&
-                    pBullet.x + 16 > eBullet.x &&
-                    pBullet.y < eBullet.y + 20 &&
-                    pBullet.y + 16 > eBullet.y) {
-                    
-                    pBullet.element.remove();
-                    pBullet.removed = true;
-                    eBullet.element.remove();
-                    eBullet.removed = true;
+                    enemy.health -= playerDamage;
+                    if (enemy.health <= 0){
+                    enemy.element.remove();
+                    enemy.removed = true;
+                    }
                 }
             }
         });
     });
-
+    
     playerBullets = playerBullets.filter(bullet => !bullet.removed);
 }
 
-function startBattle() {
+function getRandomEdgePosition(containerWidth, containerHeight, enemySize) {
+    // 0 = left, 1 = right, 2 = bottom.
+    let side = Math.floor(Math.random() * 3); 
+    let x = 0;
+    let y = 0;
+
+    if (side === 0) { 
+        x = -enemySize;
+        y = Math.random() * (containerHeight - 150) + 150; 
+    } else if (side === 1) { 
+        x = containerWidth + enemySize;
+        y = Math.random() * (containerHeight - 150) + 150;
+    } else if (side === 2) { 
+        x = Math.random() * containerWidth;
+        y = containerHeight + enemySize;
+    }
+
+    return { x: x, y: y };
+}
+
+function spawnWave(waveIndex) {
+    let currentWave = waveConfigurations[waveIndex];
+    
+    for (let i = 0; i < currentWave.enemies.length; i++) {
+        let group = currentWave.enemies[i];
+        let typeData = enemyTypes[group.type];
+        
+        for (let j = 0; j < group.count; j++) {
+            let spawnPosition = getRandomEdgePosition(1050, 900, typeData.size);
+            
+            let enemyElement = document.createElement('img');
+            enemyElement.style.position = 'absolute';
+            enemyElement.style.width = typeData.size + 'px';
+            enemyElement.style.height = typeData.size + 'px';
+            enemyElement.style.left = spawnPosition.x + 'px';
+            enemyElement.style.top = spawnPosition.y + 'px';
+            enemyElement.src = 'sprites/soul-08.png';  
+            
+            gameContainer.appendChild(enemyElement);
+            
+            activeEnemies.push({
+                type: group.type,
+                x: spawnPosition.x,
+                y: spawnPosition.y,
+                health: typeData.health,
+                speed: typeData.speed,
+                damage: typeData.damage,
+                size: typeData.size,
+                element: enemyElement,
+                removed: false
+            });
+        }
+    }
+}
+
+function updateEnemies() {
+    activeEnemies.forEach(enemy => {
+        let deltaX = myHoriz - enemy.x;
+        let deltaY = myVerti - enemy.y;
+        let distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        
+        if (distance > 1) {
+            
+            enemy.x += (deltaX / distance) * enemy.speed;
+            enemy.y += (deltaY / distance) * enemy.speed;
+            enemy.element.style.left = enemy.x + 'px';
+            enemy.element.style.top = enemy.y + 'px';
+        }
+    });
+}
+
+function startGame() {
     setInterval(movement, 10);
     playerElement.style.top = myVerti + 'px';
     playerElement.style.left = myHoriz + 'px';
+    spawnWave(0)
 }
 
-startBattle();
 </script>
 </body>
 </html>
