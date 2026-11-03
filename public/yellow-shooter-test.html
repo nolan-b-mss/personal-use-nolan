@@ -28,7 +28,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 <div id="hp-display-group">
 <div id="hp-text-wrapper">
 <span style="font-size:48px;">HP:</span>
-<span id="hp-text">Infinite</span>
+<span id="hp-text">10/10</span>
 </div>
 <div id="hp-container">
 <div id="hp-bar"></div>
@@ -66,9 +66,12 @@ let isAttackTwo = false;
 let isInvincible = false;
 let isTrueInvincible = false;
 let playerHealth = 10;
+let playerSpeed = 3;
+let playerDamage = 1;
 let maxHealth = 10;
 let maxBullets = 4;
 let bulletSize = 1.0;
+let bulletSpeed = 10
 let containerRect = gameContainer.getBoundingClientRect();
 let bullets = [];
 let bullets2 = [];
@@ -104,10 +107,10 @@ document.onkeydown = function(event){
         }
     }
     if (event.key === "z" || event.key === "Z" || event.key === " ") {
-        //if (!shootKeyDebounced){
-            //shootKeyDebounced = true;
+        if (!shootKeyDebounced){
+            shootKeyDebounced = true;
             shootPlayerBullet();
-        //}
+        }
     }
     if (event.key === "e" || event.key === "E") {
         if (!rotateKeyDebounced){
@@ -129,7 +132,7 @@ document.onkeyup = function(event){
     if (event.key === "a"){left = false;}
     if (event.key === "d"){right = false;}
     if (event.key === "z" || event.key === "Z" || event.key === " ") {
-        //shootKeyDebounced = false;
+        shootKeyDebounced = false;
     }
     if (event.key === "e" || event.key === "E") {
         rotateKeyDebounced = false;
@@ -144,10 +147,10 @@ function movement() {
     prevHoriz = myHoriz; 
     prevVerti = myVerti;
     
-    if (up) { myVerti -= 3; }
-    if (down) { myVerti += 3; }
-    if (left) { myHoriz -= 3; }
-    if (right) { myHoriz += 3; }
+    if (up) { myVerti -= playerSpeed; }
+    if (down) { myVerti += playerSpeed; }
+    if (left) { myHoriz -= playerSpeed; }
+    if (right) { myHoriz += playerSpeed; }
     
     if (myHoriz < 0) { myHoriz = 0; }
     if (myVerti < 0) { myVerti = 0; }
@@ -157,6 +160,7 @@ function movement() {
     moveBullets1();
     moveBullets2();
     movePlayerBullets();
+    updateUI();
 
     playerElement.style.top = myVerti + 'px';
     playerElement.style.left = myHoriz + 'px';
@@ -224,6 +228,15 @@ X: ${myHoriz}<br>
 Y: ${playerElement.style.top}<br>
 PreviousX: ${prevHoriz}<br>
 PreviousY: ${prevVerti}<br>
+---------------- <br>
+Temporary Stats Menu<br>
+PlayerSpeed: ${playerSpeed}<br>
+PlayerHealth: ${playerHealth}<br>
+PlayerDamage: ${playerDamage}<br>
+MaxHealth: ${maxHealth}<br>
+BulletSpeed: ${bulletSpeed}<br>
+BulletSize: ${bulletSize}x<br>
+BulletCap: ${maxBullets}<br>
 `;
 }
 
@@ -235,7 +248,12 @@ function updateUI() {
     let hpBar = document.getElementById("hp-bar");
     hpBar.style.width = healthPercent + "%";
     let hpText = document.getElementById("hp-text");
-    hpText.innerText = playerHealth === Infinity ? "Infinite" : (playerHealth + " / " + maxHealth);
+    if (playerHealth === Infinity){
+        hpText.innerText = "Infinite"
+    }
+    else if (player !=== Infinity){
+        hpText.innerText = `${playerHealth} / ${maxHealth}`
+    }
 }
 
 function takeDamage(damageAmount) {
@@ -386,13 +404,12 @@ function shootPlayerBullet() {
 
     let velocityX = 0;
     let velocityY = 0;
-    const speed = 10;
 
     switch (facing) {
-        case 'up': velocityY = -speed; bullet.src = 'sprites/yellow-soul-bullet.png'; break;
-        case 'down': velocityY = speed; bullet.src = 'sprites/yellow-soul-bullet-down.png'; break;
-        case 'left': velocityX = -speed; bullet.src = 'sprites/yellow-soul-bullet-left.png'; break;
-        case 'right': velocityX = speed; bullet.src = 'sprites/yellow-soul-bullet-right.png'; break;
+        case 'up': velocityY = -bulletSpeed; bullet.src = 'sprites/yellow-soul-bullet.png'; break;
+        case 'down': velocityY = bulletSpeed; bullet.src = 'sprites/yellow-soul-bullet-down.png'; break;
+        case 'left': velocityX = -bulletSpeed; bullet.src = 'sprites/yellow-soul-bullet-left.png'; break;
+        case 'right': velocityX = bulletSpeed; bullet.src = 'sprites/yellow-soul-bullet-right.png'; break;
     }
 
     playerBullets.push({
