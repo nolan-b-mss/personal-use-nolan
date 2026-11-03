@@ -1,7 +1,7 @@
 <!DOCTYPE html> 
 <html>
 <head>
-<title>yellow-test.html</title>
+<title>yellow-shooter-test.html</title>
 <style>
 .yellow {color:yellow;}
 .white {color:white;}
@@ -18,7 +18,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 </style>
 </head>
 <body style="background-color:black; position: relative; overflow: hidden;">
-<div id="debug" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: lime; font-family: monospace; padding: 10px; border: 1px solid lime; z-index: 1000; font-size: 14px; pointer-events: none;">
+<div id="debug" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: lime; font-family: monospace; padding: 10px; border: 1px solid lime; z-index: 1000; font-size: 14px; pointer-events: none; display: none;">
 </div>
 <div id="gameContainer">
 <img src="sprites/soul-06-down.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0; z-index: 100;">
@@ -33,6 +33,8 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 </div>
 </div>
 </div>
+</div>
+
 <script>
 const enemyTypes = {
     chaser: {
@@ -49,16 +51,8 @@ const enemyTypes = {
     }
 };
 const waveConfigurations = [
-    { waveID: 1, enemies: [{ 
-        type: 'chaser', count: 5 
-        }] 
-    },
-    { waveID: 2, enemies: [{ 
-        type: 'chaser', count: 5 
-        },{
-        type: 'ranger', count: 3 
-        }] 
-    },
+    { waveID: 1, enemies: [{ type: 'chaser', count: 5 }] },
+    { waveID: 2, enemies: [{ type: 'chaser', count: 5 }, { type: 'ranger', count: 3 }] },
 ];
 let activeEnemies = [];
 let enemyContainer = document.getElementById('enemyContainer');
@@ -82,8 +76,6 @@ let wKeyDebounced = false;
 let sKeyDebounced = false;
 let shootKeyDebounced = false;
 let actionKeyPressed = false;
-let isAttackOne = false;
-let isAttackTwo = false;
 let isInvincible = false;
 let isTrueInvincible = false;
 let playerHealth = 5;
@@ -92,7 +84,7 @@ let playerSpeed = 3;
 let playerDamage = 1;
 let maxBullets = 4;
 let bulletSize = 1.0;
-let bulletSpeed = 10
+let bulletSpeed = 10;
 let containerRect = gameContainer.getBoundingClientRect();
 let enemySize = 32;
 let actualTop;
@@ -101,19 +93,19 @@ let facing = 'down';
 let tutorialOnScreen = true;
 
 document.onkeydown = function(event){
-    if (event.key === "w"){
+    if (event.key === "w" || event.key === "W"){
         up = true;
     }
-    if (event.key === "s"){
+    if (event.key === "s" || event.key === "S"){
         down = true;
     }
-    if (event.key === "a"){
+    if (event.key === "a" || event.key === "A"){
         left = true;
     }
-    if (event.key === "d"){
+    if (event.key === "d" || event.key === "D"){
         right = true;
     }
-    if (event.ctrlKey && event.key === "q"){
+    if (event.ctrlKey && (event.key === "q" || event.key === "Q")){
         showDebug = !showDebug;
         const debugElement = document.getElementById('debug');
         if (showDebug) {
@@ -134,7 +126,7 @@ document.onkeydown = function(event){
             rotatePlayer();
         }
     }
-    if (event.key === "q" || event.key === "Q" && !event.ctrlKey){
+    if ((event.key === "q" || event.key === "Q") && !event.ctrlKey){
         if (!otherRotateKeyDebounced){
             otherRotateKeyDebounced = true;
             otherRotatePlayer();
@@ -147,17 +139,17 @@ document.onkeydown = function(event){
 };
 
 document.onkeyup = function(event){
-    if (event.key === "w"){up = false; wKeyDebounced = false;}
-    if (event.key === "s"){down = false; sKeyDebounced = false;}
-    if (event.key === "a"){left = false;}
-    if (event.key === "d"){right = false;}
+    if (event.key === "w" || event.key === "W"){up = false; wKeyDebounced = false;}
+    if (event.key === "s" || event.key === "S"){down = false; sKeyDebounced = false;}
+    if (event.key === "a" || event.key === "A"){left = false;}
+    if (event.key === "d" || event.key === "D"){right = false;}
     if (event.key === "z" || event.key === "Z" || event.key === " ") {
         shootKeyDebounced = false;
     }
     if (event.key === "e" || event.key === "E") {
         rotateKeyDebounced = false;
     }
-    if (event.key === "q" || event.key === "Q" && !event.ctrlKey){
+    if ((event.key === "q" || event.key === "Q") && !event.ctrlKey){
         otherRotateKeyDebounced = false;
     }
 };
@@ -174,25 +166,24 @@ function movement() {
     
     if (myHoriz < 0) { myHoriz = 0; }
     if (myVerti < 0) { myVerti = 0; }
-    if (myHoriz > 1090) { myHoriz = 1090; }
-    if (myVerti > 900) { myVerti = 900; }
+    if (myHoriz > 1020) { myHoriz = 1020; }
+    if (myVerti > 860) { myVerti = 860; }
     
     movePlayerBullets();
     updateUI();
     updateEnemies();
     
-    //enemy collision
+    // Enemy collision
     activeEnemies.forEach(enemy => {
-    if (!enemy.removed) {
-                if (myHoriz < enemy.x + 32 &&
-                    myHoriz + 32 > enemy.x &&
-                    myVerti < enemy.y + 32 &&
-                    myVerti + 32 > enemy.y) {
-                    takeDamage(enemy.damage);
-                    }
-    }
+        if (!enemy.removed) {
+            if (myHoriz < enemy.x + 32 &&
+                myHoriz + 32 > enemy.x &&
+                myVerti < enemy.y + 32 &&
+                myVerti + 32 > enemy.y) {
+                takeDamage(enemy.damage);
+            }
+        }
     });
-
 
     playerElement.style.top = myVerti + 'px';
     playerElement.style.left = myHoriz + 'px';
@@ -200,6 +191,7 @@ function movement() {
     if (prevHoriz !== myHoriz || prevVerti !== myVerti) { isMoving = true; }
     else { isMoving = false; }
 }
+
 function rotatePlayer(){
     if (facing === "down"){
         facing = "left"; 
@@ -218,6 +210,7 @@ function rotatePlayer(){
         playerElement.src = 'sprites/soul-06-down.png';
     }
 }
+
 function otherRotatePlayer(){
     if (facing === "down"){
         facing = "right"; 
@@ -240,8 +233,8 @@ function otherRotatePlayer(){
 function updateDebug() {
     const debugElement = document.getElementById('debug');
     if (!debugElement) return;
-    if (!showDebug){debugElement.style.display = 'none'; return;}
-    else if (showDebug){debugElement.style.display = 'block';}
+    if (!showDebug){ debugElement.style.display = 'none'; return; }
+    else if (showDebug){ debugElement.style.display = 'block'; }
     debugElement.innerHTML = `
 ---------------- <br>
 Game Variables<br>
@@ -281,17 +274,17 @@ function updateUI() {
     hpBar.style.width = healthPercent + "%";
     let hpText = document.getElementById("hp-text");
     if (playerHealth === Infinity){
-        hpText.innerText = "Infinite"
+        hpText.innerText = "Infinite";
     }
-    else if (playerHealth === !Infinity){
-        hpText.innerText = `${playerHealth} / ${maxHealth}`
+    else {
+        hpText.innerText = `${playerHealth} / ${maxHealth}`;
     }
 }
 
 function takeDamage(damageAmount) {
-    if (isTrueInvincible){return;}
+    if (isTrueInvincible){ return; }
     else if (!isInvincible && playerHealth > 0) {
-        if(playerHealth !== Infinity) playerHealth -= damageAmount;
+        if (playerHealth !== Infinity) playerHealth -= damageAmount;
         isInvincible = true;
         playerElement.style.opacity = 0.5;
         setTimeout(function() {
@@ -300,7 +293,6 @@ function takeDamage(damageAmount) {
         }, 1000);
     }
 }
-
 
 function shootPlayerBullet() {
     if (playerBullets.length >= maxBullets) {
@@ -356,17 +348,17 @@ function movePlayerBullets() {
 
         activeEnemies.forEach(enemy => {
             if (!enemy.removed && !pBullet.removed) {
-                if (pBullet.x < enemy.x + 20 &&
+                if (pBullet.x < enemy.x + 32 &&
                     pBullet.x + 16 > enemy.x &&
-                    pBullet.y < enemy.y + 20 &&
+                    pBullet.y < enemy.y + 32 &&
                     pBullet.y + 16 > enemy.y) {
                     
                     pBullet.element.remove();
                     pBullet.removed = true;
                     enemy.health -= playerDamage;
                     if (enemy.health <= 0){
-                    enemy.element.remove();
-                    enemy.removed = true;
+                        enemy.element.remove();
+                        enemy.removed = true;
                     }
                 }
             }
@@ -374,10 +366,10 @@ function movePlayerBullets() {
     });
     
     playerBullets = playerBullets.filter(bullet => !bullet.removed);
+    activeEnemies = activeEnemies.filter(enemy => !enemy.removed);
 }
 
 function getRandomEdgePosition(containerWidth, containerHeight, enemySize) {
-    // 0 = left, 1 = right, 2 = bottom.
     let side = Math.floor(Math.random() * 3); 
     let x = 0;
     let y = 0;
@@ -433,12 +425,12 @@ function spawnWave(waveIndex) {
 
 function updateEnemies() {
     activeEnemies.forEach(enemy => {
+        if (enemy.removed) return;
         let deltaX = myHoriz - enemy.x;
         let deltaY = myVerti - enemy.y;
         let distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
         
         if (distance > 1) {
-            
             enemy.x += (deltaX / distance) * enemy.speed;
             enemy.y += (deltaY / distance) * enemy.speed;
             enemy.element.style.left = enemy.x + 'px';
@@ -451,9 +443,8 @@ function startGame() {
     setInterval(movement, 10);
     playerElement.style.top = myVerti + 'px';
     playerElement.style.left = myHoriz + 'px';
-    spawnWave(0)
+    spawnWave(0);
 }
-
 </script>
 </body>
 </html>
