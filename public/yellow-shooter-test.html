@@ -68,8 +68,7 @@ let isTrueInvincible = false;
 let playerHealth = 10;
 let maxHealth = 10;
 let maxBullets = 4;
-let bulletWidth = 1.0;
-let bulletHeight = 1.0;
+let bulletSize = 1.0;
 let containerRect = gameContainer.getBoundingClientRect();
 let bullets = [];
 let bullets2 = [];
@@ -373,8 +372,8 @@ function shootPlayerBullet() {
 
     let bullet = document.createElement('img');
     bullet.style.position = 'absolute';
-    bullet.style.width = 16 * bulletWidth + 'px';
-    bullet.style.height = 16 * bulletHeight + 'px';
+    bullet.style.width = 16 * bulletSize + 'px';
+    bullet.style.height = 16 * bulletSize + 'px';
     bullet.src = 'sprites/yellow-soul-bullet.png';
     bullet.style.zIndex = '99';
 
