@@ -104,10 +104,10 @@ document.onkeydown = function(event){
         }
     }
     if (event.key === "z" || event.key === "Z" || event.key === " ") {
-        if (!shootKeyDebounced){
-            shootKeyDebounced = true;
+        //if (!shootKeyDebounced){
+            //shootKeyDebounced = true;
             shootPlayerBullet();
-        }
+        //}
     }
     if (event.key === "e" || event.key === "E") {
         if (!rotateKeyDebounced){
@@ -129,7 +129,7 @@ document.onkeyup = function(event){
     if (event.key === "a"){left = false;}
     if (event.key === "d"){right = false;}
     if (event.key === "z" || event.key === "Z" || event.key === " ") {
-        shootKeyDebounced = false;
+        //shootKeyDebounced = false;
     }
     if (event.key === "e" || event.key === "E") {
         rotateKeyDebounced = false;
