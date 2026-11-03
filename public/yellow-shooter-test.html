@@ -67,6 +67,8 @@ const waveConfigurations = [
     { waveID: 2, enemies: [{ type: 'chaser', count: 5 }, { type: 'ranger', count: 3 }] },
     { waveID: 3, enemies: [{ type: 'ranger', count: 5}, { type: 'fastChaser', count: 3}] },
     { waveID: 4, enemies: [{ type: 'strong', count: 5}] },
+
+    { waveID: -1, enemies: [{type: 'fastChaser', count: 99}] },
 ];
 let activeEnemies = [];
 let gameContainer = document.getElementById('gameContainer');
