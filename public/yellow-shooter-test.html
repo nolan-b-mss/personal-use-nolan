@@ -65,8 +65,11 @@ let isAttackOne = false;
 let isAttackTwo = false;
 let isInvincible = false;
 let isTrueInvincible = false;
-let playerHealth = Infinity;
-let maxHealth = Infinity;
+let playerHealth = 10;
+let maxHealth = 10;
+let maxBullets = 4;
+let bulletWidth = 1.0;
+let bulletHeight = 1.0;
 let containerRect = gameContainer.getBoundingClientRect();
 let bullets = [];
 let bullets2 = [];
@@ -113,7 +116,7 @@ document.onkeydown = function(event){
             rotatePlayer();
         }
     }
-    if (event.key === "q" || event.key === "Q" && !event.ctrlKEy){
+    if (event.key === "q" || event.key === "Q" && !event.ctrlKey){
         if (!otherRotateKeyDebounced){
             otherRotateKeyDebounced = true;
             otherRotatePlayer();
@@ -364,14 +367,14 @@ function endAttackTwo() {
 }
 
 function shootPlayerBullet() {
-    if (playerBullets.length >= 4) {
+    if (playerBullets.length >= maxBullets) {
         return;
     }
 
     let bullet = document.createElement('img');
     bullet.style.position = 'absolute';
-    bullet.style.width = '16px';
-    bullet.style.height = '16px';
+    bullet.style.width = 16 * bulletWidth + 'px';
+    bullet.style.height = 16 * bulletHeight + 'px';
     bullet.src = 'sprites/yellow-soul-bullet.png';
     bullet.style.zIndex = '99';
 
