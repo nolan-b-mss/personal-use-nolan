@@ -177,8 +177,6 @@ function movement() {
     if (myHoriz > 1090) { myHoriz = 1090; }
     if (myVerti > 900) { myVerti = 900; }
     
-    moveBullets1();
-    moveBullets2();
     movePlayerBullets();
     updateUI();
     updateEnemies();
@@ -303,29 +301,6 @@ function takeDamage(damageAmount) {
     }
 }
 
-function startAttackOne() {
-    endAttackTwo();
-    clearInterval(bulletSpawner1);
-    bulletSpawner1 = setInterval(spawnbullet1, bulletTimer);
-    isAttackOne = true;
-    setTimeout(endAttackOne, 5000);
-}
-
-function spawnbullet1() {
-    let bullet = document.createElement('img');
-    bullet.style.position = 'absolute';
-    let randomX = Math.random() * 1090;      
-    bullet.style.left = randomX + 'px';
-    bullet.style.top = '150px';
-    gameContainer.appendChild(bullet);
-    bullets.push({
-        element: bullet,
-        x: randomX,
-        y: 150,
-    });
-    bullet.classList.add('bullet-sprite');
-    bullet.src = 'sprites/placeholder-bullet-yellow.png';
-}
 
 function shootPlayerBullet() {
     if (playerBullets.length >= maxBullets) {
