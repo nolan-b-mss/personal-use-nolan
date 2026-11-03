@@ -21,6 +21,9 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 <div id="debug" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: lime; font-family: monospace; padding: 10px; border: 1px solid lime; z-index: 1000; font-size: 14px; pointer-events: none; display: none;">
 </div>
 <div id="gameContainer">
+<div id="tutorialScreen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: black; z-index: 2000; display: flex; justify-content: center; align-items: center;">
+    <img src="sprites/shard0.png" style="max-width: 100%; max-height: 100%;">
+</div>
 <img src="sprites/soul-06-down.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0; z-index: 100;">
 <div id="hp-section"> 
 <div id="hp-display-group">
@@ -93,7 +96,8 @@ let maxHealth = 5;
 let playerSpeed = 3;
 let playerDamage = 1;
 let maxBullets = 4;
-let bulletSize = 1.0;
+let bulletSize = 16 * bulletSizeStat;
+let bulletSizeStat = 1.0;
 let bulletSpeed = 10;
 let playerBullets = [];
 let facing = 'down';
@@ -177,11 +181,11 @@ function movement() {
     // enemy collision
     activeEnemies.forEach(enemy => {
         if (!enemy.removed) {
-            if (myHoriz < enemy.x + 32 &&
-                myHoriz + 32 > enemy.x &&
-                myVerti < enemy.y + 32 &&
-                myVerti + 32 > enemy.y) {
-                takeDamage(enemy.damage);
+            if (myHoriz < enemy.x + enemy.size &&
+            myHoriz + 32 > enemy.x &&
+            myVerti < enemy.y + enemy.size &&
+            myVerti + 32 > enemy.y) {
+            takeDamage(enemy.damage);
             }
         }
     });
@@ -259,6 +263,7 @@ PlayerHealth: ${playerHealth}<br>
 PlayerDamage: ${playerDamage}<br>
 MaxHealth: ${maxHealth}<br>
 BulletSpeed: ${bulletSpeed}<br>
+BulletSize: ${bulletSizeStat}x<br>
 `;
 }
 
@@ -296,8 +301,8 @@ function shootPlayerBullet() {
 
     let bullet = document.createElement('img');
     bullet.style.position = 'absolute';
-    bullet.style.width = 16 * bulletSize + 'px';
-    bullet.style.height = 16 * bulletSize + 'px';
+    bullet.style.width = bulletSize + 'px';
+    bullet.style.height = bulletSize + 'px';
     bullet.src = 'sprites/yellow-soul-bullet.png';
     bullet.style.zIndex = '99';
 
@@ -459,7 +464,7 @@ function updateEnemies() {
 
 function clearEnemies(){
     activeEnemies.forEach(enemy => {
-        enemy.removed}
+        enemy.removed = true;}
     )
     activeEnemies = [];
 }
@@ -470,6 +475,7 @@ function startGame() {
     currentWaveIndex = 0;
     waveTransitioning = false;
     setInterval(movement, 10);
+    document.getElementById('tutorialScreen').style.display = 'none';
     playerElement.style.top = myVerti + 'px';
     playerElement.style.left = myHoriz + 'px';
     spawnWave(currentWaveIndex);
