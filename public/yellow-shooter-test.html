@@ -45,7 +45,7 @@ const enemyTypes = {
     },
     ranger: {
         health: 5,
-        speed: 1,
+        speed: 2.0,
         damage: 1,
         size: 32
     }
@@ -55,11 +55,8 @@ const waveConfigurations = [
     { waveID: 2, enemies: [{ type: 'chaser', count: 5 }, { type: 'ranger', count: 3 }] },
 ];
 let activeEnemies = [];
-let enemyContainer = document.getElementById('enemyContainer');
 let gameContainer = document.getElementById('gameContainer');
 let playerElement = document.getElementById('myPlayer01');
-let maxHoriz;
-let maxVerti;
 let showDebug = false;
 let myHoriz = 513;
 let myVerti = 492;
@@ -72,10 +69,7 @@ let right = false;
 let left = false;
 let rotateKeyDebounced = false;
 let otherRotateKeyDebounced = false;
-let wKeyDebounced = false;
-let sKeyDebounced = false;
 let shootKeyDebounced = false;
-let actionKeyPressed = false;
 let isInvincible = false;
 let isTrueInvincible = false;
 let playerHealth = 5;
@@ -85,33 +79,22 @@ let playerDamage = 1;
 let maxBullets = 4;
 let bulletSize = 1.0;
 let bulletSpeed = 10;
-let containerRect = gameContainer.getBoundingClientRect();
-let enemySize = 32;
-let actualTop;
 let playerBullets = [];
 let facing = 'down';
 let tutorialOnScreen = true;
+let gameRunning = false;
+let currentWaveIndex = 0;
 
 document.onkeydown = function(event){
-    if (event.key === "w" || event.key === "W"){
-        up = true;
-    }
-    if (event.key === "s" || event.key === "S"){
-        down = true;
-    }
-    if (event.key === "a" || event.key === "A"){
-        left = true;
-    }
-    if (event.key === "d" || event.key === "D"){
-        right = true;
-    }
+    if (event.key === "w" || event.key === "W"){ up = true; }
+    if (event.key === "s" || event.key === "S"){ down = true; }
+    if (event.key === "a" || event.key === "A"){ left = true; }
+    if (event.key === "d" || event.key === "D"){ right = true; }
     if (event.ctrlKey && (event.key === "q" || event.key === "Q")){
         showDebug = !showDebug;
         const debugElement = document.getElementById('debug');
-        if (showDebug) {
-            debugElement.style.display = 'block';
-        } else {
-            debugElement.style.display = 'none';
+        if (debugElement) {
+            debugElement.style.display = showDebug ? 'block' : 'none';
         }
     }
     if (event.key === "z" || event.key === "Z" || event.key === " ") {
@@ -133,16 +116,17 @@ document.onkeydown = function(event){
         }
     }
     if (event.key === " " && tutorialOnScreen){
+        event.preventDefault();
         tutorialOnScreen = false;
         startGame();
     }
 };
 
 document.onkeyup = function(event){
-    if (event.key === "w" || event.key === "W"){up = false; wKeyDebounced = false;}
-    if (event.key === "s" || event.key === "S"){down = false; sKeyDebounced = false;}
-    if (event.key === "a" || event.key === "A"){left = false;}
-    if (event.key === "d" || event.key === "D"){right = false;}
+    if (event.key === "w" || event.key === "W"){ up = false; }
+    if (event.key === "s" || event.key === "S"){ down = false; }
+    if (event.key === "a" || event.key === "A"){ left = false; }
+    if (event.key === "d" || event.key === "D"){ right = false; }
     if (event.key === "z" || event.key === "Z" || event.key === " ") {
         shootKeyDebounced = false;
     }
@@ -234,7 +218,7 @@ function updateDebug() {
     const debugElement = document.getElementById('debug');
     if (!debugElement) return;
     if (!showDebug){ debugElement.style.display = 'none'; return; }
-    else if (showDebug){ debugElement.style.display = 'block'; }
+    debugElement.style.display = 'block';
     debugElement.innerHTML = `
 ---------------- <br>
 Game Variables<br>
@@ -246,13 +230,8 @@ Down: ${down}<br>
 Right: ${right}<br>
 Facing: ${facing}<br>
 isMoving? ${isMoving}<br>
-ShootKeyDebounced: ${shootKeyDebounced}<br>
-RotateKeyDebounced: ${rotateKeyDebounced}<br>
-OtherRotateKeyDebounced: ${otherRotateKeyDebounced}<br>
 X: ${myHoriz}<br>
 Y: ${playerElement.style.top}<br>
-PreviousX: ${prevHoriz}<br>
-PreviousY: ${prevVerti}<br>
 ---------------- <br>
 Temporary Stats Menu<br>
 PlayerSpeed: ${playerSpeed}<br>
@@ -260,16 +239,12 @@ PlayerHealth: ${playerHealth}<br>
 PlayerDamage: ${playerDamage}<br>
 MaxHealth: ${maxHealth}<br>
 BulletSpeed: ${bulletSpeed}<br>
-BulletSize: ${bulletSize}x<br>
-BulletCap: ${maxBullets}<br>
 `;
 }
 
 function updateUI() {
     let healthPercent = (playerHealth / maxHealth) * 100;
-    if (healthPercent < 0) {
-        healthPercent = 0;
-    }
+    if (healthPercent < 0) { healthPercent = 0; }
     let hpBar = document.getElementById("hp-bar");
     hpBar.style.width = healthPercent + "%";
     let hpText = document.getElementById("hp-text");
@@ -389,6 +364,7 @@ function getRandomEdgePosition(containerWidth, containerHeight, enemySize) {
 }
 
 function spawnWave(waveIndex) {
+    if (waveIndex >= waveConfigurations.length) return;
     let currentWave = waveConfigurations[waveIndex];
     
     for (let i = 0; i < currentWave.enemies.length; i++) {
@@ -437,13 +413,22 @@ function updateEnemies() {
             enemy.element.style.top = enemy.y + 'px';
         }
     });
+
+    if (activeEnemies.length === 0 && gameRunning) {
+        currentWaveIndex++;
+        if (currentWaveIndex < waveConfigurations.length) {
+            setTimeout(() => spawnWave(currentWaveIndex), 1000);
+        }
+    }
 }
 
 function startGame() {
+    if (gameRunning) return;
+    gameRunning = true;
     setInterval(movement, 10);
     playerElement.style.top = myVerti + 'px';
     playerElement.style.left = myHoriz + 'px';
-    spawnWave(0);
+    spawnWave(currentWaveIndex);
 }
 </script>
 </body>
