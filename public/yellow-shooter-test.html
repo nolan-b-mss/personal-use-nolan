@@ -341,10 +341,10 @@ function movePlayerBullets() {
 
         activeEnemies.forEach(enemy => {
             if (!enemy.removed && !pBullet.removed) {
-                if (pBullet.x < enemy.x + 32 &&
-                    pBullet.x + 16 > enemy.x &&
-                    pBullet.y < enemy.y + 32 &&
-                    pBullet.y + 16 > enemy.y) {
+                if (pBullet.x < enemy.x + enemy.size &&
+                    pBullet.x + bulletSize > enemy.x &&
+                    pBullet.y < enemy.y + enemy.size &&
+                    pBullet.y + bulletSize > enemy.y) {
                     
                     pBullet.element.remove();
                     pBullet.removed = true;
@@ -376,7 +376,7 @@ function getRandomEdgePosition(containerWidth, containerHeight, enemySize) {
     let y = 0;
 
     if (side === 0) { 
-        x = -enemySize;
+        x = enemySize;
         y = Math.random() * (containerHeight - 150) + 150; 
     } else if (side === 1) { 
         x = containerWidth + enemySize;
