@@ -54,7 +54,7 @@ const enemyTypes = {
     },
     ranger: {
         health: 5,
-        speed: 0.75,
+        speed: 0.25,
         damage: 1,
         size: 32
     },
@@ -125,6 +125,8 @@ let playerHealth = 5;
 let maxHealth = 5;
 let playerSpeed = 3;
 let playerDamage = 1;
+let playerPaused = false;
+let upgradePaused = false;
 let maxBullets = 4;
 let bulletSizeStat = 1.0;
 let bulletSize = 16 * bulletSizeStat;
@@ -148,19 +150,19 @@ document.onkeydown = function(event){
             debugElement.style.display = showDebug ? 'block' : 'none';
         }
     }
-    if (event.key === "z" || event.key === "Z" || event.key === " ") {
+    if (event.key === "z" || event.key === "Z" || event.key === " " && !playerPaused && !upgradePaused) {
         if (!shootKeyDebounced && !tutorialOnScreen){
             shootKeyDebounced = true;
             shootPlayerBullet();
         }
     }
-    if (event.key === "e" || event.key === "E") {
+    if (event.key === "e" || event.key === "E" && !playerPaused && !upgradePaused) {
         if (!rotateKeyDebounced){
             rotateKeyDebounced = true;
             rotatePlayer();
         }
     }
-    if ((event.key === "q" || event.key === "Q") && !event.ctrlKey){
+    if ((event.key === "q" || event.key === "Q") && !event.ctrlKey && !playerPaused && !upgradePaused){
         if (!otherRotateKeyDebounced){
             otherRotateKeyDebounced = true;
             otherRotatePlayer();
@@ -171,8 +173,15 @@ document.onkeydown = function(event){
         tutorialOnScreen = false;
         startGame();
     }
-    if (event.ctrlKey && event.key === "Backspace"){
+    if (event.ctrlKey && event.key === "Backspace" && !playerPaused && !upgradePaused){
         clearEnemies();
+    }
+    if (event.key === "f" || event.key === "F"){
+        if (!playerPaused){
+            playerPaused = true;
+        } else if (playerPaused){
+            playerPaused = false;
+        }
     }
 };
 
@@ -181,19 +190,20 @@ document.onkeyup = function(event){
     if (event.key === "s" || event.key === "S"){ down = false; }
     if (event.key === "a" || event.key === "A"){ left = false; }
     if (event.key === "d" || event.key === "D"){ right = false; }
-    if (event.key === "z" || event.key === "Z" || event.key === " ") {
+    if (event.key === "z" || event.key === "Z" || event.key === " " && !playerPaused && !upgradePaused) {
         shootKeyDebounced = false;
     }
-    if (event.key === "e" || event.key === "E") {
-        rotateKeyDebounced = false;
+    if (event.key === "e" || event.key === "E" && !playerPaused && !upgradePaused) {
+        rotateKeyDebounced = false; 
     }
-    if ((event.key === "q" || event.key === "Q") && !event.ctrlKey){
+    if ((event.key === "q" || event.key === "Q") && !event.ctrlKey && !playerPaused && !upgradePaused){
         otherRotateKeyDebounced = false;
     }
 };
 
 function movement() {
     updateDebug();
+    if (!playerPaused && !upgradePaused){
     prevHoriz = myHoriz; 
     prevVerti = myVerti;
     
@@ -228,6 +238,7 @@ function movement() {
     
     if (prevHoriz !== myHoriz || prevVerti !== myVerti) { isMoving = true; }
     else { isMoving = false; }
+}
 }
 
 function rotatePlayer(){
@@ -326,6 +337,8 @@ function takeDamage(damageAmount) {
         }, 1000);
     }
 }
+
+function triggerUpgradesMenu(){}
 
 function shootPlayerBullet() {
     if (playerBullets.length >= maxBullets) {
@@ -575,15 +588,18 @@ function updateEnemies() {
         }
     });
 
-    if (activeEnemies.length === 0 && gameRunning && !waveTransitioning) {
-        waveTransitioning = true;
-        currentWaveIndex++;
-        if (currentWaveIndex < waveConfigurations.length) {
-            setTimeout(() => spawnWave(currentWaveIndex), 1000);
-        } else {
-            gameRunning = false;
-        }
+if (activeEnemies.length === 0 && gameRunning && !waveTransitioning) {
+    waveTransitioning = true;
+    currentWaveIndex++;
+    
+    if (currentWaveIndex % 5 === 0) {
+        triggerUpgradesMenu();
+    } else if (currentWaveIndex < waveConfigurations.length) {
+        setTimeout(() => spawnWave(currentWaveIndex), 1000);
+    } else {
+        gameRunning = false;
     }
+}
 }
 
 function clearEnemies(){
