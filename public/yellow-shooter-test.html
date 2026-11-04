@@ -588,7 +588,8 @@ function updateEnemies() {
 
 function clearEnemies(){
     activeEnemies.forEach(enemy => {
-        enemy.removed = true;}
+                enemy.element.remove();
+                enemy.removed = true;}
     )
     activeEnemies = [];
 }
