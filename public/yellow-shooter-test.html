@@ -64,14 +64,44 @@ const enemyTypes = {
         damage: 1,
         size: 45
     },
+    boss1: {
+        health: 75,
+        speed: 1.5,
+        damage: 1,
+        size: 60
+    },
+    splitter: {
+        health: 10,
+        speed: 2.2,
+        damage: 1,
+        size: 32
+    },
+    splitter01: {
+        health: 5,
+        speed: 1.5,
+        damage: 1,
+        size: 16
+    },
+    splitter02: {
+        health: 2,
+        speed: 1.5,
+        damage: 1,
+        size: 8
+    },
+    splitter03: {
+        health: 1,
+        speed: 1.5,
+        damage: 1,
+        size: 4
+    },
 };
 const waveConfigurations = [
     { waveID: 1, enemies: [{ type: 'chaser', count: 5 }] },
     { waveID: 2, enemies: [{ type: 'chaser', count: 5 }, { type: 'ranger', count: 3 }] },
     { waveID: 3, enemies: [{ type: 'ranger', count: 5}, { type: 'fastChaser', count: 3}] },
-    { waveID: 4, enemies: [{ type: 'strong', count: 5}] },
-
-    { waveID: 999, enemies: [{type: 'fastChaser', count: 99}] },
+    { waveID: 4, enemies: [{ type: 'strong', count: 3}] },
+    { waveID: 5, enemies: [{ type: 'boss1', count: 1}]] },
+    { waveID: 6, enemies: [{ type: 'splitter', count: 1 }] },
 ];
 let activeEnemies = [];
 let gameContainer = document.getElementById('gameContainer');
@@ -367,6 +397,97 @@ function movePlayerBullets() {
                     if (enemy.health <= 0){
                         enemy.element.remove();
                         enemy.removed = true;
+if (enemy.type === 'splitter') {
+    for (let i = 0; i < 2; i++) {
+        let childTypeData = enemyTypes['splitter01'];
+        let childElement = document.createElement('img');
+        let offsetX = (Math.random() - 0.5) * 40;
+        let offsetY = (Math.random() - 0.5) * 40;
+        let childX = enemy.x + offsetX;
+        let childY = enemy.y + offsetY;
+        childElement.style.position = 'absolute';
+        childElement.style.width = childTypeData.size + 'px';
+        childElement.style.height = childTypeData.size + 'px';
+        childElement.style.left = enemy.x + 'px';
+        childElement.style.top = enemy.y + 'px';
+        childElement.src = 'sprites/soul-08.png';
+        
+        gameContainer.appendChild(childElement);
+        
+        activeEnemies.push({
+            type: 'splitter01',
+            x: childX,
+            y: childY,
+            health: childTypeData.health,
+            speed: childTypeData.speed,
+            damage: childTypeData.damage,
+            size: childTypeData.size,
+            element: childElement,
+            removed: false
+        });
+    }
+}
+if (enemy.type === 'splitter01') {
+    for (let i = 0; i < 4; i++) {
+        let childTypeData = enemyTypes['splitter02'];
+        let childElement = document.createElement('img');
+        let offsetX = (Math.random() - 0.5) * 40;
+        let offsetY = (Math.random() - 0.5) * 40;
+        let childX = enemy.x + offsetX;
+        let childY = enemy.y + offsetY;
+        childElement.style.position = 'absolute';
+        childElement.style.width = childTypeData.size + 'px';
+        childElement.style.height = childTypeData.size + 'px';
+        childElement.style.left = enemy.x + 'px';
+        childElement.style.top = enemy.y + 'px';
+        childElement.src = 'sprites/soul-08.png';
+        
+        gameContainer.appendChild(childElement);
+        
+        activeEnemies.push({
+            type: 'splitter02',
+            x: childX,
+            y: childY,
+            health: childTypeData.health,
+            speed: childTypeData.speed,
+            damage: childTypeData.damage,
+            size: childTypeData.size,
+            element: childElement,
+            removed: false
+        });
+    }
+}
+if (enemy.type === 'splitter02') {
+    for (let i = 0; i < 8; i++) {
+        let childTypeData = enemyTypes['splitter03'];
+        let childElement = document.createElement('img');
+        let offsetX = (Math.random() - 0.5) * 40;
+        let offsetY = (Math.random() - 0.5) * 40;
+        let childX = enemy.x + offsetX;
+        let childY = enemy.y + offsetY;
+        childElement.style.position = 'absolute';
+        childElement.style.width = childTypeData.size + 'px';
+        childElement.style.height = childTypeData.size + 'px';
+        childElement.style.left = enemy.x + 'px';
+        childElement.style.top = enemy.y + 'px';
+        childElement.src = 'sprites/soul-08.png';
+        
+        gameContainer.appendChild(childElement);
+        
+        activeEnemies.push({
+            type: 'splitter03',
+            x: childX,
+            y: childY,
+            health: childTypeData.health,
+            speed: childTypeData.speed,
+            damage: childTypeData.damage,
+            size: childTypeData.size,
+            element: childElement,
+            removed: false
+        });
+    }
+}
+                        
                     }
                 }
             }
