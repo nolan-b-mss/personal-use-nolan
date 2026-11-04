@@ -103,6 +103,13 @@ const waveConfigurations = [
     { waveID: 5, enemies: [{ type: 'boss1', count: 1}] },
     { waveID: 6, enemies: [{ type: 'splitter', count: 1 }] },
 ];
+const upgrades = [
+    { upgradeID: 1, name: "Heavy shots", apply: () => { bulletSizeStat += 0.1; bulletSpeed -= 0.3; } },
+    { upgradeID: 2, name: "Lighter shots", apply: () => { bulletSizeStat -= 0.1; bulletSpeed += 0.3;} },
+    { upgradeID: 3, name: "Sharper rounds", apply: () => { playerDamage += 1; } },
+    { upgradeID: 4, name: "Endurance", apply: () => { maxHealth += 1; playerHealth += 1;} },
+    { upgradeID: 5, name: "Strong heart", apply: () => { maxHealth += 2; playerHealth += 2; } },
+]
 let activeEnemies = [];
 let gameContainer = document.getElementById('gameContainer');
 let playerElement = document.getElementById('myPlayer01');
@@ -338,7 +345,9 @@ function takeDamage(damageAmount) {
     }
 }
 
-function triggerUpgradesMenu(){}
+function triggerUpgradesMenu(){
+    upgradePaused = true;
+}
 
 function shootPlayerBullet() {
     if (playerBullets.length >= maxBullets) {
