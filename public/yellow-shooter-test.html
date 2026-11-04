@@ -171,6 +171,9 @@ document.onkeydown = function(event){
         tutorialOnScreen = false;
         startGame();
     }
+    if (event.ctrlKey && event.key === "Backspace"){
+        clearEnemies();
+    }
 };
 
 document.onkeyup = function(event){
