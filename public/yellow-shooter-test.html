@@ -415,10 +415,86 @@ function takeDamage(damageAmount) {
 }
 
 function triggerUpgradesMenu(){
-    upgradePaused = false;
-    waveTransitioning = true;
-    currentWaveIndex++;
-    setTimeout(() => spawnWave(currentWaveIndex), 1000);
+    upgradePaused = true;
+    let overlay = document.createElement('div');
+    overlay.id = 'upgradeOverlay';
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100vw';
+    overlay.style.height = '100vh';
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.85)';
+    overlay.style.zIndex = '4000';
+    overlay.style.display = 'flex';
+    overlay.style.flexDirection = 'column';
+    overlay.style.justifyContent = 'center';
+    overlay.style.alignItems = 'center';
+    overlay.style.color = 'white';
+    overlay.style.fontFamily = "'DeterminationMono', monospace";
+
+    let title = document.createElement('div');
+    title.innerText = `Select an upgrade`;
+    title.style.fontSize = '32px';
+    title.style.marginBottom = '40px';
+    title.style.color = 'yellow';
+    overlay.appendChild(title);
+
+    let randomChoices = [...upgrades].sort(() => 0.5 - Math.random()).slice(0, 3);
+
+    let container = document.createElement('div');
+    container.style.display = 'flex';
+    container.style.gap = '20px';
+
+    randomChoices.forEach(upgrade => {
+        let card = document.createElement('button');
+        card.style.display = 'flex';
+        card.style.flexDirection = 'column';
+        card.style.justifyContent = 'center';
+        card.style.alignItems = 'center';
+        card.style.width = '250px';
+        card.style.padding = '20px';
+        card.style.backgroundColor = 'black';
+        card.style.color = 'white';
+        card.style.border = '2px solid yellow';
+        card.style.fontFamily = "'DeterminationMono', monospace";
+        card.style.cursor = 'pointer';
+
+        let nameHeader = document.createElement('div');
+        nameHeader.innerText = upgrade.name;
+        nameHeader.style.fontSize = '20px';
+        nameHeader.style.fontWeight = 'bold';
+        nameHeader.style.marginBottom = '15px';
+        nameHeader.style.color = 'yellow';
+        card.appendChild(nameHeader);
+
+        let descText = document.createElement('div');
+        descText.innerText = upgrade.desc;
+        descText.style.fontSize = '14px';
+        descText.style.textAlign = 'center';
+        descText.style.lineHeight = '1.4';
+        card.appendChild(descText);
+
+        card.onmouseover = () => { card.style.backgroundColor = 'yellow'; card.style.color = 'black'; nameHeader.style.color = 'black'; };
+        card.onmouseout = () => { card.style.backgroundColor = 'black'; card.style.color = 'white'; nameHeader.style.color = 'yellow'; };
+
+        card.onclick = () => {
+            upgrade.apply();
+            overlay.remove();
+            upgradePaused = false;
+            waveTransitioning = false;
+
+            if (currentWaveIndex < waveConfigurations.length) {
+                setTimeout(() => spawnWave(currentWaveIndex), 1000);
+            } else {
+                gameRunning = false;
+            }
+        };
+
+        container.appendChild(card);
+    });
+
+    overlay.appendChild(container);
+    document.body.appendChild(overlay);
 }
 
 function shootPlayerBullet() {
