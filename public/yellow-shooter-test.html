@@ -26,6 +26,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
     <img src="sprites/shard0.png" style="max-width: 100%; max-height: 100%;">
 </div>
 <img src="sprites/soul-06-down.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0; z-index: 100;">
+<img src="sprites/big-shot-charge-empty.png" width="24" height="24" id="myBigShotCharge" style="position: absolute; left: 324px; top: 114px; opacity: 0.0; z-index: 99;">
 <div id="hp-section"> 
 <div id="hp-display-group">
 <div id="hp-text-wrapper">
@@ -105,15 +106,22 @@ const waveConfigurations = [
     { waveID: 6, enemies: [{ type: 'splitter', count: 1 }] },
 ];
 const upgrades = [
-    { upgradeID: 1, name: "Heavy shots", apply: () => { bulletSizeStat += 0.1; bulletSpeed -= 0.3; } },
-    { upgradeID: 2, name: "Lighter shots", apply: () => { bulletSizeStat -= 0.1; bulletSpeed += 0.3;} },
-    { upgradeID: 3, name: "Sharper rounds", apply: () => { playerDamage += 1; } },
+    { upgradeID: 1, name: "Heavy Shots", apply: () => { bulletSizeStat += 0.1; bulletSpeed -= 0.3; } },
+    { upgradeID: 2, name: "Lighter Shots", apply: () => { bulletSizeStat -= 0.1; bulletSpeed += 0.3;} },
+    { upgradeID: 3, name: "Sharper Rounds", apply: () => { playerDamage += 1; } },
     { upgradeID: 4, name: "Endurance", apply: () => { maxHealth += 1; playerHealth += 1;} },
-    { upgradeID: 5, name: "Strong heart", apply: () => { maxHealth += 2; playerHealth += 2; } },
+    { upgradeID: 5, name: "Strong Heart", apply: () => { maxHealth += 2; playerHealth += 2; } },
+    { upgradeID: 6, name: "Exercise", apply: () => { playerSpeed += 0.5 } },
+    { upgradeID: 7, name: "Gym Membership", apply: () => { playerSpeed += 0.5; maxHealth += 1; playerHealth += 1; } },
+    { upgradeID: 8, name: "Beefy", apply: () => { playerSpeed -= 0.5; maxHealth += 2; playerHealth += 2; } },
+    { upgradeID: 9, name: "Bigger Magazine", apply: () => { bullletCap += 2; } },
+    { upgradeID: 10, name: "Slug Shots", apply: () => { bulletCap = 1; bulletSizeStat += 0.5; playerDamage += 3; } },
+    { upgradeID: 11, name: "BIG SHOT", apply: () => { allowBigShot = true; } },
 ]
 let activeEnemies = [];
 let gameContainer = document.getElementById('gameContainer');
 let playerElement = document.getElementById('myPlayer01');
+let bigShotChargeBar = document.getElementById('myBigShotCharge');
 let showDebug = false;
 let myHoriz = 513;
 let myVerti = 492;
@@ -129,6 +137,10 @@ let otherRotateKeyDebounced = false;
 let shootKeyDebounced = false;
 let isInvincible = false;
 let isTrueInvincible = false;
+let allowBigShot = false;
+let isChargingBigShot = false;
+let chargeStartTime = 0;
+const bigShotChargeTime = 1000;
 let playerHealth = 5;
 let maxHealth = 5;
 let playerSpeed = 3;
@@ -158,10 +170,19 @@ document.onkeydown = function(event){
             debugElement.style.display = showDebug ? 'block' : 'none';
         }
     }
-    if (event.key === "z" || event.key === "Z" || event.key === " " && !playerPaused && !upgradePaused) {
-        if (!shootKeyDebounced && !tutorialOnScreen){
-            shootKeyDebounced = true;
-            shootPlayerBullet();
+if ((event.key === "z" || event.key === "Z" || event.key === " ") && !playerPaused && !upgradePaused) {
+        if (!tutorialOnScreen) {
+            event.preventDefault();
+            if (allowBigShot && !isChargingBigShot && !shootKeyDebounced) {
+                isChargingBigShot = true;
+                chargeStartTime = Date.now();
+            } else if (!allowBigShot && !shootKeyDebounced) {
+                shootKeyDebounced = true;
+                shootPlayerBullet();
+            }
+        } else {
+            tutorialOnScreen = false;
+            startGame();
         }
     }
     if (event.key === "e" || event.key === "E" && !playerPaused && !upgradePaused) {
@@ -198,8 +219,19 @@ document.onkeyup = function(event){
     if (event.key === "s" || event.key === "S"){ down = false; }
     if (event.key === "a" || event.key === "A"){ left = false; }
     if (event.key === "d" || event.key === "D"){ right = false; }
-    if (event.key === "z" || event.key === "Z" || event.key === " " && !playerPaused && !upgradePaused) {
+    if ((event.key === "z" || event.key === "Z" || event.key === " ") && !playerPaused && !upgradePaused) {
         shootKeyDebounced = false;
+        if (isChargingBigShot) {
+            let chargeDuration = Date.now() - chargeStartTime;
+            isChargingBigShot = false;
+            
+            if (chargeDuration >= bigShotChargeTime) {
+                shootBigShot();
+            } else {
+                shootPlayerBullet();
+            }
+        chargeStartTime = 0;
+        }
     }
     if (event.key === "e" || event.key === "E" && !playerPaused && !upgradePaused) {
         rotateKeyDebounced = false; 
@@ -224,6 +256,18 @@ function movement() {
     if (myVerti < 0) { myVerti = 0; }
     if (myHoriz > 1020) { myHoriz = 1020; }
     if (myVerti > 860) { myVerti = 860; }
+        
+    if (allowBigShot){ bigShotChargeBar.style.opacity = 1.0; }
+    if (chargeStartTime <= 0){ bigShotChargeBar.src = "sprites/big-shot-charge-empty.png" }
+    else if (chargeStartTime > 0 && chargeStartTime <= 125){ bigShotChargeBar.src = "sprites/big-shot-charge-low01.png" }
+    else if (chargeStartTime > 125 && chargeStartTime <= 250) { bigShotChargeBar.src = "sprites/big-shot-charge-low02.png" }
+    else if (chargeStartTime > 250 && chargeStartTime <= 375) { bigShotChargeBar.src = "sprites/big-shot-charge-low03.png" }
+    else if (chargeStartTime > 375 && chargeStartTime <= 500) { bigShotChargeBar.src = "sprites/big-shot-charge-med01.png" }
+    else if (chargeStartTime > 500 && chargeStartTime <= 625) { bigShotChargeBar.src = "sprites/big-shot-charge-med02.png" }
+    else if (chargeStartTime > 625 && chargeStartTime <= 750) {bigShotChargeBar.src = "sprites/big-shot-charge-high01.png" }
+    else if (chargeStartTime > 750 && chargeStartTime <= 875) {bigShotChargeBar.src = "sprites/big-shot-charge-high02.png" }
+    else if (chargeStartTime > 875 && chargeStartTime < 1000) {bigShotChargeBar.src = "sprites/big-shot-charge-high03.png" }
+    else if (chargeStartTime >= 1000) {bigShotChargeBar.src = "sprites/big-shot-charge-full.gif" }
     
     movePlayerBullets();
     updateUI();
@@ -243,6 +287,8 @@ function movement() {
 
     playerElement.style.top = myVerti + 'px';
     playerElement.style.left = myHoriz + 'px';
+    bigShotChargeBar.style.top = (myVerti - 40) + 'px';
+    bigShotChargeBar.style.left = (myHoriz + 40) + 'px';
     
     if (prevHoriz !== myHoriz || prevVerti !== myVerti) { isMoving = true; }
     else { isMoving = false; }
@@ -347,7 +393,10 @@ function takeDamage(damageAmount) {
 }
 
 function triggerUpgradesMenu(){
-    upgradePaused = true;
+    upgradePaused = false;
+    waveTransitioning = true;
+    currentWaveIndex++;
+    setTimeout(() => spawnWave(currentWaveIndex), 1000);
 }
 
 function shootPlayerBullet() {
@@ -388,6 +437,45 @@ function shootPlayerBullet() {
     });
 }
 
+function shootBigShot() {
+    let bigBullet = document.createElement('img');
+    bigBullet.style.position = 'absolute';
+    bigBullet.style.width = '48px';
+    bigBullet.style.height = '48px';
+    bigBullet.style.backgroundColor = 'yellow'; 
+    bigBullet.src = "sprites/big-shot-down.png"
+    bigBullet.style.zIndex = '99';
+
+    let startX = myHoriz + 4;
+    let startY = myVerti + 4;
+
+    bigBullet.style.left = startX + 'px';
+    bigBullet.style.top = startY + 'px';
+    gameContainer.appendChild(bigBullet);
+
+    let velocityX = 0;
+    let velocityY = 0;
+    let speed = bulletSpeed * 1.2; // Big shots travel faster
+
+    switch (facing) {
+        case 'up': velocityY = -speed; bigBullet.src = "sprites/big-shot-up.png"; break;
+        case 'down': velocityY = speed; bigBullet.src = "sprites/big-shot-down.png"; break;
+        case 'left': velocityX = -speed; bigBullet.src = "sprites/big-shot-left.png"; break;
+        case 'right': velocityX = speed; bigBullet.src = "sprites/big-shot-right.png"; break;
+    }
+
+    playerBullets.push({
+        element: bigBullet,
+        x: startX,
+        y: startY,
+        veloX: velocityX,
+        veloY: velocityY,
+        size: 48,
+        isBigShot: true,
+        damagedEnemies: new Set()
+    });
+}
+
 function movePlayerBullets() {
     playerBullets.forEach(pBullet => {
         pBullet.x += pBullet.veloX;
@@ -404,14 +492,23 @@ function movePlayerBullets() {
 
         activeEnemies.forEach(enemy => {
             if (!enemy.removed && !pBullet.removed) {
+                let currentBulletSize = pBullet.isBigShot ? 48 : bulletSize;
+                
                 if (pBullet.x < enemy.x + enemy.size &&
-                    pBullet.x + bulletSize > enemy.x &&
+                    pBullet.x + currentBulletSize > enemy.x &&
                     pBullet.y < enemy.y + enemy.size &&
-                    pBullet.y + bulletSize > enemy.y) {
-                    
+                    pBullet.y + currentBulletSize > enemy.y) {
+
+                    if (pBullet.isBigShot) {
+                        if (pBullet.damagedEnemies.has(enemy)) return; // skip if hit already (stops trisagion effect)
+                        pBullet.damagedEnemies.add(enemy);
+                        enemy.health -= playerDamage * 3;
+                    }
+                    if (!pBullet.isBigShot) {                    
                     pBullet.element.remove();
                     pBullet.removed = true;
                     enemy.health -= playerDamage;
+                    }
                     
                     enemy.element.style.filter = 'brightness(2) sepia(1) hue-rotate(5deg) saturate(1000%)';
                     setTimeout(() => {
