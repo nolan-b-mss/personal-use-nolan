@@ -26,7 +26,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
     <img src="sprites/shard0.png" style="max-width: 100%; max-height: 100%;">
 </div>
 <img src="sprites/soul-06-down.png" width="32" height="32" id="myPlayer01" style="position: absolute; left: 284px; top: 134px; opacity: 1.0; z-index: 100;">
-<img src="sprites/big-shot-charge-empty.png" width="24" height="24" id="myBigShotCharge" style="position: absolute; left: 324px; top: 114px; opacity: 0.0; z-index: 99;">
+<img src="sprites/big-shot-charge-empty.png" width="64" height="64" id="myBigShotCharge" style="position: absolute; left: 348px; top: 50px; opacity: 0.0; z-index: 99;">
 <div id="hp-section"> 
 <div id="hp-display-group">
 <div id="hp-text-wrapper">
@@ -440,9 +440,8 @@ function shootPlayerBullet() {
 function shootBigShot() {
     let bigBullet = document.createElement('img');
     bigBullet.style.position = 'absolute';
-    bigBullet.style.width = '48px';
-    bigBullet.style.height = '48px';
-    bigBullet.style.backgroundColor = 'yellow'; 
+    bigBullet.style.width = '60px';
+    bigBullet.style.height = '60px';
     bigBullet.src = "sprites/big-shot-down.png"
     bigBullet.style.zIndex = '99';
 
@@ -455,7 +454,7 @@ function shootBigShot() {
 
     let velocityX = 0;
     let velocityY = 0;
-    let speed = bulletSpeed * 1.2; // Big shots travel faster
+    let speed = bulletSpeed * 0.9;
 
     switch (facing) {
         case 'up': velocityY = -speed; bigBullet.src = "sprites/big-shot-up.png"; break;
@@ -470,7 +469,7 @@ function shootBigShot() {
         y: startY,
         veloX: velocityX,
         veloY: velocityY,
-        size: 48,
+        size: 60,
         isBigShot: true,
         damagedEnemies: new Set()
     });
@@ -492,7 +491,7 @@ function movePlayerBullets() {
 
         activeEnemies.forEach(enemy => {
             if (!enemy.removed && !pBullet.removed) {
-                let currentBulletSize = pBullet.isBigShot ? 48 : bulletSize;
+                let currentBulletSize = pBullet.isBigShot ? 60 : bulletSize;
                 
                 if (pBullet.x < enemy.x + enemy.size &&
                     pBullet.x + currentBulletSize > enemy.x &&
@@ -500,7 +499,7 @@ function movePlayerBullets() {
                     pBullet.y + currentBulletSize > enemy.y) {
 
                     if (pBullet.isBigShot) {
-                        if (pBullet.damagedEnemies.has(enemy)) return; // skip if hit already (stops trisagion effect)
+                        if (pBullet.damagedEnemies.has(enemy)) return; // skip if hit already (prevent trisagion effect)
                         pBullet.damagedEnemies.add(enemy);
                         enemy.health -= playerDamage * 3;
                     }
