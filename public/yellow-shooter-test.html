@@ -263,8 +263,8 @@ function movement() {
     else if (elapsed > 0 && elapsed <= 125){ bigShotChargeBar.src = "sprites/big-shot-charge-low01.png" }
     else if (elapsed > 125 && elapsed <= 250) { bigShotChargeBar.src = "sprites/big-shot-charge-low02.png" }
     else if (elapsed > 250 && elapsed <= 375) { bigShotChargeBar.src = "sprites/big-shot-charge-low03.png" }
-    else if (elapsed > 375 && elapsed <= 500) { bigShotChargeBar.src = "sprites/big-shot-charge-med01.png" }
-    else if (elapsed > 500 && elapsed <= 625) { bigShotChargeBar.src = "sprites/big-shot-charge-med02.png" }
+    else if (elapsed > 375 && elapsed <= 500) { bigShotChargeBar.src = "sprites/big-shot-charge-med02.png" }
+    else if (elapsed > 500 && elapsed <= 625) { bigShotChargeBar.src = "sprites/big-shot-charge-med01.png" }
     else if (elapsed > 625 && elapsed <= 750) {bigShotChargeBar.src = "sprites/big-shot-charge-high01.png" }
     else if (elapsed > 750 && elapsed <= 875) {bigShotChargeBar.src = "sprites/big-shot-charge-high02.png" }
     else if (elapsed > 875 && elapsed < 1000) {bigShotChargeBar.src = "sprites/big-shot-charge-high03.png" }
@@ -288,8 +288,8 @@ function movement() {
 
     playerElement.style.top = myVerti + 'px';
     playerElement.style.left = myHoriz + 'px';
-    bigShotChargeBar.style.top = (myVerti - 40) + 'px';
-    bigShotChargeBar.style.left = (myHoriz + 40) + 'px';
+    bigShotChargeBar.style.top = (myVerti - 60) + 'px';
+    bigShotChargeBar.style.left = (myHoriz + 35) + 'px';
     
     if (prevHoriz !== myHoriz || prevVerti !== myVerti) { isMoving = true; }
     else { isMoving = false; }
