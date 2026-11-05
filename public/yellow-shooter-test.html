@@ -135,17 +135,17 @@ const waveConfigurations = [
 ];
 
 const upgrades = [
-    { upgradeID: 1, name: "Heavy Shots", apply: () => { bulletSizeStat += 0.1; bulletSpeed -= 0.3; } },
-    { upgradeID: 2, name: "Lighter Shots", apply: () => { bulletSizeStat -= 0.1; bulletSpeed += 0.3;} },
-    { upgradeID: 3, name: "Sharper Rounds", apply: () => { playerDamage += 1; } },
-    { upgradeID: 4, name: "Endurance", apply: () => { maxHealth += 1; playerHealth += 1;} },
-    { upgradeID: 5, name: "Strong Heart", apply: () => { maxHealth += 2; playerHealth += 2; } },
-    { upgradeID: 6, name: "Exercise", apply: () => { playerSpeed += 0.5 } },
-    { upgradeID: 7, name: "Gym Membership", apply: () => { playerSpeed += 0.5; maxHealth += 1; playerHealth += 1; } },
-    { upgradeID: 8, name: "Beefy", apply: () => { playerSpeed -= 0.5; maxHealth += 2; playerHealth += 2; } },
-    { upgradeID: 9, name: "Bigger Magazine", apply: () => { maxBullets += 2; } },
-    { upgradeID: 10, name: "Slug Shots", apply: () => { maxBullets = 1; bulletSizeStat += 0.5; playerDamage += 3; } },
-    { upgradeID: 11, name: "BIG SHOT", apply: () => { allowBigShot = true; } },
+    { upgradeID: 1, desc: "Bigger, slower bullets", name: "Heavy Shots", apply: () => { bulletSizeStat += 0.1; bulletSpeed -= 0.3; } },
+    { upgradeID: 2, desc: "Smaller, faster bullets", name: "Lighter Shots", apply: () => { bulletSizeStat -= 0.1; bulletSpeed += 0.3;} },
+    { upgradeID: 3, desc: "Damage UP, twice", name: "Sharper Rounds", apply: () => { playerDamage += 2; } },
+    { upgradeID: 4, desc: "Health UP", name: "Endurance", apply: () => { maxHealth += 1; playerHealth += 1;} },
+    { upgradeID: 5, desc: "Health UP, twice", name: "Strong Heart", apply: () => { maxHealth += 2; playerHealth += 2; } },
+    { upgradeID: 6, desc: "Speed UP", name: "Exercise", apply: () => { playerSpeed += 0.5 } },
+    { upgradeID: 7, desc: "Speed, health and damage UP", name: "Gym Membership", apply: () => { playerSpeed += 0.5; maxHealth += 1; playerHealth += 1; playerDamage += 1 } },
+    { upgradeID: 8, desc: "Speed DOWN, health UP", name: "Beefy", apply: () => { playerSpeed -= 0.5; maxHealth += 2; playerHealth += 2; } },
+    { upgradeID: 9, desc: "+2 max bullets", name: "Bigger Magazine", apply: () => { maxBullets += 2; } },
+    { upgradeID: 10, desc: "Max bullets UP, bullet size UP, damage UP", name: "Slug Shots", apply: () => { maxBullets = 1; bulletSizeStat += 0.5; playerDamage += 4; } },
+    { upgradeID: 11, desc: "Hold Z/SPACE to fire a BIG SHOT! BIG SHOTs do 5 times your damage, and pierce enemies.", name: "BIG SHOT", apply: () => { allowBigShot = true; } },
 ];
 
 let activeEnemies = [];
