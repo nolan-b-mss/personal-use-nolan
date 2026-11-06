@@ -51,6 +51,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 <script>
 const assetsToPreload = [
     'sprites/shard0.png',
+    'sprites/tutorial-yellow.jpg'
     'sprites/soul-06-down.png',
     'sprites/soul-06-left.png',
     'sprites/soul-06-up.png',
@@ -146,9 +147,10 @@ const upgrades = [
     { upgradeID: 7, desc: "Speed, health and damage UP", name: "Gym Membership", apply: () => { playerSpeed += 0.5; maxHealth += 1; playerHealth += 1; playerDamage += 1 } },
     { upgradeID: 8, desc: "Speed DOWN, health UP", name: "Beefy", apply: () => { playerSpeed -= 0.5; maxHealth += 2; playerHealth += 2; } },
     { upgradeID: 9, desc: "+2 max bullets", name: "Bigger Magazine", apply: () => { maxBullets += 2; } },
-    { upgradeID: 10, desc: "Max bullets MINIMAL, bullet size UP, damage UP", name: "Slug Shots", apply: () => { maxBullets = 1; bulletSizeStat += 1; playerDamage += 4; } },
-    { upgradeID: 11, desc: "Hold Z/SPACE to fire a BIG SHOT! BIG SHOTs do 5 times your damage, and pierce enemies.", name: "BIG SHOT", apply: () => { allowBigShot = true; } },
+    { upgradeID: 10, desc: "Only one bullet. Bullet size UP, damage way up", name: "Slug Shots", apply: () => { maxBullets = 1; bulletSizeStat += 1; playerDamage += 4; } },
+    { upgradeID: 11, desc: "Hold SHOOT to fire a BIG SHOT! BIG SHOTs do 5 times your damage, and pierce enemies.", name: "BIG SHOT", apply: () => { allowBigShot = true; } },
     { upgradeID: 12, desc: "Refills your HP to its maximum.", name: "Full Health", apply: () => { playerHealth = maxHealth } },
+    { upgradeID: 13, 
 ];
 
 let activeEnemies = [];
@@ -178,8 +180,14 @@ let playerHealth = 5;
 let maxHealth = 5;
 let playerSpeed = 3;
 let playerDamage = 1;
+let totalDamage = 0;
+let damageTaken = 0;
+let timesFired = 0;
+let enemiesDefeated = 0;
+let totalUpgrades = 0;
 let playerPaused = false;
 let upgradePaused = false;
+let deathPaused = false;
 let maxBullets = 4;
 let bulletSizeStat = 1.0;
 let bulletSize = 16 * bulletSizeStat;
@@ -403,20 +411,76 @@ Speed: ${playerSpeed}<br>
 Damage: ${playerDamage}<br>
 Bullet Speed: ${bulletSpeed}<br>
 Bullet Size: ${bulletSizeStat}x<br>
+Maximum Bullets: ${maxBullets}<br>
 `;
 }
 
 function takeDamage(damageAmount) {
     if (isTrueInvincible){ return; }
     else if (!isInvincible && playerHealth > 0) {
-        if (playerHealth !== Infinity) playerHealth -= damageAmount;
+        if (playerHealth !== Infinity) {
+            playerHealth -= damageAmount;
+            damageTaken += damageAmount;
         isInvincible = true;
         playerElement.style.opacity = 0.5;
+            if (playerHealth <= 0){
+                playerDeath();
+            }
         setTimeout(function() {
             isInvincible = false;
             playerElement.style.opacity = 1.0;
-        }, 1000);
+            }, 1000);
+        }
     }
+}
+function playerDeath(){
+    deathPaused = true;
+    let overlay = document.createElement('div');
+    overlay.id = 'deathOverlay';
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100vw';
+    overlay.style.height = '100vh';
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.85)';
+    overlay.style.zIndex = '4000';
+    overlay.style.display = 'flex';
+    overlay.style.flexDirection = 'column';
+    overlay.style.justifyContent = 'center';
+    overlay.style.alignItems = 'center';
+    overlay.style.color = 'white';
+    overlay.style.fontFamily = "'DeterminationMono', monospace";
+
+        let title = document.createElement('div');
+        title.innerText = `You died...`;
+        title.style.fontSize = '64px';
+        title.style.marginBottom = '40px';
+        title.style.color = 'white';
+        overlay.appendChild(title);
+
+        let subtitle = document.createElement('div');
+        subtitle.innerText = `Game summary:`;
+        subtitle.style.fontSize = '32px';
+        subtitle.style.marginBottom = '40px';
+        subtitle.style.color = 'white';
+        overlay.appendChild(subtitle);
+
+        let summary = document.createElement('div');
+        summary.innerText = `
+        Wave ${currentWaveIndex}<br>
+        Speed: ${playerSpeed}<br>
+        Damage: ${playerDamage}<br>
+        Bullet Speed: ${bulletSpeed}<br>
+        Bullet Size: ${bulletSizeStat}x<br>
+        Maximum Bullets: ${maxBullets}<br>
+        Damage Dealt: ${totalDamage}<br>
+        Damage Taken: ${damageTaken}<br>
+        Shots Fired: ${timesFired}<br>
+        Enemies Defeated: ${enemiesDefeated}<br>
+        `
+        summary.style.fontSize = '16px';
+        summary.style.color = 'white';
+        summary.style.marginBottom = '40px';
 }
 
 function triggerUpgradesMenu(){
@@ -485,6 +549,7 @@ function triggerUpgradesMenu(){
         card.onmouseout = () => { card.style.backgroundColor = 'black'; card.style.color = 'white'; nameHeader.style.color = 'yellow'; };
 
         card.onclick = () => {
+            totalUpgrades += 1;
             upgrade.apply();
             overlay.remove();
             upgradePaused = false;
@@ -508,7 +573,8 @@ function shootPlayerBullet() {
     if (playerBullets.length >= maxBullets) {
         return;
     }
-    
+
+    timesFired += 1;
     bulletSize = 16 * bulletSizeStat;
     let bullet = document.createElement('img');
     bullet.style.position = 'absolute';
@@ -544,6 +610,7 @@ function shootPlayerBullet() {
 }
 
 function shootBigShot() {
+    timesFired += 1;
     let bigBullet = document.createElement('img');
     bigBullet.style.position = 'absolute';
     bigBullet.style.width = '60px';
@@ -608,11 +675,13 @@ function movePlayerBullets() {
                         if (pBullet.damagedEnemies.has(enemy)) return; 
                         pBullet.damagedEnemies.add(enemy);
                         enemy.health -= playerDamage * 5;
+                        totalDamage += playerDamage * 5;
                     }
                     if (!pBullet.isBigShot) {                        
                         pBullet.element.remove();
                         pBullet.removed = true;
                         enemy.health -= playerDamage;
+                        totalDamage += playerDamage;
                     }
                     
                     enemy.element.style.filter = 'brightness(2) sepia(1) hue-rotate(5deg) saturate(1000%)';
@@ -623,6 +692,7 @@ function movePlayerBullets() {
                     }, 100);
 
                     if (enemy.health <= 0){
+                        enemiesDefeated += 1;
                         enemy.element.remove();
                         enemy.removed = true;
                         
