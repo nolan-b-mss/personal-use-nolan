@@ -594,7 +594,6 @@ function triggerUpgradesMenu(){
             upgrade.apply();
             overlay.remove();
             upgradePaused = false;
-            waveTransitioning = false;
 
             if (currentWaveIndex < waveConfigurations.length) {
                 setTimeout(() => spawnWave(currentWaveIndex), 1000);
