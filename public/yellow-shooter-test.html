@@ -51,7 +51,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 <script>
 const assetsToPreload = [
     'sprites/shard0.png',
-    'sprites/tutorial-yellow.jpg'
+    'sprites/tutorial-yellow.jpg',
     'sprites/soul-06-down.png',
     'sprites/soul-06-left.png',
     'sprites/soul-06-up.png',
@@ -150,7 +150,6 @@ const upgrades = [
     { upgradeID: 10, desc: "Only one bullet. Bullet size UP, damage way up", name: "Slug Shots", apply: () => { maxBullets = 1; bulletSizeStat += 1; playerDamage += 4; } },
     { upgradeID: 11, desc: "Hold SHOOT to fire a BIG SHOT! BIG SHOTs do 5 times your damage, and pierce enemies.", name: "BIG SHOT", apply: () => { allowBigShot = true; } },
     { upgradeID: 12, desc: "Refills your HP to its maximum.", name: "Full Health", apply: () => { playerHealth = maxHealth } },
-    { upgradeID: 13, 
 ];
 
 let activeEnemies = [];
@@ -450,6 +449,7 @@ function playerDeath(){
     overlay.style.alignItems = 'center';
     overlay.style.color = 'white';
     overlay.style.fontFamily = "'DeterminationMono', monospace";
+    document.body.appendChild(overlay);
 
         let title = document.createElement('div');
         title.innerText = `You died...`;
@@ -481,6 +481,7 @@ function playerDeath(){
         summary.style.fontSize = '16px';
         summary.style.color = 'white';
         summary.style.marginBottom = '40px';
+        overlay.appendChild(summary);
 }
 
 function triggerUpgradesMenu(){
@@ -751,7 +752,7 @@ function spawnSplitChild(childType, enemy) {
 }
 
 function getRandomEdgePosition(containerWidth, containerHeight, enemySize) {
-    let side = Math.floor(Math.random() * 3); 
+    let side = Math.floor(Math.random() * 3); //3 on purpose, dont want to spawn on top
     let x = 0;
     let y = 0;
 
