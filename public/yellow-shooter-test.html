@@ -459,42 +459,46 @@ function playerDeath(){
     overlay.style.fontFamily = "'DeterminationMono', monospace";
     document.body.appendChild(overlay);
     
-        let brokenHeart = document.createElement('img')
-        brokenHeart.src = "sprites/brokenheart-yellow.png";
+    let brokenHeart = document.createElement('img');
+    brokenHeart.src = "sprites/brokenheart-yellow.png";
+    brokenHeart.style.width = '120px';
+    brokenHeart.style.height = '120px';
+    brokenHeart.style.marginBottom = '20px';
+    overlay.appendChild(brokenHeart);
 
-        let title = document.createElement('div');
-        title.innerText = `You died...`;
-        title.style.fontSize = '64px';
-        title.style.marginBottom = '40px';
-        title.style.color = 'yellow';
-        overlay.appendChild(title);
+    let title = document.createElement('div');
+    title.innerText = `You died...`;
+    title.style.fontSize = '64px';
+    title.style.marginBottom = '40px';
+    title.style.color = 'yellow';
+    overlay.appendChild(title);
 
-        let subtitle = document.createElement('div');
-        subtitle.innerText = `Game summary:`;
-        subtitle.style.fontSize = '32px';
-        subtitle.style.marginBottom = '40px';
-        subtitle.style.color = 'white';
-        overlay.appendChild(subtitle);
+    let subtitle = document.createElement('div');
+    subtitle.innerText = `Game summary:`;
+    subtitle.style.fontSize = '32px';
+    subtitle.style.marginBottom = '40px';
+    subtitle.style.color = 'white';
+    overlay.appendChild(subtitle);
 
-        let summary = document.createElement('div');
-        summary.innerText = `
-        Wave ${currentWaveIndex}
-        Speed: ${playerSpeed}
-        Damage: ${playerDamage}
-        Bullet Speed: ${bulletSpeed}
-        Bullet Size: ${bulletSizeStat}x
-        Maximum Bullets: ${maxBullets}
-        Damage Dealt: ${totalDamage}
-        Damage Taken: ${damageTaken}
-        Shots Fired: ${timesFired}
-        Enemies Defeated: ${enemiesDefeated}
-        
-        Press X to restart.
-        `
-        summary.style.fontSize = '20px';
-        summary.style.color = 'white';
-        summary.style.marginBottom = '40px';
-        overlay.appendChild(summary);
+    let summary = document.createElement('div');
+    summary.innerText = `
+    Wave ${currentWaveIndex}
+    Speed: ${playerSpeed}
+    Damage: ${playerDamage}
+    Bullet Speed: ${bulletSpeed}
+    Bullet Size: ${bulletSizeStat}x
+    Maximum Bullets: ${maxBullets}
+    Damage Dealt: ${totalDamage}
+    Damage Taken: ${damageTaken}
+    Shots Fired: ${timesFired}
+    Enemies Defeated: ${enemiesDefeated}
+    
+    Press X to restart.
+    `;
+    summary.style.fontSize = '20px';
+    summary.style.color = 'white';
+    summary.style.marginBottom = '40px';
+    overlay.appendChild(summary);
 }
 
 function triggerUpgradesMenu(){
