@@ -475,7 +475,7 @@ function playerDeath(){
     
     let brokenHeart = document.createElement('img');
     brokenHeart.src = "sprites/brokenheart-yellow.png";
-    brokenHeart.style.width = '120px';
+    brokenHeart.style.width = '160px';
     brokenHeart.style.height = '120px';
     brokenHeart.style.marginBottom = '20px';
     overlay.appendChild(brokenHeart);
@@ -717,8 +717,8 @@ function movePlayerBullets() {
                         totalDamage += playerDamage;
                     }
                     if (allowPoisonShot){
-                        if (pBullet.poisonedEnemies.has(enemy)) return;
-                        pBullet.poisonedEnemies.push(enemy)
+                        if (poisonedEnemies.has(enemy)) return;
+                        poisonedEnemies.push(enemy)
                     }
                     
                     enemy.element.style.filter = 'brightness(2) sepia(1) hue-rotate(5deg) saturate(1000%)';
