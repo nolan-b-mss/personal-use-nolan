@@ -117,21 +117,21 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 const enemyTypes = {
-    chaser: { health: 10, speed: 2.0, damage: 1, size: 32, isPoisoned: false; },
-    fastChaser: { health: 5, speed: 2.5, damage: 1, size: 32, isPoisoned: false; },
-    enraged: { health: 2, speed: 3, damage: 1, size: 32, isPoisoned: false; },
-    hyper: { health: 1, speed: 5, damage: 1, size: 32, isPoisoned: false; },
-    ranger: { health: 5, speed: 0.25, damage: 1, size: 32, isPoisoned: false; },
-    strong: { health: 25, speed: 1.25, damage: 1, size: 45, isPoisoned: false; },
-    boss1: { health: 75, speed: 1.5, damage: 1, size: 60, isPoisoned: false; },
-    boss2: { health: 150, speed: 0.75, damage: 2, size: 80, isPoisoned: false; },
-    boss3: { health: 250, speed: 2.75, damage: 2, size: 80, isPoisoned: false; },
-    boss4: { health: 500, speed: 2, damage: 3, size: 100, isPoisoned: false; },
-    splitter: { health: 10, speed: 1.75, damage: 1, size: 45, isPoisoned: false; },
-    splitter01: { health: 5, speed: 2, damage: 1, size: 30, isPoisoned: false; },
-    splitter02: { health: 2, speed: 2.25, damage: 1, size: 15, isPoisoned: false; },
-    splitter03: { health: 1, speed: 2.50, damage: 1, size: 8, isPoisoned: false; },
-    scaredy: { health: 6, speed: -3, damage: 2, size: 32, isPoisoned: false; },
+    chaser: { health: 10, speed: 2.0, damage: 1, size: 32, isPoisoned: false, },
+    fastChaser: { health: 5, speed: 2.5, damage: 1, size: 32, isPoisoned: false, },
+    enraged: { health: 2, speed: 3, damage: 1, size: 32, isPoisoned: false, },
+    hyper: { health: 1, speed: 5, damage: 1, size: 32, isPoisoned: false, },
+    ranger: { health: 5, speed: 0.25, damage: 1, size: 32, isPoisoned: false, },
+    strong: { health: 25, speed: 1.25, damage: 1, size: 45, isPoisoned: false, },
+    boss1: { health: 75, speed: 1.5, damage: 1, size: 60, isPoisoned: false, },
+    boss2: { health: 150, speed: 0.75, damage: 2, size: 80, isPoisoned: false, },
+    boss3: { health: 250, speed: 2.75, damage: 2, size: 80, isPoisoned: false, },
+    boss4: { health: 500, speed: 2, damage: 3, size: 100, isPoisoned: false, },
+    splitter: { health: 10, speed: 1.75, damage: 1, size: 45, isPoisoned: false, },
+    splitter01: { health: 5, speed: 2, damage: 1, size: 30, isPoisoned: false, },
+    splitter02: { health: 2, speed: 2.25, damage: 1, size: 15, isPoisoned: false, },
+    splitter03: { health: 1, speed: 2.50, damage: 1, size: 8, isPoisoned: false, },
+    scaredy: { health: 6, speed: -3, damage: 2, size: 32, isPoisoned: false, },
 };
 
 const waveConfigurations = [
@@ -163,7 +163,7 @@ const upgrades = [
     { upgradeID: 14, desc: "Upon hitting an enemy, they will take one damage every second. Does not stack.", name: "Syringe Shots", apply: () => { allowPoisonShot = true; } },
 ];
 
-const poisonedEnemies = [];
+let poisonedEnemies = [];
 let activeEnemies = [];
 let gameContainer = document.getElementById('gameContainer');
 let playerElement = document.getElementById('myPlayer01');
@@ -718,7 +718,7 @@ function movePlayerBullets() {
                     }
                     if (allowPoisonShot){
                         if (pBullet.poisonedEnemies.has(enemy)) return;
-                        pBullet.poisonedEnemies.add(enemy)
+                        pBullet.poisonedEnemies.push(enemy)
                     }
                     
                     enemy.element.style.filter = 'brightness(2) sepia(1) hue-rotate(5deg) saturate(1000%)';
@@ -783,6 +783,7 @@ function spawnSplitChild(childType, enemy) {
         damage: childTypeData.damage,
         size: childTypeData.size,
         element: childElement,
+        isPoisoned: false,
         removed: false
     });
 }
@@ -839,6 +840,7 @@ function spawnWave(waveIndex) {
                 damage: typeData.damage,
                 size: typeData.size,
                 element: enemyElement,
+                isPoisoned: false,
                 removed: false
             });
         }
