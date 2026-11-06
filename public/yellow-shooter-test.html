@@ -130,12 +130,12 @@ const enemyTypes = {
 };
 
 const waveConfigurations = [
-    { waveID: 1, enemies: [{ type: 'chaser', count: 5 }] },
-    { waveID: 2, enemies: [{ type: 'chaser', count: 5 }, { type: 'ranger', count: 3 }] },
-    { waveID: 3, enemies: [{ type: 'ranger', count: 5}, { type: 'fastChaser', count: 3}] },
-    { waveID: 4, enemies: [{ type: 'strong', count: 3}, { type: 'scaredy', count: 1}] },
-    { waveID: 5, enemies: [{ type: 'boss1', count: 1}] },
-    { waveID: 6, enemies: [{ type: 'splitter', count: 1 }] },
+    { waveID: 0, enemies: [{ type: 'chaser', count: 5 }] },
+    { waveID: 1, enemies: [{ type: 'chaser', count: 5 }, { type: 'ranger', count: 3 }] },
+    { waveID: 2, enemies: [{ type: 'ranger', count: 5}, { type: 'fastChaser', count: 3}] },
+    { waveID: 3, enemies: [{ type: 'strong', count: 3}, { type: 'scaredy', count: 1}] },
+    { waveID: 4, enemies: [{ type: 'boss1', count: 1}] },
+    { waveID: 5, enemies: [{ type: 'splitter', count: 1 }] },
 ];
 
 const upgrades = [
@@ -151,6 +151,7 @@ const upgrades = [
     { upgradeID: 10, desc: "Only one bullet. Bullet size UP, damage way up", name: "Slug Shots", apply: () => { maxBullets = 1; bulletSizeStat += 1; playerDamage += 4; } },
     { upgradeID: 11, desc: "Hold SHOOT to fire a BIG SHOT! BIG SHOTs do 5 times your damage, and pierce enemies.", name: "BIG SHOT", apply: () => { allowBigShot = true; } },
     { upgradeID: 12, desc: "Refills your HP to its maximum.", name: "Full Health", apply: () => { playerHealth = maxHealth } },
+    { upgradeID: 13, desc: "W.I.P. (likely doesnt do anything yet)", name: "Justice", apply: () => { allowJusticeBeam = true; } },
 ];
 
 let activeEnemies = [];
@@ -173,6 +174,7 @@ let shootKeyDebounced = false;
 let isInvincible = false;
 let isTrueInvincible = false;
 let allowBigShot = false;
+let allowJusticeBeam = false;
 let isChargingBigShot = false;
 let chargeStartTime = 0;
 const bigShotChargeTime = 1000;
