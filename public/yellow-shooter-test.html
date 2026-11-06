@@ -27,7 +27,7 @@ body {height:100vh; margin: 0; background-color:black; position: relative; font-
 
 <div id="debug" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: lime; font-family: monospace; padding: 10px; border: 1px solid lime; z-index: 1000; font-size: 14px; pointer-events: none; display: none;">
 </div>
-<div id="stats" style="position: fixed; top: 10px; left: 10px; background: rgba(0,0,0,0.8); color: #ffff00; font-family: monospace; padding: 10px; border: 1px solid lime; z-index: 1000; font-size: 14px; pointer-events: none; display: block;">
+<div id="stats" style="position: fixed; top: 10px; left: 10px; background: rgba(0,0,0,0.8); color: #ffff00; font-family: monospace; padding: 10px; border: 1px solid #ffff00; z-index: 1000; font-size: 30px; pointer-events: none; display: block;">
 </div>
 <div id="gameContainer">
 <div id="tutorialScreen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: black; z-index: 2000; display: none; justify-content: center; align-items: center;">
@@ -146,7 +146,7 @@ const upgrades = [
     { upgradeID: 7, desc: "Speed, health and damage UP", name: "Gym Membership", apply: () => { playerSpeed += 0.5; maxHealth += 1; playerHealth += 1; playerDamage += 1 } },
     { upgradeID: 8, desc: "Speed DOWN, health UP", name: "Beefy", apply: () => { playerSpeed -= 0.5; maxHealth += 2; playerHealth += 2; } },
     { upgradeID: 9, desc: "+2 max bullets", name: "Bigger Magazine", apply: () => { maxBullets += 2; } },
-    { upgradeID: 10, desc: "Max bullets UP, bullet size UP, damage UP", name: "Slug Shots", apply: () => { maxBullets = 1; bulletSizeStat += 0.5; playerDamage += 4; } },
+    { upgradeID: 10, desc: "Max bullets MINIMAL, bullet size UP, damage UP", name: "Slug Shots", apply: () => { maxBullets = 1; bulletSizeStat += 1; playerDamage += 4; } },
     { upgradeID: 11, desc: "Hold Z/SPACE to fire a BIG SHOT! BIG SHOTs do 5 times your damage, and pierce enemies.", name: "BIG SHOT", apply: () => { allowBigShot = true; } },
     { upgradeID: 12, desc: "Refills your HP to its maximum.", name: "Full Health", apply: () => { playerHealth = maxHealth } },
 ];
@@ -397,7 +397,8 @@ function updateUI() {
     
     const statsMenu = document.getElementById('stats');
     statsMenu.innerHTML = `
-Your stats<br>
+Stats<br>
+Wave ${currentWaveIndex}<br>
 Speed: ${playerSpeed}<br>
 Damage: ${playerDamage}<br>
 Bullet Speed: ${bulletSpeed}<br>
@@ -507,7 +508,8 @@ function shootPlayerBullet() {
     if (playerBullets.length >= maxBullets) {
         return;
     }
-
+    
+    bulletSize = 16 * bulletSizeStat;
     let bullet = document.createElement('img');
     bullet.style.position = 'absolute';
     bullet.style.width = bulletSize + 'px';
