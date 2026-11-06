@@ -443,7 +443,7 @@ function playerDeath(){
     overlay.style.left = '0';
     overlay.style.width = '100vw';
     overlay.style.height = '100vh';
-    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.85)';
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 1)';
     overlay.style.zIndex = '4000';
     overlay.style.display = 'flex';
     overlay.style.flexDirection = 'column';
@@ -453,8 +453,8 @@ function playerDeath(){
     overlay.style.fontFamily = "'DeterminationMono', monospace";
     document.body.appendChild(overlay);
     
-       // let brokenHeart = document.createElement('img')
-        //brokenHeart.src = "sprites/brokenheart-yellow.png";
+        let brokenHeart = document.createElement('img')
+        brokenHeart.src = "sprites/brokenheart-yellow.png";
 
         let title = document.createElement('div');
         title.innerText = `You died...`;
@@ -482,6 +482,8 @@ function playerDeath(){
         Damage Taken: ${damageTaken}
         Shots Fired: ${timesFired}
         Enemies Defeated: ${enemiesDefeated}
+        
+        Press X to restart.
         `
         summary.style.fontSize = '20px';
         summary.style.color = 'white';
