@@ -137,8 +137,8 @@ const waveConfigurations = [
 ];
 
 const upgrades = [
-    { upgradeID: 1, desc: "Bigger, slower bullets", name: "Heavy Shots", apply: () => { bulletSizeStat += 0.1; bulletSpeed -= 0.3; } },
-    { upgradeID: 2, desc: "Smaller, faster bullets", name: "Lighter Shots", apply: () => { bulletSizeStat -= 0.1; bulletSpeed += 0.3;} },
+    { upgradeID: 1, desc: "Bigger, slower bullets", name: "Heavy Shots", apply: () => { bulletSizeStat += 0.3; bulletSpeed -= 0.3; } },
+    { upgradeID: 2, desc: "Smaller, faster bullets", name: "Lighter Shots", apply: () => { bulletSizeStat -= 0.3; bulletSpeed += 0.3;} },
     { upgradeID: 3, desc: "Damage UP, twice", name: "Sharper Rounds", apply: () => { playerDamage += 2; } },
     { upgradeID: 4, desc: "Health UP", name: "Endurance", apply: () => { maxHealth += 1; playerHealth += 1;} },
     { upgradeID: 5, desc: "Health UP, twice", name: "Strong Heart", apply: () => { maxHealth += 2; playerHealth += 2; } },
@@ -379,14 +379,6 @@ Facing: ${facing}<br>
 isMoving? ${isMoving}<br>
 X: ${myHoriz}<br>
 Y: ${playerElement.style.top}<br>
----------------- <br>
-Temporary Stats Menu<br>
-PlayerSpeed: ${playerSpeed}<br>
-PlayerHealth: ${playerHealth}<br>
-PlayerDamage: ${playerDamage}<br>
-MaxHealth: ${maxHealth}<br>
-BulletSpeed: ${bulletSpeed}<br>
-BulletSize: ${bulletSizeStat}x<br>
 `;
 }
 
@@ -464,12 +456,13 @@ function triggerUpgradesMenu(){
         card.style.justifyContent = 'center';
         card.style.alignItems = 'center';
         card.style.width = '250px';
-        card.style.padding = '20px';
+        card.style.padding = '25px 20px';
         card.style.backgroundColor = 'black';
         card.style.color = 'white';
         card.style.border = '2px solid yellow';
         card.style.fontFamily = "'DeterminationMono', monospace";
         card.style.cursor = 'pointer';
+        card.style.lineHeight = '1.5';
 
         let nameHeader = document.createElement('div');
         nameHeader.innerText = upgrade.name;
@@ -553,7 +546,7 @@ function shootBigShot() {
     bigBullet.style.position = 'absolute';
     bigBullet.style.width = '60px';
     bigBullet.style.height = '60px';
-    bigBullet.src = "sprites/big-shot-down.png";
+    bigBullet.src = "sprites/shard0.png";
     bigBullet.style.zIndex = '99';
 
     let startX = myHoriz;
@@ -750,6 +743,10 @@ function updateEnemies() {
         let deltaX = myHoriz - enemy.x;
         let deltaY = myVerti - enemy.y;
         let distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        let minEnemyX = 0 + enemy.size;
+        let maxEnemyX = 1050 - enemy.size;
+        let minEnemyY = 0 + enemy.size;
+        let maxEnemyY = 900 - enemy.size;
         
         if (distance > 1) {
             enemy.x += (deltaX / distance) * enemy.speed;
@@ -757,6 +754,11 @@ function updateEnemies() {
             enemy.element.style.left = enemy.x + 'px';
             enemy.element.style.top = enemy.y + 'px';
         }
+        if (enemy.x < minEnemyX) {enemy.x = minEnemyX;}
+        if (enemy.x > maxEnemyX) {enemy.x = maxEnemyX;}
+        if (enemy.y < minEnemyY) {enemy.y = minEnemyY;}
+        if (enemy.y > maxEnemyY) {enemy.y = maxEnemyY;} 
+        
     });
 
     if (activeEnemies.length === 0 && gameRunning && !waveTransitioning) {
