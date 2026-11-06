@@ -161,10 +161,10 @@ const upgrades = [
     { upgradeID: 8, desc: "Speed DOWN, health UP", name: "Beefy", apply: () => { playerSpeed -= 0.5; maxHealth += 2; playerHealth += 2; } },
     { upgradeID: 9, desc: "+2 max bullets", name: "Bigger Magazine", apply: () => { maxBullets += 2; } },
     { upgradeID: 10, desc: "Only one bullet. Bullet size UP, damage way up", name: "Slug Shots", apply: () => { maxBullets = 1; bulletSizeStat += 1; playerDamage += 4; } },
-    { upgradeID: 11, desc: "Hold SHOOT to fire a BIG SHOT! BIG SHOTs do 5 times your damage, and pierce enemies.", name: "BIG SHOT", apply: () => { allowBigShot = true; } },
+    { upgradeID: 11, desc: "Hold SHOOT to fire a BIG SHOT! BIG SHOTs do 5 times your damage, and pierce enemies.", name: "BIG SHOT", oneTime: true, apply: () => { allowBigShot = true; } },
     { upgradeID: 12, desc: "Refills your HP to its maximum.", name: "Full Health", apply: () => { playerHealth = maxHealth } },
-    { upgradeID: 13, desc: "W.I.P. (likely doesnt do anything yet)", name: "Justice", apply: () => { allowJusticeBeam = true; } },
-    { upgradeID: 14, desc: "Upon hitting an enemy, they will take half your damage every second. Does not stack with itself.", name: "Syringe Shots", apply: () => { allowPoisonShot = true; } },
+    { upgradeID: 13, desc: "W.I.P. (likely doesnt do anything yet)", name: "Justice", oneTime: true, apply: () => { allowJusticeBeam = true; } },
+    { upgradeID: 14, desc: "Upon hitting an enemy, they will take half your damage every second. Does not stack with itself.", name: "Syringe Shots", oneTime: true, apply: () => { allowPoisonShot = true; } },
 ];
 
 let poisonedEnemies = [];
@@ -193,6 +193,7 @@ let allowPoisonShot = false;
 let isChargingBigShot = false;
 let chargeStartTime = 0;
 const bigShotChargeTime = 1000;
+const claimedOneTimeUpgradeIDs = new Set();
 let playerHealth = 5;
 let maxHealth = 5;
 let playerSpeed = 3;
@@ -297,6 +298,7 @@ document.onkeyup = function(event){
 };
 
 function movement() {
+
     updateDebug();
     let elapsed = Date.now() - chargeStartTime;
     if (!playerPaused && !upgradePaused){
@@ -523,6 +525,7 @@ function playerDeath(){
 
 function triggerUpgradesMenu(){
     upgradePaused = true;
+    let availableUpgrades = upgrades.filter(upg => !upg.oneTime || (upg.oneTime && !claimedOneTimeUpgradeIDs.has(upg.upgradeID)));
     let overlay = document.createElement('div');
     overlay.id = 'upgradeOverlay';
     overlay.style.position = 'fixed';
