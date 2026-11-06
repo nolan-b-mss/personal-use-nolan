@@ -124,7 +124,7 @@ const enemyTypes = {
     ranger: { health: 5, speed: 0.25, damage: 1, size: 32, isPoisoned: false, },
     strong: { health: 25, speed: 1.25, damage: 1, size: 45, isPoisoned: false, },
     boss1: { health: 75, speed: 1.5, damage: 1, size: 60, isPoisoned: false, },
-    boss2: { health: 150, speed: 0.75, damage: 2, size: 80, isPoisoned: false, },
+    boss2: { health: 150, speed: 0.75, damage: 2, size: 90, isPoisoned: false, },
     boss3: { health: 250, speed: 2.75, damage: 2, size: 80, isPoisoned: false, },
     boss4: { health: 500, speed: 2, damage: 3, size: 100, isPoisoned: false, },
     splitter: { health: 10, speed: 1.75, damage: 1, size: 45, isPoisoned: false, },
@@ -135,15 +135,19 @@ const enemyTypes = {
 };
 
 const waveConfigurations = [
-    { waveID: 0, enemies: [{ type: 'chaser', count: 5 }] },
+    // in-game wave number is waveID + 1
+    { waveID: 0, enemies: [{ type: 'chaser', count: 5 }] }, // wave 1 in game
     { waveID: 1, enemies: [{ type: 'chaser', count: 5 }, { type: 'ranger', count: 3 }] },
     { waveID: 2, enemies: [{ type: 'ranger', count: 5}, { type: 'fastChaser', count: 3}] },
     { waveID: 3, enemies: [{ type: 'strong', count: 3}, { type: 'scaredy', count: 1}] },
-    { waveID: 4, enemies: [{ type: 'boss1', count: 1}] },
+    { waveID: 4, enemies: [{ type: 'boss1', count: 1}] }, // wave 5 in game
     { waveID: 5, enemies: [{ type: 'splitter', count: 1 }] },
     { waveID: 6, enemies: [{ type: 'boss1', count: 1}, { type: 'strong', count: 3}] },
     { waveID: 7, enemies: [{ type: 'splitter', count: 2 }] },
     { waveID: 8, enemies: [{ type: 'chaser', count: 15 }] },
+    { waveID: 9, enemies: [{ type: 'boss2'}] }, // wave 10 in game
+    { waveID: 10, enemies: [{type: 'boss1', count: 2}, {type: 'enraged', count: 5}] },
+    { waveID: 11, enemies: [{type: 'enraged', count: 5}, {type: 'ranger', count: 5}, {type: 'boss2', count: 1}] },
 ];
 
 const upgrades = [
@@ -160,7 +164,7 @@ const upgrades = [
     { upgradeID: 11, desc: "Hold SHOOT to fire a BIG SHOT! BIG SHOTs do 5 times your damage, and pierce enemies.", name: "BIG SHOT", apply: () => { allowBigShot = true; } },
     { upgradeID: 12, desc: "Refills your HP to its maximum.", name: "Full Health", apply: () => { playerHealth = maxHealth } },
     { upgradeID: 13, desc: "W.I.P. (likely doesnt do anything yet)", name: "Justice", apply: () => { allowJusticeBeam = true; } },
-    { upgradeID: 14, desc: "Upon hitting an enemy, they will take one damage every second. Does not stack.", name: "Syringe Shots", apply: () => { allowPoisonShot = true; } },
+    { upgradeID: 14, desc: "Upon hitting an enemy, they will take half your damage every second. Does not stack with itself.", name: "Syringe Shots", apply: () => { allowPoisonShot = true; } },
 ];
 
 let poisonedEnemies = [];
@@ -194,6 +198,7 @@ let maxHealth = 5;
 let playerSpeed = 3;
 let playerDamage = 1;
 let totalDamage = 0;
+let totalDebuffDamage = 0;
 let damageTaken = 0;
 let timesFired = 0;
 let enemiesDefeated = 0;
@@ -503,6 +508,7 @@ function playerDeath(){
     Bullet Size: ${bulletSizeStat}x
     Maximum Bullets: ${maxBullets}
     Damage Dealt: ${totalDamage}
+    Debuff Damage: ${totalDebuffDamage}
     Damage Taken: ${damageTaken}
     Shots Fired: ${timesFired}
     Enemies Defeated: ${enemiesDefeated}
@@ -716,10 +722,10 @@ function movePlayerBullets() {
                         enemy.health -= playerDamage;
                         totalDamage += playerDamage;
                     }
-                    if (allowPoisonShot){
-                        if (poisonedEnemies.has(enemy)) return;
-                        poisonedEnemies.push(enemy)
-                    }
+                    if (allowPoisonShot && !enemy.isPoisoned){
+                        enemy.isPoisoned = true;
+                        }
+                    
                     
                     enemy.element.style.filter = 'brightness(2) sepia(1) hue-rotate(5deg) saturate(1000%)';
                     setTimeout(() => {
@@ -749,14 +755,16 @@ function movePlayerBullets() {
                             }
                         }
                     }
+                    }
                 }
-            }
+            })
         });
-    });
-    
     playerBullets = playerBullets.filter(bullet => !bullet.removed);
     activeEnemies = activeEnemies.filter(enemy => !enemy.removed);
-}
+    };
+    
+
+
 
 function spawnSplitChild(childType, enemy) {
     let childTypeData = enemyTypes[childType];
@@ -848,9 +856,19 @@ function spawnWave(waveIndex) {
     waveTransitioning = false;
 }
 
-function doPoisonDamage() {
-    poisonedEnemies.forEach(enemy => {
-        enemy.health -= 1;
+function doDebuffDamage() {
+    if (!playerPaused && !upgradePaused){
+    activeEnemies.forEach(enemy => {
+        if(enemy.isPoisoned){
+        enemy.element.style.filter = 'brightness(2) sepia(1) hue-rotate(285deg) saturate(4000%)'
+         setTimeout(() => {
+        if (!enemy.removed) {
+            enemy.element.style.filter = 'none';
+             }
+         }, 100);
+        enemy.health -= (playerDamage / 2);
+        totalDamage += (playerDamage / 2);
+        totalDebuffDamage += (playerDamage / 2);
         if (enemy.health <= 0){
             enemiesDefeated += 1;
             enemy.element.remove();
@@ -872,8 +890,10 @@ function doPoisonDamage() {
                     }
                 }
             }
+        }
     }
 )}
+}
 
 function updateEnemies() {
     activeEnemies.forEach(enemy => {
@@ -927,7 +947,7 @@ function startGame() {
     currentWaveIndex = 0;
     waveTransitioning = false;
     setInterval(movement, 10);
-    setInterval(doPoisonDamage, 1000);
+    setInterval(doDebuffDamage, 1000);
     document.getElementById('tutorialScreen').style.display = 'none';
     playerElement.style.top = myVerti + 'px';
     playerElement.style.left = myHoriz + 'px';
