@@ -433,6 +433,10 @@ function takeDamage(damageAmount) {
     }
 }
 function playerDeath(){
+    playerElement.src = "sprites/brokenheart-yellow.png";
+    clearEnemies();
+    const statsMenu = document.getElementById('stats');
+    statsMenu.style.display = 'none';
     deathPaused = true;
     let overlay = document.createElement('div');
     overlay.id = 'deathOverlay';
@@ -455,7 +459,7 @@ function playerDeath(){
         title.innerText = `You died...`;
         title.style.fontSize = '64px';
         title.style.marginBottom = '40px';
-        title.style.color = 'white';
+        title.style.color = 'yellow';
         overlay.appendChild(title);
 
         let subtitle = document.createElement('div');
@@ -467,18 +471,18 @@ function playerDeath(){
 
         let summary = document.createElement('div');
         summary.innerText = `
-        Wave ${currentWaveIndex}<br>
-        Speed: ${playerSpeed}<br>
-        Damage: ${playerDamage}<br>
-        Bullet Speed: ${bulletSpeed}<br>
-        Bullet Size: ${bulletSizeStat}x<br>
-        Maximum Bullets: ${maxBullets}<br>
-        Damage Dealt: ${totalDamage}<br>
-        Damage Taken: ${damageTaken}<br>
-        Shots Fired: ${timesFired}<br>
-        Enemies Defeated: ${enemiesDefeated}<br>
+        Wave ${currentWaveIndex}
+        Speed: ${playerSpeed}
+        Damage: ${playerDamage}
+        Bullet Speed: ${bulletSpeed}
+        Bullet Size: ${bulletSizeStat}x
+        Maximum Bullets: ${maxBullets}
+        Damage Dealt: ${totalDamage}
+        Damage Taken: ${damageTaken}
+        Shots Fired: ${timesFired}
+        Enemies Defeated: ${enemiesDefeated}
         `
-        summary.style.fontSize = '16px';
+        summary.style.fontSize = '20px';
         summary.style.color = 'white';
         summary.style.marginBottom = '40px';
         overlay.appendChild(summary);
