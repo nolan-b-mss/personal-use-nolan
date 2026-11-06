@@ -187,6 +187,7 @@ let totalUpgrades = 0;
 let playerPaused = false;
 let upgradePaused = false;
 let deathPaused = false;
+let readyToRestart = false;
 let maxBullets = 4;
 let bulletSizeStat = 1.0;
 let bulletSize = 16 * bulletSizeStat;
@@ -242,6 +243,10 @@ document.onkeydown = function(event){
     }
     if (event.key === "f" || event.key === "F"){
         playerPaused = !playerPaused;
+    }
+    if (event.key === "x" || event.key === "X" && readyToRestart){
+        location = "yellow-shooter-test.html"
+        readyToRestart = false;
     }
 };
 
@@ -433,6 +438,7 @@ function takeDamage(damageAmount) {
     }
 }
 function playerDeath(){
+    readyToRestart = true;
     const statsMenu = document.getElementById('stats');
     statsMenu.style.display = 'none';
     deathPaused = true;
