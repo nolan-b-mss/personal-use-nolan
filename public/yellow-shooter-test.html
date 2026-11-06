@@ -434,7 +434,11 @@ function takeDamage(damageAmount) {
 }
 function playerDeath(){
     playerElement.src = "sprites/brokenheart-yellow.png";
-    clearEnemies();
+    playerElement.style.width = 36;
+    playerElement.style.height = 32;
+    activeEnemies.forEach(enemy => {
+        enemy.style.opacity = 0.0;
+    });
     const statsMenu = document.getElementById('stats');
     statsMenu.style.display = 'none';
     deathPaused = true;
