@@ -186,9 +186,9 @@ let right = false;
 let left = false;
 let rotateKeyDebounced = false;
 let otherRotateKeyDebounced = false;
-let shootKeyDebounced = false;
 let isInvincible = false;
 let isTrueInvincible = false;
+let playerIsShooting = false;
 let allowBigShot = false;
 let allowJusticeBeam = false;
 let allowPoisonShot = false;
@@ -204,6 +204,8 @@ let totalDamage = 0;
 let totalDebuffDamage = 0;
 let damageTaken = 0;
 let timesFired = 0;
+let shotCooldown = 50
+let shotOnCooldown = false;
 let enemiesDefeated = 0;
 let totalUpgrades = 0;
 let playerPaused = false;
@@ -236,11 +238,11 @@ document.onkeydown = function(event){
     if ((event.key === "z" || event.key === "Z" || event.key === " ") && !playerPaused && !upgradePaused) {
         if (!tutorialOnScreen) {
             event.preventDefault();
-            if (allowBigShot && !isChargingBigShot && !shootKeyDebounced) {
+            if (allowBigShot && !isChargingBigShot && !shotOnCooldown) {
                 isChargingBigShot = true;
                 chargeStartTime = Date.now();
-            } else if (!allowBigShot && !shootKeyDebounced) {
-                shootKeyDebounced = true;
+            } else if (!allowBigShot && !shotOnCooldown) {
+                playerIsShooting = true;
                 shootPlayerBullet();
             }
         } else {
@@ -278,11 +280,10 @@ document.onkeyup = function(event){
     if (event.key === "a" || event.key === "A"){ left = false; }
     if (event.key === "d" || event.key === "D"){ right = false; }
     if ((event.key === "z" || event.key === "Z" || event.key === " ") && !playerPaused && !upgradePaused) {
-        shootKeyDebounced = false;
+        playerIsShooting - false;
         if (isChargingBigShot) {
             let chargeDuration = Date.now() - chargeStartTime;
             isChargingBigShot = false;
-            
             if (chargeDuration >= bigShotChargeTime) {
                 shootBigShot();
             } else {
@@ -511,6 +512,7 @@ function playerDeath(){
     Bullet Speed: ${bulletSpeed}
     Bullet Size: ${bulletSizeStat}x
     Maximum Bullets: ${maxBullets}
+    Bullet Cooldown: ${shotCooldown}
     Damage Dealt: ${totalDamage}
     Debuff Damage: ${totalDebuffDamage}
     Damage Taken: ${damageTaken}
@@ -612,7 +614,7 @@ function triggerUpgradesMenu(){
 }
 
 function shootPlayerBullet() {
-    if (playerBullets.length >= maxBullets) {
+    if (playerBullets.length >= maxBullets || shotOnCooldown) {
         return;
     }
 
@@ -641,6 +643,12 @@ function shootPlayerBullet() {
         case 'left': velocityX = -bulletSpeed; bullet.src = 'sprites/yellow-soul-bullet-left.png'; break;
         case 'right': velocityX = bulletSpeed; bullet.src = 'sprites/yellow-soul-bullet-right.png'; break;
     }
+
+    setTimeout(() => {
+        if (!enemy.removed) {
+        enemy.element.style.filter = 'none';
+        }
+    }, shotCooldown);
 
     playerBullets.push({
         element: bullet,
