@@ -617,7 +617,7 @@ function shootPlayerBullet() {
     if (playerBullets.length >= maxBullets || shotOnCooldown) {
         return;
     }
-
+    shotOnCooldown = true;
     timesFired += 1;
     bulletSize = 16 * bulletSizeStat;
     let bullet = document.createElement('img');
@@ -645,9 +645,7 @@ function shootPlayerBullet() {
     }
 
     setTimeout(() => {
-        if (!enemy.removed) {
-        enemy.element.style.filter = 'none';
-        }
+        shotOnCooldown = false;
     }, shotCooldown);
 
     playerBullets.push({
