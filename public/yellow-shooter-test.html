@@ -139,35 +139,38 @@ const waveConfigurations = [
     { waveID: 1, enemies: [{ type: 'chaser', count: 5 }, { type: 'ranger', count: 3 }] },
     { waveID: 2, enemies: [{ type: 'ranger', count: 5}, { type: 'fastChaser', count: 3}] },
     { waveID: 3, enemies: [{ type: 'strong', count: 3}, { type: 'scaredy', count: 1}] },
-    { waveID: 4, enemies: [{ type: 'boss1', count: 1}] },
-    { waveID: 5, enemies: [{ type: 'splitter', count: 1 }] },
+    { waveID: 4, enemies: [{ type: 'splitter', count: 1}] },
+    { waveID: 5, enemies: [{ type: 'boss1', count: 1 }] },
     { waveID: 6, enemies: [{ type: 'boss1', count: 1}, { type: 'strong', count: 3}] },
     { waveID: 7, enemies: [{ type: 'splitter', count: 2 }] },
-    { waveID: 8, enemies: [{ type: 'chaser', count: 15 }] },
+    { waveID: 8, enemies: [{ type: 'chaser', count: 15 }, {type: 'ranger', count: 3}] },
     { waveID: 9, enemies: [{ type: 'boss2', count: 1}] },
     { waveID: 10, enemies: [{type: 'boss1', count: 2}, {type: 'enraged', count: 5}] },
     { waveID: 11, enemies: [{type: 'enraged', count: 5}, {type: 'ranger', count: 5}, {type: 'boss2', count: 1}] },
     { waveID: 12, enemies: [{type: 'hyper', count: 1}, {type: 'boss1', count: 2}, {type: 'strong', count: 4}] },
     { waveID: 13, enemies: [{type: 'scaredy', count: 3}, {type: 'splitter', count: 1}, {type: 'hyper', count: 2}] },
     { waveID: 14, enemies: [{type: 'boss2', count: 2}, {type: 'hyper', count: 2}] },
+    { waveID: 15, enemies: [{type: 'boss3', count: 1}] },
 ];
 
 const upgrades = [
     { upgradeID: 1, desc: "Bigger, slower bullets", name: "Heavy Shots", apply: () => { bulletSizeStat += 0.3; bulletSpeed -= 0.3; } },
     { upgradeID: 2, desc: "Smaller, faster bullets", name: "Lighter Shots", apply: () => { bulletSizeStat -= 0.3; bulletSpeed += 0.3;} },
-    { upgradeID: 3, desc: "Damage UP, twice", name: "Sharper Rounds", apply: () => { playerDamage += 2; } },
-    { upgradeID: 4, desc: "Health UP", name: "Endurance", apply: () => { maxHealth += 1; playerHealth += 1;} },
-    { upgradeID: 5, desc: "Health UP, twice", name: "Strong Heart", apply: () => { maxHealth += 2; playerHealth += 2; } },
-    { upgradeID: 6, desc: "Speed UP", name: "Exercise", apply: () => { playerSpeed += 0.5 } },
+    { upgradeID: 3, desc: "Damage +2", name: "Sharper Rounds", apply: () => { playerDamage += 2; } },
+    { upgradeID: 4, desc: "Health +1", name: "Endurance", apply: () => { maxHealth += 1; playerHealth += 1;} },
+    { upgradeID: 5, desc: "Health +2", name: "Strong Heart", apply: () => { maxHealth += 2; playerHealth += 2; } },
+    { upgradeID: 6, desc: "Speed +0.5", name: "Exercise", apply: () => { playerSpeed += 0.5 } },
     { upgradeID: 7, desc: "Speed, health and damage UP", name: "Gym Membership", apply: () => { playerSpeed += 0.5; maxHealth += 1; playerHealth += 1; playerDamage += 1 } },
-    { upgradeID: 8, desc: "Speed DOWN, health UP", name: "Beefy", apply: () => { playerSpeed -= 0.5; maxHealth += 2; playerHealth += 2; } },
+    { upgradeID: 8, desc: "Speed -0.5, health +2", name: "Beefy", apply: () => { playerSpeed -= 0.5; maxHealth += 2; playerHealth += 2; } },
     { upgradeID: 9, desc: "+2 max bullets", name: "Bigger Magazine", apply: () => { maxBullets += 2; } },
-    { upgradeID: 10, desc: "Only one bullet. Bullet size UP, damage way up", name: "Slug Shots", apply: () => { maxBullets = 1; bulletSizeStat += 1; playerDamage += 4; } },
+    { upgradeID: 10, desc: "Only one bullet. Bullet size +1, damage +4", name: "Slug Shots", apply: () => { maxBullets = 1; bulletSizeStat += 1; playerDamage += 4; } },
     { upgradeID: 11, desc: "Hold to fire a BIG SHOT! BIG SHOTs do 5 times your damage, and pierce enemies.", name: "BIG SHOT", oneTime: true, apply: () => { allowBigShot = true; } },
     { upgradeID: 12, desc: "Refills your HP to its maximum.", name: "Full Health", apply: () => { playerHealth = maxHealth } },
     { upgradeID: 13, desc: "W.I.P. (likely doesnt do anything yet)", name: "Justice", oneTime: true, apply: () => { allowJusticeBeam = true; } },
     { upgradeID: 14, desc: "Upon hitting an enemy, they will take half your damage every second. Does not stack with itself.", name: "Syringe Shots", oneTime: true, apply: () => { allowPoisonShot = true; } },
     { upgradeID: 15, desc: "You can now hold to constantly shoot, rather than spamming", name: "Full Auto", oneTime: true, apply: () => { allowAutoFire = true; } },
+    { upgradeID: 16, desc: "+4 max bullets", name: "Auto Retriever", apply: () => { maxBullets += 4 } },
+    { upgradeID: 17, desc: "Health DOWN, damage UP", name: "Anger", apply: () => { maxHealth -=}}
 ];
 
 let poisonedEnemies = [];
@@ -341,6 +344,15 @@ function movement() {
         updateUI();
         updateEnemies();
         if (playerIsShooting && !shootKeyDebounced){shootPlayerBullet();}
+
+        //constant statchecks
+        if (playerHealth > maxHealth){playerHealth = maxHealth}
+        if (playerSpeed < 0.75){playerSpeed = 0.75}
+        if (bulletCooldown < 5){bulletCooldown = 5}
+        if (maxHealth < 0){maxHealth = 1}
+        if (playerDamage < 0){playerDamage = 0.5}
+        if (bulletSizeStat < 0){bulletSizeStat = 0.1}
+
         
         // enemy collision
         activeEnemies.forEach(enemy => {
@@ -448,6 +460,7 @@ Damage: ${playerDamage}<br>
 Bullet Speed: ${bulletSpeed}<br>
 Bullet Size: ${bulletSizeStat}x<br>
 Maximum Bullets: ${maxBullets}<br>
+Bullet Cooldown: ${bulletCooldown}<br>
 `;
 }
 
