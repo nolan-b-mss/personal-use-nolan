@@ -279,7 +279,7 @@ document.onkeyup = function(event){
     if (event.key === "a" || event.key === "A"){ left = false; }
     if (event.key === "d" || event.key === "D"){ right = false; }
     if ((event.key === "z" || event.key === "Z" || event.key === " ") && !playerPaused && !upgradePaused) {
-        playerIsShooting - false;
+        playerIsShooting = false;
         if (isChargingBigShot) {
             let chargeDuration = Date.now() - chargeStartTime;
             isChargingBigShot = false;
