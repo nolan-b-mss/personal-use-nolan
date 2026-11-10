@@ -163,10 +163,11 @@ const upgrades = [
     { upgradeID: 8, desc: "Speed DOWN, health UP", name: "Beefy", apply: () => { playerSpeed -= 0.5; maxHealth += 2; playerHealth += 2; } },
     { upgradeID: 9, desc: "+2 max bullets", name: "Bigger Magazine", apply: () => { maxBullets += 2; } },
     { upgradeID: 10, desc: "Only one bullet. Bullet size UP, damage way up", name: "Slug Shots", apply: () => { maxBullets = 1; bulletSizeStat += 1; playerDamage += 4; } },
-    { upgradeID: 11, desc: "Hold SHOOT to fire a BIG SHOT! BIG SHOTs do 5 times your damage, and pierce enemies.", name: "BIG SHOT", oneTime: true, apply: () => { allowBigShot = true; } },
+    { upgradeID: 11, desc: "Hold to fire a BIG SHOT! BIG SHOTs do 5 times your damage, and pierce enemies.", name: "BIG SHOT", oneTime: true, apply: () => { allowBigShot = true; } },
     { upgradeID: 12, desc: "Refills your HP to its maximum.", name: "Full Health", apply: () => { playerHealth = maxHealth } },
     { upgradeID: 13, desc: "W.I.P. (likely doesnt do anything yet)", name: "Justice", oneTime: true, apply: () => { allowJusticeBeam = true; } },
     { upgradeID: 14, desc: "Upon hitting an enemy, they will take half your damage every second. Does not stack with itself.", name: "Syringe Shots", oneTime: true, apply: () => { allowPoisonShot = true; } },
+    { upgradeID: 15, desc: "You can now hold to constantly shoot, rather than spamming", name: "Full Auto", oneTime: true, apply: () => { allowAutoFire = true; } },
 ];
 
 let poisonedEnemies = [];
@@ -192,6 +193,8 @@ let playerIsShooting = false;
 let allowBigShot = false;
 let allowJusticeBeam = false;
 let allowPoisonShot = false;
+let allowAutoFire = false;
+let shootKeyDebounced = false;
 let isChargingBigShot = false;
 let chargeStartTime = 0;
 const bigShotChargeTime = 1000;
@@ -235,13 +238,14 @@ document.onkeydown = function(event){
             debugElement.style.display = showDebug ? 'block' : 'none';
         }
     }
-    if ((event.key === "z" || event.key === "Z" || event.key === " ") && !playerPaused && !upgradePaused) {
+    if ((event.key === "z" || event.key === "Z" || event.key === " ") && !playerPaused && !upgradePaused && !shootKeyDebounced) {
         if (!tutorialOnScreen) {
+            if (!allowAutoFire){shootKeyDebounced = true;}
             event.preventDefault();
             if (allowBigShot && !isChargingBigShot && !shotOnCooldown) {
                 isChargingBigShot = true;
                 chargeStartTime = Date.now();
-            } else if (!allowBigShot && !shotOnCooldown) {
+            } else if (!allowBigShot && !shotOnCooldown && allowAutoFire) {
                 playerIsShooting = true;
             }
         } else {
@@ -279,6 +283,7 @@ document.onkeyup = function(event){
     if (event.key === "a" || event.key === "A"){ left = false; }
     if (event.key === "d" || event.key === "D"){ right = false; }
     if ((event.key === "z" || event.key === "Z" || event.key === " ") && !playerPaused && !upgradePaused) {
+        shootKeyDebounced = false;
         playerIsShooting = false;
         if (isChargingBigShot) {
             let chargeDuration = Date.now() - chargeStartTime;
@@ -332,7 +337,7 @@ function movement() {
         movePlayerBullets();
         updateUI();
         updateEnemies();
-        if (playerIsShooting){shootPlayerBullet();}
+        if (playerIsShooting && !shootKeyDebounced){shootPlayerBullet();}
         
         // enemy collision
         activeEnemies.forEach(enemy => {
