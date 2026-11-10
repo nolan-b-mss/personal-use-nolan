@@ -243,7 +243,6 @@ document.onkeydown = function(event){
                 chargeStartTime = Date.now();
             } else if (!allowBigShot && !shotOnCooldown) {
                 playerIsShooting = true;
-                shootPlayerBullet();
             }
         } else {
             tutorialOnScreen = false;
@@ -333,6 +332,7 @@ function movement() {
         movePlayerBullets();
         updateUI();
         updateEnemies();
+        if (playerIsShooting){shootPlayerBullet();}
         
         // enemy collision
         activeEnemies.forEach(enemy => {
