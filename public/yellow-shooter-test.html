@@ -170,7 +170,7 @@ const upgrades = [
     { upgradeID: 14, desc: "Upon hitting an enemy, they will take half your damage every second. Does not stack with itself.", name: "Syringe Shots", oneTime: true, apply: () => { allowPoisonShot = true; } },
     { upgradeID: 15, desc: "You can now hold to constantly shoot, rather than spamming", name: "Full Auto", oneTime: true, apply: () => { allowAutoFire = true; } },
     { upgradeID: 16, desc: "+4 max bullets", name: "Auto Retriever", apply: () => { maxBullets += 4 } },
-    { upgradeID: 17, desc: "Health DOWN, damage UP", name: "Anger", apply: () => { maxHealth -= 1; damage += 1} },
+    { upgradeID: 17, desc: "Health DOWN, damage UP", name: "Anger", apply: () => { maxHealth -= 1; playerDamage += 1} },
 ];
 
 let poisonedEnemies = [];
@@ -459,7 +459,7 @@ Speed: ${playerSpeed}<br>
 Damage: ${playerDamage}<br>
 Bullet Speed: ${bulletSpeed}<br>
 Bullet Size: ${bulletSizeStat}x<br>
-Bullet Cooldown: ${shotCooldown}<br>
+Bullet Cooldown: ${shotCooldown}ms<br>
 Maximum Bullets: ${maxBullets}<br>
 `;
 }
