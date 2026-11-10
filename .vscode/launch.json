@@ -10,7 +10,7 @@
             "type": "firefox",
             "request": "launch",
             "reAttach": true,
-            "file": "${workspaceFolder}/index.html"
+            "file": "${workspaceFolder}/public/index.html"
         },
         {
             "name": "Launch localhost",
