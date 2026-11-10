@@ -241,10 +241,13 @@ document.onkeydown = function(event){
     if ((event.key === "z" || event.key === "Z" || event.key === " ") && !playerPaused && !upgradePaused && !shootKeyDebounced) {
         if (!tutorialOnScreen) {
             if (!allowAutoFire){shootKeyDebounced = true;}
+            else if (allowAutoFire){shootKeyDebounced = false;}
             event.preventDefault();
             if (allowBigShot && !isChargingBigShot && !shotOnCooldown) {
                 isChargingBigShot = true;
                 chargeStartTime = Date.now();
+            } else if (!allowBigShot && !shotOnCooldown && !allowAutoFire) {
+                shootPlayerBullet();
             } else if (!allowBigShot && !shotOnCooldown && allowAutoFire) {
                 playerIsShooting = true;
             }
