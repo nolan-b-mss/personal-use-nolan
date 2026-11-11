@@ -163,7 +163,7 @@ const upgrades = [
     { upgradeID: 7, desc: "+0.5 Speed, +1 Health and Damage", name: "Gym Membership", apply: () => { playerSpeed += 0.5; maxHealth += 1; playerHealth += 1; playerDamage += 1 }},
     { upgradeID: 8, desc: "-0.5 Speed, +2 Health", name: "Beefy", apply: () => { playerSpeed -= 0.5; maxHealth += 2; playerHealth += 2; }},
     { upgradeID: 9, desc: "+2 max bullets", name: "Bigger Magazine", apply: () => { maxBullets += 2; }},
-    { upgradeID: 10, desc: "x2 Cooldown, +1 Bullet Size, +4 Damage", name: "Slug Shots", apply: () => { bulletCooldown *= 2; bulletSizeStat += 1; playerDamage += 4; }},
+    { upgradeID: 10, desc: "x2 Cooldown, +1 Bullet Size, +4 Damage", name: "Slug Shots", apply: () => { shotCooldown *= 2; bulletSizeStat += 1; playerDamage += 4; }},
     { upgradeID: 11, desc: "Hold to fire a BIG SHOT! BIG SHOTs do 5 times your damage, and pierce enemies. Cannot critical hit.", name: "BIG SHOT", oneTime: true, apply: () => { allowBigShot = true; }},
     { upgradeID: 12, desc: "Refills your HP to its maximum.", name: "Full Health", apply: () => { playerHealth = maxHealth }},
     { upgradeID: 13, desc: "W.I.P. (likely doesnt do anything yet)", name: "Justice", oneTime: true, apply: () => { allowJusticeBeam = true; }},
@@ -768,10 +768,22 @@ function movePlayerBullets() {
                         pBullet.element.remove();
                         pBullet.removed = true;
                         if (crit)
-                        {   
+                        {
+                        enemy.element.style.filter = 'brightness(2) sepia(1) hue-rotate(360deg) saturate(1000%)';
+                        setTimeout(() => {
+                        if (!enemy.removed) {
+                            enemy.element.style.filter = 'none';
+                        }
+                        }, 100);   
                         enemy.health -= critDamage;
                         totalDamage += critDamage;
                         } else {
+                        enemy.element.style.filter = 'brightness(2) sepia(1) hue-rotate(5deg) saturate(1000%)';
+                        setTimeout(() => {
+                        if (!enemy.removed) {
+                            enemy.element.style.filter = 'none';
+                        }
+                        }, 100);  
                         enemy.health -= playerDamage;
                         totalDamage += playerDamage;
                         }
@@ -779,14 +791,6 @@ function movePlayerBullets() {
                     if (allowPoisonShot && !enemy.isPoisoned){
                         enemy.isPoisoned = true;
                         }
-                    
-                    
-                    enemy.element.style.filter = 'brightness(2) sepia(1) hue-rotate(5deg) saturate(1000%)';
-                    setTimeout(() => {
-                        if (!enemy.removed) {
-                            enemy.element.style.filter = 'none';
-                        }
-                    }, 100);
 
                     if (enemy.health <= 0){
                         enemiesDefeated += 1;
