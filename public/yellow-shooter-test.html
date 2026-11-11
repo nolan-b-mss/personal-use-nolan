@@ -154,23 +154,31 @@ const waveConfigurations = [
 ];
 
 const upgrades = [
-    { upgradeID: 1, desc: "Bigger, slower bullets", name: "Heavy Shots", apply: () => { bulletSizeStat += 0.3; bulletSpeed -= 0.3; } },
-    { upgradeID: 2, desc: "Smaller, faster bullets", name: "Lighter Shots", apply: () => { bulletSizeStat -= 0.3; bulletSpeed += 0.3;} },
-    { upgradeID: 3, desc: "Damage +2", name: "Sharper Rounds", apply: () => { playerDamage += 2; } },
-    { upgradeID: 4, desc: "Health +1", name: "Endurance", apply: () => { maxHealth += 1; playerHealth += 1;} },
-    { upgradeID: 5, desc: "Health +2", name: "Strong Heart", apply: () => { maxHealth += 2; playerHealth += 2; } },
-    { upgradeID: 6, desc: "Speed +0.5", name: "Exercise", apply: () => { playerSpeed += 0.5 } },
-    { upgradeID: 7, desc: "Speed, health and damage UP", name: "Gym Membership", apply: () => { playerSpeed += 0.5; maxHealth += 1; playerHealth += 1; playerDamage += 1 } },
-    { upgradeID: 8, desc: "Speed -0.5, health +2", name: "Beefy", apply: () => { playerSpeed -= 0.5; maxHealth += 2; playerHealth += 2; } },
-    { upgradeID: 9, desc: "+2 max bullets", name: "Bigger Magazine", apply: () => { maxBullets += 2; } },
-    { upgradeID: 10, desc: "Only one bullet. Bullet size +1, damage +4", name: "Slug Shots", apply: () => { maxBullets = 1; bulletSizeStat += 1; playerDamage += 4; } },
-    { upgradeID: 11, desc: "Hold to fire a BIG SHOT! BIG SHOTs do 5 times your damage, and pierce enemies.", name: "BIG SHOT", oneTime: true, apply: () => { allowBigShot = true; } },
-    { upgradeID: 12, desc: "Refills your HP to its maximum.", name: "Full Health", apply: () => { playerHealth = maxHealth } },
-    { upgradeID: 13, desc: "W.I.P. (likely doesnt do anything yet)", name: "Justice", oneTime: true, apply: () => { allowJusticeBeam = true; } },
-    { upgradeID: 14, desc: "Upon hitting an enemy, they will take half your damage every second. Does not stack with itself.", name: "Syringe Shots", oneTime: true, apply: () => { allowPoisonShot = true; } },
-    { upgradeID: 15, desc: "You can now hold to constantly shoot, rather than spamming", name: "Full Auto", oneTime: true, apply: () => { allowAutoFire = true; } },
-    { upgradeID: 16, desc: "+4 max bullets", name: "Auto Retriever", apply: () => { maxBullets += 4 } },
-    { upgradeID: 17, desc: "Health DOWN, damage UP", name: "Anger", apply: () => { maxHealth -= 1; playerDamage += 1} },
+    { upgradeID: 1, desc: "Bigger, slower bullets", name: "Heavy Shots", apply: () => { bulletSizeStat += 0.3; bulletSpeed -= 0.3; }},
+    { upgradeID: 2, desc: "Smaller, faster bullets", name: "Lighter Shots", apply: () => { bulletSizeStat -= 0.3; bulletSpeed += 0.3;}},
+    { upgradeID: 3, desc: "+2 Damage", name: "Sharper Rounds", apply: () => { playerDamage += 2; }},
+    { upgradeID: 4, desc: "+1 Health", name: "Endurance", apply: () => { maxHealth += 1; playerHealth += 1;}},
+    { upgradeID: 5, desc: "+2 Health", name: "Strong Heart", apply: () => { maxHealth += 2; playerHealth += 2; }},
+    { upgradeID: 6, desc: "+0.5 Speed", name: "Exercise", apply: () => { playerSpeed += 0.5 }},
+    { upgradeID: 7, desc: "+0.5 Speed, +1 Health and Damage", name: "Gym Membership", apply: () => { playerSpeed += 0.5; maxHealth += 1; playerHealth += 1; playerDamage += 1 }},
+    { upgradeID: 8, desc: "-0.5 Speed, +2 Health", name: "Beefy", apply: () => { playerSpeed -= 0.5; maxHealth += 2; playerHealth += 2; }},
+    { upgradeID: 9, desc: "+2 max bullets", name: "Bigger Magazine", apply: () => { maxBullets += 2; }},
+    { upgradeID: 10, desc: "x2 Cooldown, +1 Bullet Size, +4 Damage", name: "Slug Shots", apply: () => { bulletCooldown *= 2; bulletSizeStat += 1; playerDamage += 4; }},
+    { upgradeID: 11, desc: "Hold to fire a BIG SHOT! BIG SHOTs do 5 times your damage, and pierce enemies. Cannot critical hit.", name: "BIG SHOT", oneTime: true, apply: () => { allowBigShot = true; }},
+    { upgradeID: 12, desc: "Refills your HP to its maximum.", name: "Full Health", apply: () => { playerHealth = maxHealth }},
+    { upgradeID: 13, desc: "W.I.P. (likely doesnt do anything yet)", name: "Justice", oneTime: true, apply: () => { allowJusticeBeam = true; }},
+    { upgradeID: 14, desc: "Upon hitting an enemy, they will take half your damage every second. Does not stack with itself.", name: "Syringe Shots", oneTime: true, apply: () => { allowPoisonShot = true; }},
+    { upgradeID: 15, desc: "You can now hold to constantly shoot, rather than spamming", name: "Full Auto", oneTime: true, apply: () => { allowAutoFire = true; }},
+    { upgradeID: 16, desc: "+4 max bullets", name: "Auto Retriever", apply: () => { maxBullets += 4 }},
+    { upgradeID: 17, desc: "-1 Health, +1 Damage", name: "Anger", apply: () => { maxHealth -= 1; playerDamage += 1}},
+    { upgradeID: 18, desc: "-5ms cooldown", name: "Trigger Finger", apply: () => { shotCooldown -= 5;}},
+    { upgradeID: 19, desc: "-10ms cooldown", name: "Good Hands", apply: () => { shotCooldown -= 10;}},
+    { upgradeID: 20, desc: "-15ms cooldown", name: "Very Good Hands", apply: () => { shotCooldown -= 15;}},
+    { upgradeID: 21, desc: "+1 Damage", name: "Well-crafted Rounds", apply: () => { playerDamage += 1;}},
+    { upgradeID: 22, desc: "+2 Damage", name: "Very Well-crafted Rounds", apply: () => { playerDamage += 2;}},
+    { upgradeID: 23, desc: "+3 Damage", name: "Expertly Crafted Rounds", apply: () => { playerDamage += 3;}},
+    { upgradeID: 24, desc: "+4 Damage", name: "Masterfully Crafted Rounds", apply: () => { playerDamage += 4;}},
+    { upgradeID: 25, desc: "Unlocks the ability to Critical Hit for 2x your damage. Otherwise, +5% Crit Chance", name: "Precision", apply: () => {if(!allowCriticalHit){allowCriticalHit = true;statCritChance+=0.05; visualCritChance += 5;}else{statCritChance+=0.05; visualCritChance += 5;}}},
 ];
 
 let poisonedEnemies = [];
@@ -197,6 +205,7 @@ let allowBigShot = false;
 let allowJusticeBeam = false;
 let allowPoisonShot = false;
 let allowAutoFire = false;
+let allowCriticalHit = false;
 let shootKeyDebounced = false;
 let isChargingBigShot = false;
 let chargeStartTime = 0;
@@ -206,11 +215,13 @@ let playerHealth = 5;
 let maxHealth = 5;
 let playerSpeed = 3;
 let playerDamage = 1;
+let visualCritChance = 0;
+let statCritChance = 0;
 let totalDamage = 0;
 let totalDebuffDamage = 0;
 let damageTaken = 0;
 let timesFired = 0;
-let shotCooldown = 50
+let shotCooldown = 250
 let shotOnCooldown = false;
 let enemiesDefeated = 0;
 let totalUpgrades = 0;
@@ -352,6 +363,7 @@ function movement() {
         if (maxHealth < 0){maxHealth = 1}
         if (playerDamage < 0){playerDamage = 0.5}
         if (bulletSizeStat < 0){bulletSizeStat = 0.1}
+        if (statCritChance > 1.00 || visualCritChance > 100){statCritChance = 1.00; visualCritChance = 100;}
 
         
         // enemy collision
@@ -461,6 +473,7 @@ Bullet Speed: ${bulletSpeed}<br>
 Bullet Size: ${bulletSizeStat}x<br>
 Bullet Cooldown: ${shotCooldown}ms<br>
 Maximum Bullets: ${maxBullets}<br>
+Critical Chance: ${visualCritChance}%<br>
 `;
 }
 
@@ -537,6 +550,7 @@ function playerDeath(){
     Damage Dealt: ${totalDamage}
     Debuff Damage: ${totalDebuffDamage}
     Damage Taken: ${damageTaken}
+    Critical Chance: ${statCritChance}%
     Shots Fired: ${timesFired}
     Enemies Defeated: ${enemiesDefeated}
     
@@ -747,11 +761,20 @@ function movePlayerBullets() {
                         totalDamage += playerDamage * 5;
                             
                     }
-                    if (!pBullet.isBigShot) {                        
+                    if (!pBullet.isBigShot) {
+                        let critDamage = playerDamage * 2
+                        let critRoll = Math.random()
+                        let crit = critRoll < statCritChance;                      
                         pBullet.element.remove();
                         pBullet.removed = true;
+                        if (crit)
+                        {   
+                        enemy.health -= critDamage;
+                        totalDamage += critDamage;
+                        } else {
                         enemy.health -= playerDamage;
                         totalDamage += playerDamage;
+                        }
                     }
                     if (allowPoisonShot && !enemy.isPoisoned){
                         enemy.isPoisoned = true;
