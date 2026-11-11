@@ -769,7 +769,7 @@ function movePlayerBullets() {
                         pBullet.removed = true;
                         if (crit)
                         {
-                        enemy.element.style.filter = 'brightness(2) sepia(1) hue-rotate(360deg) saturate(1000%)';
+                        enemy.element.style.filter = 'brightness(0.5) sepia(1) hue-rotate(-50deg) saturate(1000%)';
                         setTimeout(() => {
                         if (!enemy.removed) {
                             enemy.element.style.filter = 'none';
