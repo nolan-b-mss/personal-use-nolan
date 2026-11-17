@@ -428,7 +428,7 @@ function movement() {
             }
         });
 
-        if(!gameRunning && !endbringerSpawned && allowEndbringer){spawnEnemy(enemyTypes, 'endbringer')};
+        if(!gameRunning && !endbringerSpawned && allowEndbringer){spawnEnemy(enemyTypes, 'endbringer'); endbringerSpawned = true;}
 
         playerElement.style.top = myVerti + 'px';
         playerElement.style.left = myHoriz + 'px';
