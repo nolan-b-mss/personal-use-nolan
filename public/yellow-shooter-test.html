@@ -135,7 +135,7 @@ const enemyTypes = {
     enraged: { health: 2, speed: 3, damage: 1, size: 32, isPoisoned: false, source: 'sprites/soul-08-enraged.png' },
     hyper: { health: 1, speed: 5, damage: 1, size: 32, isPoisoned: false, source: 'sprites/soul-08-hyper.png' },
     kaizo: { health: 5, speed: 4, damage: 2, size: 32, isPoisoned: false, source: 'sprites/soul-08-kaizo.png' },
-    kaizoBoss: { health: 325, speed: 3, damage: 2, size: 64, isPoisoned: false, source: 'sprites/soul-08-kaizo.png' },
+    kaizoBoss: { health: 325, speed: 3.5, damage: 2, size: 64, isPoisoned: false, source: 'sprites/soul-08-kaizo.png' },
     divine: { health: 100, speed: 2, damage: 2, size: 32, isPoisoned: false, source: 'sprites/soul-08-divine.gif'},
     ranger: { health: 5, speed: 0.25, damage: 1, size: 32, isPoisoned: false, source: 'sprites/soul-08.png' },
     strong: { health: 25, speed: 1.25, damage: 1, size: 45, isPoisoned: false, source: 'sprites/soul-08-strong.png' },
@@ -173,8 +173,10 @@ const waveConfigurations = [
     { waveID: 16, enemies: [{type: 'hidden', count: 1}] },
     { waveID: 17, enemies: [{type: 'boss2', count: 2}, {type:'hidden', count: 5}, {type:'hyper', count: 1} ]},
     { waveID: 18, enemies: [{type: 'hiddenBoss', count: 1}, {type:'hidden', count: 5}] },
-    { waveID: 19, enemies: [{type: 'hiddenBoss', count: 2}, {type:'boss3', count:1}, {type:'hyper', count: 2} ]},
+    { waveID: 19, enemies: [{type: 'hiddenBoss', count: 2}, {type:'boss3', count: 1}, {type:'hyper', count: 2} ]},
     { waveID: 20, enemies: [{type: 'boss4', count: 1}] },
+    { waveID: 21, enemies: [{type: 'kaizo', count: 1}, {type: 'hiddenBoss', count: 2}, {type:'boss3', count: 1} ]},
+    { waveID: 22, enemies: [{type: 'kaizo', count: 2}, {type: 'boss4', count: 1}]}
 ];
 
 const upgrades = [
@@ -207,6 +209,7 @@ const upgrades = [
     { upgradeID: 27, desc: "-3 Health, +3 Damage", name: "Wrath", apply: () => { maxHealth -= 3; playerDamage += 3;}},
     { upgradeID: 28, desc: "Absurdly high damage, just don't get hit.", name: "Perfection", oneTime: true, apply: () => { maxHealth = 0.001; playerDamage += 20; perfectionActive = true;}},
     { upgradeID: 29, desc: "Absurdly low cooldown, absurdly low damage. Infinite Bullets. Damage capped at 1. Overrides Big Shot", name: "Water Gun", oneTime: true, apply: () => { maxBullets = 1e+9999; playerDamage = 0.1, shotCooldown = 0; waterGunActive = true; allowBigShot = false;}},
+    { upgradeID: 30, desc: "+1 Upgrade choice", name: "More options", apply: () => {upgradeChoices += 1;}},
 ];
 
 let poisonedEnemies = [];
@@ -255,6 +258,7 @@ let shotCooldown = 250
 let shotOnCooldown = false;
 let enemiesDefeated = 0;
 let totalUpgrades = 0;
+let upgradeChoices = 3;
 let playerPaused = false;
 let upgradePaused = false;
 let deathPaused = false;
@@ -630,7 +634,7 @@ function triggerUpgradesMenu(){
     title.style.color = 'yellow';
     overlay.appendChild(title);
 
-    let randomChoices = [...upgrades].sort(() => 0.5 - Math.random()).slice(0, 3);
+    let randomChoices = [...upgrades].sort(() => 0.5 - Math.random()).slice(0, upgradeChoices);
 
     let container = document.createElement('div');
     container.style.display = 'flex';
