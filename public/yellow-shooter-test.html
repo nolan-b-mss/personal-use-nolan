@@ -983,38 +983,38 @@ function spawnWave(waveIndex) {
     waveTransitioning = false;
 }
 
-function spawnEnemy(enemyTypes) {
-    let typeData = enemyTypes[group.type];
-        let spawnPosition = getRandomEdgePosition(1050, 900, typeData.size);
-            let enemyElement = document.createElement('img');
-            enemyElement.onerror = () => {
-                enemyElement.src = "sprites/soul-08.png"
-            }
-            enemyElement.style.position = 'absolute';
-            enemyElement.style.width = typeData.size + 'px';
-            enemyElement.style.height = typeData.size + 'px';
-            enemyElement.style.left = spawnPosition.x + 'px';
-            enemyElement.style.top = spawnPosition.y + 'px';
-            enemyElement.src = typeData.source;
+function spawnEnemy(enemyTypes, enemyType = Object.keys(enemyTypes)[0]) { //for playtest purposes only
+    const type = typeof enemyType === 'string' ? enemyType : enemyType.type;
+    const typeData = enemyTypes[type];
+    if (!typeData) return;
 
-            enemyElement.onerror = () => {
-                enemyElement.src = "sprites/soul-08.png"
-            }
-            
-            gameContainer.appendChild(enemyElement);
-            
-            activeEnemies.push({
-                type: group.type,
-                x: spawnPosition.x,
-                y: spawnPosition.y,
-                health: typeData.health,
-                speed: typeData.speed,
-                damage: typeData.damage,
-                size: typeData.size,
-                element: enemyElement,
-                isPoisoned: false,
-                removed: false
-            });
+    const spawnPosition = getRandomEdgePosition(1050, 900, typeData.size);
+    const enemyElement = document.createElement('img');
+    enemyElement.onerror = () => {
+        enemyElement.onerror = null;
+        enemyElement.src = "sprites/soul-08.png";
+    };
+    enemyElement.style.position = 'absolute';
+    enemyElement.style.width = typeData.size + 'px';
+    enemyElement.style.height = typeData.size + 'px';
+    enemyElement.style.left = spawnPosition.x + 'px';
+    enemyElement.style.top = spawnPosition.y + 'px';
+    enemyElement.src = typeData.source;
+
+    gameContainer.appendChild(enemyElement);
+
+    activeEnemies.push({
+        type: type,
+        x: spawnPosition.x,
+        y: spawnPosition.y,
+        health: typeData.health,
+        speed: typeData.speed,
+        damage: typeData.damage,
+        size: typeData.size,
+        element: enemyElement,
+        isPoisoned: false,
+        removed: false
+    });
 }
 
 function doDebuffDamage() {
