@@ -863,7 +863,7 @@ function spawnSplitChild(childType, enemy) {
     childElement.style.height = childTypeData.size + 'px';
     childElement.style.left = enemy.x + 'px';
     childElement.style.top = enemy.y + 'px';
-    childElement.src = 'sprites/soul-08.png';
+    childElement.src = childType.source;
     
     gameContainer.appendChild(childElement);
     
