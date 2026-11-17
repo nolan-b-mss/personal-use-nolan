@@ -201,7 +201,7 @@ const upgrades = [
     { upgradeID: 26, desc: "Unlocks the ability to Critical Hit for 2x your damage. Otherwise, +5% Crit Chance", name: "Precision", apply: () => {if(!allowCriticalHit){allowCriticalHit = true;statCritChance+=0.05; visualCritChance += 5;}else{statCritChance+=0.05; visualCritChance += 5;}}},
     { upgradeID: 27, desc: "-3 Hea;th, +3 Damage", name: "Wrath", apply: () => { maxHealth -= 3; playerDamage += 3;}},
     { upgradeID: 28, desc: "Absurdly high damage, just don't get hit.", name: "Perfection", oneTime: true, apply: () => { maxHealth = 0.001; playerDamage += 20; perfectionActive = true;}},
-    { upgradeID: 29, desc: "Absurdly low cooldown, absurdly low damage. Infinite Bullets. Damage capped at 1.", name: "Water Gun", oneTime: true, apply: () => { maxBullets = 1e+9999; playerDamage = 0.1, shotCooldown = 0; waterGunActive = true;}},
+    { upgradeID: 29, desc: "Absurdly low cooldown, absurdly low damage. Infinite Bullets. Damage capped at 1. Overrides Big Shot", name: "Water Gun", oneTime: true, apply: () => { maxBullets = 1e+9999; playerDamage = 0.1, shotCooldown = 0; waterGunActive = true; allowBigShot = false;}},
 ];
 
 let poisonedEnemies = [];
@@ -335,8 +335,8 @@ document.onkeyup = function(event){
             } else {
                 shootPlayerBullet();
             }
-            chargeStartTime = 0;
         }
+        chargeStartTime = 0;
     }
     if ((event.key === "e" || event.key === "E") && !playerPaused && !upgradePaused) {
         rotateKeyDebounced = false; 
@@ -364,17 +364,26 @@ function movement() {
         if (myHoriz > 1020) { myHoriz = 1020; }
         if (myVerti > 860) { myVerti = 860; }
             
-        if (allowBigShot){ bigShotChargeBar.style.opacity = 1.0; }
-        if (chargeStartTime === 0){ bigShotChargeBar.src = "sprites/big-shot-charge-empty.png" }
-        else if (elapsed > 0 && elapsed <= 125){ bigShotChargeBar.src = "sprites/big-shot-charge-low01.png" }
-        else if (elapsed > 125 && elapsed <= 250) { bigShotChargeBar.src = "sprites/big-shot-charge-low02.png" }
-        else if (elapsed > 250 && elapsed <= 375) { bigShotChargeBar.src = "sprites/big-shot-charge-low03.png" }
-        else if (elapsed > 375 && elapsed <= 500) { bigShotChargeBar.src = "sprites/big-shot-charge-med02.png" }
-        else if (elapsed > 500 && elapsed <= 625) { bigShotChargeBar.src = "sprites/big-shot-charge-med01.png" }
-        else if (elapsed > 625 && elapsed <= 750) { bigShotChargeBar.src = "sprites/big-shot-charge-high01.png" }
-        else if (elapsed > 750 && elapsed <= 875) { bigShotChargeBar.src = "sprites/big-shot-charge-high02.png" }
-        else if (elapsed > 875 && elapsed < 1000) { bigShotChargeBar.src = "sprites/big-shot-charge-high03.png" }
-        else if (elapsed >= 1000) { bigShotChargeBar.src = "sprites/big-shot-charge-full.gif" }
+        if (allowBigShot){ 
+            bigShotChargeBar.style.opacity = 1.0; 
+        } else {
+            bigShotChargeBar.style.opacity = 0.0;
+        }
+
+        if (chargeStartTime === 0){ 
+            bigShotChargeBar.src = "sprites/big-shot-charge-empty.png"; 
+        } else {
+            let elapsed = Date.now() - chargeStartTime;
+            if (elapsed > 0 && elapsed <= 125){ bigShotChargeBar.src = "sprites/big-shot-charge-low01.png"; }
+            else if (elapsed > 125 && elapsed <= 250) { bigShotChargeBar.src = "sprites/big-shot-charge-low02.png"; }
+            else if (elapsed > 250 && elapsed <= 375) { bigShotChargeBar.src = "sprites/big-shot-charge-low03.png"; }
+            else if (elapsed > 375 && elapsed <= 500) { bigShotChargeBar.src = "sprites/big-shot-charge-med02.png"; }
+            else if (elapsed > 500 && elapsed <= 625) { bigShotChargeBar.src = "sprites/big-shot-charge-med01.png"; }
+            else if (elapsed > 625 && elapsed <= 750) { bigShotChargeBar.src = "sprites/big-shot-charge-high01.png"; }
+            else if (elapsed > 750 && elapsed <= 875) { bigShotChargeBar.src = "sprites/big-shot-charge-high02.png"; }
+            else if (elapsed > 875 && elapsed < 1000) { bigShotChargeBar.src = "sprites/big-shot-charge-high03.png"; }
+            else if (elapsed >= 1000) { bigShotChargeBar.src = "sprites/big-shot-charge-full.gif"; }
+        }
         
         movePlayerBullets();
         updateUI();
@@ -391,6 +400,7 @@ function movement() {
         if (statCritChance > 1.00 || visualCritChance > 100){statCritChance = 1.00; visualCritChance = 100;}
         if (perfectionActive && maxHealth != 0.001){maxHealth = 0.001}
         if (waterGunActive && playerDamage > 1){playerDamage = 1}
+        if (waterGunActive && allowBigShot){!allowBigShot}
 
         
         // enemy collision
@@ -863,7 +873,7 @@ function spawnSplitChild(childType, enemy) {
     childElement.style.height = childTypeData.size + 'px';
     childElement.style.left = enemy.x + 'px';
     childElement.style.top = enemy.y + 'px';
-    childElement.src = childType.source;
+    childElement.src = childTypeData.source;
     
     gameContainer.appendChild(childElement);
     
