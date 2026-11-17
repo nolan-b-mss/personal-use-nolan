@@ -201,7 +201,7 @@ const upgrades = [
     { upgradeID: 24, desc: "+3 Damage", name: "Expertly Crafted Rounds", apply: () => { playerDamage += 3;}},
     { upgradeID: 25, desc: "+4 Damage", name: "Masterfully Crafted Rounds", apply: () => { playerDamage += 4;}},
     { upgradeID: 26, desc: "Unlocks the ability to Critical Hit for 2x your damage. Otherwise, +5% Crit Chance", name: "Precision", apply: () => {if(!allowCriticalHit){allowCriticalHit = true;statCritChance+=0.05; visualCritChance += 5;}else{statCritChance+=0.05; visualCritChance += 5;}}},
-    { upgradeID: 27, desc: "-3 Hea;th, +3 Damage", name: "Wrath", apply: () => { maxHealth -= 3; playerDamage += 3;}},
+    { upgradeID: 27, desc: "-3 Health, +3 Damage", name: "Wrath", apply: () => { maxHealth -= 3; playerDamage += 3;}},
     { upgradeID: 28, desc: "Absurdly high damage, just don't get hit.", name: "Perfection", oneTime: true, apply: () => { maxHealth = 0.001; playerDamage += 20; perfectionActive = true;}},
     { upgradeID: 29, desc: "Absurdly low cooldown, absurdly low damage. Infinite Bullets. Damage capped at 1. Overrides Big Shot", name: "Water Gun", oneTime: true, apply: () => { maxBullets = 1e+9999; playerDamage = 0.1, shotCooldown = 0; waterGunActive = true; allowBigShot = false;}},
 ];
@@ -687,6 +687,29 @@ function triggerUpgradesMenu(){
     document.body.appendChild(overlay);
 }
 
+function forcePlayerUpgrade(upgradeID) {
+    const id = Number(upgradeID);
+    if (!Number.isInteger(id)) {
+        return `Invalid upgrade ID.`;
+    }
+
+    const upgrade = upgrades.find(upg => upg.upgradeID === id);
+    if (!upgrade) {
+        return `Upgrade ID ${id} not found.`;
+    }
+    if (upgrade.oneTime && claimedOneTimeUpgradeIDs.has(id)) {
+        return `You can only have one ${upgrade.name}.`;
+    }
+
+    upgrade.apply();
+    if (upgrade.oneTime) {
+        claimedOneTimeUpgradeIDs.add(id);
+    }
+    totalUpgrades += 1;
+    updateUI();
+    return `Applied upgrade ID ${id}, ${upgrade.name}.`;
+}
+
 function shootPlayerBullet() {
     if (playerBullets.length >= maxBullets || shotOnCooldown) {
         return;
@@ -958,6 +981,40 @@ function spawnWave(waveIndex) {
         }
     }
     waveTransitioning = false;
+}
+
+function spawnEnemy(enemyTypes) {
+    let typeData = enemyTypes[group.type];
+        let spawnPosition = getRandomEdgePosition(1050, 900, typeData.size);
+            let enemyElement = document.createElement('img');
+            enemyElement.onerror = () => {
+                enemyElement.src = "sprites/soul-08.png"
+            }
+            enemyElement.style.position = 'absolute';
+            enemyElement.style.width = typeData.size + 'px';
+            enemyElement.style.height = typeData.size + 'px';
+            enemyElement.style.left = spawnPosition.x + 'px';
+            enemyElement.style.top = spawnPosition.y + 'px';
+            enemyElement.src = typeData.source;
+
+            enemyElement.onerror = () => {
+                enemyElement.src = "sprites/soul-08.png"
+            }
+            
+            gameContainer.appendChild(enemyElement);
+            
+            activeEnemies.push({
+                type: group.type,
+                x: spawnPosition.x,
+                y: spawnPosition.y,
+                health: typeData.health,
+                speed: typeData.speed,
+                damage: typeData.damage,
+                size: typeData.size,
+                element: enemyElement,
+                isPoisoned: false,
+                removed: false
+            });
 }
 
 function doDebuffDamage() {
