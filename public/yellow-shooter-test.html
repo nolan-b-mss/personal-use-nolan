@@ -221,9 +221,9 @@ const upgrades = [
     { upgradeID: 30, desc: "+1 Upgrade choice", name: "More options", apply: () => {upgradeChoices += 1;}},
     { upgradeID: 31, desc: "It is waiting for you", name: "???", oneTime: true, apply: () => {allowEndbringer = true;}}, //might remove later
     { upgradeID: 32, desc: "+3 Damage, +4 max bullets, -75ms cooldown", name: "Pack-a-punch", apply: () => { playerDamage += 3; maxBullets += 4; shotCooldown -= 75;}},
-    { upgradeID: 33, desc: "Minor improvements to most stats", name: "Training", apply: () => { playerDamage += 1; playerSpeed += 1; maxHealth += 1; playerHealth += 1; shotCooldown -= 25; bulletSpeed += 1; bulletSizeStat += 0.25;}},
-    { upgradeID: 34, desc: "Medium improvements to most stats", name: "Experienced", apply: () => { playerDamage += 2; playerSpeed += 1.5; maxHealth += 2; playerHealth += 2; shotCooldown -= 50; bulletSpeed += 2; bulletSizeStat += 0.50;}},
-    { upgradeID: 35, desc: "Major improvements to most stats", name: "Professional", apply: () => { playerDamage += 3; playerSpeed += 2; maxHealth += 3; playerHealth += 3; shotCooldown -= 75; bulletSpeed += 3; bulletSizeStat += 0.75}},
+    { upgradeID: 33, desc: "Minor improvements to most stats", name: "Training", apply: () => { playerDamage += 1; playerSpeed += 0.5; maxHealth += 1; playerHealth += 1; shotCooldown -= 25; bulletSpeed += 1; bulletSizeStat += 0.1;}},
+    { upgradeID: 34, desc: "Medium improvements to most stats", name: "Experienced", apply: () => { playerDamage += 2; playerSpeed += 1; maxHealth += 2; playerHealth += 2; shotCooldown -= 50; bulletSpeed += 2; bulletSizeStat += 0.25;}},
+    { upgradeID: 35, desc: "Major improvements to most stats", name: "Professional", apply: () => { playerDamage += 3; playerSpeed += 1.5; maxHealth += 3; playerHealth += 3; shotCooldown -= 75; bulletSpeed += 3; bulletSizeStat += 0.4}},
 ];
 
 const damageSound = new Audio('sounds/damage.mp3')
@@ -661,7 +661,7 @@ function playerDeath(){
     Damage Dealt: ${totalDamage}
     Debuff Damage: ${totalDebuffDamage}
     Damage Taken: ${damageTaken}
-    Critical Chance: ${statCritChance}%
+    Critical Chance: ${visualCritChance}%
     Shots Fired: ${timesFired}
     Enemies Defeated: ${enemiesDefeated}
     
