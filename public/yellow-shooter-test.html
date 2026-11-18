@@ -211,9 +211,25 @@ const upgrades = [
     { upgradeID: 28, desc: "Absurdly high damage, just don't get hit.", name: "Perfection", oneTime: true, apply: () => { maxHealth = 0.001; playerDamage += 20; perfectionActive = true;}},
     { upgradeID: 29, desc: "Absurdly low cooldown, absurdly low damage. Infinite Bullets. Damage capped at 1. Overrides Big Shot", name: "Water Gun", oneTime: true, apply: () => { maxBullets = 1e+9999; playerDamage = 0.1, shotCooldown = 0; waterGunActive = true; allowBigShot = false;}},
     { upgradeID: 30, desc: "+1 Upgrade choice", name: "More options", apply: () => {upgradeChoices += 1;}},
-    { upgradeID: 31, desc: "It is waiting for you", name: "???", apply: () => {allowEndbringer = true;}},
+    { upgradeID: 31, desc: "It is waiting for you", name: "???", oneTime: true, apply: () => {allowEndbringer = true;}},
 ];
 
+const damageSound = new Audio('sounds/damage.mp3')
+const selectSound = new Audio('sounds/select.mp3')
+const enemyDamageSound = new Audio('sounds/yellow-enemy-dmg.mp3')
+const shootSound = new Audio('sounds/yellow-shoot.mp3')
+const upgradeSound = new Audio('sounds/yellow-upgrade.mp3')
+const waveDoneSound = new Audio('sounds/yellow-wavedone.mp3')
+const endbringerSpawn = new Audio('sounds/snd_crowd_laugh.mp3')
+//random bs for audio to go higher than 100%
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const masterGain = audioCtx.createGain();
+masterGain.gain.value = 2.5; 
+masterGain.connect(audioCtx.destination);
+const sourceDamage = audioCtx.createMediaElementSource(damageSound);
+sourceDamage.connect(masterGain);
+//bs stops here
+let soundMuted = false;
 let poisonedEnemies = [];
 let activeEnemies = [];
 let gameContainer = document.getElementById('gameContainer');
@@ -330,6 +346,10 @@ document.onkeydown = function(event){
         location = "yellow-shooter-test.html"
         readyToRestart = false;
     }
+    if (event.key === "m" || event.key === "M"){
+        if (!soundMuted){soundMuted = true;}
+        else if (soundMuted){soundMuted = false;}
+    }
 };
 
 document.onkeyup = function(event){
@@ -428,7 +448,7 @@ function movement() {
             }
         });
 
-        if(!gameRunning && !endbringerSpawned && allowEndbringer){spawnEnemy(enemyTypes, 'endbringer'); endbringerSpawned = true;}
+        if(!gameRunning && !endbringerSpawned && allowEndbringer){spawnEnemy(enemyTypes, 'endbringer'); endbringerSpawned = true; if(!soundMuted){play(endbringerSpawn)};}
 
         playerElement.style.top = myVerti + 'px';
         playerElement.style.left = myHoriz + 'px';
@@ -489,6 +509,7 @@ Game Variables<br>
 CurrentWave: ${currentWaveIndex}<br>
 GameRunning: ${gameRunning}<br>
 WaveChanging: ${waveTransitioning}<br>
+Sound on? = ${soundMuted}
 ---------------- <br>
 Player Variables<br>
 Up: ${up}<br>
@@ -536,6 +557,8 @@ Right = D<br>
 Rotate Clockwise = E<br>
 Rotate Counterclockwise = Q<br>
 Shoot = Z/Space
+Mute Sound = M
+Sound on? = ${soundMuted}
 `;
 }
 
@@ -545,6 +568,10 @@ function takeDamage(damageAmount) {
         if (playerHealth !== Infinity) {
             playerHealth -= damageAmount;
             damageTaken += damageAmount;
+            if (!soundMuted){
+                damageSound.currentTime = 0;
+                damageSound.play();   
+            }
         isInvincible = true;
         playerElement.style.opacity = 0.5;
             if (playerHealth <= 0){
@@ -687,13 +714,25 @@ function triggerUpgradesMenu(){
         descText.style.lineHeight = '1.4';
         card.appendChild(descText);
 
-        card.onmouseover = () => { card.style.backgroundColor = 'yellow'; card.style.color = 'black'; nameHeader.style.color = 'black'; };
-        card.onmouseout = () => { card.style.backgroundColor = 'black'; card.style.color = 'white'; nameHeader.style.color = 'yellow'; };
-
+        card.onmouseover = () => { 
+            card.style.backgroundColor = 'yellow'; 
+            card.style.color = 'black'; 
+            nameHeader.style.color = 'black';
+            if (!soundMuted){
+                selectSound.currentTime = 0;
+                selectSound.play();
+            }
+        };
+        card.onmouseout = () => { 
+            card.style.backgroundColor = 'black'; 
+            card.style.color = 'white'; 
+            nameHeader.style.color = 'yellow'; 
+        };
         card.onclick = () => {
             totalUpgrades += 1;
             upgrade.apply();
             overlay.remove();
+            if (!soundMuted){upgradeSound.play();}
             upgradePaused = false;
 
             if (currentWaveIndex < waveConfigurations.length) {
@@ -738,6 +777,10 @@ function shootPlayerBullet() {
         return;
     }
     shotOnCooldown = true;
+    if (!soundMuted){
+        shootSound.currentTime = 0;
+        shootSound.play();
+    }
     timesFired += 1;
     bulletSize = 16 * bulletSizeStat;
     let bullet = document.createElement('img');
@@ -838,6 +881,11 @@ function movePlayerBullets() {
                     pBullet.x + currentBulletSize > enemy.x &&
                     pBullet.y < enemy.y + enemy.size &&
                     pBullet.y + currentBulletSize > enemy.y) {
+
+                    if (!soundMuted){
+                        enemyDamageSound.currentTime = 0;
+                        enemyDamageSound.play();
+                    }
 
                     if (pBullet.isBigShot) {
                         if (pBullet.damagedEnemies.has(enemy)) return; 
@@ -1106,6 +1154,7 @@ function updateEnemies() {
     if (activeEnemies.length === 0 && gameRunning && !waveTransitioning) {
         waveTransitioning = true;
         currentWaveIndex++;
+        if (!soundMuted){waveDoneSound.play();}
         
         if (currentWaveIndex % 5 === 0) {
             triggerUpgradesMenu();
@@ -1136,6 +1185,7 @@ function startGame() {
     playerElement.style.top = myVerti + 'px';
     playerElement.style.left = myHoriz + 'px';
     spawnWave(currentWaveIndex);
+    audioCtx.resume();
 }
 </script>
 </body>
