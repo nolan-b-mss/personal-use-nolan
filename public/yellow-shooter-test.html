@@ -89,6 +89,14 @@ const assetsToPreload = [
     'sprites/soul-08-enraged.png',
     'sprites/soul-08-hyper.png',
     'sprites/soul-08-strong.png',
+
+    'sounds/damage.mp3',
+    'sounds/select.mp3',
+    'sounds/yellow-enemy-dmg.mp3',
+    'sounds/yellow-shoot.mp3',
+    'sounds/snd_crowd_laugh.mp3',
+    'sounds/yellow-upgrade.mp3',
+    'sounds/yellow-wavedone.mp3',
 ];
 
 function preloadAssets(sources, callback) {
@@ -436,7 +444,7 @@ function movement() {
         if (waterGunActive && allowBigShot){!allowBigShot}
 
         
-        // enemy collision
+        //enemy collision
         activeEnemies.forEach(enemy => {
             if (!enemy.removed) {
                 if (myHoriz < enemy.x + enemy.size &&
@@ -448,7 +456,12 @@ function movement() {
             }
         });
 
-        if(!gameRunning && !endbringerSpawned && allowEndbringer){spawnEnemy(enemyTypes, 'endbringer'); endbringerSpawned = true; if(!soundMuted){play(endbringerSpawn)};}
+        //sound volumes
+        if(!soundMuted){
+
+        }
+
+        if(!gameRunning && !endbringerSpawned && allowEndbringer){spawnEnemy(enemyTypes, 'endbringer'); endbringerSpawned = true; if(!soundMuted){endbringerSpawn.play();};}
 
         playerElement.style.top = myVerti + 'px';
         playerElement.style.left = myHoriz + 'px';
@@ -556,8 +569,8 @@ Down = S<br>
 Right = D<br>
 Rotate Clockwise = E<br>
 Rotate Counterclockwise = Q<br>
-Shoot = Z/Space
-Mute Sound = M
+Shoot = Z/Space<br>
+Mute Sound = M<br>
 Sound on? = ${soundMuted}
 `;
 }
