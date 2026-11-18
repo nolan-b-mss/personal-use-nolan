@@ -456,9 +456,10 @@ function movement() {
             }
         });
 
-        //sound volumes
+        //volumes
         if(!soundMuted){
-
+            shootSound.volume = 0.75;
+            enemyDamageSound.volume = 0.75;
         }
 
         if(!gameRunning && !endbringerSpawned && allowEndbringer){spawnEnemy(enemyTypes, 'endbringer'); endbringerSpawned = true; if(!soundMuted){endbringerSpawn.play();};}
@@ -571,7 +572,7 @@ Rotate Clockwise = E<br>
 Rotate Counterclockwise = Q<br>
 Shoot = Z/Space<br>
 Mute Sound = M<br>
-Sound on? = ${soundMuted}
+Sound muted? = ${soundMuted}
 `;
 }
 
@@ -602,6 +603,7 @@ function playerDeath(){
     const statsMenu = document.getElementById('stats');
     statsMenu.style.display = 'none';
     deathPaused = true;
+    if (endbringerSpawned && !soundMuted){ endbringerSpawn.volume = 0;}
     let overlay = document.createElement('div');
     overlay.id = 'deathOverlay';
     overlay.style.position = 'fixed';
