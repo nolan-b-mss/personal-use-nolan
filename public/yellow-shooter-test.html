@@ -207,9 +207,9 @@ const upgrades = [
     { upgradeID: 16, desc: "+4 max bullets", name: "Auto Retriever", apply: () => { maxBullets += 4 }},
     { upgradeID: 17, desc: "-1 Health, +1 Damage", name: "Anger", apply: () => { maxHealth -= 1; playerDamage += 1}},
     { upgradeID: 18, desc: "-2 Health, +2 Damage", name: "Rage", apply: () => { maxHealth -= 2; playerDamage += 2}},
-    { upgradeID: 19, desc: "-5ms cooldown", name: "Trigger Finger", apply: () => { shotCooldown -= 5;}},
-    { upgradeID: 20, desc: "-10ms cooldown", name: "Good Hands", apply: () => { shotCooldown -= 10;}},
-    { upgradeID: 21, desc: "-15ms cooldown", name: "Very Good Hands", apply: () => { shotCooldown -= 15;}},
+    { upgradeID: 19, desc: "-25ms cooldown", name: "Trigger Finger", apply: () => { shotCooldown -= 5;}},
+    { upgradeID: 20, desc: "-50ms cooldown", name: "Good Hands", apply: () => { shotCooldown -= 10;}},
+    { upgradeID: 21, desc: "-75ms cooldown", name: "Very Good Hands", apply: () => { shotCooldown -= 15;}},
     { upgradeID: 22, desc: "+1 Damage", name: "Well-crafted Rounds", apply: () => { playerDamage += 1;}},
     { upgradeID: 23, desc: "+2 Damage", name: "Very Well-crafted Rounds", apply: () => { playerDamage += 2;}},
     { upgradeID: 24, desc: "+3 Damage", name: "Expertly Crafted Rounds", apply: () => { playerDamage += 3;}},
@@ -217,9 +217,13 @@ const upgrades = [
     { upgradeID: 26, desc: "Unlocks the ability to Critical Hit for 2x your damage. Otherwise, +5% Crit Chance", name: "Precision", apply: () => {if(!allowCriticalHit){allowCriticalHit = true;statCritChance+=0.05; visualCritChance += 5;}else{statCritChance+=0.05; visualCritChance += 5;}}},
     { upgradeID: 27, desc: "-3 Health, +3 Damage", name: "Wrath", apply: () => { maxHealth -= 3; playerDamage += 3;}},
     { upgradeID: 28, desc: "Absurdly high damage, just don't get hit.", name: "Perfection", oneTime: true, apply: () => { maxHealth = 0.001; playerDamage += 20; perfectionActive = true;}},
-    { upgradeID: 29, desc: "Absurdly low cooldown, absurdly low damage. Infinite Bullets. Damage capped at 1. Overrides Big Shot", name: "Water Gun", oneTime: true, apply: () => { maxBullets = 1e+9999; playerDamage = 0.1, shotCooldown = 0; waterGunActive = true; allowBigShot = false;}},
+    { upgradeID: 29, desc: "Absurdly low cooldown, absurdly low damage. Infinite Bullets. Damage capped at 1. Overrides Big Shot", name: "Water Gun", oneTime: true, apply: () => { maxBullets = 1e+9999; playerDamageMult = 0.1, shotCooldown = 0; waterGunActive = true; allowBigShot = false;}},
     { upgradeID: 30, desc: "+1 Upgrade choice", name: "More options", apply: () => {upgradeChoices += 1;}},
-    { upgradeID: 31, desc: "It is waiting for you", name: "???", oneTime: true, apply: () => {allowEndbringer = true;}},
+    { upgradeID: 31, desc: "It is waiting for you", name: "???", oneTime: true, apply: () => {allowEndbringer = true;}}, //might remove later
+    { upgradeID: 32, desc: "+3 Damage, +4 max bullets, -75ms cooldown", name: "Pack-a-punch", apply: () => { playerDamage += 3; maxBullets += 4; shotCooldown -= 75;}},
+    { upgradeID: 33, desc: "Minor improvements to most stats", name: "Training", apply: () => { playerDamage += 1; playerSpeed += 1; maxHealth += 1; playerHealth += 1; shotCooldown -= 25; bulletSpeed += 1; bulletSizeStat += 0.25;}},
+    { upgradeID: 34, desc: "Medium improvements to most stats", name: "Experienced", apply: () => { playerDamage += 2; playerSpeed += 1.5; maxHealth += 2; playerHealth += 2; shotCooldown -= 50; bulletSpeed += 2; bulletSizeStat += 0.50;}},
+    { upgradeID: 35, desc: "Major improvements to most stats", name: "Professional", apply: () => { playerDamage += 3; playerSpeed += 2; maxHealth += 3; playerHealth += 3; shotCooldown -= 75; bulletSpeed += 3; bulletSizeStat += 0.75}},
 ];
 
 const damageSound = new Audio('sounds/damage.mp3')
@@ -229,7 +233,7 @@ const shootSound = new Audio('sounds/yellow-shoot.mp3')
 const upgradeSound = new Audio('sounds/yellow-upgrade.mp3')
 const waveDoneSound = new Audio('sounds/yellow-wavedone.mp3')
 const endbringerSpawn = new Audio('sounds/snd_crowd_laugh.mp3')
-//random bs for audio to go higher than 100%
+//random bs for some audios to go higher than 100%
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const masterGain = audioCtx.createGain();
 masterGain.gain.value = 2.5; 
@@ -276,6 +280,7 @@ let playerHealth = 5;
 let maxHealth = 5;
 let playerSpeed = 3;
 let playerDamage = 1;
+let playerDamageMult = 1;
 let visualCritChance = 0;
 let statCritChance = 0;
 let totalDamage = 0;
@@ -442,6 +447,7 @@ function movement() {
         if (perfectionActive && maxHealth != 0.001){maxHealth = 0.001}
         if (waterGunActive && playerDamage > 1){playerDamage = 1}
         if (waterGunActive && allowBigShot){!allowBigShot}
+        playerDamage *= playerDamageMult;
 
         
         //enemy collision
@@ -556,6 +562,7 @@ Stats<br>
 Wave ${currentWaveIndex}<br>
 Speed: ${playerSpeed}<br>
 Damage: ${playerDamage}<br>
+Damage Multiplier: ${playerDamageMult}x<br>
 Bullet Speed: ${bulletSpeed}<br>
 Bullet Size: ${bulletSizeStat}x<br>
 Bullet Cooldown: ${shotCooldown}ms<br>
