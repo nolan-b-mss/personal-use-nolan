@@ -314,7 +314,7 @@ document.onkeydown = function(event){
             debugElement.style.display = showDebug ? 'block' : 'none';
         }
     }
-    if ((event.key === "z" || event.key === "Z" || event.key === " ") && !playerPaused && !upgradePaused && !shootKeyDebounced) {
+    if ((event.key === "z" || event.key === "Z" || event.key === " ") && !playerPaused && !upgradePaused && !deathPaused && !shootKeyDebounced) {
         if (!tutorialOnScreen) {
             if (!allowAutoFire){shootKeyDebounced = true;}
             else if (allowAutoFire){shootKeyDebounced = false;}
@@ -332,19 +332,19 @@ document.onkeydown = function(event){
             startGame();
         }
     }
-    if ((event.key === "e" || event.key === "E") && !playerPaused && !upgradePaused) {
+    if ((event.key === "e" || event.key === "E") && !playerPaused && !upgradePaused && !deathPaused) {
         if (!rotateKeyDebounced){
             rotateKeyDebounced = true;
             rotatePlayer();
         }
     }
-    if ((event.key === "q" || event.key === "Q") && !event.ctrlKey && !playerPaused && !upgradePaused){
+    if ((event.key === "q" || event.key === "Q") && !event.ctrlKey && !playerPaused && !upgradePaused && !deathPaused){
         if (!otherRotateKeyDebounced){
             otherRotateKeyDebounced = true;
             otherRotatePlayer();
         }
     }
-    if (event.ctrlKey && event.key === "Backspace" && !playerPaused && !upgradePaused){
+    if (event.ctrlKey && event.key === "Backspace" && !playerPaused && !upgradePaused && !deathPaused){
         clearEnemies();
     }
     if (event.key === "f" || event.key === "F"){
@@ -365,7 +365,7 @@ document.onkeyup = function(event){
     if (event.key === "s" || event.key === "S"){ down = false; }
     if (event.key === "a" || event.key === "A"){ left = false; }
     if (event.key === "d" || event.key === "D"){ right = false; }
-    if ((event.key === "z" || event.key === "Z" || event.key === " ") && !playerPaused && !upgradePaused) {
+    if ((event.key === "z" || event.key === "Z" || event.key === " ") && !playerPaused && !upgradePaused && !deathPaused) {
         shootKeyDebounced = false;
         playerIsShooting = false;
         if (isChargingBigShot) {
@@ -379,10 +379,10 @@ document.onkeyup = function(event){
         }
         chargeStartTime = 0;
     }
-    if ((event.key === "e" || event.key === "E") && !playerPaused && !upgradePaused) {
+    if ((event.key === "e" || event.key === "E") && !playerPaused && !upgradePaused && !deathPaused) {
         rotateKeyDebounced = false; 
     }
-    if ((event.key === "q" || event.key === "Q") && !event.ctrlKey && !playerPaused && !upgradePaused){
+    if ((event.key === "q" || event.key === "Q") && !event.ctrlKey && !playerPaused && !upgradePaused && !deathPaused){
         otherRotateKeyDebounced = false;
     }
 };
@@ -391,7 +391,7 @@ function movement() {
 
     updateDebug();
     let elapsed = Date.now() - chargeStartTime;
-    if (!playerPaused && !upgradePaused){
+    if (!playerPaused && !upgradePaused && !deathPaused){
         prevHoriz = myHoriz; 
         prevVerti = myVerti;
         
@@ -1104,7 +1104,7 @@ function spawnEnemy(enemyTypes, enemyType = Object.keys(enemyTypes)[0]) { //for 
 }
 
 function doDebuffDamage() {
-    if (!playerPaused && !upgradePaused){
+    if (!playerPaused && !upgradePaused && !deathPaused){
     activeEnemies.forEach(enemy => {
         if(enemy.isPoisoned){
         enemy.element.style.filter = 'brightness(2) sepia(1) hue-rotate(285deg) saturate(4000%)'
