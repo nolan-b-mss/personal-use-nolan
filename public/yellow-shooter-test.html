@@ -382,12 +382,6 @@ document.onkeydown = function(event){
     }
 };
 
-document.addEventListener('mousemove', (event) => {
-    myCursorX = Math.round(event.clientX - gameContainer.left);
-    myCursorY = Math.round(event.clientY - gameContainer.top);
-    showEnemyInfo();
-});
-
 document.onkeyup = function(event){
     if (event.key === "w" || event.key === "W"){ up = false; }
     if (event.key === "s" || event.key === "S"){ down = false; }
@@ -561,6 +555,8 @@ Down: ${down}<br>
 Right: ${right}<br>
 Facing: ${facing}<br>
 isMoving? ${isMoving}<br>
+CursorX: ${myCursorX}<br>
+CursorY: ${myCursorY}<br>
 X: ${myHoriz}<br>
 Y: ${playerElement.style.top}<br>
 `;
@@ -807,27 +803,54 @@ function triggerUpgradesMenu(){
     document.body.appendChild(overlay);
 }
 
+document.addEventListener('mousemove', (event) => {
+    const containerBounds = gameContainer.getBoundingClientRect();
+
+    myCursorX = Math.round(event.clientX - containerBounds.left);
+    myCursorY = Math.round(event.clientY - containerBounds.top);
+
+    showEnemyInfo();
+});
+
 function showEnemyInfo() {
-    const info = document.createElement("div");
+    let info = document.getElementById("enemyInfo");
 
-    info.style.position = "absolute";
-    info.style.top = `${myCursorY}px`;
-    info.style.left = `${myCursorX}px`;
-    info.style.background = "rgba(0, 0, 0, 0.8)";
-    info.style.color = "#ffff00";
-    info.style.fontFamily = "monospace";
-    info.style.border = "1px solid #ffff00";
-    info.style.zIndex = "1001";
-    info.style.fontSize = "12px";
-
-    const enemy = activeEnemies.find(enemy =>
-        myCursorX === enemy.x && myCursorY === enemy.y
-    );
-
-    if (enemy) {
-        info.textContent = `${enemy.name}, ${enemy.health}`;
-        document.body.appendChild(info);
+    if (!info) {
+        info = document.createElement("div");
+        info.id = "enemyInfo";
+        info.style.position = "absolute";
+        info.style.background = "rgba(0, 0, 0, 0.8)";
+        info.style.color = "#ffff00";
+        info.style.fontFamily = "monospace";
+        info.style.border = "1px solid #ffff00";
+        info.style.padding = "4px";
+        info.style.zIndex = "1001";
+        info.style.fontSize = "12px";
+        info.style.pointerEvents = "none";
+        gameContainer.appendChild(info);
     }
+
+    const enemy = activeEnemies.find(enemy => {
+        if (enemy.removed) return false;
+
+        return myCursorX >= enemy.x &&
+            myCursorX <= enemy.x + enemy.size &&
+            myCursorY >= enemy.y &&
+            myCursorY <= enemy.y + enemy.size;
+    });
+
+    if (!enemy) {
+        info.style.display = "none";
+        return;
+    }
+
+    info.style.display = "block";
+    info.style.left = `${myCursorX + 12}px`;
+    info.style.top = `${myCursorY + 12}px`;
+
+    const enemyData = enemyTypes[enemy.type];
+    const enemyName = enemyData?.name ?? enemy.type;
+    info.textContent = `${enemyName}, ${enemy.health} HP`;
 }
 
 function forcePlayerUpgrade(upgradeID) {
