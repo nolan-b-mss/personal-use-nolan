@@ -383,8 +383,8 @@ document.onkeydown = function(event){
 };
 
 document.addEventListener('mousemove', (event) => {
-    myCursorX = Math.round(event.clientX - containerRect.left);
-    myCursorY = Math.round(event.clientY - containerRect.top);
+    myCursorX = Math.round(event.clientX - gameContainer.left);
+    myCursorY = Math.round(event.clientY - gameContainer.top);
     showEnemyInfo();
 });
 
