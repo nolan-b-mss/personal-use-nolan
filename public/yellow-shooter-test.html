@@ -451,6 +451,7 @@ function movement() {
         movePlayerBullets();
         updateUI();
         updateEnemies();
+        showEnemyInfo();
         if (playerIsShooting && !shootKeyDebounced){shootPlayerBullet();}
 
         //constant statchecks
@@ -809,7 +810,6 @@ document.addEventListener('mousemove', (event) => {
     myCursorX = Math.round(event.clientX - containerBounds.left);
     myCursorY = Math.round(event.clientY - containerBounds.top);
 
-    showEnemyInfo();
 });
 
 function showEnemyInfo() {
