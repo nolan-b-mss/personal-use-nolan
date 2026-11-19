@@ -265,6 +265,8 @@ let myHoriz = 513;
 let myVerti = 492;
 let prevHoriz;
 let prevVerti;
+let myCursorX;
+let myCursorY;
 let isMoving = false;
 let up = false;
 let down = false;
@@ -379,6 +381,12 @@ document.onkeydown = function(event){
         else if (soundMuted){soundMuted = false;}
     }
 };
+
+document.addEventListener('mousemove', (event) => {
+    myCursorX = Math.round(event.clientX - containerRect.left);
+    myCursorY = Math.round(event.clientY - containerRect.top);
+    showEnemyInfo();
+});
 
 document.onkeyup = function(event){
     if (event.key === "w" || event.key === "W"){ up = false; }
@@ -797,6 +805,29 @@ function triggerUpgradesMenu(){
 
     overlay.appendChild(container);
     document.body.appendChild(overlay);
+}
+
+function showEnemyInfo() {
+    const info = document.createElement("div");
+
+    info.style.position = "absolute";
+    info.style.top = `${myCursorY}px`;
+    info.style.left = `${myCursorX}px`;
+    info.style.background = "rgba(0, 0, 0, 0.8)";
+    info.style.color = "#ffff00";
+    info.style.fontFamily = "monospace";
+    info.style.border = "1px solid #ffff00";
+    info.style.zIndex = "1001";
+    info.style.fontSize = "12px";
+
+    const enemy = activeEnemies.find(enemy =>
+        myCursorX === enemy.x && myCursorY === enemy.y
+    );
+
+    if (enemy) {
+        info.textContent = `${enemy.name}, ${enemy.health}`;
+        document.body.appendChild(info);
+    }
 }
 
 function forcePlayerUpgrade(upgradeID) {
