@@ -220,7 +220,7 @@ const upgrades = [
     { upgradeID: 24, desc: "+3 Damage", name: "Expertly Crafted Rounds", apply: () => { playerDamage += 3;}},
     { upgradeID: 25, desc: "+4 Damage", name: "Masterfully Crafted Rounds", apply: () => { playerDamage += 4;}},
     { upgradeID: 26, desc: "+5% Crit Chance", name: "Precision", apply: () => { statCritChance+=0.05; visualCritChance += 5;},
-    { upgradeID: 27, desc: "-3 Health, +3 Damage", name: "Wrath", apply: () => { maxHealth -= 3; playerDamage += 3;}},
+    { upgradeID: 27, desc: "-3 Health, +3 Damage", name: "Wrath", apply: () => { maxHealth -= 3; playerDamage += 3;},
     { upgradeID: 28, desc: "Absurdly high damage, just don't get hit.", name: "Perfection", oneTime: true, apply: () => { maxHealth = 0.001; playerDamage += 20; perfectionActive = true;}},
     { upgradeID: 29, desc: "Absurdly low cooldown, absurdly low damage. Infinite Bullets. Damage capped at 1. Overrides Big Shot", name: "Water Gun", oneTime: true, apply: () => { maxBullets = 1e+9999; playerDamageMult = 0.1, shotCooldown = 0; waterGunActive = true; allowBigShot = false;}},
     { upgradeID: 30, desc: "+1 Upgrade choice", name: "More options", apply: () => {upgradeChoices += 1;}},
