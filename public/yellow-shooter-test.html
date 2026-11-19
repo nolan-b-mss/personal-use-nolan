@@ -231,8 +231,10 @@ const upgrades = [
 ];
 
 const damageSound = new Audio('sounds/damage.mp3')
+const critSound = new Audio('sounds/yellow-crit.mp3')
 const selectSound = new Audio('sounds/menu-movement.mp3')
 const enemyDamageSound = new Audio('sounds/yellow-enemy-dmg.mp3')
+const enemyDefeatSound = new Audio('sounds/yellow-enemy-defeat.mp3')
 const shootSound = new Audio('sounds/yellow-shoot.mp3')
 const enemyShootSound = new Audio('sounds/yellow-enemy-shoot.mp3')
 const upgradeSound = new Audio('sounds/yellow-upgrade.mp3')
@@ -677,6 +679,10 @@ function playerDeath(){
     summary.style.color = 'white';
     summary.style.marginBottom = '40px';
     overlay.appendChild(summary);
+    if (!soundMuted){
+        enemyDefeatSound.currentTime = 0;
+        enemyDefeatSound.play();
+    }
 }
 
 function triggerUpgradesMenu(){
@@ -910,11 +916,6 @@ function movePlayerBullets() {
                     pBullet.y < enemy.y + enemy.size &&
                     pBullet.y + currentBulletSize > enemy.y) {
 
-                    if (!soundMuted){
-                        enemyDamageSound.currentTime = 0;
-                        enemyDamageSound.play();
-                    }
-
                     if (pBullet.isBigShot) {
                         if (pBullet.damagedEnemies.has(enemy)) return; 
                         pBullet.damagedEnemies.add(enemy);
@@ -931,6 +932,10 @@ function movePlayerBullets() {
                         if (crit)
                         {
                         enemy.element.style.filter = 'brightness(0.5) sepia(1) hue-rotate(-50deg) saturate(1000%)';
+                            if (!soundMuted){
+                            critSound.currentTime = 0;
+                            critSound.play();
+                            }
                         setTimeout(() => {
                         if (!enemy.removed) {
                             enemy.element.style.filter = 'none';
@@ -940,6 +945,10 @@ function movePlayerBullets() {
                         totalDamage += critDamage;
                         } else {
                         enemy.element.style.filter = 'brightness(2) sepia(1) hue-rotate(5deg) saturate(1000%)';
+                            if (!soundMuted){
+                            enemyDamageSound.currentTime = 0;
+                            enemyDamageSound.play();
+                            }
                         setTimeout(() => {
                         if (!enemy.removed) {
                             enemy.element.style.filter = 'none';
@@ -957,6 +966,10 @@ function movePlayerBullets() {
                         enemiesDefeated += 1;
                         enemy.element.remove();
                         enemy.removed = true;
+                            if (!soundMuted){
+                            enemyDefeatSound.currentTime = 0;
+                            enemyDefeatSound.play();
+                            }
                         
                         if (enemy.type === 'splitter') {
                             for (let i = 0; i < 2; i++) {
