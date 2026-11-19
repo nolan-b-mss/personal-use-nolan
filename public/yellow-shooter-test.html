@@ -207,7 +207,7 @@ const upgrades = [
     { upgradeID: 8, desc: "-0.5 Speed, +2 Health", name: "Beefy", apply: () => { playerSpeed -= 0.5; maxHealth += 2; playerHealth += 2; }},
     { upgradeID: 9, desc: "+2 max bullets", name: "Bigger Magazine", apply: () => { maxBullets += 2; }},
     { upgradeID: 10, desc: "x2 Cooldown, +1 Bullet Size, +4 Damage", name: "Slug Shots", apply: () => { shotCooldown *= 2; bulletSizeStat += 1; playerDamage += 4; }},
-    { upgradeID: 11, desc: "Hold to fire a BIG SHOT! BIG SHOTs do 5 times your damage, and pierce enemies. Cannot critical hit.", name: "BIG SHOT", oneTime: true, apply: () => { allowBigShot = true; }},
+    { upgradeID: 11, desc: "Hold to fire a BIG SHOT! BIG SHOTs do 5 times your damage, and pierce enemies. Cannot critical hit.", name: "BIG SHOT", oneTime: true, apply: () => { if (!waterGunActive) {allowBigShot = true;}}},
     { upgradeID: 12, desc: "Refills your HP to its maximum.", name: "Full Health", apply: () => { playerHealth = maxHealth }},
     { upgradeID: 13, desc: "W.I.P. (likely doesnt do anything yet)", name: "My Omega", oneTime: true, apply: () => { allowJusticeBeam = true; }},
     { upgradeID: 14, desc: "Upon hitting an enemy, they will take half your damage every second. Does not stack with itself.", name: "Syringe Shots", oneTime: true, apply: () => { allowPoisonShot = true; }},
@@ -233,7 +233,7 @@ const upgrades = [
     { upgradeID: 34, desc: "Medium improvements to most stats", name: "Experienced", apply: () => { playerDamage += 2; playerSpeed += 0.5; maxHealth += 2; playerHealth += 2; shotCooldown -= 50; bulletSpeed += 2; bulletSizeStat += 0.2; maxBullets += 2;}},
     { upgradeID: 35, desc: "Major improvements to most stats", name: "Professional", apply: () => { playerDamage += 3; playerSpeed += 1; maxHealth += 3; playerHealth += 3; shotCooldown -= 75; bulletSpeed += 3; bulletSizeStat += 0.3; maxBullets += 3;}},
     { upgradeID: 36, desc: "+1 Upgrade choice", name: "Steam Family Library", apply: () => {upgradeChoices+= 1;}},
-    { upgradeID: 37, desc: "+10% Block Chance", name: "Armour", apply: () => { statBlockChance += 0.10; visualBlockChance += 10;},
+    { upgradeID: 37, desc: "+10% Block Chance", name: "Armour", apply: () => { statBlockChance += 0.10; visualBlockChance += 10;}},
 ];
 
 const damageSound = new Audio('sounds/damage.mp3')
