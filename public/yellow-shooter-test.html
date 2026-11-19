@@ -821,23 +821,33 @@ function showEnemyInfo() {
         info.style.position = "absolute";
         info.style.background = "rgba(0, 0, 0, 0.8)";
         info.style.color = "#ffff00";
-        info.style.fontFamily = "monospace";
-        info.style.border = "1px solid #ffff00";
         info.style.padding = "4px";
         info.style.zIndex = "1001";
-        info.style.fontSize = "12px";
         info.style.pointerEvents = "none";
         gameContainer.appendChild(info);
     }
 
-    const enemy = activeEnemies.find(enemy => {
-        if (enemy.removed) return false;
+    const overPlayer =
+        myCursorX >= myHoriz &&
+        myCursorX <= myHoriz + 32 &&
+        myCursorY >= myVerti &&
+        myCursorY <= myVerti + 32;
 
-        return myCursorX >= enemy.x &&
-            myCursorX <= enemy.x + enemy.size &&
-            myCursorY >= enemy.y &&
-            myCursorY <= enemy.y + enemy.size;
-    });
+    if (overPlayer) {
+        info.style.display = "block";
+        info.style.left = `${myCursorX + 12}px`;
+        info.style.top = `${myCursorY + 12}px`;
+        info.textContent = "It's you!";
+        return;
+    }
+
+    const enemy = activeEnemies.find(enemy =>
+        !enemy.removed &&
+        myCursorX >= enemy.x &&
+        myCursorX <= enemy.x + enemy.size &&
+        myCursorY >= enemy.y &&
+        myCursorY <= enemy.y + enemy.size
+    );
 
     if (!enemy) {
         info.style.display = "none";
@@ -849,8 +859,7 @@ function showEnemyInfo() {
     info.style.top = `${myCursorY + 12}px`;
 
     const enemyData = enemyTypes[enemy.type];
-    const enemyName = enemyData?.name ?? enemy.type;
-    info.textContent = `${enemyName}, ${enemy.health} HP`;
+    info.textContent = `${enemyData?.name ?? enemy.type}, ${enemy.health} HP`;
 }
 
 function forcePlayerUpgrade(upgradeID) {
