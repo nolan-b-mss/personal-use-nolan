@@ -89,14 +89,16 @@ const assetsToPreload = [
     'sprites/soul-08-enraged.png',
     'sprites/soul-08-hyper.png',
     'sprites/soul-08-strong.png',
+    'sprites/yellow-enemybullet.png',
 
     'sounds/damage.mp3',
-    'sounds/select.mp3',
+    'sounds/menu-movement.mp3',
     'sounds/yellow-enemy-dmg.mp3',
     'sounds/yellow-shoot.mp3',
     'sounds/snd_crowd_laugh.mp3',
     'sounds/yellow-upgrade.mp3',
     'sounds/yellow-wavedone.mp3',
+    'sounds/yellow-enemy-shoot.mp3',
 ];
 
 function preloadAssets(sources, callback) {
@@ -229,9 +231,10 @@ const upgrades = [
 ];
 
 const damageSound = new Audio('sounds/damage.mp3')
-const selectSound = new Audio('sounds/select.mp3')
+const selectSound = new Audio('sounds/menu-movement.mp3')
 const enemyDamageSound = new Audio('sounds/yellow-enemy-dmg.mp3')
 const shootSound = new Audio('sounds/yellow-shoot.mp3')
+const enemyShootSound = new Audio('sounds/yellow-enemy-shoot.mp3')
 const upgradeSound = new Audio('sounds/yellow-upgrade.mp3')
 const waveDoneSound = new Audio('sounds/yellow-wavedone.mp3')
 const endbringerSpawn = new Audio('sounds/snd_crowd_laugh.mp3')
@@ -1213,6 +1216,10 @@ function updateEnemies() {
                     size: 16,
                     removed: false
                 });
+                if (!soundMuted){
+                enemyShootSound.currentTime = 0;
+                enemyShootSound.play();
+                }
             }
         }
     });
