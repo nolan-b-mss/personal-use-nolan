@@ -837,7 +837,9 @@ function showEnemyInfo() {
         info.style.display = "block";
         info.style.left = `${myCursorX + 12}px`;
         info.style.top = `${myCursorY + 12}px`;
-        info.textContent = "It's you!";
+        if(gameRunning){info.textContent = "It's you!"}
+        else
+        {info.textContent = "Despite everything, it's still you.";}
         return;
     }
 
