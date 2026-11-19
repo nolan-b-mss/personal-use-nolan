@@ -224,16 +224,22 @@ const upgrades = [
     { upgradeID: 25, desc: "+4 Damage", name: "Masterfully Crafted Rounds", apply: () => { playerDamage += 4;}},
     { upgradeID: 26, desc: "+5% Crit Chance", name: "Precision", apply: () => { statCritChance+=0.05; visualCritChance += 5;}},
     { upgradeID: 27, desc: "-3 Health, +3 Damage", name: "Wrath", apply: () => { maxHealth -= 3; playerDamage += 3;}},
-    { upgradeID: 28, desc: "Absurdly high damage, just don't get hit.", name: "Perfection", oneTime: true, apply: () => { maxHealth = 0.001; playerDamage += 20; perfectionActive = true;}},
+    { upgradeID: 28, desc: "Permanent x5 damage, just don't get hit.", name: "Perfection", oneTime: true, apply: () => { maxHealth = 0.001; playerDamageMult = 5; perfectionActive = true;}},
     { upgradeID: 29, desc: "Absurdly low cooldown, absurdly low damage. Infinite Bullets. Damage capped at 1. Overrides Big Shot", name: "Water Gun", oneTime: true, apply: () => { maxBullets = 1e+9999; playerDamageMult = 0.1, shotCooldown = 0; waterGunActive = true; allowBigShot = false;}},
     { upgradeID: 30, desc: "+1 Upgrade choice", name: "More options", apply: () => {upgradeChoices += 1;}},
     { upgradeID: 31, desc: "It is waiting for you", name: "???", oneTime: true, apply: () => {allowEndbringer = true;}}, //might remove later
     { upgradeID: 32, desc: "+3 Damage, +4 max bullets, -75ms cooldown", name: "Pack-a-punch", apply: () => { playerDamage += 3; maxBullets += 4; shotCooldown -= 75;}},
     { upgradeID: 33, desc: "Minor improvements to most stats", name: "Training", apply: () => { playerDamage += 1; playerSpeed += 0.25; maxHealth += 1; playerHealth += 1; shotCooldown -= 25; bulletSpeed += 1; bulletSizeStat += 0.1; maxBullets += 1;}},
     { upgradeID: 34, desc: "Medium improvements to most stats", name: "Experienced", apply: () => { playerDamage += 2; playerSpeed += 0.5; maxHealth += 2; playerHealth += 2; shotCooldown -= 50; bulletSpeed += 2; bulletSizeStat += 0.2; maxBullets += 2;}},
-    { upgradeID: 35, desc: "Major improvements to most stats", name: "Professional", apply: () => { playerDamage += 3; playerSpeed += 1; maxHealth += 3; playerHealth += 3; shotCooldown -= 75; bulletSpeed += 3; bulletSizeStat += 0.3; maxBullets += 3;}},
+    { upgradeID: 35, desc: "Major improvements to most stats", name: "Professional", oneTime: true, apply: () => { playerDamage += 3; playerSpeed += 1; maxHealth += 3; playerHealth += 3; shotCooldown -= 75; bulletSpeed += 3; bulletSizeStat += 0.3; maxBullets += 3;}},
     { upgradeID: 36, desc: "+1 Upgrade choice", name: "Steam Family Library", apply: () => {upgradeChoices+= 1;}},
     { upgradeID: 37, desc: "+10% Block Chance", name: "Armour", apply: () => { statBlockChance += 0.10; visualBlockChance += 10;}},
+    { upgradeID: 38, desc: "+1 damage, +0.5 speed, +1 upgrade choice", name: "Intelligent", apply: () => { playerDamage += 1; playerSpeed += 0.5; upgradeChoices += 1;}},
+    { upgradeID: 39, desc: "+2 Upgrade choices", name: "V.I.P.", apply: () => { upgradeChoices += 2;}},
+    { upgradeID: 40, desc: "+15% Block Chance", name: "Shielded", apply: () => { statBlockChance += 0.15; visualBlockChance += 15;}},
+    { upgradeID: 41, desc: "+4 max bullets", name: "Bullet Magnet", apply: () => { maxBullets += 4;}},
+    { upgradeID: 42, desc: "/2 cooldown, x2 damage", name: "Dual Wield", apply: () => { maxBullets *= 2; shotCooldown /= 2; playerDamage *= 2;}},
+    { upgradeID: 43, desc: "+2 speed", name: "Treadmill Experienced", apply: () => { playerSpeed += 2;}},
 ];
 
 const damageSound = new Audio('sounds/damage.mp3')
@@ -690,6 +696,7 @@ function playerDeath(){
     Debuff Damage: ${totalDebuffDamage}
     Damage Taken: ${damageTaken}
     Critical Chance: ${visualCritChance}%
+    Block Chance: ${visualBlockChance}%
     Shots Fired: ${timesFired}
     Enemies Defeated: ${enemiesDefeated}
     
