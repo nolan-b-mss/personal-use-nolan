@@ -613,7 +613,6 @@ function takeDamage(damageAmount) {
             if (!soundMuted){
                 //block sound logic goes here
             }
-            return;
         }
         if (playerHealth !== Infinity) {
             playerHealth -= damageAmount;
@@ -622,16 +621,16 @@ function takeDamage(damageAmount) {
                 damageSound.currentTime = 0;
                 damageSound.play();   
             }
-        isInvincible = true;
         playerElement.style.opacity = 0.5;
             if (playerHealth <= 0){
                 playerDeath();
             }
-        setTimeout(function() {
-            isInvincible = false;
-            playerElement.style.opacity = 1.0;
-            }, 1000);
         }
+        isInvincible = true;
+        setTimeout(function() {
+        isInvincible = false;
+        playerElement.style.opacity = 1.0;
+        }, 1000);
     }
 }
 function playerDeath(){
