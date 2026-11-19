@@ -303,6 +303,7 @@ let bulletSizeStat = 1.0;
 let bulletSize = 16 * bulletSizeStat;
 let bulletSpeed = 10;
 let playerBullets = [];
+let enemyBullets = [];
 let facing = 'down';
 let tutorialOnScreen = true;
 let gameRunning = false;
@@ -1172,8 +1173,51 @@ function updateEnemies() {
         if (enemy.x > maxEnemyX) {enemy.x = maxEnemyX;}
         if (enemy.y < minEnemyY) {enemy.y = minEnemyY;}
         if (enemy.y > maxEnemyY) {enemy.y = maxEnemyY;} 
-        
+
+        if (enemy.type === 'ranger') {
+            if (!enemy.lastShotTime) enemy.lastShotTime = 0;
+            let currentTime = Date.now();
+            
+            if (currentTime - enemy.lastShotTime > 2000) {
+                enemy.lastShotTime = currentTime;
+                
+                let shootDeltaX = myHoriz - enemy.x;
+                let shootDeltaY = myVerti - enemy.y;
+                let shootDist = Math.sqrt(shootDeltaX * shootDeltaX + shootDeltaY * shootDeltaY);
+                
+                let bulletSpeed = 4;
+                let veloX = (shootDeltaX / shootDist) * bulletSpeed;
+                let veloY = (shootDeltaY / shootDist) * bulletSpeed;
+
+                let bulletEl = document.createElement('img');
+                bulletEl.style.position = 'absolute';
+                bulletEl.style.width = '16px';
+                bulletEl.style.height = '16px';
+                bulletEl.src = 'sprites/yellow-enemybullet.png';
+                bulletEl.style.zIndex = '98';
+                
+                let startX = enemy.x + (enemy.size / 2) - 8;
+                let startY = enemy.y + (enemy.size / 2) - 8;
+                bulletEl.style.left = startX + 'px';
+                bulletEl.style.top = startY + 'px';
+                
+                gameContainer.appendChild(bulletEl);
+
+                enemyBullets.push({
+                    element: bulletEl,
+                    x: startX,
+                    y: startY,
+                    veloX: veloX,
+                    veloY: veloY,
+                    damage: 1,
+                    size: 16,
+                    removed: false
+                });
+            }
+        }
     });
+
+    updateEnemyBullets();
 
     if (activeEnemies.length === 0 && gameRunning && !waveTransitioning) {
         waveTransitioning = true;
@@ -1188,6 +1232,35 @@ function updateEnemies() {
             gameRunning = false;
         }
     }
+}
+
+function updateEnemyBullets() {
+    enemyBullets.forEach(eBullet => {
+        eBullet.x += eBullet.veloX;
+        eBullet.y += eBullet.veloY;
+
+        eBullet.element.style.left = eBullet.x + 'px';
+        eBullet.element.style.top = eBullet.y + 'px';
+
+        if (eBullet.x < 0 || eBullet.x > 1100 || eBullet.y < 0 || eBullet.y > 900) {
+            eBullet.element.remove();
+            eBullet.removed = true;
+            return;
+        }
+
+        if (!isInvincible && !isTrueInvincible) {
+            if (eBullet.x < myHoriz + 32 &&
+                eBullet.x + eBullet.size > myHoriz &&
+                eBullet.y < myVerti + 32 &&
+                eBullet.y + eBullet.size > myVerti) {
+                
+                takeDamage(eBullet.damage);
+                eBullet.element.remove();
+                eBullet.removed = true;
+            }
+        }
+    });
+    enemyBullets = enemyBullets.filter(b => !b.removed);
 }
 
 function clearEnemies(){
