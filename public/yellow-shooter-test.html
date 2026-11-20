@@ -101,6 +101,7 @@ const assetsToPreload = [
     'sounds/yellow-enemy-shoot.mp3',
     'sounds/yellow-enemy-defeat.mp3',
     'sounds/yellow-crit.mp3',
+    'sounds/yellow-block.mp3',
 ];
 
 function preloadAssets(sources, callback) {
@@ -252,6 +253,7 @@ const enemyShootSound = new Audio('sounds/yellow-enemy-shoot.mp3')
 const upgradeSound = new Audio('sounds/yellow-upgrade.mp3')
 const waveDoneSound = new Audio('sounds/yellow-wavedone.mp3')
 const endbringerSpawn = new Audio('sounds/snd_crowd_laugh.mp3')
+const blockSound = new Audio('sounds/yellow-block.mp3')
 //random bs for some audios to go higher than 100%
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const masterGain = audioCtx.createGain();
@@ -617,7 +619,8 @@ function takeDamage(damageAmount) {
         let blocked = blockRoll < statBlockChance;
         if (blocked) {
             if (!soundMuted){
-                //block sound logic goes here
+                blockSound.currentTime = 0;
+                blockSound.play();
             }
         }
         if (playerHealth !== Infinity) {
