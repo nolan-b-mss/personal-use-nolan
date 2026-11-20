@@ -311,6 +311,7 @@ let totalDamage = 0;
 let totalDebuffDamage = 0;
 let damageTaken = 0;
 let timesFired = 0;
+let timesBlocked = 0;
 let shotCooldown = 250
 let shotOnCooldown = false;
 let enemiesDefeated = 0;
@@ -618,6 +619,7 @@ function takeDamage(damageAmount) {
         let blockRoll = Math.random()
         let blocked = blockRoll < statBlockChance;
         if (blocked) {
+            timesBlocked += 1;
             if (!soundMuted){
                 blockSound.currentTime = 0;
                 blockSound.play();
@@ -700,8 +702,10 @@ function playerDeath(){
     Damage Taken: ${damageTaken}
     Critical Chance: ${visualCritChance}%
     Block Chance: ${visualBlockChance}%
+    Hits Blocked: ${timesBlocked}
     Shots Fired: ${timesFired}
     Enemies Defeated: ${enemiesDefeated}
+    Total Upgrades: ${totalUpgrades}
     
     Press X to restart.
     `;
