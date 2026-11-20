@@ -623,17 +623,17 @@ function takeDamage(damageAmount) {
                 blockSound.play();
             }
         }
-        if (playerHealth !== Infinity) {
+        if (playerHealth !== Infinity && !blocked) {
             playerHealth -= damageAmount;
             damageTaken += damageAmount;
             if (!soundMuted){
                 damageSound.currentTime = 0;
                 damageSound.play();   
             }
+        }
         playerElement.style.opacity = 0.5;
-            if (playerHealth <= 0){
-                playerDeath();
-            }
+        if (playerHealth <= 0){
+            playerDeath();
         }
         isInvincible = true;
         setTimeout(function() {
