@@ -491,8 +491,9 @@ function movement() {
 
         //volumes
         if(!soundMuted){
-            shootSound.volume = 0.75;
-            enemyDamageSound.volume = 0.75;
+            shootSound.volume = 0.4;
+            enemyDamageSound.volume = 0.4;
+            waveDoneSound.volume = 0.4;
         }
 
         if(!gameRunning && !endbringerSpawned && allowEndbringer){spawnEnemy(enemyTypes, 'endbringer'); endbringerSpawned = true; if(!soundMuted){endbringerSpawn.play();};}
