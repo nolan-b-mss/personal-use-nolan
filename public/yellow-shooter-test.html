@@ -89,19 +89,9 @@ const assetsToPreload = [
     'sprites/soul-08-enraged.png',
     'sprites/soul-08-hyper.png',
     'sprites/soul-08-strong.png',
+    'sprites/soul-08-boss5.png',
+    'sprites/soul-08-boss6.png',
     'sprites/yellow-enemybullet.png',
-
-    'sounds/damage.mp3',
-    'sounds/menu-movement.mp3',
-    'sounds/yellow-enemy-dmg.mp3',
-    'sounds/yellow-shoot.mp3',
-    'sounds/snd_crowd_laugh.mp3',
-    'sounds/yellow-upgrade.mp3',
-    'sounds/yellow-wavedone.mp3',
-    'sounds/yellow-enemy-shoot.mp3',
-    'sounds/yellow-enemy-defeat.mp3',
-    'sounds/yellow-crit.mp3',
-    'sounds/yellow-block.mp3',
 ];
 
 function preloadAssets(sources, callback) {
@@ -149,7 +139,7 @@ const enemyTypes = {
     hyper: { health: 1, speed: 5, damage: 1, size: 32, isPoisoned: false, name: 'Hyper', source: 'sprites/soul-08-hyper.png' },
     kaizo: { health: 5, speed: 4, damage: 2, size: 32, isPoisoned: false, name: 'Kaizo', source: 'sprites/soul-08-kaizo.png' },
     kaizoBoss: { health: 325, speed: 3.5, damage: 2, size: 64, isPoisoned: false, name: 'Kaizo Boss', source: 'sprites/soul-08-kaizo.png' },
-    divine: { health: 50, speed: 2, damage: 2, size: 32, isPoisoned: false, name: 'Divine', source: 'sprites/soul-08-divine.gif'},
+    divine: { health: 350, speed: 0.25, damage: 2, size: 32, isPoisoned: false, name: 'Divine', source: 'sprites/soul-08-divine.gif'},
     ranger: { health: 5, speed: 0.25, damage: 1, size: 32, isPoisoned: false, name: 'Ranger', source: 'sprites/soul-08.png' },
     strongRanger: { health: 50, speed: 0.25, damage: 1, size: 32, isPoisoned: false, name: 'Strong Ranger', source: 'sprites/soul-08.png' },
     tankRanger: { health: 150, speed: 0.5, damage: 2, size: 48, isPoisoned: false, name: 'Tank Ranger', source: 'sprites/soul-08.png' },
@@ -160,13 +150,20 @@ const enemyTypes = {
     boss2: { health: 150, speed: 0.75, damage: 2, size: 90, isPoisoned: false, name: 'Slow Boss', source: 'sprites/soul-08-boss2.png' },
     boss3: { health: 250, speed: 2.75, damage: 1, size: 80, isPoisoned: false, name: 'Speedy Boss', source: 'sprites/soul-08-boss3.png' },
     boss4: { health: 500, speed: 2.5, damage: 2, size: 100, isPoisoned: false, name: 'Giant Boss', source: 'sprites/soul-08-boss4.png' },
-    boss5: { health: 650, speed: 2.75, damage: 2, size: 100, isPoisoned: false, name: 'Tank', source: 'sprites/soul-08.png' },
+    boss5: { health: 650, speed: 2.75, damage: 2, size: 100, isPoisoned: false, name: 'Tank', source: 'sprites/soul-08-boss5.png'},
+    boss6: { health: 800, speed: 2.75, damage: 3, size: 120, isPoisoned: false, name: 'Elite', source: 'sprites/soul-08-boss6.png'},
     splitter: { health: 10, speed: 1.75, damage: 1, size: 45, isPoisoned: false, name: 'Splitter', source: 'sprites/soul-08-splitter.png' },
     splitter01: { health: 5, speed: 2, damage: 1, size: 30, isPoisoned: false, name: 'Splitter1', source: 'sprites/soul-08-splitter.png' },
     splitter02: { health: 2, speed: 2.25, damage: 1, size: 15, isPoisoned: false, name: 'Splitter2', source: 'sprites/soul-08-splitter.png' },
     splitter03: { health: 1, speed: 2.50, damage: 1, size: 8, isPoisoned: false, name: 'Splitter3', source: 'sprites/soul-08.png' },
     scaredy: { health: 6, speed: -3, damage: 2, size: 32, isPoisoned: false, name: 'Scaredy', source: 'sprites/soul-08.png' },
     endbringer: { health: 1e+9999, speed: 10, damage: 1e+9999, size: 96, name: 'Endbringer', isPoisoned: false, source: 'sprites/friend2.png' },
+    cosmic: { health: 50, speed: 2, damage: 2, size: 32, isPoisoned: false, name: 'Cosmic', source: 'sprites/soul-08-cosmic.png' },
+    stardust: { health: 100, speed: 2, damage: 2, size: 60, isPoisoned: false, name: 'Stardust', source: 'sprites/soul-08-stardust.gif'},
+    stardust1: { health: 50, speed: 2.25, damage: 2, size: 30, isPoisoned: false, name: 'Stardust1', source: 'sprites/soul-08-stardust.gif'},
+    stardust2: { health: 25, speed: 2.5, damage: 2, size: 15, isPoisoned: false, name: 'Stardust2', source: 'sprites/soul-08-stardust.gif'},
+    stardust3: { health: 10, speed: 2.75, damage: 1, size: 8, isPoisoned: false, name: 'Stardust3', source: 'sprites/soul-08-stardust.gif'},
+    cosmicBoss: { health: 500, speed: 2.75, damage: 1, size: 80, isPoisoned: false, name: 'Shooting Star', source: 'sprites/soul-08-cosmicboss.png'},
 };
 
 const waveConfigurations = [
@@ -223,10 +220,10 @@ const upgrades = [
     { upgradeID: 23, desc: "+2 Damage", name: "Very Well-crafted Rounds", apply: () => { playerDamage += 2;}},
     { upgradeID: 24, desc: "+3 Damage", name: "Expertly Crafted Rounds", apply: () => { playerDamage += 3;}},
     { upgradeID: 25, desc: "+4 Damage", name: "Masterfully Crafted Rounds", apply: () => { playerDamage += 4;}},
-    { upgradeID: 26, desc: "+5% Crit Chance", name: "Precision", apply: () => { statCritChance+=0.05; visualCritChance += 5;}},
+    { upgradeID: 26, desc: "+5% Crit Chance", name: "Precision", apply: () => { statCritChance+=0.05;}},
     { upgradeID: 27, desc: "-3 Health, +3 Damage", name: "Wrath", apply: () => { maxHealth -= 3; playerDamage += 3;}},
-    { upgradeID: 28, desc: "Permanent x5 damage, just don't get hit.", name: "Perfection", oneTime: true, apply: () => { maxHealth = 0.001; playerDamageMult = 5; perfectionActive = true;}},
-    { upgradeID: 29, desc: "Absurdly low cooldown, absurdly low damage. Infinite Bullets. Damage capped at 1. Overrides Big Shot", name: "Water Gun", oneTime: true, apply: () => { maxBullets = 1e+9999; playerDamageMult = 0.1, shotCooldown = 0; waterGunActive = true; allowBigShot = false;}},
+    { upgradeID: 28, desc: "Absurdly high damage, just don't get hit.", name: "Perfection", oneTime: true, apply: () => { maxHealth = 0.001; playerDamage += 20; perfectionActive = true;}},
+    { upgradeID: 29, desc: "Absurdly low cooldown, absurdly low damage. Infinite Bullets. Damage capped at 1. Overrides Big Shot", name: "Water Gun", oneTime: true, apply: () => { maxBullets = 1e+9999; playerDamage = 0.1, shotCooldown = 0; waterGunActive = true; allowBigShot = false;}},
     { upgradeID: 30, desc: "+1 Upgrade choice", name: "More options", apply: () => {upgradeChoices += 1;}},
     { upgradeID: 31, desc: "It is waiting for you", name: "???", oneTime: true, apply: () => {allowEndbringer = true;}}, //might remove later
     { upgradeID: 32, desc: "+3 Damage, +4 max bullets, -75ms cooldown", name: "Pack-a-punch", apply: () => { playerDamage += 3; maxBullets += 4; shotCooldown -= 75;}},
@@ -234,13 +231,14 @@ const upgrades = [
     { upgradeID: 34, desc: "Medium improvements to most stats", name: "Experienced", apply: () => { playerDamage += 2; playerSpeed += 0.5; maxHealth += 2; playerHealth += 2; shotCooldown -= 50; bulletSpeed += 2; bulletSizeStat += 0.2; maxBullets += 2;}},
     { upgradeID: 35, desc: "Major improvements to most stats", name: "Professional", oneTime: true, apply: () => { playerDamage += 3; playerSpeed += 1; maxHealth += 3; playerHealth += 3; shotCooldown -= 75; bulletSpeed += 3; bulletSizeStat += 0.3; maxBullets += 3;}},
     { upgradeID: 36, desc: "+1 Upgrade choice", name: "Steam Family Library", apply: () => {upgradeChoices+= 1;}},
-    { upgradeID: 37, desc: "+10% Block Chance", name: "Armour", apply: () => { statBlockChance += 0.10; visualBlockChance += 10;}},
+    { upgradeID: 37, desc: "+10% Block Chance", name: "Armour", apply: () => { statBlockChance += 0.10;}},
     { upgradeID: 38, desc: "+1 damage, +0.5 speed, +1 upgrade choice", name: "Intelligent", apply: () => { playerDamage += 1; playerSpeed += 0.5; upgradeChoices += 1;}},
-    { upgradeID: 39, desc: "+2 Upgrade choices", name: "V.I.P.", apply: () => { upgradeChoices += 2;}},
-    { upgradeID: 40, desc: "+15% Block Chance", name: "Shielded", apply: () => { statBlockChance += 0.15; visualBlockChance += 15;}},
+    { upgradeID: 39, desc: "+2 Upgrade choices", name: "V.I.P.", oneTime: true, apply: () => { upgradeChoices += 2;}},
+    { upgradeID: 40, desc: "+15% Block Chance", name: "Shielded", apply: () => { statBlockChance += 0.15;}},
     { upgradeID: 41, desc: "+4 max bullets", name: "Bullet Magnet", apply: () => { maxBullets += 4;}},
     { upgradeID: 42, desc: "/2 cooldown, x2 damage", name: "Dual Wield", apply: () => { maxBullets *= 2; shotCooldown /= 2; playerDamage *= 2;}},
     { upgradeID: 43, desc: "+2 speed", name: "Treadmill Experienced", apply: () => { playerSpeed += 2;}},
+    { upgradeID: 44, desc: "Improvements to ALL stats.", name: "Cheat Code", oneTime: true, apply:() => { playerSpeed += 1; playerDamage += 1; statBlockChance += 0.05; statCritChance += 0.05; upgradeChoices += 1; maxHealth += 1; playerHealth += 1; shotCooldown -= 50; bulletSpeed += 2; bulletSizeStat += 0.2; maxBullets += 2;  }}
 ];
 
 const damageSound = new Audio('sounds/damage.mp3')
@@ -302,7 +300,6 @@ let playerHealth = 5;
 let maxHealth = 5;
 let playerSpeed = 3;
 let playerDamage = 1;
-let playerDamageMult = 1;
 let visualCritChance = 0;
 let statCritChance = 0;
 let visualBlockChance = 0;
@@ -463,7 +460,9 @@ function movement() {
         updateEnemies();
         if (playerIsShooting && !shootKeyDebounced){shootPlayerBullet();}
 
-        //constant statchecks
+        //constant stat logic
+        visualCritChance = statCritChance /= 0.01;
+        visualBlockChance = statBlockChance /= 0.01;
         if (playerHealth > maxHealth){playerHealth = maxHealth}
         if (playerSpeed < 0.75){playerSpeed = 0.75}
         if (shotCooldown < 5){shotCooldown = 5}
@@ -474,8 +473,6 @@ function movement() {
         if (perfectionActive && maxHealth != 0.001){maxHealth = 0.001}
         if (waterGunActive && playerDamage > 1){playerDamage = 1}
         if (waterGunActive && allowBigShot){!allowBigShot}
-        playerDamage *= playerDamageMult;
-
         
         //enemy collision
         activeEnemies.forEach(enemy => {
@@ -491,9 +488,9 @@ function movement() {
 
         //volumes
         if(!soundMuted){
-            shootSound.volume = 0.4;
-            enemyDamageSound.volume = 0.4;
-            waveDoneSound.volume = 0.4;
+            shootSound.volume = 0.1;
+            enemyDamageSound.volume = 0.1;
+            waveDoneSound.volume = 0.1;
         }
 
         if(!gameRunning && !endbringerSpawned && allowEndbringer){spawnEnemy(enemyTypes, 'endbringer'); endbringerSpawned = true; if(!soundMuted){endbringerSpawn.play();};}
@@ -557,7 +554,7 @@ Game Variables<br>
 CurrentWave: ${currentWaveIndex}<br>
 GameRunning: ${gameRunning}<br>
 WaveChanging: ${waveTransitioning}<br>
-Sound on? = ${soundMuted}
+Sound muted? = ${soundMuted}<br>
 ---------------- <br>
 Player Variables<br>
 Up: ${up}<br>
@@ -592,7 +589,6 @@ Stats<br>
 Wave ${currentWaveIndex}<br>
 Speed: ${playerSpeed}<br>
 Damage: ${playerDamage}<br>
-Damage Multiplier: ${playerDamageMult}x<br>
 Bullet Speed: ${bulletSpeed}<br>
 Bullet Size: ${bulletSizeStat}x<br>
 Bullet Cooldown: ${shotCooldown}ms<br>
@@ -1079,6 +1075,21 @@ function movePlayerBullets() {
                         if (enemy.type === 'splitter02') {
                             for (let i = 0; i < 2; i++) {
                                 spawnSplitChild('splitter03', enemy);
+                            }
+                        }
+                        if (enemy.type === 'stardust'){
+                            for (let i = 0; i < 2; i++) {
+                                spawnSplitChild('stardust1', enemy);
+                            }
+                        }
+                        if (enemy.type === 'stardust1'){
+                            for (let i = 0; i < 2; i++) {
+                                spawnSplitChild('stardust2', enemy);
+                            }
+                        }
+                        if (enemy.type === 'stardust2'){
+                            for (let i = 0; i < 2; i++) {
+                                spawnSplitChild('stardust3', enemy);
                             }
                         }
                     }
