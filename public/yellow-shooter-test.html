@@ -726,7 +726,7 @@ function playerDeath(){
 
 function triggerUpgradesMenu(){
     upgradePaused = true;
-    let availableUpgrades = upgrades.filter(upg => !upg.oneTime || (upg.oneTime && !claimedOneTimeUpgradeIDs.has(upg.upgradeID)));
+    let availableUpgrades = upgrades.filter(upg => !upg.oneTime || !claimedOneTimeUpgradeIDs.has(upg.upgradeID));
     let overlay = document.createElement('div');
     overlay.id = 'upgradeOverlay';
     overlay.style.position = 'fixed';
@@ -750,7 +750,7 @@ function triggerUpgradesMenu(){
     title.style.color = 'yellow';
     overlay.appendChild(title);
 
-    let randomChoices = [...upgrades].sort(() => 0.5 - Math.random()).slice(0, upgradeChoices);
+    let randomChoices = [...availableUpgrades].sort(() => 0.5 - Math.random()).slice(0, Math.min(upgradeChoices, availableUpgrades.length));
 
     let container = document.createElement('div');
     container.style.display = 'flex';
@@ -804,6 +804,9 @@ function triggerUpgradesMenu(){
         card.onclick = () => {
             totalUpgrades += 1;
             upgrade.apply();
+            if (upgrade.oneTime) {
+                claimedOneTimeUpgradeIDs.add(upgrade.upgradeID);
+            }
             overlay.remove();
             if (!soundMuted){upgradeSound.play();}
             upgradePaused = false;
@@ -821,14 +824,6 @@ function triggerUpgradesMenu(){
     overlay.appendChild(container);
     document.body.appendChild(overlay);
 }
-
-document.addEventListener('mousemove', (event) => {
-    const containerBounds = gameContainer.getBoundingClientRect();
-
-    myCursorX = Math.round(event.clientX - containerBounds.left);
-    myCursorY = Math.round(event.clientY - containerBounds.top);
-
-});
 
 function showEnemyInfo() {
     let info = document.getElementById("enemyInfo");
