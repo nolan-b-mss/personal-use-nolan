@@ -461,8 +461,8 @@ function movement() {
         if (playerIsShooting && !shootKeyDebounced){shootPlayerBullet();}
 
         //constant stat logic
-        visualCritChance = statCritChance /= 0.01;
-        visualBlockChance = statBlockChance /= 0.01;
+        visualCritChance = statCritChance * 100;
+        visualBlockChance = statBlockChance * 100;
         if (playerHealth > maxHealth){playerHealth = maxHealth}
         if (playerSpeed < 0.75){playerSpeed = 0.75}
         if (shotCooldown < 5){shotCooldown = 5}
