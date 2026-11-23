@@ -496,7 +496,11 @@ function movement() {
             waveDoneSound.volume = 0.2;
         }
 
-        if(!gameRunning && !endbringerSpawned && allowEndbringer){spawnEnemy(enemyTypes, 'endbringer'); endbringerSpawned = true; if(!soundMuted){endbringerSpawn.play();};}
+        if(!gameRunning && !endbringerSpawned && allowEndbringer){
+            spawnEnemy(enemyTypes, 'endbringer'); 
+            endbringerSpawned = true; 
+            if(!soundMuted){endbringerSpawn.play();};
+        }
 
         playerElement.style.top = myVerti + 'px';
         playerElement.style.left = myHoriz + 'px';
