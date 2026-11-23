@@ -825,6 +825,18 @@ function triggerUpgradesMenu(){
     document.body.appendChild(overlay);
 }
 
+myCursorX = -1;
+myCursorY = -1;
+
+document.addEventListener('mousemove', (event) => {
+    const containerBounds = gameContainer.getBoundingClientRect();
+    const scaleX = containerBounds.width / gameContainer.offsetWidth || 1;
+    const scaleY = containerBounds.height / gameContainer.offsetHeight || 1;
+
+    myCursorX = Math.round((event.clientX - containerBounds.left) / scaleX);
+    myCursorY = Math.round((event.clientY - containerBounds.top) / scaleY);
+});
+
 function showEnemyInfo() {
     let info = document.getElementById("enemyInfo");
 
@@ -840,6 +852,11 @@ function showEnemyInfo() {
         gameContainer.appendChild(info);
     }
 
+    if (typeof myCursorX !== "number" || typeof myCursorY !== "number" || myCursorX < 0 || myCursorY < 0) {
+        info.style.display = "none";
+        return;
+    }
+
     const overPlayer =
         myCursorX >= myHoriz &&
         myCursorX <= myHoriz + 32 &&
@@ -850,9 +867,7 @@ function showEnemyInfo() {
         info.style.display = "block";
         info.style.left = `${myCursorX + 12}px`;
         info.style.top = `${myCursorY + 12}px`;
-        if(gameRunning){info.textContent = "It's you!"}
-        else
-        {info.textContent = "Despite everything, it's still you.";}
+        info.textContent = gameRunning ? "It's you!" : "Despite everything, it's still you.";
         return;
     }
 
