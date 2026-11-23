@@ -1204,10 +1204,13 @@ function spawnWave(waveIndex) {
     waveTransitioning = false;
 }
 
-function spawnEnemy(enemyTypes, enemyType = Object.keys(enemyTypes)[0]) { //for playtest purposes only
-    const type = typeof enemyType === 'string' ? enemyType : enemyType.type;
-    const typeData = enemyTypes[type];
-    if (!typeData) return;
+function spawnEnemy(enemyType = 'chaser', typesObj = enemyTypes) { // for playtest purposes only
+    const type = typeof enemyType === 'string' ? enemyType : enemyType?.type;
+    const typeData = typesObj?.[type];
+    if (!typeData || !typeData.source) {
+        console.warn(`Unknown or invalid enemy type: "${type}"`);
+        return;
+    }
 
     const spawnPosition = getRandomEdgePosition(1050, 900, typeData.size);
     const enemyElement = document.createElement('img');
