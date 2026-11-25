@@ -141,8 +141,8 @@ const enemyTypes = {
     kaizoBoss: { health: 325, speed: 3.5, damage: 2, size: 64, isPoisoned: false, name: 'Kaizo Boss', source: 'sprites/soul-08-kaizo.png' },
     divine: { health: 350, speed: 0.25, damage: 2, size: 32, isPoisoned: false, name: 'Divine', source: 'sprites/soul-08-divine.gif'},
     ranger: { health: 5, speed: 0.25, damage: 1, size: 32, isPoisoned: false, name: 'Ranger', source: 'sprites/soul-08.png' },
-    strongRanger: { health: 50, speed: 0.25, damage: 1, size: 32, isPoisoned: false, name: 'Strong Ranger', source: 'sprites/soul-08.png' },
-    tankRanger: { health: 150, speed: 0.5, damage: 2, size: 48, isPoisoned: false, name: 'Tank Ranger', source: 'sprites/soul-08.png' },
+    strongRanger: { health: 50, speed: 0.25, damage: 1, size: 32, isPoisoned: false, name: 'Strong Ranger', source: 'sprites/soul-08-strongRanger.png' },
+    tankRanger: { health: 150, speed: 0.5, damage: 2, size: 48, isPoisoned: false, name: 'Tank Ranger', source: 'sprites/soul-08-tankRanger.png' },
     strong: { health: 25, speed: 1.25, damage: 1, size: 45, isPoisoned: false, name: 'Strong', source: 'sprites/soul-08-strong.png' },
     hidden: { health: 5, speed: 2.25, damage: 1, size: 32, isPoisoned: false, name: 'Hidden', source: 'sprites/soul-08-hidden.png' },
     hiddenBoss: {health: 100, speed: 2.25, damage: 1, size: 48, isPoisoned: false, name: 'Hidden Boss', source: 'sprites/soul-08-hidden.png' },
@@ -179,7 +179,7 @@ const waveConfigurations = [
     { waveID: 9, enemies: [{type: 'boss1', count: 1}, {type: 'enraged', count: 3}] },
     { waveID: 10, enemies: [{type: 'boss2', count: 1}] },
     { waveID: 11, enemies: [{type: 'enraged', count: 5}, {type: 'ranger', count: 5}, {type: 'boss2', count: 1}] },
-    { waveID: 12, enemies: [{type: 'hyper', count: 1}, {type: 'boss1', count: 2}, {type: 'strong', count: 4}] },
+    { waveID: 12, enemies: [{type: 'hyper', count: 1}, {type: 'boss1', count: 2}, {type: 'strong', count: 4}, {type: 'strongRanger', count: 2}] },
     { waveID: 13, enemies: [{type: 'scaredy', count: 3}, {type: 'splitter', count: 1}, {type: 'hyper', count: 2}] },
     { waveID: 14, enemies: [{type: 'boss2', count: 2}, {type: 'hyper', count: 2}] },
     { waveID: 15, enemies: [{type: 'boss3', count: 1}] },
@@ -191,7 +191,10 @@ const waveConfigurations = [
     { waveID: 21, enemies: [{type: 'hyper', count: 1}, {type: 'splitter', count: 1}, {type: 'hiddenBoss', count: 2}, {type:'boss3', count: 1} ]},
     { waveID: 22, enemies: [{type: 'hyper', count: 2}, {type: 'splitter', count: 2}, {type: 'boss4', count: 1}] },
     { waveID: 23, enemies: [{type: 'hyper', count: 3}, {type: 'boss3', count: 1}, {type:'splitter', count: 1}] },
-    { waveID: 24, enemies: [{type: 'hyper', count: 3}, {type: 'splitter', count: 2,}, {type: 'ranger', count: 5}] },
+    { waveID: 24, enemies: [{type: 'hyper', count: 3}, {type: 'splitter', count: 2,}, {type: 'tankRanger', count: 1}] },
+    { waveID: 25, enemies: [{type: 'boss5', count: 1}] },
+    { waveID: 26, enemies: [{type: 'boss4', count: 1}, {type: 'tankRanger', count: 3}] },
+    { waveID: 27, enemies: [{type: 'tankRanger', count: 2}, {type: 'hyper', count: 5}, {type: 'boss2', count: 3}] },
 ];
 
 const upgrades = [
@@ -1274,21 +1277,36 @@ function doDebuffDamage() {
             enemy.element.remove();
             enemy.removed = true;
                         
-            if (enemy.type === 'splitter') {
-                for (let i = 0; i < 2; i++) {
-                    spawnSplitChild('splitter01', enemy);
+                if (enemy.type === 'splitter') {
+                        for (let i = 0; i < 2; i++) {
+                            spawnSplitChild('splitter01', enemy);
+                        }
                     }
-                }
-            if (enemy.type === 'splitter01') {
-                for (let i = 0; i < 4; i++) {
-                    spawnSplitChild('splitter02', enemy);
+                if (enemy.type === 'splitter01') {
+                        for (let i = 0; i < 2; i++) {
+                            spawnSplitChild('splitter02', enemy);
+                        }
                     }
-                }
-            if (enemy.type === 'splitter02') {
-                for (let i = 0; i < 8; i++) {
-                    spawnSplitChild('splitter03', enemy);
+                if (enemy.type === 'splitter02') {
+                        for (let i = 0; i < 2; i++) {
+                            spawnSplitChild('splitter03', enemy);
+                        }
                     }
-                }
+                if (enemy.type === 'stardust'){
+                        for (let i = 0; i < 2; i++) {
+                            spawnSplitChild('stardust1', enemy);
+                        }
+                    }
+                if (enemy.type === 'stardust1'){
+                        for (let i = 0; i < 2; i++) {
+                            spawnSplitChild('stardust2', enemy);
+                        }
+                    }
+                if (enemy.type === 'stardust2'){
+                        for (let i = 0; i < 2; i++) {
+                            spawnSplitChild('stardust3', enemy);
+                        }
+                    }
             }
         }
     }
@@ -1317,7 +1335,7 @@ function updateEnemies() {
         if (enemy.y < minEnemyY) {enemy.y = minEnemyY;}
         if (enemy.y > maxEnemyY) {enemy.y = maxEnemyY;} 
 
-        if (enemy.type === 'ranger') {
+        if (enemy.type === 'ranger' || enemy.type === 'strongRanger' || enemy.type === 'tankRanger' || enemy.type === 'cosmicBoss') {
             if (!enemy.lastShotTime) enemy.lastShotTime = 0;
             let currentTime = Date.now();
             
@@ -1327,8 +1345,11 @@ function updateEnemies() {
                 let shootDeltaX = myHoriz - enemy.x;
                 let shootDeltaY = myVerti - enemy.y;
                 let shootDist = Math.sqrt(shootDeltaX * shootDeltaX + shootDeltaY * shootDeltaY);
+
+                if (enemy.type === 'ranger' || enemy.type === 'strongRanger'){let bulletSpeed = 4;}
+                else if (enemy.type === 'tankRanger'){let bulletSpeed = 8;}
+                else if (enemy.type === 'cosmicBoss'){let bulletSpeed = 12;}
                 
-                let bulletSpeed = 4;
                 let veloX = (shootDeltaX / shootDist) * bulletSpeed;
                 let veloY = (shootDeltaY / shootDist) * bulletSpeed;
 
