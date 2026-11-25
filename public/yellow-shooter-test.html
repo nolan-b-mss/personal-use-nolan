@@ -1349,8 +1349,8 @@ function updateEnemies() {
                 let shootDist = Math.sqrt(shootDeltaX * shootDeltaX + shootDeltaY * shootDeltaY);
 
                 if (enemy.type === 'ranger' || enemy.type === 'strongRanger'){let bulletSpeed = 4;}
-                else if (enemy.type === 'tankRanger'){let bulletSpeed = 8;}
-                else if (enemy.type === 'cosmicBoss'){let bulletSpeed = 12;}
+                if (enemy.type === 'tankRanger'){let bulletSpeed = 8;}
+                if (enemy.type === 'cosmicBoss'){let bulletSpeed = 12;}
                 
                 let veloX = (shootDeltaX / shootDist) * bulletSpeed;
                 let veloY = (shootDeltaY / shootDist) * bulletSpeed;
