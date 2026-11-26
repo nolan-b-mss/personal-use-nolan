@@ -91,8 +91,14 @@ const assetsToPreload = [
     'sprites/soul-08-strong.png',
     'sprites/soul-08-boss5.png',
     'sprites/soul-08-boss6.png',
+    'sprites/soul-08-boss7.png',
     'sprites/soul-08-strongRanger.png',
     'sprites/soul-08-tankRanger.png',
+    'sprites/soul-08-cosmicRanger.png',
+    'sprites/soul-08-cosmic.png',
+    'sprites/soul-08-stardust.png',
+    'sprites/soul-08-cosmicBoss.png',
+    'sprites/soul-08-ignited.png',
     'sprites/yellow-enemybullet.png',
 ];
 
@@ -154,6 +160,7 @@ const enemyTypes = {
     boss4: { health: 500, speed: 2.5, damage: 2, size: 100, isPoisoned: false, name: 'Giant Boss', source: 'sprites/soul-08-boss4.png' },
     boss5: { health: 650, speed: 2.75, damage: 2, size: 100, isPoisoned: false, name: 'Tank', source: 'sprites/soul-08-boss5.png'},
     boss6: { health: 800, speed: 2.75, damage: 3, size: 120, isPoisoned: false, name: 'Elite', source: 'sprites/soul-08-boss6.png'},
+    boss7: { health: 1000, speed: 2.5, damage: 3, size: 110, isPoisoned: false, name: 'Infernal', source: 'sprites/soul08-boss7.png'},
     splitter: { health: 10, speed: 1.75, damage: 1, size: 45, isPoisoned: false, name: 'Splitter', source: 'sprites/soul-08-splitter.png' },
     splitter01: { health: 5, speed: 2, damage: 1, size: 30, isPoisoned: false, name: 'Splitter1', source: 'sprites/soul-08-splitter.png' },
     splitter02: { health: 2, speed: 2.25, damage: 1, size: 15, isPoisoned: false, name: 'Splitter2', source: 'sprites/soul-08-splitter.png' },
@@ -166,6 +173,8 @@ const enemyTypes = {
     stardust2: { health: 25, speed: 2.5, damage: 2, size: 15, isPoisoned: false, name: 'Stardust2', source: 'sprites/soul-08-stardust.gif'},
     stardust3: { health: 10, speed: 2.75, damage: 1, size: 8, isPoisoned: false, name: 'Stardust3', source: 'sprites/soul-08-stardust.gif'},
     cosmicBoss: { health: 500, speed: 2.75, damage: 1, size: 80, isPoisoned: false, name: 'Shooting Star', source: 'sprites/soul-08-cosmicboss.png'},
+    cosmicRanger: { health: 250, speed: 0.5, damage: 2, size: 48, isPoisoned: false, name: 'Cosmic Ranger', source: 'sprites/soul-08-cosmicRanger.png'},
+    ignited: { health: 150, speed: 2, damage: 1, size: 32, isPoisoned: false, name: 'Ignited', source: 'sprites/soul-08-ignited.png'}
 };
 
 const waveConfigurations = [
@@ -198,8 +207,19 @@ const waveConfigurations = [
     { waveID: 26, enemies: [{type: 'boss4', count: 1}, {type: 'tankRanger', count: 3}] },
     { waveID: 27, enemies: [{type: 'tankRanger', count: 2}, {type: 'hyper', count: 5}, {type: 'boss2', count: 3}] },
     { waveID: 28, enemies: [{type: 'boss5', count: 1}, {type: 'tankRanger', count: 4}] },
-    { waveID: 29, enemies: [{type: 'boss3', count: 4}, {type: 'tankRanger', count: 4}, {type: 'hyper', count: 5}, {type: 'hiddenBoss', count: 5}]},
+    { waveID: 29, enemies: [{type: 'boss3', count: 2}, {type: 'tankRanger', count: 4}, {type: 'hyper', count: 2}, {type: 'hiddenBoss', count: 5}]},
     { waveID: 30, enemies: [{type: 'boss6', count: 1}] },
+    { waveID: 31, enemies: [{type: 'cosmic', count: 5}] },
+    { waveID: 32, enemies: [{type: 'stardust', count: 1}] },
+    { waveID: 33, enemies: [{type: 'stardust', count: 2}, {type: 'cosmicRanger', count: 3}] },
+    { waveID: 34, enemies: [{type: 'cosmic', count: 10}, {type: 'stardust', count: 2}, {type:'cosmicRanger', count: 2}] },
+    { waveID: 35, enemies: [{type: 'cosmicBoss', count: 1}] },
+    { waveID: 36, enemies: [{type: 'kaizo', count: 1}] },
+    { waveID: 37, enemies: [{type: 'kaizo', count: 3}, {type: 'cosmicRanger', count: 3}] },
+    { waveID: 38, enemies: [{type: 'hiddenBoss', count: 3}, {type: 'kaizo', count: 3}, {type: 'stardust', count: 3}] },
+    { waveID: 39, enemies: [{type: 'kaizoBoss', count: 1}, {type: 'kaizo', count: 4}, {type: 'cosmicRanger', count: 1}] },
+    { waveID: 40, enemies: [{type: 'boss7', count: 1}] },
+    { waveID: 41, enemies: [{type: 'kaizo', count: 4}, {type: 'ignited', count: 5}, {type: 'tankRanger', count: 1}] },
 ];
 
 const upgrades = [
@@ -1350,7 +1370,7 @@ function updateEnemies() {
         if (enemy.y < minEnemyY) {enemy.y = minEnemyY;}
         if (enemy.y > maxEnemyY) {enemy.y = maxEnemyY;} 
 
-        if (enemy.type === 'ranger' || enemy.type === 'strongRanger' || enemy.type === 'tankRanger' || enemy.type === 'cosmicBoss') {
+        if (enemy.type === 'ranger' || enemy.type === 'strongRanger' || enemy.type === 'tankRanger' || enemy.type === 'cosmicBoss' || enemy.type === 'cosmicRanger') {
             if (!enemy.lastShotTime) enemy.lastShotTime = 0;
             let currentTime = Date.now();
             
@@ -1363,7 +1383,7 @@ function updateEnemies() {
 
                 let enemyBulletSpeed = 4;
                 if (enemy.type === 'ranger' || enemy.type === 'strongRanger'){enemyBulletSpeed = 4;}
-                if (enemy.type === 'tankRanger'){enemyBulletSpeed = 8;}
+                if (enemy.type === 'tankRanger' || enemy.type === 'cosmicRanger'){enemyBulletSpeed = 8;}
                 if (enemy.type === 'cosmicBoss'){enemyBulletSpeed = 12;}
                 
                 let veloX = (shootDeltaX / shootDist) * enemyBulletSpeed;
