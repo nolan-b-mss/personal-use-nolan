@@ -1185,6 +1185,10 @@ function spawnWave(waveIndex) {
         return;
     }
     let currentWave = waveConfigurations[waveIndex];
+    isInvincible = true;
+    setTimeout( function () {
+        isInvincible = false;
+    }, 1000);
     
     for (let i = 0; i < currentWave.enemies.length; i++) {
         let group = currentWave.enemies[i];
