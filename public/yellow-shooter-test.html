@@ -215,7 +215,7 @@ const upgrades = [
     { upgradeID: 10, desc: "x2 Cooldown, +1 Bullet Size, +4 Damage", name: "Slug Shots", apply: () => { shotCooldown *= 2; bulletSizeStat += 1; playerDamage += 4; }},
     { upgradeID: 11, desc: "Hold to fire a BIG SHOT! BIG SHOTs do 5 times your damage, and pierce enemies. Cannot critical hit.", name: "BIG SHOT", oneTime: true, apply: () => { if (!waterGunActive) {allowBigShot = true;}}},
     { upgradeID: 12, desc: "Refills your HP to its maximum.", name: "Full Health", apply: () => { playerHealth = maxHealth }},
-    { upgradeID: 13, desc: "Your bullets now pierce enemies.", name: "Arrows", apply: () => { allowPiercing = true;}},
+    { upgradeID: 13, desc: "Your bullets now pierce enemies.", name: "Arrows", apply: () => { allowPierce = true;}},
     { upgradeID: 14, desc: "Upon hitting an enemy, they will take half your damage every second. Does not stack with itself.", name: "Syringe Shots", oneTime: true, apply: () => { allowPoisonShot = true; }},
     { upgradeID: 15, desc: "Divides your cooldown by 5.", name: "Full Auto", oneTime: true, apply: () => { shotCooldown /= 5; }},
     { upgradeID: 16, desc: "+4 max bullets", name: "Auto Retriever", apply: () => { maxBullets += 4 }},
@@ -296,7 +296,7 @@ let allowJusticeBeam = false;
 let allowPoisonShot = false;
 let allowAutoFire = true;
 let allowEndbringer = false;
-let allowPiercing = false;
+let allowPierce = false;
 let endbringerSpawned = false;
 let perfectionActive = false;
 let waterGunActive = false;
